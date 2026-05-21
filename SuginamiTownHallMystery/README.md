@@ -16,3 +16,9 @@
 - 統廃合計画
 - 若手職員メモ
 - 欠けた版番号
+
+## 追加Web資料
+- 公式サイト風ページ: `web/official/index.html`
+- 検索結果風ページ: `web/search/index.html`
+- 掲示板ログ風ページ: `web/bbs/index.html`
+- 画像素材: ChatGPT生成の共通コンタクトシートをCSSで切り出して使用。
