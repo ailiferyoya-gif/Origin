@@ -606,3 +606,29 @@
   - GitHub側に `Origin` リポジトリを作成、またはリモートURLを指定する。
   - `origin` を追加してpush。
   - PagesをGitHub Actionsで有効化して公開URL確認。
+
+## 2026-05-21 GitHub Pages公開完了・今後のGit運用
+- ユーザー報告:
+  - GitHub PagesのStatic HTML設定が完了。
+  - 公開まで進められたとのこと。
+- 公開リポジトリ:
+  - ローカル: `C:\Users\kogit\Documents\GitHub\Origin`
+  - リモート: `https://github.com/ailiferyoya-gif/Origin.git`
+  - 想定公開URL: `https://ailiferyoya-gif.github.io/Origin/`
+- Git:
+  - 通常のGitはPATHに入っていない。
+  - 今後もGitHub Desktop同梱Gitを使用する:
+    - `C:\Users\kogit\AppData\Local\GitHubDesktop\app-3.5.8\resources\app\git\cmd\git.exe`
+  - GitHub Desktopのバージョン更新で `app-3.5.8` が変わる可能性あり。その場合は新しい `git.exe` を探す。
+- 今後の標準作業手順:
+  - 変更前にバックアップを作成。
+  - 対象サイト/MDを編集。
+  - リンク、画像参照、文字あふれ、必要に応じてローカル表示を確認。
+  - `git status` で差分確認。
+  - 必要ファイルだけ `git add`。
+  - `git commit`。
+  - `git push origin main`。
+- 注意:
+  - すでに完成扱いの公式サイトは、ユーザー指示があるまで不用意に触らない。
+  - 画像素材はChatGPT生成物を使用。キャラクター画像は背景透過。スプライトシートは禁止。
+  - 作業後はこの引継ぎMDに状況、変更点、未完了事項、次にやることを追記する。
