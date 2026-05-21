@@ -41,3 +41,11 @@
 - 各 `web/site.css` に `TITLE_CODE_NOWRAP_20260522` を追加し、`.case-title .case-code { white-space: nowrap; display: inline-block; }` を指定。
 - 代表ページでブラウザ確認済み。管理番号は `nowrap` として解釈されている。
 - バックアップ: `C:\Users\kogit\Documents\Codex\backups\Origin-title-nowrap-20260522-012301`
+
+## 追記 2026-05-22 公開入口ページのネタバレ削除
+
+- 各謎解きの `web/index.html` から、真相・反転・ジャンル名・強いネタバレ語を削除。
+- ヘッダーは `調査資料 / 管理番号` に統一。
+- 添付資料リストは `公開資料`, `保存ログ`, `写真・掲示資料`, `関係者メモ`, `管理番号つき記録`, `調査ノート` に汎用化。
+- 代表ページをブラウザ確認済み。強いネタバレ語が表示されないことを確認。
+- バックアップ: `C:\Users\kogit\Documents\Codex\backups\Origin-remove-page-spoilers-20260522-014427`
