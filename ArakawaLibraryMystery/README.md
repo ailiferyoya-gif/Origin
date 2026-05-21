@@ -17,8 +17,20 @@
 - 未公開資料コピー
 - 存在しない貸出者番号
 
-## 追加Web資料
-- 公式サイト風ページ: `web/official/index.html`
-- 検索結果風ページ: `web/search/index.html`
-- 掲示板ログ風ページ: `web/bbs/index.html`
-- 画像素材: ChatGPT生成の共通コンタクトシートをCSSで切り出して使用。
+
+## 個別公式サイト化
+- 個別生成画像: `web/assets/hero.png`
+- 公式サイト: `web/official/index.html`
+- 検索画面: `web/search/index.html`
+- 掲示板: `web/bbs/index.html`
+- 20問調査: `web/investigate/index.html`
+- デザイン方針: 図書検索端末風UI
+
+
+## 個別公式サイト化
+- 個別生成画像: `web/assets/hero.png`
+- 公式サイト: `web/official/index.html`
+- 検索画面: `web/search/index.html`
+- 掲示板: `web/bbs/index.html`
+- 20問調査: `web/investigate/index.html`
+- デザイン方針: 図書検索端末風UI
