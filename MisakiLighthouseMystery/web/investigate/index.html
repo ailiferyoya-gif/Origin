@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>資料照合ノート | 潮見岬灯台資料館</title>
+  <link rel="stylesheet" href="../site.css">
+  <link rel="stylesheet" href="../site-variants.css">
+  <link rel="stylesheet" href="../haiko-main.css">
+</head>
+<body class="lux-home note-home">
+  <header class="lux-header">
+    <a href="../index.html" class="lux-brand"><span>SHIOMIZAKI CASE ARCHIVE</span><strong>資料照合ノート</strong></a>
+    <nav>
+      <a href="../search/index.html" target="_blank" rel="noopener">検索</a>
+      <a href="../mail/index.html" target="_blank" rel="noopener">メール</a>
+      <a href="../admin/index.html" target="_blank" rel="noopener">管理画面</a>
+      <a href="../index.html">調査入口</a>
+    </nav>
+  </header>
+  <main class="lux-note-shell">
+    <section class="lux-note-intro">
+      <div>
+        <p>INVESTIGATION NOTE</p>
+        <h1 data-no-textflow><span>資料照合</span><span>ノート</span></h1>
+      </div>
+      <article>
+        <p>このページは作中サイトではなく、プレイヤーが資料を照合するためのUIです。入口ページと同じ系統のプレミアム画面として扱います。</p>
+        <p>検索画面、メール控え、管理画面を別ウィンドウで開き、そこから見つけた作中サイトの時刻、箱番号、鍵、人物名をメモしてください。前の段階を解くと、次の照合式と入力欄が開きます。</p>
+        <p>未解放のカードは詳細が表示されません。単独ページで確定せず、複数サイトの記録が同じ方向を向くか確認してください。</p>
+      </article>
+    </section>
+    <section class="stage" data-lock="1"><h2>1. 失踪扱いにされた成人研究者</h2><div class="locked-hide"><p>新聞、ブログ、人事処理票で同じ人物名を確認。</p><form data-stage="1"><input name="answer" autocomplete="off"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="2"><h2>2. 記録が閉じた日</h2><div class="locked-hide"><p>白灯日誌、霧記録、新聞の日付を合わせる。</p><form data-stage="2"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="3"><h2>3. 最初に場所が揃う時刻</h2><div class="locked-hide"><p>白灯日誌と気象台に同じ時刻がある。</p><form data-stage="3"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="4"><h2>4. 閉じた場所</h2><div class="locked-hide"><p>日誌、鍵台帳、無線記録で共通する部屋名。</p><form data-stage="4"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="5"><h2>5. 閲覧制限の箱番号</h2><div class="locked-hide"><p>展示目録、第三倉庫、ブログ下書きを照合。</p><form data-stage="5"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="6"><h2>6. 箱の中にあった日誌</h2><div class="locked-hide"><p>資料館の日誌名を正式表記で。</p><form data-stage="6"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="7"><h2>7. 箱が戻された場所</h2><div class="locked-hide"><p>朝にはどこへ戻っていたか。</p><form data-stage="7"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="8"><h2>8. 風向の出所</h2><div class="locked-hide"><p>「南西8m」を掲示した機関。</p><form data-stage="8"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="9"><h2>9. 霧の夜の掲示</h2><div class="locked-hide"><p>風向と風速をセットで入力。</p><form data-stage="9"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="10"><h2>10. FM側に残った音源</h2><div class="locked-hide"><p>ラッチ音が残る記録名。</p><form data-stage="10"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="11"><h2>11. 入室権限のある音響担当</h2><div class="locked-hide"><p>委託契約と鍵台帳に同じ名前。</p><form data-stage="11"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="12"><h2>12. 箱に入っていた持ち物</h2><div class="locked-hide"><p>ブログと第三倉庫に出るケース。</p><form data-stage="12"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="13"><h2>13. ラッチ音の時刻</h2><div class="locked-hide"><p>無線記録、気象台、潮位表で一致。</p><form data-stage="13"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="14"><h2>14. 町役場の処理語</h2><div class="locked-hide"><p>本人署名のない処理語。</p><form data-stage="14"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="15"><h2>15. 処理日</h2><div class="locked-hide"><p>人事処理票の日付。</p><form data-stage="15"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="16"><h2>16. 事件の中心施設</h2><div class="locked-hide"><p>サイト名にも出る正式施設名。</p><form data-stage="16"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="17"><h2>17. 台帳で空白だった鍵</h2><div class="locked-hide"><p>通常鍵ではなく、箱の裏から見つかったもの。</p><form data-stage="17"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="stage" data-lock="18"><h2>18. 結論</h2><div class="locked-hide"><p>人物、被害者、場所、行為を含めて入力。</p><form data-stage="18"><input name="answer"><button>照合</button><p class="result"></p></form></div></section>
+    <section class="truth" data-truth hidden><h2>復元された真相</h2><p>2009年10月12日夜、綾瀬誠はKIRI-1012の箱と白灯日誌を確認するため、潮見岬灯台資料館の霧笛室へ向かいました。小野寺圭は音響担当として入室権限を持ち、予備鍵を使って扉を外から閉じ、綾瀬誠を霧笛室に閉じ込めました。</p><p>翌朝、KIRI-1012は第三倉庫へ戻され、綾瀬誠は2009/10/13付で退職扱いにされます。直接的な事件名はどこにもありませんが、鍵、時刻、無線記録、気象、箱の移動が同じ方向を指しています。</p></section>
+  </main>
+  <footer class="lux-footer">これはプレイヤー用の照合UIです。作中サイトではありません。</footer>
+  <script src="../site.js"></script>
+  <script src="../textflow.js"></script>
+</body>
+</html>

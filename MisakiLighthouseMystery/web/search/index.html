@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>検索 | 潮見岬ケース</title>
+  <link rel="stylesheet" href="../site.css">
+  <link rel="stylesheet" href="../site-variants.css">
+</head>
+<body class="search-site">
+  <header class="search-engine-head">
+    <nav><a href="../index.html">入口</a><a href="../mail/index.html">メール</a><a href="../admin/index.html">管理</a><a href="../investigate/index.html">ノート</a></nav>
+  </header>
+  <main class="engine-shell">
+    <section class="engine-home">
+      <h1 data-no-textflow>潮見検索</h1>
+      <p>閉館記念アーカイブ内を検索</p>
+      <form id="search-form" class="engine-form">
+        <input id="query" autocomplete="off" autofocus placeholder="キーワードを入力">
+        <button type="submit">検索</button>
+      </form>
+      <div class="engine-links">
+        <span>検索例:</span>
+        <button type="button" data-fill="綾瀬誠">綾瀬誠</button>
+        <button type="button" data-fill="KIRI-1012">KIRI-1012</button>
+        <button type="button" data-fill="23:17">23:17</button>
+        <button type="button" data-fill="無線記録C">無線記録C</button>
+      </div>
+    </section>
+    <section id="results" class="engine-results" hidden></section>
+    <aside class="engine-ad">
+      <h2>お知らせ</h2>
+      <p>一般語だけでは結果が散らばります。メールに残る件名、箱番号、時刻を組み合わせてください。</p>
+    </aside>
+  </main>
+  <script>
+const data = [
+  { keys:["灯台","観光","パンフ"], title:"潮見岬観光パンフレット 2009秋", url:"../museum/archive/index.html", desc:"灯台まつり、売店、展望台の案内。事件性は薄い。" },
+  { keys:["灯台","まつり","カレー"], title:"灯台まつり実行メモ", url:"../town/closure/index.html", desc:"港カレー引換券と臨時バスの記録。" },
+  { keys:["霧","観光船","欠航"], title:"観光船欠航のお知らせ", url:"../weather/fog/index.html", desc:"濃霧による欠航情報。時刻表の端に港湾記録が混ざる。" },
+  { keys:["無線","FM","番組"], title:"しおかぜFM 番組素材一覧", url:"../radio/schedule/index.html", desc:"閉館特番以外の素材も大量に残る。" },
+  { keys:["小野寺","音響","委託"], title:"音響委託者一覧", url:"../town/contract/index.html", desc:"小野寺圭以外の委託者名も掲載される。" },
+  { keys:["綾瀬","郷土史","ブログ"], title:"岬の白い灯 古い記事", url:"../blog/index.html", desc:"港の雑記が多く、調査メモは一部だけ。" },
+  { keys:["KIRI","箱","倉庫"], title:"KIRI系保管箱一覧", url:"../museum/storage/index.html", desc:"KIRI-1012以外の箱もあるため、番号まで確認が必要。" },
+  { keys:["鍵","入口","売店"], title:"売店・入口鍵の棚卸し", url:"../museum/keys/index.html", desc:"霧笛室とは別の鍵も多数記録される。" },
+  { keys:["綾瀬","綾瀬誠","研究者"], title:"岬の白い灯", url:"../blog/index.html", desc:"綾瀬誠の未公開下書きと箱番号の断片。" },
+  { keys:["新聞","閉館","差し替え"], title:"岬日日新聞アーカイブ", url:"../news/index.html", desc:"表向きの記事。公開された説明だけが残る。" },
+  { keys:["資料館","白灯","灯台"], title:"潮見岬灯台資料館", url:"../museum/index.html", desc:"展示目録、日誌、鍵台帳の入口。" },
+  { keys:["白灯日誌","23:17","日誌"], title:"白灯日誌 第4冊", url:"../museum/logbook/index.html", desc:"23:17に霧笛室が記録される。" },
+  { keys:["KIRI-1012","KIRI1012","箱","閲覧制限"], title:"第三倉庫 / KIRI-1012", url:"../museum/storage/index.html", desc:"閲覧制限箱の移動日が残る。" },
+  { keys:["鍵","予備鍵","霧笛室"], title:"鍵台帳", url:"../museum/keys/index.html", desc:"霧笛室の鍵と予備鍵の空白。" },
+  { keys:["退職扱い","人事","2009/10/13"], title:"町役場 人事処理票", url:"../town/personnel/index.html", desc:"本人署名のない処理語。" },
+  { keys:["委託","小野寺","音響"], title:"町役場 委託契約", url:"../town/contract/index.html", desc:"小野寺圭の入室権限。" },
+  { keys:["南西8m","霧","気象","23:17"], title:"岬港湾気象台 霧記録", url:"../weather/fog/index.html", desc:"23:17と南西8mの出所。" },
+  { keys:["0:42","潮位","ラッチ"], title:"潮位表", url:"../weather/tide/index.html", desc:"0:42の反響音が残りやすい条件。" },
+  { keys:["無線記録C","record-c","0:42"], title:"しおかぜFM 無線記録C", url:"../radio/log/index.html", desc:"0:42の短いラッチ音。" },
+  { keys:["番組","FM","閉館特番"], title:"しおかぜFM 番組表", url:"../radio/schedule/index.html", desc:"綾瀬誠の出演予定が差し替えられる。" },
+  { keys:["留言板","記憶","倉庫"], title:"港町留言板", url:"../board/index.html", desc:"記憶の断片。一次資料で確認する。" },
+  { keys:["SHIO2317","管理","admin"], title:"資料館管理画面", url:"../admin/index.html", desc:"合言葉が必要。メールと日誌の時刻を照合。" }
+  ,{ keys:["白灯","白灯会","寄贈"], title:"白灯会寄贈品リスト", url:"../museum/archive/index.html", desc:"地元保存会の寄贈品。名前が似ているが日誌ではない。" }
+  ,{ keys:["23:17","時報","FM"], title:"しおかぜFM 時報ログ", url:"../radio/log/index.html", desc:"同じ時刻帯のノイズ。内容は番組素材側に混じる。" }
+  ,{ keys:["0:42","潮","港"], title:"港内反響メモ", url:"../weather/tide/index.html", desc:"潮位による反響の説明。直接の人物名は出ない。" }
+  ,{ keys:["予備鍵","棚卸し","翌朝"], title:"予備鍵棚卸し控え", url:"../museum/keys/index.html", desc:"鍵束の数だけが合わない。誰が使ったかは別資料。" }
+  ,{ keys:["退職","処理","総務"], title:"総務課一括処理表", url:"../town/personnel/index.html", desc:"複数人の処理語が混在する。" }
+  ,{ keys:["留言板","噂","霧笛"], title:"港町留言板 過去ログ", url:"../board/index.html", desc:"証言ではなく記憶の断片。裏取りが必要。" }
+];
+function norm(v){return String(v||"").replace(/\s+/g,"").toLowerCase();}
+function runSearch(){
+  const q = norm(document.getElementById("query").value);
+  const root = document.getElementById("results");
+  root.hidden = false;
+  if(!q || q.length < 2){ root.innerHTML = "<h2>検索語が短すぎます</h2><p>人物名、資料番号、時刻などを入力してください。</p>"; return; }
+  const hits = data.filter(item => item.keys.some(key => q.includes(norm(key)) || norm(key).includes(q))).slice(0,12);
+  if(!hits.length){ root.innerHTML = `<h2>検索結果 0件</h2><p>「${document.getElementById("query").value}」に一致する資料はありません。別表記、メールの件名コード、新聞の表向き表現を試してください。</p>`; return; }
+  root.innerHTML = `<h2>検索結果 ${hits.length}件</h2>` + hits.map((hit, index) => `<article><button type="button" class="result-link" data-hit="${index}">${hit.title}</button><p>${hit.desc}</p><small>${hit.url.replace("../","shiomizaki://")}</small></article>`).join("");
+  root.querySelectorAll("[data-hit]").forEach((button) => {
+    button.addEventListener("click", () => window.open(hits[Number(button.dataset.hit)].url, "_blank", "noopener"));
+  });
+}
+document.getElementById("search-form").addEventListener("submit",(event)=>{ event.preventDefault(); runSearch(); });
+document.querySelectorAll("[data-fill]").forEach((button)=>button.addEventListener("click",()=>{ document.getElementById("query").value=button.dataset.fill; runSearch(); }));
+  </script>
+  <script src="../textflow.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>検索 | 黒潮海底観測所 記録消失事件</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+body{background:#fff;color:#202124;font-family:Arial,"Meiryo",sans-serif}.search-page{min-height:100vh}.search-hero{text-align:center;padding:74px 18px 24px}.search-hero h1{font-size:3rem;color:#2a6ad7;letter-spacing:0;margin:0 0 24px}.search-hero form{display:flex;gap:8px;max-width:650px;margin:auto}.search-hero input{flex:1;border:1px solid #dfe1e5;border-radius:24px;padding:14px 20px;font-size:1rem}.search-hero button{border:1px solid #dadce0;background:#f8f9fa;padding:0 20px;border-radius:4px}.results{max-width:820px;margin:0 auto 70px;padding:0 18px}.results article{padding:14px 0;border-bottom:1px solid #eee}.results a{font-size:1.12rem;color:#1a0dab}.results p{margin:.3rem 0;color:#4d5156}.results span{font-size:.82rem;color:#70757a}@media(max-width:600px){.search-hero form{flex-direction:column}.search-hero h1{font-size:2.2rem}}
+</style>
+</head>
+<body class="">
+<main class="search-page">
+<section class="search-hero">
+<h1>MinatoSearch</h1>
+<form onsubmit="runSearch();return false"><input id="q" aria-label="検索語" placeholder="検索語を入力"><button>検索</button></form>
+<p class="muted small">検索語は記録内の固有名詞や資料番号を一単語で入力してください。</p>
+</section>
+<section id="results" class="results"></section>
+</main>
+<script>
+const data=[{"keywords":["黒潮","観測所"],"href":"../facility/index.html","title":"黒潮海底観測所 施設公開ページ","snippet":"閉鎖施設の公開資料。巡回表、鍵台帳、展示準備資料。","public":true,"label":"検索結果"},{"keywords":["OBS-1118"],"href":"../municipal/case/index.html","title":"湊浦市 公開文書 OBS-1118","snippet":"安全審議会の事故番号。添付資料は一部黒塗り。","label":"検索結果"},{"keywords":["潮流"],"href":"../tide/index.html","title":"潮流観測所 2014年11月ログ","snippet":"北東流速、欠測、圧力差の記録。","label":"検索結果"},{"keywords":["音響記録D"],"href":"../radio/acoustic/index.html","title":"港湾無線局 音響記録D 欠落","snippet":"02時台の雑音と第三観測室付近の記録。","label":"検索結果"},{"keywords":["海洋計測"],"href":"../contractor/index.html","title":"海洋計測株式会社 保守報告","snippet":"夜間保守、請求書、担当者控え。","label":"検索結果"},{"keywords":["三枝透"],"href":"../news/index.html","title":"港湾日報 アーカイブ","snippet":"死亡記事、訂正欄、休職扱いの表現差。","label":"検索結果"},{"keywords":["銀色"],"href":"../blog/index.html","title":"潮待ちメモ","snippet":"2014年の無料ブログ。写真メモと日常記事。","label":"検索結果"},{"keywords":["掲示板"],"href":"../board/index.html","title":"港の古い掲示板 保存ログ","snippet":"噂、釣果、訂正欄への言及。","label":"検索結果"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 1","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 2","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 3","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 4","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 5","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 6","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 7","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 8","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 9","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 10","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":true,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 11","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 12","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 13","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 14","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 15","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 16","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 17","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 18","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 19","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 20","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 21","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 22","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 23","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"},{"keywords":["黒潮","港","観測","海"],"href":"../news/index.html","title":"黒潮周辺ニュース断片 24","snippet":"祭り、釣果、工事、求人など事件と無関係な検索結果。","public":false,"label":"キャッシュ"}];
+function runSearch(){
+  const q=document.getElementById('q').value.trim();
+  const box=document.getElementById('results');
+  const hits=data.filter(x=>x.keywords.some(k=>k.includes(q)||q.includes(k))||(!q&&x.public));
+  box.innerHTML=(hits.length?hits:data.filter(x=>x.public).slice(0,12)).map(x=>'<article><a href="'+x.href+'" target="_blank" rel="noopener">'+x.title+'</a><p>'+x.snippet+'</p><span>'+x.label+'</span></article>').join('');
+}
+runSearch();
+</script>
+<script src="../textflow.js"></script>
+</body>
+</html>

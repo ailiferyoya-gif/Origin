@@ -1,0 +1,73 @@
+# Backups and local handoff scratch
+/_backups/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Local runtime/process files
+*.pid
+*.log
+*-create.log
+
+# Archives and packaged exports
+*.zip
+*.7z
+*.rar
+
+# JavaScript dependencies/build output
+**/node_modules/
+**/.next/
+**/dist/
+**/build/
+**/.vite/
+**/.turbo/
+
+# Python caches
+**/__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Unity generated directories in non-mystery projects
+/AichiFantasyTRPG/Library/
+/AichiFantasyTRPG/Logs/
+/AichiFantasyTRPG/Temp/
+/AichiFantasyTRPG/Obj/
+/AichiFantasyTRPG/Build/
+/AichiFantasyTRPG/Builds/
+/AutoRPGTD/Library/
+/AutoRPGTD/Logs/
+/AutoRPGTD/Temp/
+/AutoRPGTD/Obj/
+/AutoRPGTD/Build/
+/AutoRPGTD/Builds/
+/IdleRPGClicker/Library/
+/IdleRPGClicker/Logs/
+/IdleRPGClicker/Temp/
+/IdleRPGClicker/Obj/
+/IdleRPGClicker/Build/
+/IdleRPGClicker/Builds/
+/KemumakiUnity/Library/
+/KemumakiUnity/Logs/
+/KemumakiUnity/Temp/
+/KemumakiUnity/Obj/
+/KemumakiUnity/Build/
+/KemumakiUnity/Builds/
+/ShirenLikeRogue/Library/
+/ShirenLikeRogue/Logs/
+/ShirenLikeRogue/Temp/
+/ShirenLikeRogue/Obj/
+/ShirenLikeRogue/Build/
+/ShirenLikeRogue/Builds/
+
+# Large/generated local outputs outside Booth deliverables
+**/output/
+**/outputs/
+**/tmp/
+

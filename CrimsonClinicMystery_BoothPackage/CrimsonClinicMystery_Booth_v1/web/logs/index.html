@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>記録保管室 | 紅坂診療所 カルテ改竄事件</title>
+<link rel="stylesheet" href="../site.css">
+</head>
+<body class="record-vault">
+<header class="vault-header">
+  <div>
+    <span>RECORD VAULT</span>
+    <h1>記録保管室</h1>
+  </div>
+  <nav>
+    <a href="./missing/index.html">欠落ログ</a>
+    <a href="./restricted/index.html">制限ログ</a>
+  </nav>
+</header>
+<main class="vault-shell">
+  <section class="vault-hero">
+    <div>
+      <p class="vault-kicker">KOSAKA CLINIC / ARCHIVE NODE 04</p>
+      <p>酸素バルブ、薬剤棚、夜間カードのログを保管する閲覧端末です。</p>
+    </div>
+    <aside>
+      <span>LAST SYNC</span>
+      <strong>2010/10/07 00:02</strong>
+      <p>復旧時刻だけが正常に残っています。</p>
+    </aside>
+  </section>
+
+  <section class="vault-status">
+    <article><span>LOG-A</span><strong>酸素バルブログ</strong><p>23:14 異常 / 欠番あり</p></article>
+    <article><span>LOG-B</span><strong>薬剤棚ログ</strong><p>制限扱い / 管理画面参照</p></article>
+    <article><span>CARD</span><strong>夜間カード</strong><p>入退室履歴の一部が未照合</p></article>
+  </section>
+
+  <section class="vault-list">
+    <a href="./missing/index.html">
+      <span class="vault-dot is-warn"></span>
+      <div><h3>酸素バルブログ</h3><p>計測ログの抜粋。23:14の異常と、通常値ではない欠番処理。</p></div>
+      <em>OPEN</em>
+    </a>
+    <a href="./restricted/index.html">
+      <span class="vault-dot is-lock"></span>
+      <div><h3>薬剤棚ログ</h3><p>管理画面から参照された制限ログ。夜間カード、裏口廊下、処理印。</p></div>
+      <em>LOCKED</em>
+    </a>
+  </section>
+</main>
+<script src="../textflow.js"></script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+# 凝った公式サイト一括反映 引継ぎ
+
+## 作業日
+2026-05-19
+
+## バックアップ
+- `C:\Users\kogit\Documents\Codex\_backups\*_unique_official_pre_20260519_074350`
+
+## 対象
+- `AbyssalObservatoryMystery`
+- `AonagiDataCenterMystery`
+- `GinreiDepartmentMystery`
+- `HakurouMuseumMystery`
+- `KarasunoCableMystery`
+- `KurobaraCinemaMystery`
+- `MisakiLighthouseMystery`
+- `MizukageDamMystery`
+- `ShiranuiOnsenMystery`
+- `TokiwaBroadcastMystery`
+- `TsukishiroHotelMystery`
+
+## 変更点
+- 各作品に `web/official/index.html`、`about/index.html`、`facility/index.html`、`safety/index.html`、`official.css` を作成または刷新。
+- 入口ページに `./official/index.html` へのリンクを追加。
+- Booth版にも同じ公式サイトと入口リンクを反映。
+- 画像は既存のChatGPT生成素材を大きく使用し、外部画像は使用していない。
+- `81-web.com` のような日本国内サイト中心のWebデザインギャラリーを参考に、業種ごとに色、フォント、画像比率、角丸、レイアウトを変えた。
+
+## デザイン方針
+- 黒潮海底観測所: 円形ヒーロー、深海色、研究施設風。
+- 青凪データセンター: 斜めに切ったヒーロー、冷たい青、インフラ企業風。
+- 銀鈴百貨店: 百貨店らしい赤紫、縦長大型ビジュアル、都市型商業施設風。
+- 白楼資料館: 単一大判ヒーロー、紙色と展示施設感。
+- 烏野ケーブル: 緑系、山間通信インフラ風。
+- 黒薔薇シネマ: 暗色と赤、単館映画館風。
+- 岬灯台記念館: 灯台の縦長シルエット感、海と光の配色。
+- 水影ダム管理所: 堤体を意識した直線的な大判画像。
+- 不知火温泉: 温泉旅館らしい暖色、柔らかい曲線。
+- 常盤放送: 放送局らしい硬い矩形と赤系アクセント。
+- 月白ホテル: ホテルらしい落ち着いた紺と金、非対称ヒーロー。
+
+## 確認済み
+- 公式サイト内リンクと画像/CSS参照のファイル存在チェック OK。
+- 公式フォルダ内に `表向き`、`作中`、`公開用`、`通常利用者向け`、`謎`、`照合すると`、`break-all`、`anywhere` の残存なし。
+- 代表3作品をHTTPとブラウザで確認:
+  - `AbyssalObservatoryMystery` 公式トップ HTTP 200 / コンソールエラーなし。
+  - `KurobaraCinemaMystery` 公式トップ HTTP 200 / コンソールエラーなし。
+  - `TsukishiroHotelMystery` 公式トップ HTTP 200 / コンソールエラーなし。
+
+## 注意
+- 今回の一括生成には `tools/build_unique_official_sites.mjs` を使用。
+- 今後、各作品をさらに磨く場合は、このスクリプトを土台にしつつ、作品別にHTML/CSSを手で追加していく。
+- 公式サイト側にはプレイヤー向けの説明を書かない。手がかりは公式のお知らせ、設備情報、安全管理、訂正情報として自然に混ぜる。
+
+## 2026-05-19 1件ずつ再制作: 黒潮海底観測所
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\AbyssalObservatoryMystery_one_by_one_official_pre_20260519_075138`
+  - `C:\Users\kogit\Documents\Codex\_backups\AbyssalObservatoryMystery_BoothPackage_one_by_one_official_pre_20260519_075138`
+- 一括生成で似通っていた `AbyssalObservatoryMystery/web/official` を手作業で再制作。
+- `index.html`、`about/index.html`、`facility/index.html`、`safety/index.html`、`official.css` を海底観測所専用デザインへ差し替え。
+- 文字化けを解消し、公式サイトとして自然な日本語に修正。
+- 円形の深海観測窓、大型ヒーロー画像、DEPTH表示、観測ステータス、地上管制室の大判画像、深海研究施設風の暗色UIを採用。
+- Booth版にも反映済み。
+- 公式フォルダ内リンクチェック OK。
+- 文字化け候補、不自然なメタ文言、`break-all`、`anywhere` の残存なし。
+- `http://127.0.0.1:4383/web/official/index.html` でHTTP 200、ブラウザ確認でコンソールエラーなし。
+
+## 2026-05-19 黒潮海底観測所 AI感低減・2020年代サイト寄せ
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\AbyssalObservatoryMystery_less_ai_pre_20260519_202356`
+  - `C:\Users\kogit\Documents\Codex\_backups\AbyssalObservatoryMystery_BoothPackage_less_ai_pre_20260519_202356`
+- ChatGPT生成画像を2枚追加:
+  - `web/assets/abyss-control-hero-2020s.png`
+  - `web/assets/abyss-sensor-floor-2020s.png`
+- 2020年代のスタイリッシュな研究・テック系サイトを意識し、巨大見出しの主張を抑えて、大判写真、静かな日本語、少ないボタン、余白中心の構成へ変更。
+- 丸画像の案は残しつつ、トップの主役から下段の「深海観測窓」へ移動。トップは管制室の大判写真を主役にした。
+- `official.css` を再調整し、見出しサイズを抑え、角丸・カード・装飾を減らし、実在研究施設の公式サイト寄りにした。
+- Booth版にも反映済み。
+- 公式フォルダ内リンクチェック OK。
+- 文字化け候補、不自然なメタ文言、`break-all`、`anywhere` の残存なし。
+- `http://127.0.0.1:4383/web/official/index.html` でHTTP 200、画像読み込みHTTP 200、ブラウザ確認でコンソールエラーなし。
+
+## 2026-05-19 黒潮海底観測所 下層ページ豪華化
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\AbyssalObservatoryMystery_subpage_luxury_pre_20260519_204431`
+  - `C:\Users\kogit\Documents\Codex\_backups\AbyssalObservatoryMystery_BoothPackage_subpage_luxury_pre_20260519_204431`
+- ChatGPT生成画像を3枚追加:
+  - `web/assets/abyss-observation-gallery-2020s.png`
+  - `web/assets/abyss-cable-bay-2020s.png`
+  - `web/assets/abyss-safety-archive-2020s.png`
+- `about/index.html`、`facility/index.html`、`safety/index.html` に、それぞれ専用の大判画像ヒーローを追加。
+- 画像の使い回しを避け、トップ、観測概要、施設設備、安全管理で別画像を使う構成に変更。
+- 下層ページ用に `web/official/official-sub.css` を追加。
+- 観測概要には測定項目帯とデータ運用説明、施設設備には設備スペック、施設画像、安全管理には安全管理帯を追加。
+- Booth版にも反映済み。
+- 公式フォルダ内リンクチェック OK。
+- 文字化け候補、不自然なメタ文言、`break-all`、`anywhere` の残存なし。
+- 公式トップ、下層3ページ、追加画像3枚、`official-sub.css` はHTTP 200。
+- ブラウザ確認で下層3ページのコンソールエラーなし。
+## 2026-05-19 銀嶺百貨店公式サイト 1件ずつ再制作
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_official_pre_20260519_210253`
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_BoothPackage_official_pre_20260519_210253`
+- 対象:
+  - `GinreiDepartmentMystery/web/official/index.html`
+  - `GinreiDepartmentMystery/web/official/about/index.html`
+  - `GinreiDepartmentMystery/web/official/facility/index.html`
+  - `GinreiDepartmentMystery/web/official/safety/index.html`
+  - `GinreiDepartmentMystery/web/official/official.css`
+  - Booth版 `GinreiDepartmentMystery_BoothPackage/GinreiDepartmentMystery_Booth_v1/web/official`
+- ChatGPT生成画像を4点追加し、ページ間で画像を使い回さない構成にした。
+  - `web/assets/ginrei-atrium-2020s.png`: 公式トップ専用。
+  - `web/assets/ginrei-floor-guide-2020s.png`: フロア案内専用。
+  - `web/assets/ginrei-services-2020s.png`: 館内サービス専用。
+  - `web/assets/ginrei-safety-room-2020s.png`: 安全管理専用。
+- デザイン方針:
+  - 百貨店公式サイトとして自然に読める文言だけを使用し、プレイヤー向け・作中説明・謎解き説明は入れない。
+  - 大きなアトリウム写真、明朝系の静かな見出し、白・銀・鈍い金の配色、薄い罫線で高級百貨店らしさを出す。
+  - 不穏さは直接的な怖さではなく、地下連絡通路、北側エレベーター、閉店後巡回、防災センター記録などの業務文脈に溶かす。
+  - 文字の主張を抑え、写真と余白を主役にする。AIっぽい説明調や巨大な装飾カードを避ける。
+  - 改行ルールとして `word-break: keep-all` を維持し、`break-all` / `anywhere` は使用しない。
+- 確認:
+  - 公式フォルダ内に文字化け候補、メタ文言、`break-all`、`anywhere`、`href="#"` が残っていないことを `rg` で確認。
+  - `http://127.0.0.1:4384/web/official/index.html`、下層3ページ、CSS、画像がHTTP 200。
+  - ブラウザ確認でトップと下層3ページのコンソールエラーなし。
+
+## 2026-05-19 銀嶺百貨店公式サイト ヒーロー文字調整
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_hero_text_pre_20260519_212225`
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_BoothPackage_hero_text_pre_20260519_212225`
+- `GinreiDepartmentMystery/web/official/official.css` とBooth版の同CSSを更新。
+- 公式トップの画像上見出しが強く出すぎていたため、文字サイズ、余白、背景パネル濃度、ボタンサイズを抑えた。
+- 画像を主役にし、コピーは写真上の控えめなキャプションとして見えるバランスに変更。
+- 改行ルールは維持。`break-all` / `anywhere` は使用していない。
+- `http://127.0.0.1:4384/web/official/index.html` でブラウザ確認し、コンソールエラーなし。
+
+## 2026-05-19 銀嶺百貨店公式サイト 下層見出しサイズ調整
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_subpage_text_pre_20260519_214102`
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_BoothPackage_subpage_text_pre_20260519_214102`
+- `official.css` を更新し、下層ページのヒーロー見出しをトップと同じ控えめな文字量・サイズ感へ寄せた。
+- フロア案内、館内サービス、安全管理の3ページで、画像を主役にして説明文が添え物に見えるよう調整。
+- Booth版のCSSにも同期済み。
+- 禁止指定 `break-all` / `anywhere` / `href="#"` とメタ文言の残りなし。
+- 下層3ページはHTTP 200、ブラウザ確認でコンソールエラーなし。
+
+## 2026-05-19 銀嶺百貨店 フロア案内のページ内切り替え
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_floor_switch_pre_20260519_214805`
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_BoothPackage_floor_switch_pre_20260519_214805`
+- `GinreiDepartmentMystery/web/official/about/index.html` を更新し、階数ボタンを押すとページ遷移なしで画像・階名・説明・施設・案内文が切り替わるUIを追加。
+- `official.css` に `floor-switch` / `floor-tabs` / `floor-stage` / `floor-detail` のスタイルを追加。
+- ChatGPT生成画像を5点追加。階ごとに完全別画像ではなく、近い売場カテゴリで共有する設計。
+  - `web/assets/ginrei-floor-rooftop-event-2020s.png`: RF / 7F / 6F。
+  - `web/assets/ginrei-floor-fashion-2020s.png`: 5F / 4F。
+  - `web/assets/ginrei-floor-family-station-2020s.png`: 3F / 2F。
+  - `web/assets/ginrei-floor-food-entrance-2020s.png`: 1F。
+  - `web/assets/ginrei-floor-basement-2020s.png`: B1。
+- Booth版にもHTML、CSS、画像を同期済み。
+- 確認:
+  - `http://127.0.0.1:4384/web/official/about/index.html` がHTTP 200。
+  - B1ボタンのクリックで同一ページ内の表示が「食品街」「北側エレベーター」へ切り替わることをブラウザ確認。
+  - コンソールエラーなし。
+  - 文字化け候補、メタ文言、`break-all`、`anywhere`、`href="#"` の残りなし。
+
+## 2026-05-19 銀嶺百貨店 トップ内完結フロア案内へ修正
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_index_floor_complete_pre_20260519_220538`
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_BoothPackage_index_floor_complete_pre_20260519_220538`
+- ユーザー指摘:
+  - フロア案内クリックで `about/index.html` へ遷移してしまっていた。
+  - フロア切り替え画像が足りず、階によって使い回しが発生していた。
+- 対応:
+  - `web/official/index.html` 自体にフロア切り替えUIを移植し、公式トップ内で完結する構成に変更。
+  - トップの「フロア案内」「本日の売場を見る」「フロア案内カード」は `#floor-guide` へ移動するだけにし、`about/index.html` へ遷移しないようにした。
+  - `official.css` にトップ内フロア案内用の `index-floor-switch` と `floor-intro` を追加。
+  - Booth版にもHTML、CSS、画像を同期済み。
+- ChatGPT生成画像を4点追加し、RF / 7F / 6F / 5F / 4F / 3F / 2F / 1F / B1 の9階分をすべて別画像にした。
+  - RF: `web/assets/ginrei-floor-rooftop-event-2020s.png`
+  - 7F: `web/assets/ginrei-floor-7f-event-2020s.png`
+  - 6F: `web/assets/ginrei-floor-6f-household-2020s.png`
+  - 5F: `web/assets/ginrei-floor-fashion-2020s.png`
+  - 4F: `web/assets/ginrei-floor-4f-womens-2020s.png`
+  - 3F: `web/assets/ginrei-floor-family-station-2020s.png`
+  - 2F: `web/assets/ginrei-floor-2f-station-2020s.png`
+  - 1F: `web/assets/ginrei-floor-food-entrance-2020s.png`
+  - B1: `web/assets/ginrei-floor-basement-2020s.png`
+- 確認:
+  - `http://127.0.0.1:4384/web/official/index.html` がHTTP 200。
+  - ブラウザでフロア案内クリック後も `index.html#floor-guide` に留まり、`about/index.html` に遷移しないことを確認。
+  - B1クリックで同じトップページ内の表示が「食品街」「北側エレベーター」へ切り替わることを確認。
+  - コンソールエラーなし。
+  - トップHTML/CSS内に文字化け候補、メタ文言、`break-all`、`anywhere`、`href="#"`、`about/index.html` の残りなし。
+
+## 2026-05-19 銀嶺百貨店 フロア案内重複表示の整理
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_floor_duplicate_pre_20260519_222902`
+  - `C:\Users\kogit\Documents\Codex\_backups\GinreiDepartmentMystery_BoothPackage_floor_duplicate_pre_20260519_222902`
+- ユーザー指摘:
+  - トップ内に「フロア案内」と「FLOOR GUIDE」が重複して見えていた。
+  - 「階数を押してもページは移動しません。同じ画面の中で、各階の写真と案内だけが切り替わります。」という説明は不要。
+- 対応:
+  - 公式トップの重複していた「フロア案内」カードを削除。
+  - ヘッダーナビの表示を「フロア案内」から「売場」に変更。
+  - `FLOOR GUIDE` セクション内の不要説明文を削除。
+  - サービス / 安全管理カードが2列で自然に並ぶよう `feature-grid` を調整。
+  - Booth版にも同期済み。
+- 確認:
+  - `http://127.0.0.1:4384/web/official/index.html` がHTTP 200。
+  - ブラウザ確認で「フロア案内」と不要説明文が表示されないことを確認。
+  - 「売場」クリック後も `index.html#floor-guide` に留まり、B1切り替えが動作することを確認。
+  - コンソールエラーなし。
+
+## 2026-05-19 次チャット用引継ぎ作成
+- 次チャットへ移動するための独立した引継ぎ文を作成。
+- ファイル:
+  - `C:\Users\kogit\Documents\Codex\NEXT_CHAT_HANDOFF_20260519_GINREI.md`
+- 内容:
+  - 共通制作ルール。
+  - 銀嶺百貨店公式サイトの完成方針。
+  - 最新状態。
+  - 使用中のChatGPT生成画像一覧。
+  - 直近バックアップ。
+  - 確認済み項目。
+  - 次チャット開始用プロンプト。
+
+## 2026-05-19 公式サイト作業の除外対象
+- ユーザー指示により、以下6件は公式サイト完成済み扱い。明示指示があるまで `web/official`、公式サイト用CSS、公式サイト導線、公式サイト用画像には触らない。
+  - `CrimsonClinicMystery`
+  - `HaikoKinenMystery`
+  - `NamikazeFerryMystery`
+  - `HoshigauraRailMystery`
+  - `AbyssalObservatoryMystery`
+  - `GinreiDepartmentMystery`
+
+## 2026-05-19 黒薔薇シネマ公式サイト 映画館らしさ強化
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_20260519_kurobara_official_pre_232821`
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_BoothPackage_20260519_kurobara_official_pre_232821`
+- 引継ぎMD更新前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\OFFICIAL_SITES_BATCH_HANDOFF_before_kurobara_20260519_kurobara_official_pre_232821.md`
+- 対象:
+  - `KurobaraCinemaMystery/web/official/index.html`
+  - `KurobaraCinemaMystery/web/official/about/index.html`
+  - `KurobaraCinemaMystery/web/official/facility/index.html`
+  - `KurobaraCinemaMystery/web/official/safety/index.html`
+  - `KurobaraCinemaMystery/web/official/official.css`
+  - Booth版 `KurobaraCinemaMystery_BoothPackage/KurobaraCinemaMystery_Booth_v1/web/official`
+- 変更内容:
+  - 汎用公式サイト風から、単館映画館らしい赤黒基調、マルキー、上映時刻、チケット控え、映写室、フィルム缶、非常灯を中心にした構成へ刷新。
+  - トップは「本日の上映」「劇場設備」「上映予定」「映写室」へ自然に流れる構成。
+  - 下層は「上映案内」「館内設備」「映写管理」で内容を分け、映画館の公式サイトとして読める文言に調整。
+  - 画像は既存のChatGPT生成画像 `web/assets/hero.png` と `web/assets/evidence.png` を使用。外部画像、スプライトシートは使用していない。
+  - Booth版にも同期済み。
+
+## 2026-05-19 黒薔薇シネマ公式サイト 最新Web調査反映・画像使い回し解消
+- ユーザー指摘:
+  - 画像の使い回しをしないこと。
+  - 最新でスタイリッシュなWebデザインではないため、Webで学習して反映すること。
+  - 必要なら画像生成し、手を抜かずに作ること。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_20260519_kurobara_redesign_pre_234051`
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_BoothPackage_20260519_kurobara_redesign_pre_234051`
+  - `C:\Users\kogit\Documents\Codex\_backups\OFFICIAL_SITES_BATCH_HANDOFF_before_kurobara_redesign_20260519_kurobara_redesign_pre_234051.md`
+- Web調査の反映方針:
+  - 実在映画館サイトは上映時間、チケット導線、劇場情報へすぐ到達できる構成が重要。
+  - Awwwards系の映画/映像サイトからは、没入型の大判写真、映画的なタイポグラフィ、フィルムストリップ風ナビ、チケット風CTAの要素を取り入れた。
+  - ただし使いづらい過剰演出は避け、Booth販売用の静的Webとして `file:///` でも成立するHTML/CSS中心の構成にした。
+- ChatGPT生成画像を4点追加:
+  - `web/assets/kurobara-cinema-exterior-2020s.png`: 公式トップ専用。
+  - `web/assets/kurobara-auditorium-2020s.png`: 上映案内専用。
+  - `web/assets/kurobara-lobby-ticket-2020s.png`: 館内設備専用。
+  - `web/assets/kurobara-projection-booth-2020s.png`: 映写管理専用。
+- 画像使い回し対策:
+  - 公式トップ、上映案内、館内設備、映写管理で、それぞれ別画像のみを使用。
+  - トップの紹介カードから下層用画像を外し、同じ画像が複数ページに出ないよう修正済み。
+- デザイン変更:
+  - トップは映画館外観を全画面ヒーロー化し、上映案内チケットCTA、フィルムストリップ風ナビ、本日の上映時刻を配置。
+  - 下層3ページは各ページ専用の大判ヒーロー画像を使い、上映案内、ロビー・客席、映写室管理を明確に分離。
+  - 赤黒、金の罫線、明朝系大型見出し、フィルム風の細いグリッドで単館映画館らしさを強化。
+  - モバイルで文章がはみ出ないよう、`break-all` / `anywhere` は使わず、必要箇所に `<wbr>` を追加。
+- Booth版:
+  - `KurobaraCinemaMystery_BoothPackage/KurobaraCinemaMystery_Booth_v1` へHTML/CSS/追加画像を同期済み。
+- 確認:
+  - 通常版・Booth版の公式ページ内リンクと画像参照チェック OK。
+  - 公式ページ内に `作中`、`謎`、`表向き`、`照合すると`、`プレイヤー`、`制作側`、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - 画像使い回しチェック OK。トップ・下層3ページで参照画像が重複していない。
+  - 通常版4ページはHTTP 200。
+  - ブラウザでデスクトップ/モバイル表示を確認し、コンソールエラーなし。
+
+## 2026-05-20 黒薔薇シネマ公式サイト 画像可視化・文字サイズ・形状再調整
+- ユーザー指摘:
+  - 画像が使われていないように見える。
+  - レイアウトがまだスタイリッシュではない。
+  - 「夜の旧市街で、赤い上映灯がともる。」のような大きすぎる文言はAIらしさが出る。
+  - 四角い枠に頼った見た目を避け、フォントにも注意する。
+  - 再度Webで調査して修正する。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_20260520_kurobara_visual_refine_pre_001116`
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_BoothPackage_20260520_kurobara_visual_refine_pre_001116`
+  - `C:\Users\kogit\Documents\Codex\_backups\OFFICIAL_SITES_BATCH_HANDOFF_before_kurobara_visual_refine_20260520_kurobara_visual_refine_pre_001116.md`
+- Web調査メモ:
+  - 映画館サイトは上映時刻、チケット導線、劇場情報の分かりやすさが重要。
+  - 2025-2026の映画祭/映像系デザインでは、強い写真、余白、抑制したタイポグラフィ、映画チケットやフィルム由来の形状が使われている。
+  - 参考: Your Cinema、Minor Theatre case study、Awwwards cinema/movie references、Siena Film Foundation case study、Cinema Festival UI/UX Experience。
+- 修正内容:
+  - トップ画像をCSS背景ではなく `<img>` として前面表示し、画像が明確に見える構成へ変更。
+  - 下層3ページも各ページ専用画像を `<img>` として大きく表示。
+  - トップ見出しを「赤い灯の下で、本日の上映をご案内します。」へ変更し、サイズを控えめに調整。
+  - 明朝見出しは残しつつ、巨大すぎるヒーロータイポをやめ、本文と余白のバランスを映画館公式サイト寄りに変更。
+  - 四角いカード感を減らし、非対称角丸、チケット型の切り欠き、柔らかいパネル形状を使用。
+  - 画像使い回しなしのルールは維持。トップ、上映案内、館内設備、映写管理で別画像。
+  - Booth版にも同期済み。
+- 確認:
+  - 通常版・Booth版の公式ページ内リンクと画像参照チェック OK。
+  - 公式ページ内に禁止語、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - ブラウザでトップのデスクトップ/モバイル、館内設備ページを確認し、コンソールエラーなし。
+
+## 2026-05-20 黒薔薇シネマ公式サイト `johakyu.co.jp` 参考反映
+- ユーザー指定参考:
+  - `https://johakyu.co.jp/`
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_20260520_kurobara_johakyu_ref_pre_002608`
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_BoothPackage_20260520_kurobara_johakyu_ref_pre_002608`
+  - `C:\Users\kogit\Documents\Codex\_backups\OFFICIAL_SITES_BATCH_HANDOFF_before_kurobara_johakyu_ref_20260520_kurobara_johakyu_ref_pre_002608.md`
+- 参考サイトから反映した方向:
+  - 巨大な情緒コピー中心ではなく、映画館サイトとしての「空席状況・上映時間」導線を最上部に置く。
+  - 上映案内、館内設備、映写管理へすぐ移動できる丸いナビを維持。
+  - トップに上映スケジュール系メニュー、お知らせ、本日の上映時間を配置。
+  - 見出しは控えめにし、画像と実用情報を主役にする。
+- 修正内容:
+  - トップ文言を「映画でも、見ませんか。」へ変更し、見出しサイズをさらに抑制。
+  - 上部に `空席状況・上映時間はこちら` のチケット導線を追加。
+  - 6分割の公式メニュー、ニュース欄、本日の上映時間欄を追加。
+  - 写真は引き続き実画像 `<img>` として大きく表示。
+  - Booth版へ同期済み。
+- 確認:
+  - 通常版・Booth版の公式ページ内リンクと画像参照チェック OK。
+  - 公式ページ内に禁止語、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - ブラウザでトップのデスクトップ/モバイル表示を確認し、コンソールエラーなし。
+## 2026-05-20 KurobaraCinemaMystery 公式サイト コンテンツ拡充・文字収まり調整
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_20260520_kurobara_content_fit_pre_010022`
+  - `C:\Users\kogit\Documents\Codex\_backups\KurobaraCinemaMystery_BoothPackage_20260520_kurobara_content_fit_pre_010022`
+  - `C:\Users\kogit\Documents\Codex\_backups\OFFICIAL_SITES_BATCH_HANDOFF_before_kurobara_content_fit_20260520_kurobara_content_fit_pre_010022.md`
+- 変更内容:
+  - トップにニュース追加、上映時間下に料金・座席・アクセスの情報カードを追加。
+  - 上映案内、館内設備、映写管理ページに補足カードを追加。
+  - カード、メニュー、上映時間枠のフォントサイズ・行間・余白を調整し、PC/スマホの枠内に文字が収まるようにした。
+  - 上映時間カードの背景を暗い面に変更し、薄い背景で文字が読みづらくなる状態を解消。
+  - `position: sticky` は残さず、Booth向け静的サイトとして通常配置のヘッダーにした。
+  - 通常版の変更をBooth版へ同期済み。
+- 確認:
+  - 通常版/Booth版の公式ページ内リンクと画像参照チェック OK。
+  - 禁止語、`break-all`、`anywhere`、`href="#"`、`position: sticky` の残存なし。
+  - ブラウザでPC幅/スマホ幅を確認し、トップ、上映時間、料金・座席・アクセス、下層ページの追加カードが枠内に収まることを確認。
+## 2026-05-20 完成済み公式サイト群 公式情報型ミニ手がかり追加
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\official_site_puzzles_pre_20260520_012553`
+- 生成スクリプトは使わず、各サイトの既存ページへ個別に追記。
+- 対象と追加内容:
+  - `CrimsonClinicMystery/web/official/index.html`: NEWSに夜間巡回表を追加。番号順に札名の頭を読むと「カルテ棚」。
+  - `NamikazeFerryMystery/web/official/index.html`: PIER BOARDを追加。短冊の頭で「二番桟橋」。
+  - `AbyssalObservatoryMystery/web/official/index.html`: 音響ログ補記を追加。欠測行指定で「B区画」。
+  - `GinreiDepartmentMystery/web/official/index.html`: 閉店後の巡回札を追加。掲示番号で「B1北EV」。
+  - `KurobaraCinemaMystery/web/official/index.html`: 座席札を追加。台帳番号で「C列七番」。
+  - `HaikoKinenMystery/web/index.html`: 展示札を追加。展示名の先頭で「体育館裏」。
+  - `HoshigauraRailMystery/web/index.html`: 駅務掲示の補記を追加。札名の先頭で「月見坂」。
+- Booth同期:
+  - Crimson / Namikaze / Abyssal / Ginrei / Kurobara は各 `*_Booth_v1/web/official/index.html` に同期済み。
+  - Haiko は `HaikoKinenMystery_Booth_v1/web/index.html` に同期済み。
+  - Hoshigaura は `HoshigauraRailMystery_Booth_v1/web/index.html` と `HoshigauraRailMystery_Booth_v2/web/index.html` に同期済み。
+- 確認:
+  - 対象ページのリンク/画像参照チェック OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"` の追加残存なし。
+  - `http://127.0.0.1:4520/...` で7件の対象ページを開き、HTTP表示とコンソールエラーなしを確認。
+  - Namikaze / Kurobara / Hoshigaura の追加箇所をブラウザ表示で確認し、カード崩れなし。
+## 2026-05-20 KurobaraCinemaMystery 上映時間重なり・文切れ・導線重複修正
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\kurobara_schedule_textfix_pre_20260520_073623`
+- 対象:
+  - `KurobaraCinemaMystery/web/official/index.html`
+  - `KurobaraCinemaMystery/web/official/about/index.html`
+  - `KurobaraCinemaMystery/web/official/official.css`
+  - Booth版 `KurobaraCinemaMystery_BoothPackage/KurobaraCinemaMystery_Booth_v1/web/official`
+- 修正内容:
+  - トップの `TODAY'S SCHEDULE` をカードと同じ横列に置かず、見出しが全幅を取るようCSSを修正。`本日の上映時間` と `旧市街特集` の重なりを解消。
+  - カード本文が切れないよう、情報カード/上映カード/下層カードの `overflow: hidden` を解除。
+  - `about/index.html` の `21:09 記録更新` 文言を短くし、「上映後の点検記録を受付控えと合わせて...」の途切れを解消。
+  - トップメニューの同一URL使い回しを整理。`上映中作品` は `#today-schedule`、`料金・設備` は `#fees`、`お知らせ` は `#news` へ分岐。
+- 確認:
+  - 通常版/Booth版へ同期済み。
+  - Kurobara公式4ページのリンク/画像参照チェック OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"`、旧 `.8fr` 上映時間グリッド指定なし。
+  - PC/スマホ幅でトップ上映時間と about の受付・記録更新カードを表示確認。コンソールエラーなし。
+## 2026-05-20 AonagiDataCenterMystery 公式サイト レイアウト刷新
+- 選定:
+  - ユーザー依頼「ほかの謎解きも1つ選択し、レイアウトを変更」に対して、完成済み保護対象外の `AonagiDataCenterMystery` を選択。
+  - 生成スクリプトは使用せず、個別にHTML/CSSを編集。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\aonagi_official_relayout_pre_20260520_074825`
+- 生成画像:
+  - ChatGPT生成画像を `AonagiDataCenterMystery/web/assets/aonagi-datahall-hero-2026.png` として保存。
+  - Booth版 `AonagiDataCenterMystery_BoothPackage/AonagiDataCenterMystery_Booth_v1/web/assets/aonagi-datahall-hero-2026.png` にも同期。
+- 変更内容:
+  - `AonagiDataCenterMystery/web/official/index.html` を、セキュアなデータセンター公式サイト風に再構成。
+  - 実写ヒーロー、稼働状況4指標、運用フロー、公式案内カードを追加。
+  - `official.css` を暗いNOC/サーバールーム調のスタイリッシュなレイアウトへ差し替え。
+  - スマホ幅で告知カードが本文に重ならないよう、ヒーロー下余白を調整。
+  - Booth版の `web/official/index.html` / `official.css` へ同期済み。
+- 確認:
+  - 通常版/Booth版の公式4ページリンク/画像参照チェック OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - `http://127.0.0.1:4522/web/official/` でPC/スマホ表示確認。画像表示OK、コンソールエラーなし。
+## 2026-05-20 AonagiDataCenterMystery 下層ページレイアウト修正
+- ユーザー指摘:
+  - 「メインページ以外のレイアウトがおかしいです」
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\aonagi_subpages_fix_pre_20260520_232035`
+- 変更内容:
+  - `about` / `facility` / `safety` 用の下層レイアウトCSSを補強。
+  - 旧テンプレートのまま残っていた `keys` / `map` / `restricted` を、`official-data` の新デザインへ個別に移行。
+  - 記録テーブル、戻るボタン、2列情報カード、スマホ時のテーブル縦積み表示を追加。
+  - 通常版の変更を Booth版 `AonagiDataCenterMystery_BoothPackage/AonagiDataCenterMystery_Booth_v1/web/official` へ同期済み。
+- 確認:
+  - 通常版/Booth版の公式7ページリンク/画像参照チェック OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"`、旧 `class="official"`、旧 `site-header`、旧 `box` / `wrap section` の残存なし。
+  - `git` はこの環境のPATHになく、差分表示のみ未実施。
+## 2026-05-21 CrimsonClinicMystery 公式サイト内容拡充
+- ユーザー指示:
+  - 作成済み公式サイトをさらに濃くする。まず `CrimsonClinicMystery` から開始。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\crimson_official_depth_pre_20260521_001`
+- 対象:
+  - `CrimsonClinicMystery/web/official/index.html`
+  - `CrimsonClinicMystery/web/official/map/index.html`
+  - `CrimsonClinicMystery/web/official/keys/index.html`
+  - `CrimsonClinicMystery/web/official/restricted/index.html`
+  - `CrimsonClinicMystery/web/site.css`
+  - Booth版 `CrimsonClinicMystery_BoothPackage/CrimsonClinicMystery_Booth_v1/web`
+- 変更内容:
+  - トップに診療時間表、夜間処置案内、記録保管、夜間巡回、来院時のお願いを追加。
+  - 院内設備ページに受付、第一診察室、第二処置室、記録保管棚の区画説明を追加。
+  - 診療体制ページに一般診療、予約処置、訪問相談、職員連絡を追加。
+  - 安全管理ページに薬剤棚施錠、第二処置室、裏口廊下、旧記録移管の確認項目を追加。
+  - 既存の「カルテ棚」につながる夜間巡回・記録保管要素を、公式サイト文脈で自然に補強。
+  - Booth版へ同期済み。
+- 確認:
+  - 通常版/Booth版の公式4ページリンク/画像参照チェック OK。
+  - 通常版/Booth版の対象HTML/CSS同期一致 OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - ローカル `http://127.0.0.1:4524/web/official/`、下層3ページ、CSS、画像3点はHTTP 200。
+## 2026-05-21 CrimsonClinicMystery 公式サイト再深化・見出し調整
+- ユーザー指示:
+  - 「夜間まで寄り添う、紅坂の総合クリニック。」周辺の文字を小さくし、別ページも揃える。
+  - 院内をさらに詳細に記載し、状況に応じて画像生成し、不穏さと内容量を強める。
+  - 謎解きの問題変更も可。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\crimson_official_deep_unsettling_pre_20260521_001`
+- ChatGPT生成画像:
+  - `CrimsonClinicMystery/web/assets/clinic-record-room-2026.png`
+  - `CrimsonClinicMystery/web/assets/clinic-night-treatment-2026.png`
+  - Booth版にも同期済み。
+- 変更内容:
+  - トップと下層ヒーロー見出しを縮小し、文字の主張を抑えたスタイリッシュ寄りのバランスへ調整。
+  - トップに夜間処置室の写真付き「AFTER HOURS」ブロックを追加。
+  - 院内設備ページに記録保管室の写真付き詳細を追加。
+  - 診療体制ページのヒーロー画像を夜間処置室へ変更し、夜間処置ルートを追加。
+  - 安全管理ページのヒーロー画像を記録保管室へ変更し、旧紙カルテ確認欄を追加。
+  - 既存の夜間巡回表の手がかりを、札名の頭文字を番号順に控えて保管棚確認欄へつなぐ内容へ更新。
+- 確認:
+  - 通常版/Booth版の公式4ページリンク/画像参照チェック OK。
+  - 通常版/Booth版の対象HTML/CSS/追加画像同期一致 OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - ローカル `http://127.0.0.1:4525/web/official/`、下層3ページ、CSS、追加画像2点はHTTP 200。
+## 2026-05-21 CrimsonClinicMystery 画像使い回し解消・タイポ再調整
+- ユーザー指示:
+  - 画像の使い回し禁止。
+  - 文字をもっと小さくし、他Webを参考にする。
+- 参考:
+  - NN/g の一貫性・ミニマルデザイン・現実世界の言葉に合わせる考え方。
+  - USWDS / Digital.gov の読みやすいWebタイポグラフィ、平易なWeb文書の考え方。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\crimson_no_image_reuse_typography_pre_20260521_001`
+- ChatGPT生成画像を4点追加:
+  - `CrimsonClinicMystery/web/assets/clinic-home-reception-2026.png`
+  - `CrimsonClinicMystery/web/assets/clinic-facility-corridor-2026.png`
+  - `CrimsonClinicMystery/web/assets/clinic-care-prep-2026.png`
+  - `CrimsonClinicMystery/web/assets/clinic-safety-office-2026.png`
+  - Booth版にも同期済み。
+- 変更内容:
+  - トップのスライダーを廃止し、専用の受付・待合画像1枚へ変更。
+  - 院内設備、診療体制、安全管理の各ページに専用画像を割り当て。
+  - 既存の `clinic-night-treatment-2026.png` と `clinic-record-room-2026.png` は各1回のみ使用。
+  - 公式4ページ内の画像重複をゼロにした。
+  - 全体フォントサイズ、ヒーロー見出し、下層見出し、カード見出し、ナビ、診療時間表をさらに小さく調整。
+  - Booth版へ同期済み。
+- 確認:
+  - 通常版/Booth版とも公式4ページ内の画像重複なし。
+  - 通常版/Booth版の公式4ページリンク/画像参照チェック OK。
+  - 通常版/Booth版の対象HTML/CSS/追加画像同期一致 OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - ローカル `http://127.0.0.1:4526/web/official/`、下層3ページ、CSS、使用画像6点はHTTP 200。
+## 2026-05-21 CrimsonClinicMystery 安全管理ページ レイアウト修正
+- ユーザー指摘:
+  - 「安全管理のページのレイアウトが変です」
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\crimson_safety_layout_fix_pre_20260521_001`
+- 変更内容:
+  - `restricted/index.html` の暗色ヒーローを旧 `clinic-subhero--dark` から専用 `clinic-safety-hero` に変更。
+  - 安全管理ページだけ横幅100%になっていたヒーローを、他下層と同じページ幅へ戻した。
+  - 暗色ヒーローの余白、画像比率、角丸、テキスト色を安全管理ページ専用に調整。
+  - 確認項目カードを4列から2列へ変更し、横詰まりを解消。
+  - 旧紙カルテ確認欄の暗色ブロックをページ幅内に収めた。
+  - Booth版へ同期済み。
+- 確認:
+  - 通常版/Booth版の公式4ページリンク/画像参照チェック OK。
+  - 通常版/Booth版の `site.css` と `restricted/index.html` 同期一致 OK。
+  - 禁止表現、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - ローカル `http://127.0.0.1:4527/web/official/restricted/`、CSS、安全管理画像はHTTP 200。
+## 2026-05-21 CrimsonClinicMystery 検索結果キャッシュ先作成
+- ユーザー指摘:
+  - 検索結果に表示されるもののリンク先がないものがあるため、サイトを作成して飛べるようにする。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\crimson_search_destinations_pre_20260521_001`
+- 変更内容:
+  - `web/search/cache/01` 〜 `24` の保存ページを個別内容に更新。
+  - 商店街、求人、地域医療フォーラム、ごみ収集、夜間救急、写真館、中古医療棚、新聞広告、健康体操、診療報酬、バス、旧町名、医療機器講習、酸素ボンベ、住宅地図、看護師募集、祭り交通規制、口コミ掲示板、電話帳、地域医療課広報、清掃活動、開業祝い広告、薬局だより、休日診療所の各ページとして読める内容にした。
+  - 初回生成で文字化けしたため、`apply_patch` で日本語ページとして作り直し。
+  - Booth版へ同期済み。
+- 確認:
+  - 通常版/Booth版とも検索結果から出る固定8件+キャッシュ24件のリンク先がすべて存在。
+  - `web/search` 配下に文字化け候補 `???`、禁止表現、`break-all`、`anywhere`、`href="#"` の残存なし。
+  - 通常版/Booth版の `web/search/cache/01`〜`24` 同期一致 OK。
+  - ローカル `http://127.0.0.1:4528/web/search/`、`cache/01`、`cache/07`、`cache/18`、`cache/24` はHTTP 200。
+## 2026-05-21 GitHub管理準備
+- ユーザー相談:
+  - 今後これらをGitHubで管理したい。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\github_migration_prep_pre_20260521_001`
+- 追加ファイル:
+  - `C:\Users\kogit\Documents\Codex\.gitignore`
+  - `C:\Users\kogit\Documents\Codex\GITHUB_MIGRATION.md`
+- 内容:
+  - `_backups/`、`node_modules/`、zip、実行ログ、Unity生成フォルダを除外。
+  - `web/logs/` は謎解きコンテンツなので除外しない方針を明記。
+  - まず `CrimsonClinicMystery` と `CrimsonClinicMystery_BoothPackage` からGit管理を開始し、作品単位で追加していく手順を記載。
+  - GitHubは最初private repository推奨と記載。
+- 注意:
+  - 現在この環境では `git` がPATHから見つからないため、`git init` / commit / push は未実行。
+## 2026-05-21 GitHub/Nazotoki へ制作物コピー
+- ユーザー指定:
+  - `C:\Users\kogit\Documents\GitHub\Nazotoki`
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\nazotoki_destination_pre_20260521_001`
+- 実施内容:
+  - 既存の `C:\Users\kogit\Documents\GitHub\Nazotoki` は `.git` と `.gitattributes` のみ存在していた。
+  - 謎解き作品群、BoothPackage、関連MD、`tools`、`.gitignore`、`GITHUB_MIGRATION.md` を選択コピー。
+  - `Codex` 全体はコピーせず、Unity系や別プロジェクトは含めない方針。
+  - コピー後に混入した `server.*.log` と `HoshigauraRailMystery_Booth_v1.zip` は移行先から削除。
+  - `GITHUB_MIGRATION.md` の作業パスを `C:\Users\kogit\Documents\GitHub\Nazotoki` に修正。
+- 確認:
+  - 移行先に `_backups` なし。
+  - 移行先に `*.zip`、`*.log`、`*.pid` なし。
+  - `CrimsonClinicMystery/web/search` 配下に文字化け候補 `???` なし。
+  - 現在この環境では `git` がPATHから見つからないため、commit/push は未実行。
+## 2026-05-21 Nazotoki Web公開準備
+- 対象:
+  - `C:\Users\kogit\Documents\GitHub\Nazotoki`
+- 追加:
+  - `index.html` ルート公開用インデックス。15件の謎解き公式サイトへリンク。
+  - `.nojekyll`
+  - `.github/workflows/pages.yml` GitHub Pages Actions デプロイ設定。
+  - `README.md`
+- Git:
+  - GitHub Desktop同梱Gitを使用: `C:\Users\kogit\AppData\Local\GitHubDesktop\app-3.5.8\resources\app\git\cmd\git.exe`
+  - 直近コミット: `ae19633 Initialize Nazotoki static site`
+  - 作業ツリーはclean。
+  - `origin` は未設定。
+- 確認:
+  - ルート `index.html` のリンク先存在チェック OK。
+  - GitHub認証ユーザーは `ailiferyoya-gif`。
+  - GitHub Appから見えるリポジトリは現時点で0件。
+- 未完了:
+  - GitHub側に公開先リポジトリを作成、または既存リポジトリURLを指定する。
+  - `origin` を追加して `main` をpush。
+  - GitHub PagesのSourceを「GitHub Actions」に設定し、Actions完了後に公開URLを確認。

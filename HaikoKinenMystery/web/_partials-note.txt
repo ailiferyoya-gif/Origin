@@ -1,0 +1,1 @@
+Shared layout is duplicated intentionally so this kit works as plain static files.

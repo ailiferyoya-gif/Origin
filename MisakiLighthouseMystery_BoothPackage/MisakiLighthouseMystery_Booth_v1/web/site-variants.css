@@ -1,0 +1,226 @@
+/* In-world site variety: each medium should feel like a different website. */
+body.museum-site .site-head,
+body.site-page .site-head { background: linear-gradient(180deg, #fff, #edf4f5); }
+body.town-site { background: #eceee7; color: #243129; }
+body.town-site .site-top { background: #506353; color: #fff; }
+body.town-site .site-head { background: #f7f7f2; border-bottom-color: #5d6d5f; }
+body.town-site .site-nav a { background: #fff; border-color: #c9d0c5; color: #35473a; }
+body.town-site .doc h2 { border-left-color: #5d6d5f; }
+body.weather-site { background: #e5f2f5; color: #18323a; }
+body.weather-site .site-top { background: #20576a; }
+body.weather-site .site-head { background: linear-gradient(180deg, #e8f5f8, #fff); border-bottom-color: #2f7890; }
+body.weather-site .site-nav a { background: #f4fbfd; border-color: #b8d7df; color: #20576a; }
+body.weather-site .doc h2 { border-left-color: #2f7890; }
+body.radio-site { background: #11171d; color: #e8ecec; }
+body.radio-site .site-top { background: #05080b; color: #d8b16d; }
+body.radio-site .site-head { background: #151b21; color: #f1f5f4; border-bottom-color: #b05c3b; }
+body.radio-site .site-nav a { background: #242c34; border-color: #48525c; color: #f1f5f4; }
+body.radio-site .side,
+body.radio-site .doc { background: #f4f1ea; color: #18212a; }
+body.radio-site .doc h2 { border-left-color: #b05c3b; }
+
+.search-site {
+  background: #fff;
+  color: #202124;
+  font-family: Arial, "Yu Gothic UI", sans-serif;
+}
+.search-engine-head {
+  height: 52px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 22px;
+  border-bottom: 1px solid #eef0f2;
+}
+.search-engine-head nav {
+  display: flex;
+  gap: 14px;
+}
+.search-engine-head a {
+  color: #3c4043;
+  text-decoration: none;
+  font-size: .9rem;
+}
+.engine-shell {
+  width: min(980px, calc(100vw - 28px));
+  margin: 0 auto;
+  padding: 70px 0 44px;
+}
+.engine-home {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.engine-home h1 {
+  margin: 0;
+  font-size: clamp(3rem, 10vw, 5.6rem);
+  line-height: 1;
+  color: #1a73e8;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.engine-home p {
+  margin: 0;
+  color: #5f6368;
+}
+.engine-form {
+  width: min(650px, 100%);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+.engine-form input {
+  min-height: 48px;
+  border-radius: 24px;
+  border: 1px solid #dfe1e5;
+  padding: 0 20px;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(60,64,67,.12);
+}
+.engine-form button,
+.engine-links button {
+  min-height: 40px;
+  border: 1px solid #f8f9fa;
+  background: #f8f9fa;
+  color: #3c4043;
+  padding: 0 16px;
+}
+.engine-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: #5f6368;
+  font-size: .9rem;
+}
+.engine-results {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 18px;
+}
+.engine-results h2 {
+  font-size: .95rem;
+  color: #70757a;
+  font-weight: 500;
+}
+.engine-results article {
+  padding: 14px 0;
+}
+.engine-results article a,
+.engine-results .result-link {
+  color: #1a0dab;
+  font-size: 1.2rem;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  min-height: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.engine-results article p {
+  margin: 4px 0;
+  color: #3c4043;
+}
+.engine-results article small {
+  color: #188038;
+}
+.engine-ad {
+  width: min(760px, 100%);
+  margin: 22px auto 0;
+  background: #f8fafd;
+  border: 1px solid #e8eaed;
+  padding: 16px;
+  color: #3c4043;
+}
+.engine-ad h2 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+.mail-head {
+  width: min(1060px, calc(100vw - 28px));
+  margin: 34px auto 18px;
+  padding: 28px;
+  border: 1px solid rgba(212,189,115,.38);
+  background: #101b28;
+}
+.mail-head p,
+.admin-login section > p:first-child {
+  color: #d4bd73;
+  letter-spacing: .16em;
+  font-weight: 900;
+  margin: 0 0 8px;
+}
+.mail-head h1 {
+  margin: 0;
+  color: #fff;
+}
+.mail-site {
+  background: #eef0e8;
+  color: #243129;
+}
+.mail-head {
+  background: #f8f8f2;
+  color: #243129;
+  border-color: #b7c1ac;
+}
+.mail-head h1 { color: #243129; }
+.mail-layout {
+  width: min(1060px, calc(100vw - 28px));
+  margin: 0 auto 40px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 18px;
+}
+.mail-side,
+.mail-list article {
+  background: #fff;
+  border: 1px solid #c9d0c5;
+  padding: 16px;
+}
+.mail-side a {
+  display: block;
+  padding: 7px 0;
+  border-bottom: 1px dotted #c9d0c5;
+}
+.mail-list {
+  display: grid;
+  gap: 12px;
+}
+.mail-list time {
+  color: #6a745f;
+  font-weight: 900;
+}
+.admin-site {
+  background: #10151b;
+  color: #f1f5f4;
+}
+.admin-login {
+  width: min(900px, calc(100vw - 28px));
+  margin: 48px auto;
+  display: grid;
+  gap: 18px;
+}
+.admin-login section {
+  background: #f7f1e7;
+  color: #17242a;
+  border: 1px solid #d4bd73;
+  padding: 24px;
+}
+.admin-login form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 16px;
+}
+@media (max-width: 760px) {
+  .search-shell,
+  .mail-layout,
+  .engine-form,
+  .admin-login form {
+    grid-template-columns: 1fr;
+  }
+}

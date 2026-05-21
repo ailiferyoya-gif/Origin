@@ -1,0 +1,20 @@
+.abyss-sub{width:min(1180px,calc(100% - 32px))}
+.abyss-page-hero{position:relative;min-height:680px;display:grid;align-items:end;margin-bottom:30px;border-radius:26px;overflow:hidden;background:#07141b}
+.abyss-page-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.02) contrast(1.02)}
+.abyss-page-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,7,11,.72) 0%,rgba(2,7,11,.24) 54%,rgba(2,7,11,.08) 100%),linear-gradient(180deg,transparent 50%,rgba(2,7,11,.72) 100%)}
+.abyss-page-hero>div{position:relative;z-index:2;width:min(620px,calc(100% - 32px));padding:42px}
+.abyss-page-hero h1{font-weight:600;font-size:clamp(2.1rem,4.6vw,5rem);line-height:1.16;margin:0 0 18px}
+.abyss-page-hero p{color:var(--muted);max-width:650px;line-height:1.95}
+.abyss-page-hero--safety:after{background:linear-gradient(90deg,rgba(2,7,11,.78) 0%,rgba(2,7,11,.36) 55%,rgba(2,7,11,.08) 100%),linear-gradient(180deg,transparent 48%,rgba(2,7,11,.75) 100%)}
+.abyss-measure,.abyss-safety-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin:0 0 30px;background:rgba(127,220,236,.15);border:1px solid rgba(127,220,236,.15)}
+.abyss-measure div,.abyss-safety-band div{background:#07141b;padding:22px}
+.abyss-measure span,.abyss-safety-band span,.abyss-specgrid span{color:var(--cyan);font-size:.7rem;letter-spacing:.15em}
+.abyss-measure strong,.abyss-safety-band strong{display:block;font-size:1.2rem;margin:6px 0}
+.abyss-measure p,.abyss-safety-band p{margin:0;color:var(--muted);font-size:.9rem}
+.abyss-specgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:30px}
+.abyss-specgrid article{background:rgba(255,255,255,.04);border:1px solid rgba(127,220,236,.15);border-radius:18px;padding:22px}
+.abyss-specgrid p{color:var(--muted);line-height:1.9}
+.abyss-editorial{margin-top:34px;padding:46px;border-left:1px solid rgba(127,220,236,.28);background:linear-gradient(90deg,rgba(127,220,236,.08),transparent)}
+.abyss-editorial h2{font-size:clamp(1.7rem,3vw,3rem);font-weight:600;line-height:1.25;margin:0 0 16px}
+.abyss-editorial p{color:var(--muted);max-width:720px;line-height:1.95}
+@media(max-width:860px){.abyss-page-hero{min-height:560px}.abyss-page-hero>div{padding:28px}.abyss-measure,.abyss-safety-band,.abyss-specgrid{grid-template-columns:1fr}.abyss-editorial{padding:28px}}

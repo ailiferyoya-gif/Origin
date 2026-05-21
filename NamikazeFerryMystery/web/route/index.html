@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>航路照会 | 波風フェリー</title><link rel="stylesheet" href="../site.css"></head>
+<body class="ferry-terminal">
+<header class="ferry-header"><div><span>ROUTE INQUIRY</span><h1>航路照会端末</h1></div><nav><a href="../manifest/index.html">乗船名簿</a><a href="../tide/index.html">潮位照合</a></nav></header>
+<main class="ferry-terminal__main">
+  <section class="route-hero">
+    <div><p class="ferry-kicker">NAMIKAZE LOCAL ROUTE / ARCHIVED</p><h2>便名、<wbr>桟橋、<wbr>入港申告を<wbr>重ねる。</h2><p>旧端末の航路照会です。便名または桟橋名で検索すると、関連する航路記録が表示されます。</p></div>
+    <img src="../assets/ferry-terminal.png" alt="">
+  </section>
+  <section class="route-search">
+    <form onsubmit="lookup();return false"><input id="routeQ" aria-label="航路検索" placeholder="便名、桟橋、時刻を入力"><button>照会</button></form>
+    <p class="muted small">例: FRY-0621 / 旧第二桟橋 / 01:42</p>
+  </section>
+  <section id="routeResults" class="route-results"></section>
+</main>
+<script>
+const routes=[
+{keys:["FRY-0621","旧第二桟橋","01:42"],title:"FRY-0621 旧第二桟橋発",meta:"2010/06/21 01:42 / 旧第二桟橋",body:"出港側では運航管理員の瀬戸真琴が確認済み。入港申告は02:18にずれている。",href:"../official/index.html"},
+{keys:["予備乗船券","青い封筒"],title:"予備乗船券 使用記録",meta:"券番号欄に欠番あり",body:"乗船名簿側で青い封筒と照合してください。",href:"../manifest/index.html"},
+{keys:["潮位ログC","02:18"],title:"潮位ログC 入港照合",meta:"潮位と入港申告",body:"機関室側通路の記録は潮位照合端末に残っています。",href:"../tide/index.html"}
+];
+function lookup(){
+ const q=document.getElementById("routeQ").value.trim();
+ const hits=routes.filter(r=>!q||r.keys.some(k=>k.includes(q)||q.includes(k)));
+ document.getElementById("routeResults").innerHTML=hits.map(r=>'<a class="route-card" href="'+r.href+'" target="_blank" rel="noopener"><span>'+r.meta+'</span><h3>'+r.title+'</h3><p>'+r.body+'</p></a>').join("");
+}
+lookup();
+</script>
+<script src="../textflow.js"></script>
+</body>
+</html>
