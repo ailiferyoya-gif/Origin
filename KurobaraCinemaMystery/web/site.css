@@ -323,3 +323,6 @@
 
 /* STORY_REORG_20260522 */
 .case-entry .story-panel{border:1px solid rgba(255,255,255,.16);background:rgba(8,10,12,.76);border-radius:8px;padding:18px;margin-top:16px}.case-entry .story-panel h2{margin-top:0}.case-entry .truth-axis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.case-entry .truth-axis div{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);border-radius:8px;padding:12px}.case-entry .truth-axis strong{display:block;margin-bottom:6px;color:#f0c96a}.case-entry .fear-note{border-left:4px solid #b85858;background:rgba(184,88,88,.13);padding:12px 14px;margin-top:16px}@media(max-width:860px){.case-entry .truth-axis{grid-template-columns:1fr}}
+
+/* TITLE_CODE_NOWRAP_20260522 */
+.case-title .case-code{white-space:nowrap;display:inline-block;}

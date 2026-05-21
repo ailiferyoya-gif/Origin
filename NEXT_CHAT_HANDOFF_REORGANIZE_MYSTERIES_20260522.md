@@ -34,3 +34,10 @@
 - 各資料ページ本文の全面リライトは未実施。
 - BOOTHパッケージ側への同期は未実施。
 - 次は1作品ずつ、証拠20〜30個、ミスリード、段階ヒントを深掘りする。
+
+## 追記 2026-05-22 タイトル改行ルール修正
+
+- 各謎解き入口ページのタイトル末尾コード（例 `OBS-1118`, `CRN-1006`）を `<span class="case-code">` で包み、1単語として扱うように修正。
+- 各 `web/site.css` に `TITLE_CODE_NOWRAP_20260522` を追加し、`.case-title .case-code { white-space: nowrap; display: inline-block; }` を指定。
+- 代表ページでブラウザ確認済み。管理番号は `nowrap` として解釈されている。
+- バックアップ: `C:\Users\kogit\Documents\Codex\backups\Origin-title-nowrap-20260522-012301`
