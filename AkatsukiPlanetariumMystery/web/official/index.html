@@ -1,19 +1,123 @@
 <!doctype html>
 <html lang="ja">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>公式サイト | 暁プラネタリウム PLN-0427</title><link rel="stylesheet" href="../site.css"></head>
-<body class="evidence-site official planetarium" style="--case-bg:#162033;--case-accent:#d8b75f">
-  <header class="case-top"><a href="../index.html">暁プラネタリウム</a><span>公式サイト / <b class="case-code">PLN-0427</b></span></header>
-  <main class="site-main">
-    <section class="site-hero panel-0">
-      <div><p class="eyebrow">公式の静けさ</p><h1>公式サイト</h1><p>表向きの案内は、よく整っているほど嘘を隠しやすい。</p></div>
-      <img src="../assets/hero.png" alt="暁プラネタリウムの資料画像">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>暁プラネタリウム | 公式サイト</title>
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body class="akatsuki-official" style="--case-bg:#111827;--case-accent:#d8b75f">
+  <header class="ak-header">
+    <a class="ak-logo" href="../index.html">
+      <span>AKATSUKI</span>
+      <strong>暁プラネタリウム</strong>
+    </a>
+    <nav aria-label="公式サイト内メニュー">
+      <a href="#programs">上映作品</a>
+      <a href="#schedule">本日の上映</a>
+      <a href="#tickets">チケット</a>
+      <a href="#access">アクセス</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="ak-hero">
+      <img src="../assets/hero.png" alt="暁プラネタリウムのドームシアター">
+      <div class="ak-hero-copy">
+        <p class="ak-kicker">CITY DOME THEATER / PLN-0427</p>
+        <h1>夜明け前の星を、街の真ん中で。</h1>
+        <p>暁プラネタリウムは、音と光に包まれる全天周ドームシアターです。季節の星空解説、音楽プログラム、親子向け投影、夜間特別投影を毎日上映しています。</p>
+        <div class="ak-hero-actions">
+          <a class="ak-primary" href="#schedule">本日の上映を見る</a>
+          <a href="#tickets">チケット購入案内</a>
+        </div>
+      </div>
     </section>
-    <section class="module-list">
-      <article class="module m0"><span>01</span><h2>公開情報</h2><p>投影ログに関する最新情報を掲載しています。過去の告知は整理済みです。</p></article>
-      <article class="module m1"><span>02</span><h2>更新履歴</h2><p>05:18 画像更新 / 05:26 座席図の注記を修正 / 05:26 添付資料を再掲</p></article>
-      <article class="module m2"><span>03</span><h2>来訪者向け</h2><p>最終上映に関するお問い合わせは、担当窓口ではなく資料室へお送りください。</p></article>
-      <article class="module m3"><span>04</span><h2>保存資料</h2><p>一部の古いページは検索結果に残る場合がありますが、現在の公式見解はこのページです。</p></article>
+
+    <section class="ak-alert" aria-label="重要なお知らせ">
+      <span>重要なお知らせ</span>
+      <p>6月18日 20:40の「星図航路」は機材点検のため一部演出を変更して上映します。座席表PDFは最新版をご確認ください。</p>
     </section>
-    <nav class="site-nav"><a href="../official/index.html">公式</a><a href="../search/index.html">検索</a><a href="../bbs/index.html">掲示板</a><a href="../investigate/index.html">20問調査</a></nav>
+
+    <section id="programs" class="ak-section">
+      <div class="ak-section-head">
+        <p class="ak-kicker">PROGRAMS</p>
+        <h2>上映作品</h2>
+      </div>
+      <div class="ak-programs">
+        <article>
+          <span>SEASONAL</span>
+          <h3>薄明の星図</h3>
+          <p>春から初夏の星座を、解説員のライブナレーションでたどる定番プログラム。</p>
+          <dl><dt>上映時間</dt><dd>約38分</dd><dt>対象</dt><dd>小学生以上</dd></dl>
+        </article>
+        <article>
+          <span>MUSIC DOME</span>
+          <h3>眠る街のオルフェウス</h3>
+          <p>環境音楽と星雲映像で構成する夜間限定ヒーリング作品。</p>
+          <dl><dt>上映時間</dt><dd>約44分</dd><dt>対象</dt><dd>中学生以上</dd></dl>
+        </article>
+        <article>
+          <span>FAMILY</span>
+          <h3>月のポストカード</h3>
+          <p>月の満ち欠けを親子で学べる昼間のキッズプログラム。</p>
+          <dl><dt>上映時間</dt><dd>約32分</dd><dt>対象</dt><dd>4歳以上</dd></dl>
+        </article>
+      </div>
+    </section>
+
+    <section id="schedule" class="ak-section ak-schedule">
+      <div class="ak-section-head">
+        <p class="ak-kicker">TODAY'S SCHEDULE</p>
+        <h2>本日の上映スケジュール</h2>
+      </div>
+      <div class="ak-date-row" aria-label="日付選択">
+        <button>6/16 火</button><button>6/17 水</button><button class="is-active">6/18 木</button><button>6/19 金</button><button>6/20 土</button>
+      </div>
+      <div class="ak-time-table">
+        <div><time>10:30</time><strong>月のポストカード</strong><span>残席あり</span></div>
+        <div><time>12:20</time><strong>薄明の星図</strong><span>残席わずか</span></div>
+        <div><time>14:10</time><strong>薄明の星図</strong><span>残席あり</span></div>
+        <div><time>16:00</time><strong>月のポストカード</strong><span>団体予約</span></div>
+        <div class="ak-row-note"><time>18:30</time><strong>眠る街のオルフェウス</strong><span>販売中</span></div>
+        <div><time>20:40</time><strong>星図航路</strong><span>演出変更</span></div>
+      </div>
+      <p class="ak-footnote">オンライン購入は上映開始15分前まで。20:40回のみ座席表PDFの更新時刻が窓口掲示と異なる場合があります。</p>
+    </section>
+
+    <section id="tickets" class="ak-section ak-info-grid">
+      <article>
+        <h2>チケット</h2>
+        <table>
+          <tr><th>一般シート</th><td>大人 1,600円 / こども 900円</td></tr>
+          <tr><th>ペアシート</th><td>3,800円から</td></tr>
+          <tr><th>夜間特別投影</th><td>一律 2,000円</td></tr>
+        </table>
+      </article>
+      <article>
+        <h2>営業時間</h2>
+        <p>平日 10:00-21:10 / 土日祝 9:30-21:40</p>
+        <p>チケット窓口は最終上映開始時刻まで営業します。</p>
+      </article>
+      <article id="access">
+        <h2>アクセス</h2>
+        <p>暁中央駅 東口から徒歩4分。地下連絡通路 A3出口直結。</p>
+        <p>駐車場はありません。公共交通機関をご利用ください。</p>
+      </article>
+    </section>
+
+    <section class="ak-archive-link">
+      <div>
+        <p class="ak-kicker">ARCHIVE NOTE</p>
+        <h2>公開資料の保管について</h2>
+        <p>過去の上映表、座席表PDF、投影ログの一部は資料整理のため順次差し替えています。古い検索結果を参照する場合は、日付と時刻を必ず確認してください。</p>
+      </div>
+      <nav>
+        <a href="../search/index.html">検索画面へ</a>
+        <a href="../bbs/index.html">掲示板ログへ</a>
+        <a href="../investigate/index.html">20問調査へ</a>
+      </nav>
+    </section>
   </main>
-</body></html>
+</body>
+</html>
