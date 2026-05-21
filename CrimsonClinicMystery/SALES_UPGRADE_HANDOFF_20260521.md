@@ -1,0 +1,44 @@
+# 引継ぎ 2026-05-21 CrimsonClinicMystery 販売レベル化 第1弾
+
+## 作業前バックアップ
+
+- `C:\Users\kogit\Documents\Codex\backups\CrimsonClinicMystery-sales-20260521-230219`
+
+## 今回の変更
+
+- 販売・配布用の外部資料を整備。
+  - `README.md`
+  - `BOOTH_README.md`
+  - `HINTS.md`
+  - `SOLUTION.md`
+- 薄かった証拠ページを販売レベルの読ませる資料へ増補。
+  - `web/archive/index.html`
+  - `web/contractor/index.html`
+  - `web/ledger/index.html`
+  - `web/photos/memo/index.html`
+- 既存の24問構成、答え、管理画面PASSCODEは変更なし。
+
+## 追加した商品価値
+
+- 購入者向けの段階式ヒントを追加。
+- 完全解答・真相・証拠対応表を追加。
+- BOOTH掲載にそのまま使える説明文を追加。
+- 証拠ページに、日付、時刻、物品、欠番、退路の照合導線を追加。
+
+## 検証
+
+- Codex Node REPLで `web/site.js` と `web/story.js` の構文チェック済み。
+- 新規Markdown 4ファイルがUTF-8で「紅坂診療所」を含むことを確認済み。
+
+## 次にやること
+
+- 実機またはブラウザで `web/index.html` から一通りプレイし、詰まりやすい照合10、17、22を確認する。
+- 必要なら照合ノートの最終解答を「含有判定」にして、表記ゆれに強くする。
+- 次の第2弾では、新聞・掲示板・管理画面の文量を増やし、ミスリードと回収をさらに強化する。
+
+## 継続ルール
+
+- 変更前にバックアップを取る。
+- 画像素材はChatGPT生成物を使う。
+- キャラクター画像は背景透過。
+- スプライトシートは禁止。
