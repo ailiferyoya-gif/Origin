@@ -3,40 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>入口 | 紅坂診療所 カルテ改竄事件</title>
+<title>入口 | 紅坂診療所 CRN-1006</title>
 <link rel="stylesheet" href="site.css">
 </head>
-<body class="premium start-page">
+<body class="premium start-page case-entry">
 <div class="premium-bg" style="--hero:url('./assets/hero.png')"></div>
 <header class="wrap topbar">
-  <div class="brand">CRIMSON CLINIC</div>
-  <div class="small">上級編 / 想定3〜5時間</div>
+  <div class="brand">CRN-1006 / KOSAKA CLINIC ARCHIVE</div>
+  <div class="small">匿名検証依頼 / 想定3〜5時間</div>
 </header>
 <main>
-  <section class="wrap hero">
-    <div>
-      <p class="small">ADVANCED MOCKUMENTARY</p>
-      <h1>紅坂診療所<wbr>カルテ<wbr>改竄事件</h1>
-      <p>あなたのもとに、閉鎖された私設診療所「紅坂診療所」に関する匿名の検証依頼が届いた。添付されていたのは、公式サイトの保存データ、検索アーカイブ、院内メール、自治体資料、新聞縮刷版、業者控え、掲示板ログだった。</p>
-      <p>依頼人は名乗らない。ただ一文だけが残されている。「これは事故報告書ではありません。笠井朋子がなぜ第二処置室にいたのかを、記録から確かめてください。」</p>
-      <div class="nav">
-        <a href="./search/index.html" target="_blank" rel="noopener"><strong>検索</strong><span>匿名提供資料を検索する</span></a>
-        <a href="./mail/index.html" target="_blank" rel="noopener"><strong>メール</strong><span>保存箱と添付メモを読む</span></a>
-        <a href="./admin/index.html" target="_blank" rel="noopener"><strong>管理</strong><span>制限記録へ入る</span></a>
-        <a href="./investigate/index.html"><strong>照合ノート</strong><span>推理を記録する</span></a>
+  <section class="wrap hero case-hero">
+    <div class="case-hero__copy">
+      <p class="case-badge">未整理アーカイブ受信</p>
+      <h1>紅坂診療所<wbr> CRN-1006</h1>
+      <p class="case-lead">あなたのもとに、閉鎖された私設診療所に関する匿名の検証依頼が届いた。依頼人は名乗らず、保存データ一式と短いメッセージだけを残している。</p>
+      <blockquote class="case-request">
+        <p>これは事故報告書ではありません。笠井朋子がなぜ第二処置室にいたのかを、記録から確かめてください。</p>
+        <cite>匿名提供者 / 送信日時不明</cite>
+      </blockquote>
+      <div class="case-actions">
+        <a class="btn" href="./search/index.html" target="_blank" rel="noopener">資料を検索する</a>
+        <a class="btn" href="./investigate/index.html">照合ノートを開く</a>
       </div>
     </div>
+    <aside class="case-inbox" aria-label="届いた依頼内容">
+      <p class="case-inbox__label">RECEIVED FILES</p>
+      <h2>添付されたもの</h2>
+      <ul>
+        <li>公式サイト保存データ</li>
+        <li>検索アーカイブ</li>
+        <li>院内メール保存箱</li>
+        <li>自治体資料と新聞縮刷版</li>
+        <li>業者控え、掲示板ログ、制限記録</li>
+      </ul>
+    </aside>
   </section>
+
+  <section class="wrap section case-steps">
+    <div class="case-step">
+      <span>STEP 1</span>
+      <h2>検索とメールを読む</h2>
+      <p>まずは検索アーカイブと保存メールを開き、日付、時刻、人物名、場所名を拾ってください。気になる語はメモしておくと後で効いてきます。</p>
+      <a href="./search/index.html" target="_blank" rel="noopener">検索へ</a>
+    </div>
+    <div class="case-step">
+      <span>STEP 2</span>
+      <h2>記録を照合する</h2>
+      <p>照合ノートに答えを入れると、次の視点と記録断片が開きます。順番に照合することで、事故報告書の外側にある動線が見えてきます。</p>
+      <a href="./investigate/index.html">照合ノートへ</a>
+    </div>
+    <div class="case-step">
+      <span>STEP 3</span>
+      <h2>制限記録へ進む</h2>
+      <p>途中で必要になる管理画面は、施設コードと最初の異常時刻が鍵です。制限記録は単独ではなく、新聞や業者控えと重ねて読んでください。</p>
+      <a href="./admin/index.html" target="_blank" rel="noopener">管理画面へ</a>
+    </div>
+  </section>
+
   <section class="wrap section grid two">
     <div class="panel">
-      <h2>調査協力依頼</h2>
-      <p>依頼人は、あなたを事件関係者としてではなく、公開前の資料検証を行う第三者として招いています。資料群の中には、意図的に伏せられた語、別名目に置き換えられた記録、後から訂正された記事が混ざっています。</p>
-      <p>まずは検索とメールを確認し、気になる語を照合ノートへ入力してください。照合が進むと、断片的な記録が章ごとに開示されます。</p>
+      <h2>あなたの役割</h2>
+      <p>あなたは事件関係者ではなく、公開前の資料検証を依頼された第三者です。資料群には、意図的に伏せられた語、別名目に置き換えられた記録、後から訂正された記事が混ざっています。</p>
+      <p>目的は犯人名だけを当てることではありません。誰が、誰を、どこへ誘導し、どの退路を塞いだのか。そして、なぜ記録が分散されたのかを復元することです。</p>
     </div>
     <div class="panel">
       <h2>検証対象</h2>
-      <p>表向きの記録では、2010年10月6日の夜に起きた出来事は小さな業務事故として処理されています。しかし、23:14の異常、第二処置室、夜間カード、裏口廊下、薬剤棚ログを重ねると、別の筋道が見えてきます。</p>
-      <p>この調査の目的は、犯人名だけを当てることではありません。誰が、誰を、どこへ誘導し、どの退路を塞いだのか。そして、なぜ記録が分散されたのかを復元することです。</p>
+      <p>表向きの記録では、2010年10月6日の夜に起きた出来事は小さな業務事故として処理されています。</p>
+      <p>しかし、23:14の異常、第二処置室、夜間カード、裏口廊下、薬剤棚ログを重ねると、別の筋道が見えてきます。</p>
     </div>
   </section>
 </main>
