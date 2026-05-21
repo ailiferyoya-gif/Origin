@@ -1,51 +1,28 @@
-# 星ヶ浦鉄道 開業90周年記念サイト
+# 星ヶ浦鉄道 90周年資料 HSR-90
 
-地方鉄道の公式記念サイトを入口に、ニュースサイト、町の安全情報、個人ブログ、留言板を横断して真相を探るWebモキュメンタリー謎解きです。現在は15問構成です。
+販売想定のモキュメンタリー型Web謎解きです。プレイヤーは、匿名で届いた未整理アーカイブを検証する協力者として調査を開始します。
 
-## 起動
+## 導入
+90周年記念サイトの公開レビュー中、公式年表と町の安全情報に食い違いが見つかった。
 
-```powershell
-& "C:\Users\kogit\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe" "C:\Users\kogit\Documents\Codex\HoshigauraRailMystery\server.mjs"
-```
+依頼内容: 記念行事として整えられた資料の中で、どの駅の記録だけが別の言い方に置き換えられたのか確認してください。
 
-入口:
+## プレイ情報
+- 想定時間: 60〜120分
+- 推奨人数: 1〜3人
+- 入口: `web/index.html`
+- 形式: 架空Webサイト横断、資料照合、段階式の調査ノート
 
-`http://127.0.0.1:4392/web/`
+## この作品の特徴
+鉄道90周年の広報資料に紛れた歴史照合型。事件よりも、公式に整えられた言葉の変化が謎になる。
 
-## 主なページ
+## 添付資料
+- 鉄道公式
+- 地方新聞
+- 町資料
+- 照合ノート
+- 駅案内
+- 時刻表
 
-- `web/` 星ヶ浦鉄道の豪華な公式記念サイト
-- `web/railway/` 星ヶ浦鉄道株式会社の公式トップページ
-- `web/news/` 新聞紙面風の星ヶ浦タイムス
-- `web/city/` 自治体ポータル風の星ヶ浦町安全情報
-- `web/blog/` 沿線カフェ日記風の個人ブログ
-- `web/board/` 古い掲示板風の留言板
-- `web/investigate/` 資料照合ノート
-- `web/textflow.js` 日本語の自然な改行候補を挿入する表示補助
-
-公式系ページ:
-
-- `web/timetable/` 運行情報・時刻表
-- `web/stations/` 駅・沿線案内
-- `web/campaign/` 沿線観光企画
-- `web/archive/` 鉄道資料室
-- `web/event/` 90周年記念イベント
-
-## 答え
-
-答え一覧は `BOOTH_README.md` と `PRODUCTION_SUMMARY.md` に記載しています。
-
-## Booth向け資料
-
-- `BOOTH_README.md`: 販売物に同梱する説明
-- `PRODUCTION_SUMMARY.md`: 制作意図、構成、15問設計のまとめ
-
-## 画像
-
-画像素材はChatGPT生成です。スプライトシートは使用していません。
-
-追加生成素材:
-
-- `web/assets/premium-rail-hero.png`
-- `web/assets/news-stairway.png`
-- `web/assets/town-hall-counter.png`
+## 最終的に確定すること
+公式年表の言い換えが90周年資料の欠落を星ヶ浦駅周辺へ誘導し、安全情報の旧表記を使って海側地下道から退路を塞いだ。

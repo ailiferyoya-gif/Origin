@@ -1,1 +1,41 @@
-const answers=["望月紗季","2002年11月2日","01:19","夜間監査室","HTL-1102","宿泊台帳第十五冊","リネン倉庫","観光生活課","予備マスターキー","客室電源ログJ","成瀬亮","紫の封筒","01:57","退職扱い","2002/11/03","月白ホテル","マスターキー","従業員階段","月白ビル管理","欠番","2002/11/04","金庫開閉ログ","管理画面","成瀬亮が望月紗季を夜間監査室へ誘導し、マスターキーを使って従業員階段から退路を塞いだ"];const norm=s=>(s||"").replace(/[\s　]/g,"").replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).toLowerCase();let unlocked=Number(localStorage.getItem("mystery_unlocked")||"1");function renderLocks(){document.querySelectorAll("[data-q]").forEach(card=>{const n=Number(card.dataset.q);card.classList.toggle("locked",n>unlocked);card.querySelectorAll("input,button").forEach(x=>x.disabled=n>unlocked)})}function checkAnswer(n){const card=document.querySelector('[data-q="'+n+'"]');const input=card.querySelector("input");const msg=card.querySelector(".msg");if(norm(input.value)===norm(answers[n-1])){msg.textContent=n===answers.length?"真相が開示されました。":"照合しました。次の記録を確認できます。";msg.className="msg ok";if(unlocked<n+1){unlocked=n+1;localStorage.setItem("mystery_unlocked",String(unlocked))}renderLocks()}else{msg.textContent="一致しません。別サイトの記録と重ねてください。";msg.className="msg ng"}}function resetNote(){localStorage.removeItem("mystery_unlocked");unlocked=1;renderLocks()}document.addEventListener("DOMContentLoaded",renderLocks);
+const answers = [
+  "望月紗季",
+  "2000年代の記録",
+  "未確認時刻",
+  "夜間監査室",
+  "HTL-1102",
+  "金庫開閉ログ",
+  "管理区域",
+  "観光生活課",
+  "封鎖区画",
+  "金庫開閉ログ",
+  "成瀬亮",
+  "紫の封筒",
+  "復旧直後",
+  "事故扱い",
+  "翌日追記",
+  "月白ホテル",
+  "マスターキー",
+  "従業員階段",
+  "関連会社",
+  "欠番",
+  "追記翌日",
+  "金庫開閉ログ",
+  "調査画面",
+  "成瀬亮が望月紗季を夜間監査室へ誘導し、マスターキーを使って従業員階段から退路を塞いだ"
+];
+const finalRequiredParts = [
+  "成瀬亮",
+  "望月紗季",
+  "夜間監査室",
+  "マスターキー",
+  "従業員階段"
+];
+const storageKey = "TsukishiroHotelMystery_unlocked";
+const norm = (s) => String(s || "").replace(/[\s　]/g, "").replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)).replace(/[ー－―]/g, "-").toLowerCase();
+let unlocked = Number(localStorage.getItem(storageKey) || "1");
+function renderLocks(){document.querySelectorAll("[data-q]").forEach((card)=>{const n=Number(card.dataset.q);const locked=n>unlocked;card.classList.toggle("locked",locked);card.querySelectorAll("input,button").forEach((el)=>{el.disabled=locked;});});}
+function isFinalCorrect(value){const v=norm(value);return finalRequiredParts.every((part)=>v.includes(norm(part)));}
+function checkAnswer(n){const card=document.querySelector('[data-q="'+n+'"]');const input=card?.querySelector("input");const msg=card?.querySelector(".msg");if(!card||!input||!msg)return;const ok=n===answers.length?isFinalCorrect(input.value):norm(input.value)===norm(answers[n-1]);if(ok){msg.textContent=n===answers.length?"最終報告を受理しました。資料の矛盾が一つの経路としてつながりました。":"照合しました。次の資料を確認できます。";msg.className="msg ok";if(unlocked<n+1){unlocked=n+1;localStorage.setItem(storageKey,String(unlocked));}renderLocks();}else{msg.textContent=n===answers.length?"最終報告には、人物・被害者・場所・鍵・退路をすべて含めてください。":"一致しません。資料名、時刻、場所、人名の表記をもう一度確認してください。";msg.className="msg ng";}}
+function resetNote(){localStorage.removeItem(storageKey);unlocked=1;renderLocks();}
+document.addEventListener("DOMContentLoaded", renderLocks);
