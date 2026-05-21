@@ -1,41 +1,41 @@
 const answers = [
-  "伊庭直美",
-  "2000年代の記録",
-  "未確認時刻",
-  "第二ゲート室",
+  "警報時刻の偽装",
   "DAM-0728",
   "警報試験ログ",
-  "管理区域",
-  "河川管理課",
-  "封鎖区画",
+  "手書き訂正",
+  "想定外豪雨",
+  "防災無線ログ",
+  "警報設備の故障",
+  "放流判断",
+  "住民メモ",
+  "時刻ずらし",
+  "警報時刻の偽装",
   "警報試験ログ",
-  "葛城学",
-  "黄色い雨具袋",
-  "復旧直後",
-  "事故扱い",
-  "翌日追記",
-  "水影ダム",
-  "ゲート鍵",
-  "監査廊南扉",
-  "関連会社",
-  "欠番",
-  "追記翌日",
-  "警報試験ログ",
-  "調査画面",
-  "葛城学が伊庭直美を第二ゲート室へ誘導し、ゲート鍵を使って監査廊南扉から退路を塞いだ"
+  "遅れ",
+  "警報",
+  "時刻偽装",
+  "管理側",
+  "時刻ずらし",
+  "住民側の記憶違い",
+  "時刻偽装",
+  "記録",
+  "処理",
+  "余韻",
+  "調査ノート",
+  "訂正された警報試験ログは、遅れた警報発令を隠すための時刻偽装だった"
 ];
 const finalRequiredParts = [
-  "葛城学",
-  "伊庭直美",
-  "第二ゲート室",
-  "ゲート鍵",
-  "監査廊南扉"
+  "警報試験ログ",
+  "遅れ",
+  "警報",
+  "時刻偽装",
+  "管理側"
 ];
-const storageKey = "MizukageDamMystery_unlocked";
-const norm = (s) => String(s || "").replace(/[\s　]/g, "").replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)).replace(/[ー－―]/g, "-").toLowerCase();
+const storageKey = "MizukageDamMystery_reorg_unlocked";
+const norm = (s) => String(s || "").replace(/[s　]/g, "").replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)).replace(/[ー－―]/g, "-").toLowerCase();
 let unlocked = Number(localStorage.getItem(storageKey) || "1");
 function renderLocks(){document.querySelectorAll("[data-q]").forEach((card)=>{const n=Number(card.dataset.q);const locked=n>unlocked;card.classList.toggle("locked",locked);card.querySelectorAll("input,button").forEach((el)=>{el.disabled=locked;});});}
 function isFinalCorrect(value){const v=norm(value);return finalRequiredParts.every((part)=>v.includes(norm(part)));}
-function checkAnswer(n){const card=document.querySelector('[data-q="'+n+'"]');const input=card?.querySelector("input");const msg=card?.querySelector(".msg");if(!card||!input||!msg)return;const ok=n===answers.length?isFinalCorrect(input.value):norm(input.value)===norm(answers[n-1]);if(ok){msg.textContent=n===answers.length?"最終報告を受理しました。資料の矛盾が一つの経路としてつながりました。":"照合しました。次の資料を確認できます。";msg.className="msg ok";if(unlocked<n+1){unlocked=n+1;localStorage.setItem(storageKey,String(unlocked));}renderLocks();}else{msg.textContent=n===answers.length?"最終報告には、人物・被害者・場所・鍵・退路をすべて含めてください。":"一致しません。資料名、時刻、場所、人名の表記をもう一度確認してください。";msg.className="msg ng";}}
+function checkAnswer(n){const card=document.querySelector('[data-q="'+n+'"]');const input=card?.querySelector("input");const msg=card?.querySelector(".msg");if(!card||!input||!msg)return;const ok=n===answers.length?isFinalCorrect(input.value):norm(input.value)===norm(answers[n-1]);if(ok){msg.textContent=n===answers.length?"最終報告を受理しました。資料の食い違いが一つの真相としてつながりました。":"照合しました。次の資料を確認できます。";msg.className="msg ok";if(unlocked<n+1){unlocked=n+1;localStorage.setItem(storageKey,String(unlocked));}renderLocks();}else{msg.textContent=n===answers.length?"最終報告には、指定された要素をすべて含めてください。":"一致しません。資料名、処理名、人名、記録の表記をもう一度確認してください。";msg.className="msg ng";}}
 function resetNote(){localStorage.removeItem(storageKey);unlocked=1;renderLocks();}
 document.addEventListener("DOMContentLoaded", renderLocks);
