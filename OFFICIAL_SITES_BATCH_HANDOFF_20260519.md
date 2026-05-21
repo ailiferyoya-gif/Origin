@@ -585,3 +585,24 @@
   - GitHub側に公開先リポジトリを作成、または既存リポジトリURLを指定する。
   - `origin` を追加して `main` をpush。
   - GitHub PagesのSourceを「GitHub Actions」に設定し、Actions完了後に公開URLを確認。
+
+## 2026-05-21 Origin リポジトリへ公開物同期
+- ユーザー指定:
+  - `C:\Users\kogit\Documents\GitHub\Origin`
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\_backups\origin_publish_pre_20260521_202311`
+- 実施:
+  - `Nazotoki` の公開用ファイル一式を `Origin` へ同期。
+  - `.git` は触らず、既存リポジトリとして維持。
+  - 100MB超ファイルなし。
+  - ルート `index.html`、`.nojekyll`、GitHub Pages Actions workflow を含む。
+- Git:
+  - `Origin` 側コミット: `72fe676 Publish Nazotoki static site`
+  - 作業ツリーはclean。
+  - `origin` リモートは未設定。
+- 確認:
+  - GitHub上の `ailiferyoya-gif/Origin` は現時点で404。
+- 未完了:
+  - GitHub側に `Origin` リポジトリを作成、またはリモートURLを指定する。
+  - `origin` を追加してpush。
+  - PagesをGitHub Actionsで有効化して公開URL確認。
