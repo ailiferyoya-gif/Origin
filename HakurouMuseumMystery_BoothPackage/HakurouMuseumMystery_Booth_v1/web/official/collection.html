@@ -3,43 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>収蔵品 | 白楼資料館</title>
+<title>収蔵品検索 | 白楼資料館</title>
 <link rel="stylesheet" href="../site.css">
 </head>
-<body class="hakurou-official">
-<header class="museum-header">
+<body class="hakurou-official tokugawa-ref">
+<header class="museum-header tokugawa-header">
   <a class="museum-logo" href="./index.html">
     <span>白楼資料館</span>
     <small>HAKUROU LOCAL MUSEUM</small>
   </a>
   <nav class="museum-nav" aria-label="白楼資料館公式サイト">
     <a  href="./index.html">トップ</a>
+    <a  href="./visit.html">来館のご案内</a>
     <a  href="./exhibitions.html">展覧会</a>
-    <a aria-current="page" href="./collection.html">収蔵品</a>
+    <a  href="./learning.html">イベント・講座</a>
+    <a aria-current="page" href="./collection.html">収蔵品検索</a>
     <a  href="./research.html">調査研究</a>
-    <a  href="./learning.html">教育普及</a>
-    <a  href="./visit.html">来館案内</a>
-    <a  href="./news.html">お知らせ</a>
+    <a  href="./news.html">最新情報</a>
   </nav>
 </header>
-<main class="museum-page">
-  <p class="eyebrow">COLLECTION</p>
-  <h1>収蔵品データベース</h1>
-  <p class="museum-lead">公開対象資料の基本情報です。調査中の項目は、確認が取れ次第更新します。</p>
-  <section class="museum-feature-row reverse">
-    <img src="../assets/hakurou-collection-table.png" alt="保存整理台に置かれた収蔵資料">
-    <div>
-      <h2>資料を見る前に</h2>
-      <p>白楼資料館では、資料番号、受入種別、写真台帳、展示ラベルを別々に管理しています。来歴が未確定のものは、確定した説明文ではなく暫定情報として公開します。</p>
-    </div>
+<main class="official-subpage">
+  <section class="subpage-head">
+    <p class="eyebrow">Collection Search</p>
+    <h1>収蔵品検索</h1>
+    <p>資料番号、分類、年代、保管箱から収蔵品を確認できます。来歴確認中の資料には注記を付けています。</p>
   </section>
-  <section class="museum-data">
-    <div><strong class="nowrap-code">MSM-0817</strong><span>祭礼面。由来調査中。写真台帳、展示ラベル、受入票の照合対象。</span></div>
-    <div><strong class="nowrap-code">B-17-04</strong><span>木箱。旧館時代の保管札あり。箱内の緩衝材に古い館名印。</span></div>
-    <div><strong class="nowrap-code">PH-1996-0819</strong><span>旧館展示室写真。撮影者未記載。面の角部分に現在展示品との差異。</span></div>
-    <div><strong class="nowrap-code">LBL-KO-03</strong><span>展示解説校正紙。差し替え指示の赤字あり。承認欄は未押印。</span></div>
-    <div><strong class="nowrap-code">AC-2004-11</strong><span>受入記録。寄贈者名は非公開。記録種別は「戻り品」。</span></div>
-    <div><strong class="nowrap-code">LOG-21:23</strong><span>閉館後作業記録。第2展示室から収蔵庫B列への移動履歴。</span></div>
+  <section class="collection-search-panel">
+    <form action="./collection.html">
+      <input value="MSM-0817" aria-label="収蔵品検索キーワード">
+      <button>検索</button>
+    </form>
+  </section>
+  <section class="collection-layout">
+    <aside>
+      <h2>分類</h2>
+      <a href="./collection.html">祭礼資料</a>
+      <a href="./collection.html">生活資料</a>
+      <a href="./collection.html">古文書</a>
+      <a href="./collection.html">写真台帳</a>
+      <a href="./collection.html">保存箱</a>
+    </aside>
+    <div class="collection-results">
+      <article><img src="../assets/hakurou-collection-table.png" alt="収蔵品整理台"><div><span class="nowrap-code">MSM-0817</span><h2>祭礼面</h2><p>由来調査中。写真台帳、展示ラベル、受入票の照合対象です。</p></div></article>
+      <article><div><span class="nowrap-code">B-17-04</span><h2>木箱</h2><p>旧館時代の保管札あり。箱内の緩衝材に古い館名印があります。</p></div></article>
+      <article><div><span class="nowrap-code">LBL-KO-03</span><h2>展示解説校正紙</h2><p>差し替え指示の赤字あり。承認欄は未押印です。</p></div></article>
+      <article><div><span class="nowrap-code">AC-2004-11</span><h2>受入記録</h2><p>記録種別は「戻り品」。寄贈者名は非公開です。</p></div></article>
+    </div>
   </section>
 </main>
 </body>
