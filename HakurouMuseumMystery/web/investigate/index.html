@@ -3,33 +3,260 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>調査ノート | 白楼資料館 MSM-0817</title>
+<title>調査ノート | 白楼資料館 収蔵箱入替事件</title>
 <link rel="stylesheet" href="../site.css">
 </head>
 <body class="hakurou-case">
-<header class="case-header"><a href="../index.html">調査入口へ戻る</a><button onclick="resetNote()">進行リセット</button></header>
+<header class="case-header">
+  <a href="../index.html">調査入口へ戻る</a>
+  <button onclick="resetNote()">進行リセット</button>
+</header>
 <main class="case-wrap">
-  <section class="panel"><p class="eyebrow">INVESTIGATION NOTE</p><h1>20の照合</h1><p>各ページから拾った語句を入力してください。前の照合を通過すると次の問いが開きます。</p></section>
-  <article class="q-card" data-q="1"><h2>照合 01</h2><div class="locked-hide"><p>依頼で最初に確認すべき収蔵品番号は？</p><div class="answer-row"><input aria-label="回答1"><button onclick="checkAnswer(1)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="2"><h2>照合 02</h2><div class="locked-hide"><p>MSM-0817が展示されている表向きの施設名は？</p><div class="answer-row"><input aria-label="回答2"><button onclick="checkAnswer(2)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="3"><h2>照合 03</h2><div class="locked-hide"><p>公式サイトでMSM-0817の状態として書かれている言葉は？</p><div class="answer-row"><input aria-label="回答3"><button onclick="checkAnswer(3)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="4"><h2>照合 04</h2><div class="locked-hide"><p>旧館写真の日付は？</p><div class="answer-row"><input aria-label="回答4"><button onclick="checkAnswer(4)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="5"><h2>照合 05</h2><div class="locked-hide"><p>写真と現在展示品で違う部位は？</p><div class="answer-row"><input aria-label="回答5"><button onclick="checkAnswer(5)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="6"><h2>照合 06</h2><div class="locked-hide"><p>閉館後に開閉された収蔵庫の列は？</p><div class="answer-row"><input aria-label="回答6"><button onclick="checkAnswer(6)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="7"><h2>照合 07</h2><div class="locked-hide"><p>問題の収蔵箱番号は？</p><div class="answer-row"><input aria-label="回答7"><button onclick="checkAnswer(7)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="8"><h2>照合 08</h2><div class="locked-hide"><p>メールに出てくる、先に合わせるものは？</p><div class="answer-row"><input aria-label="回答8"><button onclick="checkAnswer(8)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="9"><h2>照合 09</h2><div class="locked-hide"><p>MSM-0817の元の仮登録名は？</p><div class="answer-row"><input aria-label="回答9"><button onclick="checkAnswer(9)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="10"><h2>照合 10</h2><div class="locked-hide"><p>掲示板で運ばれていたとされるものは？</p><div class="answer-row"><input aria-label="回答10"><button onclick="checkAnswer(10)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="11"><h2>照合 11</h2><div class="locked-hide"><p>管理画面キャッシュの更新者は？</p><div class="answer-row"><input aria-label="回答11"><button onclick="checkAnswer(11)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="12"><h2>照合 12</h2><div class="locked-hide"><p>管理画面で空欄のままだった欄は？</p><div class="answer-row"><input aria-label="回答12"><button onclick="checkAnswer(12)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="13"><h2>照合 13</h2><div class="locked-hide"><p>公式のお知らせで差し替えられているものは？</p><div class="answer-row"><input aria-label="回答13"><button onclick="checkAnswer(13)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="14"><h2>照合 14</h2><div class="locked-hide"><p>照明を落としていた場所は？</p><div class="answer-row"><input aria-label="回答14"><button onclick="checkAnswer(14)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="15"><h2>照合 15</h2><div class="locked-hide"><p>センサーが作動した時刻は？</p><div class="answer-row"><input aria-label="回答15"><button onclick="checkAnswer(15)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="16"><h2>照合 16</h2><div class="locked-hide"><p>収蔵庫B列が開閉した時刻は？</p><div class="answer-row"><input aria-label="回答16"><button onclick="checkAnswer(16)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="17"><h2>照合 17</h2><div class="locked-hide"><p>この事件の中心にある偽装は何の偽装？</p><div class="answer-row"><input aria-label="回答17"><button onclick="checkAnswer(17)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="18"><h2>照合 18</h2><div class="locked-hide"><p>MSM-0817は単なる盗難品ではなく何として扱われた？</p><div class="answer-row"><input aria-label="回答18"><button onclick="checkAnswer(18)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="19"><h2>照合 19</h2><div class="locked-hide"><p>隠された操作を進めた人物名は？</p><div class="answer-row"><input aria-label="回答19"><button onclick="checkAnswer(19)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
-<article class="q-card" data-q="20"><h2>照合 20</h2><div class="locked-hide"><p>最終報告: MSM-0817の正体を一文で説明してください。</p><div class="answer-row"><input aria-label="回答20"><button onclick="checkAnswer(20)">照合</button></div><p class="msg muted small"></p></div><p class="muted small locked-only">前の照合を通過すると表示されます。</p></article>
+  <section class="panel">
+    <p class="eyebrow">INVESTIGATION NOTE</p>
+    <h1>20の照合</h1>
+    <p>公式サイト、検索結果、ニュース、ログ、メール、台帳を読み比べてください。答えは資料内の表記を短く入力します。</p>
+  </section>
+  <article class="q-card" data-q="1">
+    <h2>照合 01</h2>
+    <div class="locked-hide">
+      <p>依頼で最初に確認すべき収蔵品番号は？</p>
+      <div class="answer-row">
+        <input aria-label="回答1">
+        <button onclick="checkAnswer(1)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="2">
+    <h2>照合 02</h2>
+    <div class="locked-hide">
+      <p>MSM-0817が展示されている表向きの施設名は？</p>
+      <div class="answer-row">
+        <input aria-label="回答2">
+        <button onclick="checkAnswer(2)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="3">
+    <h2>照合 03</h2>
+    <div class="locked-hide">
+      <p>公式サイトでMSM-0817の状態として書かれている言葉は？</p>
+      <div class="answer-row">
+        <input aria-label="回答3">
+        <button onclick="checkAnswer(3)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="4">
+    <h2>照合 04</h2>
+    <div class="locked-hide">
+      <p>旧館写真の日付は？</p>
+      <div class="answer-row">
+        <input aria-label="回答4">
+        <button onclick="checkAnswer(4)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="5">
+    <h2>照合 05</h2>
+    <div class="locked-hide">
+      <p>写真と現在展示品で違う部位は？</p>
+      <div class="answer-row">
+        <input aria-label="回答5">
+        <button onclick="checkAnswer(5)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="6">
+    <h2>照合 06</h2>
+    <div class="locked-hide">
+      <p>閉館後にセンサーが作動した展示室は？</p>
+      <div class="answer-row">
+        <input aria-label="回答6">
+        <button onclick="checkAnswer(6)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="7">
+    <h2>照合 07</h2>
+    <div class="locked-hide">
+      <p>人感センサーが作動した時刻は？</p>
+      <div class="answer-row">
+        <input aria-label="回答7">
+        <button onclick="checkAnswer(7)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="8">
+    <h2>照合 08</h2>
+    <div class="locked-hide">
+      <p>収蔵庫B列が開閉した時刻は？</p>
+      <div class="answer-row">
+        <input aria-label="回答8">
+        <button onclick="checkAnswer(8)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="9">
+    <h2>照合 09</h2>
+    <div class="locked-hide">
+      <p>問題の収蔵箱番号は？</p>
+      <div class="answer-row">
+        <input aria-label="回答9">
+        <button onclick="checkAnswer(9)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="10">
+    <h2>照合 10</h2>
+    <div class="locked-hide">
+      <p>メールで先に合わせると書かれた二つは？</p>
+      <div class="answer-row">
+        <input aria-label="回答10">
+        <button onclick="checkAnswer(10)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="11">
+    <h2>照合 11</h2>
+    <div class="locked-hide">
+      <p>MSM-0817の元の仮登録名は？</p>
+      <div class="answer-row">
+        <input aria-label="回答11">
+        <button onclick="checkAnswer(11)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="12">
+    <h2>照合 12</h2>
+    <div class="locked-hide">
+      <p>掲示板で運ばれていたとされるものは？</p>
+      <div class="answer-row">
+        <input aria-label="回答12">
+        <button onclick="checkAnswer(12)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="13">
+    <h2>照合 13</h2>
+    <div class="locked-hide">
+      <p>管理画面キャッシュの更新者は？</p>
+      <div class="answer-row">
+        <input aria-label="回答13">
+        <button onclick="checkAnswer(13)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="14">
+    <h2>照合 14</h2>
+    <div class="locked-hide">
+      <p>管理画面で空欄のままだった欄は？</p>
+      <div class="answer-row">
+        <input aria-label="回答14">
+        <button onclick="checkAnswer(14)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="15">
+    <h2>照合 15</h2>
+    <div class="locked-hide">
+      <p>観光活用計画に記載があった箱番号は？</p>
+      <div class="answer-row">
+        <input aria-label="回答15">
+        <button onclick="checkAnswer(15)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="16">
+    <h2>照合 16</h2>
+    <div class="locked-hide">
+      <p>保存管理会社メモで新しかったものは？</p>
+      <div class="answer-row">
+        <input aria-label="回答16">
+        <button onclick="checkAnswer(16)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="17">
+    <h2>照合 17</h2>
+    <div class="locked-hide">
+      <p>写真台帳メモで面は何と書かれていた？</p>
+      <div class="answer-row">
+        <input aria-label="回答17">
+        <button onclick="checkAnswer(17)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="18">
+    <h2>照合 18</h2>
+    <div class="locked-hide">
+      <p>この事件の中心にある偽装は何の偽装？</p>
+      <div class="answer-row">
+        <input aria-label="回答18">
+        <button onclick="checkAnswer(18)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="19">
+    <h2>照合 19</h2>
+    <div class="locked-hide">
+      <p>奥村志乃が残そうとしたものは？</p>
+      <div class="answer-row">
+        <input aria-label="回答19">
+        <button onclick="checkAnswer(19)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
+<article class="q-card" data-q="20">
+    <h2>照合 20</h2>
+    <div class="locked-hide">
+      <p>最終報告: MSM-0817の正体を一文で説明してください。</p>
+      <div class="answer-row">
+        <input aria-label="回答20">
+        <button onclick="checkAnswer(20)">照合</button>
+      </div>
+      <p class="msg muted small"></p>
+    </div>
+    <p class="muted small locked-only">前の照合を通過すると表示されます。</p>
+  </article>
 </main>
 <script src="../site.js"></script>
 </body>
