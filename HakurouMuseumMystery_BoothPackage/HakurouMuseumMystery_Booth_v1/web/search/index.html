@@ -3,37 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>検索 | 白楼資料館 収蔵箱入替事件</title>
+<title>検索 | 白楼民俗資料館 MSM-0817</title>
 <link rel="stylesheet" href="../site.css">
 </head>
-<body class="search-page">
-<main class="search-wrap">
-  <a class="back" href="../index.html">調査入口へ戻る</a>
+<body class="search-page evidence-suite">
+<header class="evidence-header">
+  <a href="../index.html">調査入口</a>
+  <span>MSM-0817 / 横断検索</span>
+</header>
+<main class="search-wrap enhanced-search">
+  <p class="eyebrow">Search Archive</p>
   <h1>Search Archive</h1>
   <form onsubmit="run();return false">
-    <input id="q" placeholder="MSM-0817、B-17、奥村、1996/08/19">
+    <input id="q" placeholder="MSM-0817、B-17、奥村、1996/08/19、21:23">
     <button>検索</button>
   </form>
-  <p class="search-help">空欄検索では公開性の高い情報だけを表示します。固有名詞や資料番号を入れると、古いキャッシュが混ざります。</p>
-  <section id="r"></section>
+  <p class="search-help">空欄検索では公開性の高い情報だけを表示します。固有名詞や資料番号を入れると、古いキャッシュや非公開資料の断片が混ざります。</p>
+  <section id="r" class="search-results-list"></section>
 </main>
 <script>
-const data=[
-["白楼資料館 公式サイト","../official/index.html","展覧会、収蔵品、来館案内。表向きの情報。",["白楼資料館","公式"],true],
-["MSM-0817 収蔵品データ","../official/collection.html","祭礼面 / 由来調査中 / 写真台帳あり。",["MSM-0817","祭礼面"],true],
-["1996年8月19日の地方記事","../news/index.html","旧館展示室の写真と現在展示品の形状差。",["1996/08/19","記事","写真","角"],false],
-["収蔵箱B-17 管理ログ","../logs/index.html","閉館後に第2展示室と収蔵庫B列が記録されている。",["B-17","ログ","21:17","21:23"],false],
-["保存整理メール","../mail/index.html","台帳と展示ラベルを先に合わせる、という記述。",["メール","ラベル","奥村"],false],
-["収蔵台帳抜粋","../archive/index.html","MSM-0817は持ち出し戻り品として仮登録。",["台帳","持ち出し戻り品"],false],
-["町の掲示板ログ","../board/index.html","裏口から木箱を運んでいたという削除投稿。",["木箱","裏口"],false],
-["管理画面キャッシュ","../admin/index.html","更新者は奥村志乃。承認欄は空欄。",["奥村志乃","承認欄"],false],
-["保存管理会社メモ","../contractor/index.html","封緘紙だけが新しいものに替わっていた。",["封緘紙","B-17"],false],
-["写真台帳メモ","../photos/memo/index.html","写真裏面に『面は借用品、戻すこと』。",["借用品","写真台帳"],false]
-];
+const data=[{"id":"official","title":"白楼資料館 公式資料","url":"./official/index.html","kind":"公開情報","note":"表向きの展示情報、来館案内、収蔵品検索。","keys":["白楼資料館","MSM-0817","由来調査中"]},{"id":"search","title":"Search Archive","url":"./search/index.html","kind":"検索画面","note":"資料番号、人名、箱番号、日付で断片資料を横断する。","keys":["B-17","奥村志乃","1996/08/19"]},{"id":"news","title":"白楼日報アーカイブ","url":"./news/index.html","kind":"地方新聞","note":"1996年8月19日の旧館展示室写真。面の角が現在展示品と違う。","keys":["1996/08/19","旧館展示室","角"]},{"id":"logs","title":"夜間警備ログ","url":"./logs/index.html","kind":"警備記録","note":"21:17に第2展示室、21:23に収蔵庫B列。作業予定者欄は空白。","keys":["21:17","21:23","収蔵庫B列"]},{"id":"mail","title":"保存整理メール","url":"./mail/index.html","kind":"関係者メール","note":"台帳と展示ラベルを先に合わせる、という文面が残る。","keys":["台帳","展示ラベル","奥村志乃"]},{"id":"archive","title":"収蔵台帳抜粋","url":"./archive/index.html","kind":"台帳","note":"MSM-0817は当初、祭礼面ではなく持ち出し戻り品として仮登録。","keys":["持ち出し戻り品","仮登録","MSM-0817"]},{"id":"board","title":"町の掲示板ログ","url":"./board/index.html","kind":"削除投稿","note":"裏口から木箱を運んでいたという投稿が検索キャッシュに残る。","keys":["木箱","裏口","削除"]},{"id":"admin","title":"管理画面キャッシュ","url":"./admin/index.html","kind":"管理記録","note":"展示ラベルの更新者は奥村志乃。承認欄は空欄のまま。","keys":["奥村志乃","承認欄","公開時刻"]},{"id":"city","title":"白楼町 文化資料係","url":"./city/index.html","kind":"自治体資料","note":"観光活用計画の添付資料にB-17の記載がある。","keys":["観光活用","B-17","文化資料係"]},{"id":"contractor","title":"白楼保存管理社メモ","url":"./contractor/index.html","kind":"業者記録","note":"収蔵庫B列の点検時、箱B-17の封緘紙だけが新しい。","keys":["封緘紙","B-17","点検"]},{"id":"photos","title":"写真台帳メモ","url":"./photos/memo/index.html","kind":"写真台帳","note":"写真裏面に『面は借用品、戻すこと』という鉛筆書き。","keys":["借用品","戻すこと","写真台帳"]},{"id":"mobile","title":"個人メモ断片","url":"./mobile/secret/index.html","kind":"私的メモ","note":"奥村さんは消すより先に残したかった、という断片。","keys":["赤字","奥村","残したかった"]}];
 function run(){
   const q=document.getElementById("q").value.trim();
-  const hits=data.filter(x=>(!q && x[4]) || (q && (x[3].some(k=>k.includes(q)||q.includes(k)) || x.join(" ").includes(q))));
-  document.getElementById("r").innerHTML=(hits.length?hits:[]).map(x=>'<article><a href="'+x[1]+'">'+x[0]+'</a><p>'+x[2]+'</p></article>').join("") || "<p>該当なし。資料番号、日付、人名を変えて検索してください。</p>";
+  const hits=data.filter((x,i)=>(!q && i < 4) || (q && (x.keys.some(k=>k.includes(q)||q.includes(k)) || (x.title+x.note+x.kind).includes(q))));
+  document.getElementById("r").innerHTML=(hits.length?hits:[]).map(x=>'<article><span>'+x.kind+'</span><a href="'+x.url+'">'+x.title+'</a><p>'+x.note+'</p><small>'+x.keys.join(' / ')+'</small></article>').join("") || "<p>該当なし。資料番号、日付、人名、箱番号を変えて検索してください。</p>";
 }
 run();
 </script>
