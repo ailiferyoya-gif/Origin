@@ -3,29 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>上映スケジュール | 暁プラネタリウム</title>
+  <title>本日の投影 | 暁プラネタリウム</title>
   <link rel="stylesheet" href="../site.css">
 </head>
-<body class="official-multipage official-sub AkatsukiPlanetariumMystery" style="--official-bg:#07111f;--official-accent:#d8b75f">
+<body class="official-multipage official-sub akatsuki-planetarium-official" style="--official-bg:#07111f;--official-accent:#d8b75f">
   <header class="of-header">
     <a class="of-logo" href="./index.html"><span>AKATSUKI DOME</span><strong>暁プラネタリウム</strong></a>
-    <nav aria-label="公式サイトメニュー"><a href="./schedule.html">上映スケジュール</a><a href="./programs.html">作品案内</a><a href="./tickets.html">チケット</a><a href="./access.html">アクセス</a><a href="./news.html">お知らせ</a></nav>
+    <nav aria-label="公式サイトメニュー">
+      <a href="./schedule.html">本日の投影</a>
+      <a href="./programs.html">番組案内</a>
+      <a href="./tickets.html">チケット</a>
+      <a href="./access.html">アクセス</a>
+      <a href="./news.html">お知らせ</a>
+    </nav>
   </header>
   <main class="of-main">
     <section class="of-page-head">
       <div>
-        <p class="of-kicker">プラネタリウム / PLN-0427</p>
-        <h1>上映スケジュール</h1>
-        <p>本日分と直近の予定を掲載しています。変更がある場合はこのページを優先して更新します。</p>
+        <p class="of-kicker">TODAY / <span class="case-code">PLN-0427</span></p>
+        <h1>本日の投影</h1>
+        <p>投影開始後の途中入退場はできません。夜間特別回は館内導線が通常と異なるため、チケット記載の集合場所を確認してからお越しください。</p>
       </div>
-      <img src="../assets/hero.png" alt="暁プラネタリウムの公式ビジュアル">
+      <img src="../assets/hero.png" alt="暁プラネタリウムのドーム投影イメージ">
     </section>
+
+    <section class="akatsuki-table-section" aria-label="投影タイムテーブル">
+      <h2>投影タイムテーブル</h2>
+      <table class="planetarium-table">
+        <thead><tr><th>開始</th><th>番組</th><th>所要時間</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td>10:30</td><td>はじめての星空</td><td>約35分</td><td>親子向け / 生解説あり</td></tr>
+          <tr><td>13:00</td><td>季節の星座案内</td><td>約45分</td><td>今夜見える星を中心に解説</td></tr>
+          <tr><td>15:30</td><td>銀河鉄道の投影室</td><td>約45分</td><td>音楽投影 / 未就学児入場可</td></tr>
+          <tr id="night"><td>18:40</td><td>夜明け前の星</td><td>約50分</td><td>夜間特別回 / 開場18:22</td></tr>
+        </tbody>
+      </table>
+      <p class="akatsuki-note">18:40回は、音声ガイドの冒頭に録音案内が入ります。座席番号と星図番号の照合が必要な方は、5階受付までお申し出ください。</p>
+    </section>
+
     <section class="of-detail-list">
-      <article><span>01</span><h2>本日の予定</h2><p>10:30 / 12:20 / 14:10 / 16:00 / 18:30 の枠を公開しています。</p></article>
-      <article><span>02</span><h2>変更案内</h2><p>一部の枠は点検、天候、資料整理により表示が変わる場合があります。</p></article>
-      <article><span>03</span><h2>確認事項</h2><p>同じ時刻が複数資料に出る場合は、資料名と更新時刻を確認してください。</p></article>
+      <article><span>01</span><h2>開場時刻</h2><p>各回の開場は投影開始15分前です。夜間特別回のみ18:22開場、18:35最終案内です。</p></article>
+      <article><span>02</span><h2>休演日</h2><p>毎週水曜休館。機材点検日は番組を変更または休演する場合があります。</p></article>
+      <article><span>03</span><h2>団体利用</h2><p>学習投影は平日午前に実施します。一般投影とは受付場所が異なります。</p></article>
     </section>
-    <nav class="of-related"><a href="./index.html">公式トップ</a><a href="./programs.html">作品案内</a><a href="./tickets.html">チケット</a><a href="./access.html">アクセス</a><a href="../investigate/index.html">20問調査</a></nav>
+
+    <nav class="of-related">
+      <a href="./index.html">公式トップ</a>
+      <a href="./programs.html">番組案内</a>
+      <a href="./tickets.html">チケット</a>
+      <a href="./access.html">アクセス</a>
+      <a href="../investigate/index.html">調査を開始</a>
+    </nav>
   </main>
 </body>
 </html>

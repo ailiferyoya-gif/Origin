@@ -67,3 +67,30 @@ html,body{max-width:100%;overflow-x:hidden}
 .case-entry .notice-strip{background:rgba(3,16,24,.82);border-left-color:#ffd36f;color:#f8fbff}
 .case-entry .gimmick-card,.case-entry .gimmick-step{background:rgba(0,0,0,.26);border-color:rgba(255,255,255,.22);color:#edf4ff}
 /* END_ENTRY_CONTRAST_FIX_20260524 */
+
+/* AKATSUKI_OFFICIAL_REFERENCE_20260524 */
+.akatsuki-planetarium-official{background:
+  radial-gradient(circle at 18% 8%,rgba(216,183,95,.18),transparent 28%),
+  radial-gradient(circle at 78% 2%,rgba(102,151,197,.16),transparent 30%),
+  linear-gradient(135deg,#07111f,#04070d 72%)}
+.akatsuki-planetarium-official .of-header{border-bottom:1px solid rgba(255,255,255,.12)}
+.akatsuki-planetarium-official .of-hero{grid-template-columns:minmax(0,1fr) minmax(320px,.44fr);min-height:520px}
+.akatsuki-planetarium-official .of-hero h1{font-size:clamp(2rem,3.4vw,3.45rem);max-width:18ch;letter-spacing:0}
+.akatsuki-planetarium-official .of-page-head h1{font-size:clamp(1.9rem,3.8vw,3.5rem);letter-spacing:0}
+.akatsuki-quick-grid,.program-list,.access-panel,.akatsuki-table-section,.notice-list{margin-top:24px}
+.akatsuki-quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.akatsuki-quick-grid article,.program-list article,.access-panel article,.akatsuki-table-section,.notice-list article{border:1px solid rgba(255,255,255,.14);border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.068),rgba(255,255,255,.028));padding:18px}
+.akatsuki-quick-grid span,.notice-list time{display:block;color:var(--official-accent);font-size:.78rem;font-weight:900;letter-spacing:.12em}
+.akatsuki-quick-grid strong{display:block;margin:4px 0 6px;font-size:1.05rem}
+.akatsuki-quick-grid p,.program-list p,.access-panel p,.notice-list p{color:#e5dccc;margin:.35em 0 0}
+.program-list,.access-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.program-list h2,.access-panel h2,.notice-list h2,.akatsuki-table-section h2{margin:.1em 0 .35em;font-size:1.32rem;letter-spacing:0}
+.planetarium-table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:8px;background:rgba(0,0,0,.18)}
+.planetarium-table th,.planetarium-table td{border-bottom:1px solid rgba(255,255,255,.12);padding:12px 10px;text-align:left;vertical-align:top}
+.planetarium-table th{color:#10151d;background:var(--official-accent);font-weight:900}
+.planetarium-table tr:last-child td{border-bottom:0}
+.akatsuki-note{border-left:3px solid var(--official-accent);padding-left:12px;color:#efe6d8}
+.notice-list{display:grid;gap:12px}
+@media(max-width:840px){.akatsuki-planetarium-official .of-hero,.akatsuki-quick-grid,.program-list,.access-panel{grid-template-columns:1fr}.planetarium-table{font-size:.92rem}.planetarium-table th,.planetarium-table td{padding:10px 8px}}
+@media(max-width:560px){.planetarium-table,.planetarium-table thead,.planetarium-table tbody,.planetarium-table tr,.planetarium-table th,.planetarium-table td{display:block}.planetarium-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.planetarium-table tr{border:1px solid rgba(255,255,255,.14);border-radius:8px;margin:10px 0;background:rgba(0,0,0,.18);overflow:hidden}.planetarium-table td{border-bottom:1px solid rgba(255,255,255,.1);display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:10px}.planetarium-table td:before{color:var(--official-accent);font-weight:900}.planetarium-table tr td:nth-child(1):before{content:"開始"}.planetarium-table tr td:nth-child(2):before{content:"番組"}.planetarium-table tr td:nth-child(3):before{content:"所要時間"}.planetarium-table tr td:nth-child(4):before{content:"備考"}}
+/* END_AKATSUKI_OFFICIAL_REFERENCE_20260524 */
