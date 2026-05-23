@@ -338,3 +338,22 @@
 
 /* MAIN_SYNOPSIS_20260523 */
 .case-entry .synopsis-panel{border-color:rgba(224,185,95,.28);background:linear-gradient(135deg,rgba(10,14,18,.82),rgba(26,22,18,.72))}.case-entry .synopsis-panel h2{color:#f0c96a}.case-entry .synopsis-panel p{max-width:980px;color:#e8eee9}.case-entry .synopsis-panel .case-code{white-space:nowrap}
+
+/* gimmick design expansion 2026-05-24 */
+.gimmick-panel,.gimmick-lab{border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.055);padding:clamp(16px,3vw,24px);margin:22px auto}
+.gimmick-panel{width:min(1120px,calc(100% - 32px))}
+.gimmick-kicker{font-size:.78rem;letter-spacing:.12em;font-weight:800;color:var(--case-accent,#d8b75f);margin:0 0 6px;text-transform:uppercase}
+.gimmick-panel h2,.gimmick-lab h1,.gimmick-lab h2{line-height:1.25;letter-spacing:0}
+.gimmick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.gimmick-card{border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(0,0,0,.16);padding:14px}
+.gimmick-card strong{display:block;margin-bottom:6px;color:var(--case-accent,#d8b75f)}
+.gimmick-card p{margin:0}
+.gimmick-action{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 14px;text-decoration:none;background:rgba(255,255,255,.08)}
+.gimmick-lab{width:min(1040px,calc(100% - 32px));color:inherit}
+.gimmick-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.gimmick-step{border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.045);padding:14px}
+.gimmick-step span{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:999px;background:var(--case-accent,#d8b75f);color:#111;font-weight:800;margin-bottom:8px}
+.gimmick-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.gimmick-links a{border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:9px 12px;text-decoration:none;background:rgba(255,255,255,.06)}
+.gimmick-note{border-left:3px solid var(--case-accent,#d8b75f);padding-left:12px;color:inherit;opacity:.9}
+@media(max-width:780px){.gimmick-grid,.gimmick-steps{grid-template-columns:1fr}.gimmick-links a,.gimmick-action{width:100%;text-align:center}}

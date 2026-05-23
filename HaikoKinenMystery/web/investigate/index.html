@@ -28,7 +28,20 @@
     </section>
 
     <section class="investigate-grid lux-investigate-grid">
-      <section class="stage-card" data-case="CASE 01"><h2>第1問: 写真にいない児童</h2><p class="stage-hint">同じ学級を扱う資料で、人数の扱いが揃っていない箇所を探します。</p><div class="stage-logic"><div><strong>照合式</strong>学級資料の名簿欄 + 同窓生の記憶</div><div><strong>入力</strong>児童名</div></div><form data-stage="1"><input name="answer" autocomplete="off"><button>照合する</button><div class="result">未照合</div></form></section>
+      <section class="stage-card" data-case="CASE 01"><h2>第1問: 写真にいない児童</h2><p class="stage-hint">同じ学級を扱う資料で、人数の扱いが揃っていない箇所を探します。</p><div class="stage-logic"><div><strong>照合式</strong>学級資料の名簿欄 + 同窓生の記憶</div><div><strong>入力</strong>児童名</div></div>
+
+
+
+<section class="gimmick-panel" id="gimmick-questions">
+  <p class="gimmick-kicker">GIMMICK CHECK</p>
+  <h2>この調査で使う解き方</h2>
+  <div class="gimmick-grid">
+    <article class="gimmick-card"><strong>主役</strong><p>工場動線図と古い注意看板を重ねる</p></article>
+    <article class="gimmick-card"><strong>補助</strong><p>錆びた番号札を工程順に並べる</p></article>
+    <article class="gimmick-card"><strong>最終</strong><p>稼働していない機械音の出所を突き止める</p></article>
+  </div>
+</section>
+<form data-stage="1"><input name="answer" autocomplete="off"><button>照合する</button><div class="result">未照合</div></form></section>
       <section class="stage-card locked" data-lock="2" data-case="CASE 02"><h2>第2問: 名簿登録数</h2><p class="stage-hint">台紙の説明と名簿欄を見比べ、登録された側の数を拾います。</p><div class="stage-logic"><div><strong>照合式</strong>学級台紙 + 名簿登録欄</div><div><strong>入力</strong>人数</div></div><form data-stage="2"><input name="answer" autocomplete="off"><button>照合する</button><div class="result">第1問を解くと有効になります。</div></form></section>
       <section class="stage-card locked" data-lock="3" data-case="CASE 03"><h2>第3問: 写真人数</h2><p class="stage-hint">保存名に残された数は、登録数とは別のものを示しています。</p><div class="stage-logic"><div><strong>照合式</strong>写真の保存名 + 登録数との差</div><div><strong>入力</strong>写真側の人数またはファイル名</div></div><form data-stage="3"><input name="answer" autocomplete="off"><button>照合する</button><div class="result">第2問を解くと有効になります。</div></form></section>
       <section class="stage-card locked" data-lock="4" data-case="CASE 04"><h2>第4問: 閉じられた日</h2><p class="stage-hint">安全連絡と貸出記録が同じ日に重なる箇所を確認します。</p><div class="stage-logic"><div><strong>照合式</strong>校内の閉鎖記録 + 図書室の未完了記録</div><div><strong>入力</strong>日付</div></div><form data-stage="4"><input name="answer" autocomplete="off"><button>照合する</button><div class="result">第3問を解くと有効になります。</div></form></section>
