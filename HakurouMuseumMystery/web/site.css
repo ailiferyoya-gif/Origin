@@ -494,3 +494,17 @@ html,body{max-width:100%;overflow-x:hidden}
 .case-entry .notice-strip{margin-top:18px;border-left:4px solid var(--case-accent,#64b6ac);padding:12px 14px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.9)}
 @media(max-width:860px){.case-entry .case-top,.case-entry .topbar{align-items:flex-start;flex-direction:column;gap:6px;width:min(100% - 24px,1120px)}.case-entry main{width:min(100% - 24px,1120px)}.case-entry .hero,.case-entry .entry-hero,.case-entry .brief-grid,.case-entry .entry-grid,.case-entry .case-links,.case-entry .gimmick-grid{grid-template-columns:1fr}.case-entry .hero-copy,.case-entry .request-card,.case-entry .packet-card,.case-entry .directive-card,.case-entry .brief-grid article,.case-entry .case-link-card{padding:16px}.case-entry .hero-image{min-height:240px}.case-entry .hero-actions a,.case-entry .start-investigation,.case-entry .gimmick-action{width:100%;text-align:center}.case-entry .hero h1,.case-entry .case-title{font-size:clamp(1.75rem,9vw,2.8rem)}.case-entry .case-link-card{min-height:auto}}
 /* END_ENTRY_LAYOUT_UNIFY_20260524 */
+
+/* ENTRY_CONTRAST_FIX_20260524 */
+.case-entry{color:#f8fbff}
+.case-entry .hero-copy,.case-entry .request-card,.case-entry .packet-card,.case-entry .directive-card,.case-entry .brief-grid article,.case-entry .case-link-card,.case-entry .gimmick-panel,.case-entry .story-panel,.case-entry .synopsis-panel{background:rgba(4,8,14,.86);border-color:rgba(255,255,255,.26);color:#f8fbff;box-shadow:0 20px 54px rgba(0,0,0,.42)}
+.case-entry h1,.case-entry h2,.case-entry h3,.case-entry .case-title,.case-entry .hero h1,.case-entry .brand,.case-entry .case-link-card strong,.case-entry .gimmick-card strong{color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,.42)}
+.case-entry p,.case-entry li,.case-entry span,.case-entry small,.case-entry .lead,.case-entry .case-lead,.case-entry .packet-card,.case-entry .directive-card,.case-entry .brief-grid article,.case-entry .story-panel p,.case-entry .synopsis-panel p{color:#edf4ff}
+.case-entry .case-top span,.case-entry .small,.case-entry .case-link-card span,.case-entry .hero-image figcaption{color:#dce8f6}
+.case-entry .eyebrow,.case-entry .case-kicker,.case-entry .gimmick-kicker{color:#ffd36f;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+.case-entry .request-meta span{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:#f4f8ff}
+.case-entry .hero-actions a,.case-entry .gimmick-action{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.34);color:#f8fbff}
+.case-entry .hero-actions .primary,.case-entry .start-investigation{background:#ffd36f;color:#111827;text-shadow:none;border-color:transparent}
+.case-entry .notice-strip{background:rgba(3,16,24,.82);border-left-color:#ffd36f;color:#f8fbff}
+.case-entry .gimmick-card,.case-entry .gimmick-step{background:rgba(0,0,0,.26);border-color:rgba(255,255,255,.22);color:#edf4ff}
+/* END_ENTRY_CONTRAST_FIX_20260524 */
