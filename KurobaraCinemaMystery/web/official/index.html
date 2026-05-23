@@ -1,13 +1,81 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>公式サイト</title>
-  <link rel="stylesheet" href="../site.css">
-  <script src="../../../official-rebuild.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黒薔薇シネマ公式サイト | 黒薔薇シネマ</title>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="./official.css">
 </head>
-<body class="official-shell" data-case="KurobaraCinemaMystery">
-  <noscript>この公式サイトを表示するにはJavaScriptを有効にしてください。</noscript>
+<body class="kb-site">
+<a class="kb-ticketbar" href="./about/index.html">空席状況・上映時間はこちら</a>
+<header class="kb-header">
+  <a class="kb-logo" href="./index.html"><span>黒薔薇シネマ</span><small>KUROBARA CINEMA</small></a>
+  <nav aria-label="公式サイト内メニュー">
+    <a href="./about/index.html">上映案内</a>
+    <a href="./facility/index.html">館内設備</a>
+    <a href="./safety/index.html">映写管理</a>
+  </nav>
+</header>
+
+<main>
+  <section class="kb-mainvisual">
+    <figure class="kb-hero-image">
+      <img src="../assets/kurobara-cinema-exterior-2020s.png" alt="">
+      <figcaption>旧市街側入口 / 夜間受付</figcaption>
+    </figure>
+    <div class="kb-cinema-copy">
+      <p class="kb-kicker">OLD CITY SINGLE SCREEN</p>
+      <h1>映画でも、<wbr>見ませんか。</h1>
+      <p>旧市街に残る一スクリーンの映画館です。上映時間、館内設備、映写管理のお知らせを掲載しています。</p>
+    </div>
+  </section>
+
+  <section class="kb-menu-grid" aria-label="公式サイトメニュー">
+    <a href="./about/index.html"><span>上映スケジュール</span></a>
+    <a href="./index.html#today-schedule"><span>上映中作品</span></a>
+    <a href="./facility/index.html"><span>劇場案内</span></a>
+    <a href="./safety/index.html"><span>映写管理</span></a>
+    <a href="./index.html#fees"><span>料金・設備</span></a>
+    <a href="./index.html#news"><span>お知らせ</span></a>
+  </section>
+
+  <section class="kb-home-layout" id="news">
+    <div class="kb-recommend">
+      <p class="kb-kicker">PICK UP</p>
+      <h2>本日のご案内</h2>
+      <p>最終回は受付が混み合います。整理券、チケット控え、退館時刻を受付でご確認ください。</p>
+      <div class="kb-compact-list">
+        <p><span>17:40</span>受付開始</p>
+        <p><span>18:10</span>旧市街特集</p>
+        <p><span>20:50</span>最終上映</p>
+      </div>
+    </div>
+    <div class="kb-news">
+      <p class="kb-kicker">お知らせ</p>
+      <a href="./safety/index.html"><time>2026.05.20</time><span>第2映写機の稼働記録を更新しました。</span></a>
+      <a href="./about/index.html"><time>2026.05.20</time><span>本日の最終上映は20:50開始です。</span></a>
+      <a href="./facility/index.html"><time>2026.05.19</time><span>ロビー受付の混雑時間について。</span></a>
+      <a href="./facility/index.html"><time>2026.05.18</time><span>後方通路の点検時間を変更しました。</span></a>
+    </div>
+  </section>
+
+  <section class="kb-schedule" id="today-schedule">
+    <div class="kb-section-title">
+      <p class="kb-kicker">TODAY'S SCHEDULE</p>
+      <h2>本日の上映時間</h2>
+    </div>
+    <article><h3>旧市街特集</h3><p>18:10～20:15</p><span>SCREEN 1</span></article>
+    <article><h3>最終上映</h3><p>20:50～22:38</p><span>終映後点検あり</span></article>
+    <article><h3>35mmフィルム回</h3><p>近日上映</p><span>映写室確認中</span></article>
+  </section>
+
+  <section class="kb-info-band" id="fees">
+    <article><span>料金</span><strong>一般 1,800円</strong><p>学生・シニア料金は受付で証明書をご提示ください。</p></article>
+    <article><span>座席</span><strong>自由席</strong><p>開場は各回10分前です。満席時は入場を締め切ります。</p></article>
+    <article><span>アクセス</span><strong>旧市街北口 徒歩6分</strong><p>夜間は劇場正面入口のみご利用いただけます。</p></article>
+    <article><span>座席札</span><strong>終映後確認</strong><p>控え札は 1番:列案内、2番:C側扉、3番:番台、4番:七席目の順に戻します。映写室の台帳番号は 2-1-4-3 です。</p></article>
+  </section>
+</main>
 </body>
 </html>

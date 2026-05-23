@@ -1,13 +1,70 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>公式サイト</title>
-  <link rel="stylesheet" href="../site.css">
-  <script src="../../../official-rebuild.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>収蔵品検索 | 白楼民俗資料館</title>
+<link rel="stylesheet" href="../site.css">
 </head>
-<body class="official-shell" data-case="HakurouMuseumMystery">
-  <noscript>この公式サイトを表示するにはJavaScriptを有効にしてください。</noscript>
+<body class="hakurou-official tokugawa-ref">
+<header class="museum-header tokugawa-header">
+  <a class="museum-logo" href="./index.html">
+    <span>白楼民俗資料館</span>
+    <small>HAKUROU LOCAL MUSEUM</small>
+  </a>
+  <nav class="museum-nav" aria-label="白楼民俗資料館公式サイト">
+    <a href="./index.html">トップ</a>
+    <a href="./visit.html">来館案内</a>
+    <a href="./exhibitions.html">展覧会</a>
+    <a href="./learning.html">イベント</a>
+    <a aria-current="page" href="./collection.html">収蔵品検索</a>
+    <a href="./research.html">調査研究</a>
+    <a href="./news.html">最新情報</a>
+  </nav>
+</header>
+<main class="official-subpage">
+  <section class="subpage-head">
+    <p class="eyebrow">Collection Search</p>
+    <h1>収蔵品検索</h1>
+    <p>公開可能な収蔵資料を、分類と資料番号から確認できます。</p>
+  </section>
+  <section class="collection-search-panel">
+    <form action="./collection.html#results">
+      <input value="MSM-0817" aria-label="収蔵品検索キーワード">
+      <button type="submit">検索</button>
+    </form>
+  </section>
+  <section class="collection-layout">
+    <aside aria-label="分類">
+      <a href="#ritual">祭礼資料</a>
+      <a href="#daily">生活資料</a>
+      <a href="#documents">古文書</a>
+      <a href="#photo-ledger">写真台帳</a>
+      <a href="#storage-box">保存箱</a>
+    </aside>
+    <div class="collection-results" id="results">
+      <article id="msm-0817">
+        <img src="../assets/hakurou-collection-table.png" alt="収蔵資料の台帳と木箱">
+        <div><span id="ritual">祭礼資料</span><h2><span class="nowrap">MSM-0817</span> 祭礼面断片</h2><p>第2展示室ラベルと旧台帳で年代注記が異なるため、現在照合中です。</p><a href="./research.html#msm-0817-note">調査注記を見る</a></div>
+      </article>
+      <article id="daily">
+        <img src="../assets/hakurou-evidence-desk.png" alt="整理中の生活資料">
+        <div><span>生活資料</span><h2>灯明皿一式</h2><p>海辺の小祭礼で用いられたとされる陶器片を含む一式です。</p><a href="./exhibitions.html#sea-fog">展示を見る</a></div>
+      </article>
+      <article id="documents">
+        <img src="../assets/evidence.png" alt="古文書の机上資料">
+        <div><span>古文書</span><h2>寄進控写</h2><p>寄進者名の一部が墨で伏せられた控え。公開範囲を確認中です。</p><a href="./restricted/index.html#record">限定記録へ</a></div>
+      </article>
+      <article id="photo-ledger">
+        <img src="../assets/hakurou-collection-table.png" alt="写真台帳">
+        <div><span>写真台帳</span><h2>昭和期町内写真台帳</h2><p>台帳番号と展示番号の対応を更新しました。</p><a href="./news.html#news-20260522">更新情報へ</a></div>
+      </article>
+      <article id="storage-box">
+        <img src="../assets/hakurou-evidence-desk.png" alt="保存箱と管理札">
+        <div><span>保存箱</span><h2>旧収蔵箱 3-B</h2><p>鍵管理台帳に移動記録が残る保存箱です。</p><a href="./keys/index.html#key-log">鍵台帳へ</a></div>
+      </article>
+    </div>
+  </section>
+</main>
 </body>
 </html>

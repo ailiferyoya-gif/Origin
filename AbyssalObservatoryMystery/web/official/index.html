@@ -1,13 +1,63 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>公式サイト</title>
-  <link rel="stylesheet" href="../site.css">
-  <script src="../../../official-rebuild.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黒潮海底観測所 | 公式サイト</title>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="./official.css">
 </head>
-<body class="official-shell" data-case="AbyssalObservatoryMystery">
-  <noscript>この公式サイトを表示するにはJavaScriptを有効にしてください。</noscript>
+<body class="abyss-official">
+<header class="abyss-header">
+  <a class="abyss-logo" href="./index.html"><span>黒潮海底観測所</span><small>KUROSHIO ABYSSAL OBSERVATORY</small></a>
+  <nav aria-label="公式サイト内メニュー">
+    <a href="./about/index.html">観測概要</a>
+    <a href="./facility/index.html">施設設備</a>
+    <a href="./safety/index.html">安全管理</a>
+  </nav>
+</header>
+<main>
+  <section class="abyss-hero">
+    <figure class="abyss-hero__image"><img src="../assets/abyss-control-hero-2020s.png" alt=""></figure>
+    <div class="abyss-hero__copy">
+      <p class="abyss-kicker">DEEP CURRENT RESEARCH</p>
+      <h1>海底の<wbr>沈黙を、<wbr>数字で聞く。</h1>
+      <p>黒潮海底観測所は、沖合八キロの海底ケーブルを通じて、水圧、潮流、低周波音、設備状態を常時観測する研究施設です。公開データと施設利用案内をこちらでお知らせします。</p>
+      <div class="abyss-actions">
+        <a href="./about/index.html">観測概要を見る</a>
+        <a href="./facility/index.html">施設設備を見る</a>
+      </div>
+    </div>
+    <aside class="abyss-depth"><span>DEPTH</span><strong>−820m</strong><small>第三区画 / 海底観測線</small></aside>
+  </section>
+
+  <section class="abyss-console" aria-label="観測ステータス">
+    <div><span>PRESSURE</span><strong>82.1MPa</strong><p>第三区画の水圧値。研究利用向けに丸めた速報値です。</p></div>
+    <div><span>CURRENT</span><strong>南西 1.8kt</strong><p>潮流計Cの平均値。2014年11月18日は再確認履歴があります。</p></div>
+    <div><span>ACOUSTIC</span><strong>17Hz</strong><p>低周波音記録。整備日には一部欠測があります。</p></div>
+  </section>
+
+  <section class="abyss-observe">
+    <div>
+      <p class="abyss-kicker">OBSERVATION ROOM</p>
+      <h2>管制室から、<wbr>海底ケーブルの<wbr>微細な変化を読む。</h2>
+      <p>観測所は、地上管制室、海底ケーブル、耐圧観測筒、潮流計、音響センサーで構成されています。保守点検中はデータ公開が遅れる場合があります。</p>
+    </div>
+    <img src="../assets/abyss-sensor-floor-2020s.png" alt="">
+  </section>
+
+  <section class="abyss-porthole">
+    <img src="../assets/hero-observatory.png" alt="">
+    <div><p class="abyss-kicker">ABYSSAL WINDOW</p><h2>観測筒は、<wbr>暗い水圧の中で<wbr>静かに応答します。</h2><p>大きな変化ではなく、わずかな遅れ、欠測、再計算の履歴を確認するための設備です。</p></div>
+  </section>
+
+  <section class="abyss-cards" aria-label="案内ページ">
+    <a href="./about/index.html"><span>01</span><h2>観測概要</h2><p>研究目的、観測項目、公開データの扱い。</p></a>
+    <a href="./facility/index.html"><span>02</span><h2>施設設備</h2><p>管制室、海底ケーブル、耐圧観測筒。</p></a>
+    <a href="./safety/index.html"><span>03</span><h2>安全管理</h2><p>点検、欠測、訂正記録、安全上の案内。</p></a>
+    <a href="./safety/index.html"><span>04</span><h2>音響ログ補記</h2><p>欠測行は 2・4・5 の順に再読します。行頭は「1管・2B・3東・4区・5画」。保守員はこの順で区画札を戻してください。</p></a>
+  </section>
+</main>
+<script src="../textflow.js"></script>
 </body>
 </html>

@@ -45,6 +45,16 @@
 - 関連リンク先として使う `web/index.html`、`web/investigate/index.html`、`web/official/index.html` は全件存在確認済み。
 
 ## 未完了・次にやること
+- 2026-05-24追記: 以下8件は完成状態として扱い、ユーザーが個別に名前を指定しない限り、今後「すべて」「全部」「全件」作業の対象に含めない。
+  - `CrimsonClinicMystery`
+  - `AbyssalObservatoryMystery`
+  - `AonagiDataCenterMystery`
+  - `GinreiDepartmentMystery`
+  - `HakurouMuseumMystery`
+  - `HaikoKinenMystery`
+  - `HoshigauraRailMystery`
+  - `KurobaraCinemaMystery`
+- 上記8件の `web/official` は、全公式サイト再構成前の完成状態へ戻した。
 - 最後のまとめチェックで、ユーザー視点で各公式サイトの印象を確認する。
 - さらに販売レベルへ寄せる場合は、今回の共通再構成を土台に、1件ずつ専用下層ページと追加生成画像を増やす。
 - 現状は「全件を壊れず見られる公式サイト品質に底上げ」した段階。
