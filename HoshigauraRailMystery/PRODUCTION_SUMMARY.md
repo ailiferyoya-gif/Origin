@@ -18,7 +18,7 @@
 - `web/news/`: 星ヶ浦タイムス
 - `web/city/`: 星ヶ浦町安全情報
 - `web/blog/`: 沿線カフェ日記
-- `web/board/`: 沿線留言板
+- `web/board/`: 沿線掲示板
 - `web/investigate/`: 15問の資料照合ノート
 
 ## デザイン方針
