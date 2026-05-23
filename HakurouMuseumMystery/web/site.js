@@ -23,6 +23,16 @@ const answers = [
 const storageKey = "HakurouMuseumMystery_deep_unlocked";
 const norm = (s) => String(s || "").replace(/[\s　。、・「」『』（）()]/g, "").toLowerCase();
 let unlocked = Number(localStorage.getItem(storageKey) || "1");
+const missHints = {
+  6: "収蔵導線資料の展示室導線メモと、夜間警備ログの21:17を重ねてください。",
+  8: "第2展示室の後に動く場所を見ます。収蔵庫B列の開閉時刻です。",
+  9: "収蔵導線資料では、第2展示室から収蔵庫B列へ進んだ先の箱番号を見ます。",
+  10: "保存整理メールと改訂履歴を重ねます。先に合わせたのは台帳と展示ラベルです。",
+  11: "キャプション改訂履歴の由来欄で、旧控えに残る語を確認してください。",
+  14: "公開時刻は進んでいますが、承認欄は空欄のままです。",
+  19: "奥村志乃が残そうとした警告は、個人メモと収蔵導線資料の赤字です。",
+  20: "最終報告は真贋ではなく、MSM-0817の由来が偽装された構造を一文にしてください。"
+};
 function renderLocks() {
   document.querySelectorAll("[data-q]").forEach((card) => {
     const n = Number(card.dataset.q);
@@ -52,7 +62,7 @@ function checkAnswer(n) {
     }
     renderLocks();
   } else {
-    msg.textContent = "一致しません。資料の表記、日付、人物名をもう一度確認してください。";
+    msg.textContent = missHints[n] || "一致しません。資料の表記、日付、人物名をもう一度確認してください。";
     msg.className = "msg ng";
   }
 }
