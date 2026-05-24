@@ -437,3 +437,61 @@
 - `.box` の色は `rgba(6, 14, 22, 0.72)` 背景、`rgb(232, 241, 247)` 文字で視認性改善。
 - PC幅で横スクロールなし。
 - `git diff --check` 問題なし。LF/CRLF警告のみ。
+
+## 2026-05-24 全謎解き入口ページ Crimson型統一追記
+
+### 作業状況
+- ユーザー指摘:
+  - ロック済み作品も含め、各謎解きのメインページを `CrimsonClinicMystery` の入口ページに近づける。
+  - パスワードあり/なしの謎解きがあるため、完全に同一構成へは寄せすぎない。
+- 変更前バックアップ取得済み:
+  - `C:\Users\kogit\Documents\Codex\backups\all-mystery-main-pages-crimson-style-20260524`
+
+### 変更点
+- 対象:
+  - `CrimsonClinicMystery` 本体を基準として残し、それ以外の `*Mystery/web/index.html` をCrimson型に寄せた。
+  - Booth同梱版がある作品は、同梱版 `web/index.html` も同期。
+- 各入口ページを以下の縦読み構成へ整理:
+  - `あらすじ`
+  - `調査の仕方`
+  - `調査リンク`
+- 旧入口にあった左右分割の `entry-hero` / `packet-card` / `brief-grid` 系を入口ページから撤去。
+- 作品ごとの以下は既存ページから抽出して維持:
+  - 作品名
+  - 管理番号
+  - 背景画像
+  - あらすじ本文
+  - 既存リンク先
+- パスワードや管理画面がある作品は、調査手順2を `認証が必要な記録を見る` に変更。
+- パスワード/管理画面がない作品は、調査手順2を `関連記録を見る` に変更。
+- 入口リンクの `回答入力と進行確認` はメタ寄りなので `記録確認と進行管理` に変更。
+- `ギミック調査室` の入口リンク表記は `記録整理控え` に変更。
+- 各対象 `web/site.css` に入口統一用CSSを追加:
+  - `MAIN_ENTRY_CRIMSON_STYLE_20260524`
+  - `MAIN_ENTRY_BACKGROUND_FIX_20260524`
+- Booth版の一部で背景画像名が `hero.png` に寄ったため、本体と同じ背景画像名へ修正。
+
+### 確認済み
+- 背景画像の存在確認: Missing count 0。
+- 入口ページ内リンク存在確認: missingCount 0。
+- 旧入口分割要素とメタ寄り表記の残存なし:
+  - `entry-hero`
+  - `packet-card`
+  - `brief-grid`
+  - `回答入力と進行確認`
+  - `ギミック調査室`
+- ブラウザ代表確認済み:
+  - `AbyssalObservatoryMystery/web/index.html`
+  - `AkatsukiPlanetariumMystery/web/index.html`
+  - `AonagiDataCenterMystery/web/index.html`
+  - `ShiranuiOnsenMystery/web/index.html`
+  - `HoshigauraRailMystery_BoothPackage/HoshigauraRailMystery_Booth_v1/web/index.html`
+- 代表ページすべて:
+  - `entry-minimal` あり
+  - 旧分割要素なし
+  - 背景表示あり
+  - PC幅で横スクロールなし
+- `git diff --check` 問題なし。LF/CRLF警告のみ。
+
+### 未完了事項
+- この追記時点ではコミット、pushはこれから実施。
