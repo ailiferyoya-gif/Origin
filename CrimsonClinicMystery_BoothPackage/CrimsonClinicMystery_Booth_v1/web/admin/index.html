@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>院内管理 | 紅坂診療所 カルテ改竄事件</title>
+<title>院内管理 | 紅坂診療所 CRN-1006</title>
 <link rel="stylesheet" href="../site.css">
 </head>
 <body class="clinic-admin">
@@ -12,23 +12,34 @@
     <p class="clinic-kicker">INTERNAL ACCESS</p>
     <h1>院内安全管理システム</h1>
     <p>夜間カード履歴、薬剤棚ログ、旧診療所の移管資料を閲覧します。</p>
+    <p class="small muted">PASSCODEは、旧診療所の施設コードと最初の異常時刻を続けたものです。</p>
     <label>PASSCODE<input id="pw" placeholder="HOSP0000" autocomplete="off"></label>
     <button onclick="login()">認証</button>
     <p id="msg" class="admin-msg"></p>
   </section>
   <section id="vault" class="admin-vault" hidden>
     <h2>閲覧制限記録</h2>
+    <p>この画面にある記録は、公開資料ではなく院内照合用の控えです。単独では真相を確定できませんが、新聞、掲示板、業者控えと重ねることで、退路と時刻の矛盾が見えます。</p>
     <div class="vault-grid">
       <a href="../official/restricted/index.html" target="_blank" rel="noopener"><span>安全管理</span><strong>紅坂診療所 制限記録</strong></a>
       <a href="../logs/restricted/index.html" target="_blank" rel="noopener"><span>ログ</span><strong>薬剤棚ログ</strong></a>
       <a href="../contractor/night/index.html" target="_blank" rel="noopener"><span>保守</span><strong>夜間保守記録</strong></a>
     </div>
+    <section class="box">
+      <h3>照合メモ</h3>
+      <ul>
+        <li>23:14の異常は酸素バルブ側に出る。</li>
+        <li>00:02の復旧は、設備復旧というより記録復旧として扱われている。</li>
+        <li>薬剤棚ログは、表向きの事故報告ではなく夜間作業の名目を示す。</li>
+        <li>夜間カードと裏口廊下の記録を重ねると、第二処置室からの退路が消える。</li>
+      </ul>
+    </section>
   </section>
 </main>
 <script>
 function login(){
   const ok=document.getElementById("pw").value.replace(/\s/g,"").toUpperCase()==="HOSP2314";
-  document.getElementById("msg").textContent=ok?"認証しました。":"認証できません。";
+  document.getElementById("msg").textContent=ok?"認証しました。閲覧制限記録を表示します。":"認証できません。施設コードと異常時刻を確認してください。";
   document.getElementById("vault").hidden=!ok;
 }
 </script>
