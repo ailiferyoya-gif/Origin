@@ -440,5 +440,6 @@ html,body{max-width:100%;overflow-x:hidden}
 .case-entry .hero-actions a,.case-entry .gimmick-action{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.34);color:#f8fbff}
 .case-entry .hero-actions .primary,.case-entry .start-investigation{background:#ffd36f;color:#111827;text-shadow:none;border-color:transparent}
 .case-entry .notice-strip{background:rgba(3,16,24,.82);border-left-color:#ffd36f;color:#f8fbff}
+.case-entry .entry-stack{display:block;max-width:920px;margin:18px auto 24px}.case-entry .entry-stack .request-card{padding:clamp(22px,4vw,38px)}.case-entry .entry-stack .request-card p{max-width:780px}.case-entry .entry-steps{grid-template-columns:1fr;margin:18px auto 22px;max-width:920px}.case-entry .entry-steps .directive-card{display:block;min-height:auto}.case-entry .case-links{grid-template-columns:1fr;max-width:920px;margin-left:auto;margin-right:auto}.case-entry .case-link-card{min-height:auto}.case-entry .story-panel,.case-entry .synopsis-panel,.case-entry .notice-strip{max-width:920px;margin-left:auto;margin-right:auto}.case-entry .truth-axis{grid-template-columns:1fr}
 .case-entry .gimmick-card,.case-entry .gimmick-step{background:rgba(0,0,0,.26);border-color:rgba(255,255,255,.22);color:#edf4ff}
 /* END_ENTRY_CONTRAST_FIX_20260524 */
