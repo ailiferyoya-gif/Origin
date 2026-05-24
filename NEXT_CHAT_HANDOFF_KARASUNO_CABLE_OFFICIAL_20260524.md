@@ -65,3 +65,12 @@
 - 対応: トップページの reveal 用 JavaScript と data-reveal 属性を削除。公式全ページで official.css?v=karasuno-static-premium-20260524 を読み込むよう更新。
 - 対応: 共通CSSでアニメーション/transitionを無効化。トップ・下層のカード/表/ステータス/リストの明確な枠線を消し、画像・余白・淡い面・細い区切りだけで構成する静的な見た目に変更。
 - バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-static-premium-all-official-20260524
+
+## 2026-05-24 追加修正: 御在所ロープウエイ参考・画像使い回し禁止
+- ユーザー指摘: 公式サイトがまだ微妙。https://www.gozaisho.co.jp/ を参考にする。画像の使い回しが発生しているため、新規生成画像を使用する。
+- 重要ルール: KarasunoCableMystery公式サイトでは、公式トップ・下層ページのメイン画像を使い回さない。ページごとにChatGPT生成の新規画像を割り当てる。
+- 新規生成画像: karasuno-official-hero-20260524.png / karasuno-operation-20260524.png / karasuno-fares-20260524.png / karasuno-access-20260524.png / karasuno-maintenance-20260524.png / karasuno-lostfound-20260524.png / karasuno-news-20260524.png
+- 対応: 公式全ページのCSSを official.css?v=karasuno-gozaisho-photo-20260524 に更新。御在所ロープウエイのような明るい観光公式サイト寄りに、白基調・緑アクセント・大きな写真・情報カード導線へ変更。
+- バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-gozaisho-reference-20260524
+
+- 追加対応: 駅・アクセスページ内の補助画像にも新規生成画像 karasuno-night-access-20260524.png を割り当て、公式サイト内の主要写真の使い回しを解消。
