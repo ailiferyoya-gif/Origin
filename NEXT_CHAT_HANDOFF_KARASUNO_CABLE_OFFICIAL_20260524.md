@@ -74,3 +74,9 @@
 - バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-gozaisho-reference-20260524
 
 - 追加対応: 駅・アクセスページ内の補助画像にも新規生成画像 karasuno-night-access-20260524.png を割り当て、公式サイト内の主要写真の使い回しを解消。
+
+## 2026-05-24 追加修正: ナビ現在地表示とレイアウト被り解消
+- ユーザー指摘: デザインは良くなったが、ほかのレイアウトとの被りがある。右上の運行状況ボタンが常に緑色になっている。
+- 対応: CSSの `nav a:nth-child(1)` 固定緑指定を削除し、各下層ページの現在地リンクに `class="is-active"` と `aria-current="page"` を付与。
+- 対応: トップのヒーロー写真と運行情報パネルの重なりをなくし、写真下に自然に続く情報ブロックへ変更。
+- バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-active-nav-layout-20260524
