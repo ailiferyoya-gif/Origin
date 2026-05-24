@@ -30,3 +30,20 @@
 - 公式系サイトを複数ページ構成のスタイリッシュな作中サイトへ刷新。
 
 - Booth用フォルダ側にも反映。
+# 2026-05-24 公式サイト再構成
+
+- ユーザー指示: `KarasunoCableMystery` をロックして「すべて」の対象から外し、`ShiranuiOnsenMystery` の公式サイト完成に取り掛かる。
+- 除外対応: `COMPLETED_SITE_EXCLUSIONS_20260524.md` に `KarasunoCableMystery` を追加。
+- バックアップ: `C:\Users\kogit\Documents\Codex\backups\shiranui-onsen-official-20260524`
+- 参考方向: 高級温泉旅館/温泉公式サイトの、写真主体・余白・温泉/客室/料理/館内/安全/お知らせ導線。
+- 新規生成画像:
+  - `web/assets/shiranui-hero-onsen-20260524.png`
+  - `web/assets/shiranui-bath-20260524.png`
+  - `web/assets/shiranui-room-dining-20260524.png`
+  - `web/assets/shiranui-lobby-20260524.png`
+  - `web/assets/shiranui-access-20260524.png`
+  - `web/assets/shiranui-safety-20260524.png`
+  - `web/assets/shiranui-keys-20260524.png`
+  - `web/assets/shiranui-notice-20260524.png`
+  - `web/assets/shiranui-yuamado-20260524.png`
+- 変更内容: `web/official/index.html` と下層6ページを `official-rebuild.js` 依存や旧簡易レイアウトから静的HTMLへ再構成。`official.css` をShiranui専用の温泉旅館デザインへ全面差し替え。
