@@ -59,3 +59,9 @@
 - 対応: 公式トップのCSSバージョンを official.css?v=karasuno-fluid-20260524 に更新。
 - 対応: Google Fonts（Noto Sans JP / BIZ UDPMincho）、半透明・ぼかし・曖昧な境界、ホバーの微動、スクロール reveal アニメーションを追加。
 - バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-modern-motion-20260524
+
+## 2026-05-24 追加修正: 公式全ページを静的・非カード型へ調整
+- ユーザー指摘: 動きが重い。画像だけで見せたい。四角い枠で囲うと安っぽい。対象は公式サイトの全ページ。
+- 対応: トップページの reveal 用 JavaScript と data-reveal 属性を削除。公式全ページで official.css?v=karasuno-static-premium-20260524 を読み込むよう更新。
+- 対応: 共通CSSでアニメーション/transitionを無効化。トップ・下層のカード/表/ステータス/リストの明確な枠線を消し、画像・余白・淡い面・細い区切りだけで構成する静的な見た目に変更。
+- バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-static-premium-all-official-20260524
