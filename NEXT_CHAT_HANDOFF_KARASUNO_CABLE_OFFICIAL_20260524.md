@@ -53,3 +53,9 @@
 
 ## 次にやること
 - ユーザー確認後、必要なら周辺サイト側（市資料、業者、ログ、台帳）もケーブルカー運行・保守記録に合わせてさらに濃くする。
+
+## 2026-05-24 追加修正: KarasunoCable 2024+風モーション調整
+- ユーザー指摘: 枠が硬く、フォントも既存感があるため、2024年以降のサイトを参考によりおしゃれにする。
+- 対応: 公式トップのCSSバージョンを official.css?v=karasuno-fluid-20260524 に更新。
+- 対応: Google Fonts（Noto Sans JP / BIZ UDPMincho）、半透明・ぼかし・曖昧な境界、ホバーの微動、スクロール reveal アニメーションを追加。
+- バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-modern-motion-20260524

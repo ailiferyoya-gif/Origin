@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>烏野ケーブル | 公式サイト</title>
   <link rel="stylesheet" href="../site.css">
-  <link rel="stylesheet" href="./official.css?v=karasuno-slope-20260524">
+  <link rel="stylesheet" href="./official.css?v=karasuno-fluid-20260524">
 </head>
 <body class="karasuno-cable-site karasuno-slope-design">
   <header class="kc-slope-header">
@@ -21,7 +21,7 @@
   </header>
 
   <main class="kc-slope-main">
-    <section class="kc-slope-hero" aria-label="烏野ケーブル公式トップ">
+    <section class="kc-slope-hero" aria-label="烏野ケーブル公式トップ" data-reveal>
       <div class="kc-visual">
         <img src="../assets/official-hero-generated.png" alt="山霧に包まれた烏野ケーブルの駅舎と軌道">
         <div class="kc-route-plate" aria-label="路線図">
@@ -54,14 +54,14 @@
       </div>
     </section>
 
-    <section class="kc-slope-strip" aria-label="利用状況">
+    <section class="kc-slope-strip" aria-label="利用状況" data-reveal>
       <article><span>WAIT</span><strong>待ち時間 約10分</strong><p>山麓駅・山上駅ともに通常案内中。</p></article>
       <article><span>VISIBILITY</span><strong>視界 240m</strong><p>山上付近に薄い霧。安全基準内。</p></article>
       <article><span>LAST</span><strong>最終 17:40</strong><p>最終便後、駅舎は閉鎖されます。</p></article>
       <article><span>NOTE</span><strong>山上駅チャイム試験</strong><p>夜間に試験鳴動を行う場合があります。</p></article>
     </section>
 
-    <section class="kc-incline-section">
+    <section class="kc-incline-section" data-reveal>
       <div class="kc-incline-copy">
         <p class="kc-board-kicker">INCLINE MAP</p>
         <h2>標高214mから616mへ。</h2>
@@ -74,7 +74,7 @@
       </ol>
     </section>
 
-    <section class="kc-board-grid" aria-label="公式メニュー">
+    <section class="kc-board-grid" aria-label="公式メニュー" data-reveal>
       <a href="./about/index.html"><span>OPERATION</span><strong>運行状況</strong><p>天候、濃霧、強風、臨時便の案内。</p></a>
       <a href="./facility/index.html"><span>TIMETABLE</span><strong>時刻表・運賃</strong><p>通常ダイヤと往復・片道運賃。</p></a>
       <a href="./map/index.html"><span>STATIONS</span><strong>駅・アクセス</strong><p>山麓駅、山上駅、駐車場、登山道。</p></a>
@@ -83,7 +83,7 @@
       <a href="./restricted/index.html"><span>NOTICE</span><strong>お知らせ</strong><p>運休、点検、施設変更の履歴。</p></a>
     </section>
 
-    <section class="kc-time-wall" aria-label="発車案内">
+    <section class="kc-time-wall" aria-label="発車案内" data-reveal>
       <div>
         <p class="kc-board-kicker">DEPARTURES</p>
         <h2>本日の発車案内</h2>
@@ -98,7 +98,7 @@
       </table>
     </section>
 
-    <section class="kc-news-board">
+    <section class="kc-news-board" data-reveal>
       <p class="kc-board-kicker">NOTICE</p>
       <h2>お知らせ</h2>
       <a href="./restricted/index.html"><time>06/18 05:26</time><span>夜間保守に伴う山上駅放送設備の点検について</span></a>
@@ -106,11 +106,30 @@
       <a href="./keys/index.html"><time>06/17 21:40</time><span>山上駅でのお忘れ物受付場所を変更しました</span></a>
     </section>
 
-    <nav class="kc-related" aria-label="関連ページ">
+    <nav class="kc-related" aria-label="関連ページ" data-reveal>
       <a href="../index.html">謎解き入口</a>
       <a href="../search/index.html">検索</a>
       <a href="../investigate/index.html">調査ノート</a>
     </nav>
   </main>
+  <script>
+    (() => {
+      const targets = document.querySelectorAll('[data-reveal]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        targets.forEach((item) => item.classList.add('is-visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+      targets.forEach((item) => observer.observe(item));
+    })();
+  </script>
 </body>
 </html>
