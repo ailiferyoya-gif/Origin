@@ -1,13 +1,80 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>公式サイト</title>
+  <title>烏野ケーブル | 公式サイト</title>
   <link rel="stylesheet" href="../site.css">
-  <script src="../../../official-rebuild.js" defer></script>
+  <link rel="stylesheet" href="./official.css">
 </head>
-<body class="official-shell" data-case="KarasunoCableMystery">
-  <noscript>この公式サイトを表示するにはJavaScriptを有効にしてください。</noscript>
+<body class="karasuno-cable-site">
+  <header class="kc-header">
+    <a class="kc-logo" href="../index.html"><span>KARASUNO CABLE</span><strong>烏野ケーブル</strong></a>
+    <nav aria-label="公式サイトメニュー">
+      <a href="./about/index.html">運行状況</a>
+      <a href="./facility/index.html">時刻表・運賃</a>
+      <a href="./map/index.html">駅・アクセス</a>
+      <a href="./safety/index.html">安全・点検</a>
+      <a href="./keys/index.html">お忘れ物</a>
+      <a href="./restricted/index.html">お知らせ</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="kc-hero">
+      <img src="../assets/official-hero-generated.png" alt="山霧に包まれた烏野ケーブルの駅舎と軌道">
+      <div class="kc-hero-copy">
+        <p class="kc-kicker">MOUNTAIN CABLE RAILWAY / <span class="case-code">CBL-0209</span></p>
+        <h1>山の朝へ、まっすぐ登る。</h1>
+        <p>烏野ケーブルは、烏野山麓駅から山上駅までを約7分で結ぶ小さな鋼索鉄道です。運行状況、時刻表、運賃、駅施設、点検情報をこの公式サイトでご案内します。</p>
+        <div class="kc-actions">
+          <a class="primary" href="./about/index.html">本日の運行を見る</a>
+          <a href="./facility/index.html">時刻表・運賃へ</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="kc-status" aria-label="本日の運行状況">
+      <div><span>本日の運行</span><strong>通常運行</strong><p>始発 08:20 / 最終 17:40。強風・濃霧時は減速運転または一時見合わせを行います。</p></div>
+      <div><span>待ち時間</span><strong>約10分</strong><p>山麓駅・山上駅ともに通常案内中です。団体利用時は臨時便を設定する場合があります。</p></div>
+      <div><span>点検情報</span><strong>夜間保守あり</strong><p>22:30以降、山上駅の放送設備点検を実施します。旅客運行はありません。</p></div>
+    </section>
+
+    <section class="kc-grid" aria-label="利用案内">
+      <a href="./about/index.html"><span>01</span><h2>運行状況</h2><p>天候、点検、臨時便の有無を掲載しています。</p></a>
+      <a href="./facility/index.html"><span>02</span><h2>時刻表・運賃</h2><p>通常ダイヤ、季節運行、往復・片道運賃を確認できます。</p></a>
+      <a href="./map/index.html"><span>03</span><h2>駅・アクセス</h2><p>山麓駅、山上駅、駐車場、登山道連絡口の案内です。</p></a>
+      <a href="./safety/index.html"><span>04</span><h2>安全・点検</h2><p>車両、ワイヤーロープ、放送設備の点検履歴を公開しています。</p></a>
+    </section>
+
+    <section class="kc-feature">
+      <div>
+        <p class="kc-kicker">ROUTE GUIDE</p>
+        <h2>烏野山麓駅から山上駅へ</h2>
+        <p>全長1.1km、高低差402m。急勾配の森を抜け、山上展望台・旧観測所跡・遊歩道入口へ接続します。車窓からは、晴天時に海沿いの街並みまで見渡せます。</p>
+        <dl>
+          <div><dt>所要時間</dt><dd>約7分</dd></div>
+          <div><dt>定員</dt><dd>片道96名</dd></div>
+          <div><dt>運転方式</dt><dd>交走式鋼索鉄道</dd></div>
+        </dl>
+      </div>
+      <img src="../assets/hero.png" alt="烏野ケーブルの資料写真">
+    </section>
+
+    <section class="kc-news">
+      <div><p class="kc-kicker">NOTICE</p><h2>お知らせ</h2></div>
+      <ul>
+        <li><time>06/18 05:26</time><a href="./restricted/index.html">夜間保守に伴う山上駅放送設備の点検について</a></li>
+        <li><time>06/18 05:18</time><a href="./about/index.html">濃霧時の減速運転基準を更新しました</a></li>
+        <li><time>06/17 21:40</time><a href="./keys/index.html">山上駅でのお忘れ物受付場所を変更しました</a></li>
+      </ul>
+    </section>
+
+    <nav class="kc-related" aria-label="関連ページ">
+      <a href="../index.html">謎解き入口</a>
+      <a href="../search/index.html">検索</a>
+      <a href="../investigate/index.html">調査ノート</a>
+    </nav>
+  </main>
 </body>
 </html>
