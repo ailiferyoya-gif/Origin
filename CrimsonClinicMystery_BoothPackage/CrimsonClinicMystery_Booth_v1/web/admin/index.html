@@ -11,7 +11,7 @@
   <section class="admin-login">
     <p class="clinic-kicker">INTERNAL ACCESS</p>
     <h1>院内安全管理システム</h1>
-    <p>夜間カード履歴、薬剤棚ログ、旧診療所の移管資料を閲覧します。</p>
+    <p>保存メール、カルテ差分控え、薬剤棚ログ、夜間保守記録を閲覧します。</p>
     <p class="small muted">PASSCODEは、旧診療所の施設コードと最初の異常時刻を続けたものです。</p>
     <label>PASSCODE<input id="pw" placeholder="HOSP0000" autocomplete="off"></label>
     <button onclick="login()">認証</button>
@@ -19,9 +19,8 @@
   </section>
   <section id="vault" class="admin-vault" hidden>
     <h2>閲覧制限記録</h2>
-      <p>この画面にある記録は、公開資料へ移す前の院内保管控えです。新聞、掲示板、業者控えと照会が必要な項目を含みます。</p>
+    <p>この画面にある記録は、公開資料へ移す前の院内保管控えです。新聞、掲示板、業者控えと照会が必要な項目を含みます。</p>
     <div class="vault-grid">
-      <a href="../official/restricted/index.html" target="_blank" rel="noopener"><span>安全管理</span><strong>紅坂診療所 制限記録</strong></a>
       <a href="../mail/index.html" target="_blank" rel="noopener"><span>院内連絡</span><strong>保存メール</strong></a>
       <a href="../medical/index.html" target="_blank" rel="noopener"><span>医療資料</span><strong>カルテ差分控え</strong></a>
       <a href="../logs/restricted/index.html" target="_blank" rel="noopener"><span>ログ</span><strong>薬剤棚ログ</strong></a>
@@ -33,7 +32,7 @@
         <li>23:14の異常は酸素バルブ側に出る。</li>
         <li>00:02の復旧は、設備復旧というより記録復旧として扱われている。</li>
         <li>薬剤棚ログは、表向きの事故報告ではなく夜間作業の名目を示す。</li>
-        <li>夜間カードと裏口廊下の記録を重ねると、第二処置室からの退路が消える。</li>
+        <li>夜間カードと裏口廊下の記録では、第二処置室からの退路が消えている。</li>
       </ul>
     </section>
   </section>

@@ -6,14 +6,10 @@
 <title>薬剤棚ログ | 記録保管室</title>
 <link rel="stylesheet" href="../../site.css">
 </head>
-<body class="record-vault">
-<header class="vault-header">
-  <div><span>LOG-B / RESTRICTED</span><h1>薬剤棚ログ</h1></div>
-  <nav><a href="../index.html">記録保管室</a><a href="../missing/index.html">欠落ログ</a></nav>
-</header>
-<main class="vault-doc">
-  <section class="vault-panel vault-panel--locked">
-    <p class="vault-kicker">RESTRICTED ACCESS COPY</p>
+<body class="clinic-admin">
+<main class="admin-console admin-console--records">
+  <section class="admin-vault">
+    <p class="clinic-kicker">RESTRICTED ACCESS COPY</p>
     <h2>管理画面参照ログ</h2>
     <p>管理画面から参照された制限ログです。酸素バルブログ、夜間カード、裏口廊下の記録と同じ日付で保管されています。</p>
     <div class="log-table">
@@ -23,11 +19,16 @@
       <div><time>23:39</time><span class="is-missing">未記録</span><p>薬剤名欄が空白。棚番号だけが残る。</p></div>
       <div><time>00:02</time><span>復旧</span><p>ログ同期復旧。酸素側の欠番と同時に確定。</p></div>
     </div>
-  </section>
-  <section class="vault-note">
+    <section class="box">
     <h2>保管メモ</h2>
     <p>薬剤棚ログは酸素バルブログと別管理です。事件報告書では、第二処置室から裏口廊下へ続く動線の扱いが別紙に分けられています。</p>
     <p>「薬品保管庫」は業者請求の名目にも使われています。請求書にも同じ保管庫名があります。</p>
+    </section>
+    <nav class="admin-record-nav">
+      <a href="../../admin/index.html">管理画面へ戻る</a>
+      <a href="../missing/index.html">酸素バルブログ</a>
+      <a href="../../contractor/night/index.html">夜間保守記録</a>
+    </nav>
   </section>
 </main>
 <script src="../../textflow.js"></script>

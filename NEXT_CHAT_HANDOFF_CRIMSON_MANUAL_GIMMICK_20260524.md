@@ -396,3 +396,44 @@
   - `わかる`
   - `分かる`
 - ブラウザで入口、調査ノート、記録整理控え、医療資料を確認し、指定系メタ表現なし・PC幅横スクロールなし。
+
+## 2026-05-24 CrimsonClinicMystery 管理画面レイアウト・視認性修正追記
+
+### 作業状況
+- ユーザー指摘:
+  - `閲覧制限記録` の `安全管理` は公式HPにあるため、adminの一覧には不要。
+  - `保存メール` 以外は `admin/index.html` とレイアウトを統一したい。
+  - 文字色と背景色が近く、見づらい文字がある。
+- 変更前バックアップ取得済み:
+  - `C:\Users\kogit\Documents\Codex\backups\crimson-admin-layout-visibility-20260524`
+
+### 変更点
+- `CrimsonClinicMystery/web/admin/index.html`
+  - 閲覧制限記録から `安全管理 / 紅坂診療所 制限記録` リンクを削除。
+  - 説明文を、保存メール、カルテ差分控え、薬剤棚ログ、夜間保守記録の閲覧に合わせて調整。
+  - 確認メモ内の表現を作中記録寄りに微修正。
+- `CrimsonClinicMystery/web/medical/index.html`
+  - `case-entry` 系から `clinic-admin` / `admin-console` / `admin-vault` 系レイアウトへ変更。
+  - 管理画面内の内部資料として見えるよう、カード・表・ナビを管理画面調に統一。
+- `CrimsonClinicMystery/web/logs/restricted/index.html`
+  - `record-vault` 系から管理画面レイアウトへ変更。
+  - 管理画面へ戻るリンク、酸素バルブログ、夜間保守記録へのリンクを整理。
+- `CrimsonClinicMystery/web/contractor/night/index.html`
+  - `contractor` 系から管理画面レイアウトへ変更。
+  - 管理画面へ戻るリンク、薬剤棚ログ、請求書へのリンクを整理。
+- `CrimsonClinicMystery/web/site.css`
+  - `clinic-admin .box`、表、記録カード、ログ表、管理画面ナビの配色を追加調整。
+  - 白背景に淡色文字が乗っていた低コントラスト状態を修正。
+- Booth同梱版 `CrimsonClinicMystery_BoothPackage/CrimsonClinicMystery_Booth_v1/web/...` にも同内容を反映済み。
+
+### 確認済み
+- admin本体/Booth版で `official/restricted` への安全管理リンクなし。
+- ブラウザで以下を確認:
+  - `http://127.0.0.1:4400/web/admin/index.html`
+  - `http://127.0.0.1:4400/web/medical/index.html`
+  - `http://127.0.0.1:4400/web/logs/restricted/index.html`
+  - `http://127.0.0.1:4400/web/contractor/night/index.html`
+- 対象ページすべて `clinic-admin` / `admin-console` / `admin-vault` 構成。
+- `.box` の色は `rgba(6, 14, 22, 0.72)` 背景、`rgb(232, 241, 247)` 文字で視認性改善。
+- PC幅で横スクロールなし。
+- `git diff --check` 問題なし。LF/CRLF警告のみ。

@@ -444,3 +444,32 @@ html,body{max-width:100%;overflow-x:hidden}
 .case-entry .entry-minimal{max-width:1000px}.case-entry .entry-minimal .story-panel,.case-entry .entry-minimal .synopsis-panel,.case-entry .entry-minimal .case-links{max-width:1000px}.case-entry .entry-minimal .case-links{grid-template-columns:1fr}.case-entry .entry-minimal .truth-axis{grid-template-columns:1fr}
 .case-entry .gimmick-card,.case-entry .gimmick-step{background:rgba(0,0,0,.26);border-color:rgba(255,255,255,.22);color:#edf4ff}
 /* END_ENTRY_CONTRAST_FIX_20260524 */
+
+/* ADMIN_RECORD_LAYOUT_FIX_20260524 */
+.clinic-admin .admin-console--records{align-content:start;padding:42px 0 64px}
+.clinic-admin .admin-vault h1,.clinic-admin .admin-vault h2,.clinic-admin .admin-vault h3{color:#f7fbff}
+.clinic-admin .admin-vault p,.clinic-admin .admin-vault li{color:#dceaf2}
+.clinic-admin .box{background:rgba(6,14,22,.72);border-color:rgba(180,210,230,.22);color:#e8f1f7}
+.clinic-admin .box h2,.clinic-admin .box h3{color:#f7fbff}
+.clinic-admin .box p,.clinic-admin .box li{color:#dceaf2}
+.clinic-admin table{background:#07111a;color:#e8f1f7;border:1px solid rgba(180,210,230,.24)}
+.clinic-admin th,.clinic-admin td{border-color:rgba(180,210,230,.22)}
+.clinic-admin th{background:rgba(217,232,242,.12);color:#f7fbff}
+.clinic-admin td{background:rgba(255,255,255,.035);color:#dceaf2}
+.clinic-admin .admin-note{border-left:3px solid #d9e8f2;padding-left:12px;color:#dceaf2}
+.clinic-admin .admin-record-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.clinic-admin .admin-record-grid article{margin:0;border:1px solid rgba(180,210,230,.22);background:rgba(6,14,22,.58);padding:16px;color:#dceaf2}
+.clinic-admin .admin-record-grid strong{display:block;color:#f7fbff;margin-bottom:6px}
+.clinic-admin .admin-record-grid p{margin:0}
+.clinic-admin .admin-record-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.clinic-admin .admin-record-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:1px solid rgba(180,210,230,.28);background:rgba(255,255,255,.07);color:#eef8ff;text-decoration:none;padding:8px 12px}
+.clinic-admin .log-table div{grid-template-columns:150px 120px 1fr;border-top-color:rgba(180,210,230,.2)}
+.clinic-admin .log-table time{color:#ffffff}
+.clinic-admin .log-table span{color:#a9f0bf}
+.clinic-admin .log-table span.is-alert{color:#ffd166}
+.clinic-admin .log-table span.is-missing{color:#ffb4bc}
+.clinic-admin .log-table p{color:#dceaf2}
+.clinic-admin .vault-grid a{background:rgba(6,14,22,.56);border-color:rgba(180,210,230,.24)}
+.clinic-admin .vault-grid span{color:#bad3df}
+@media(max-width:820px){.clinic-admin .admin-record-grid,.clinic-admin .log-table div{grid-template-columns:1fr}}
+/* END_ADMIN_RECORD_LAYOUT_FIX_20260524 */
