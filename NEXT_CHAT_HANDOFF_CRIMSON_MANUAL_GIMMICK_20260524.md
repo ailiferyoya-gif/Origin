@@ -320,3 +320,79 @@
 ### 未完了事項
 
 - この追記時点でコミット、pushは未実施。
+
+## 2026-05-24 CrimsonClinicMystery メタ文言削除追記
+
+### 作業状況
+- ユーザー指摘:
+  - 謎解き内に「矛盾が見える」「情報が薄い」など、本来のページには書かれていないメタい文言がある。
+  - 作中ページとして不自然な文言はすべて削除する。
+- 変更前バックアップ取得済み:
+  - `C:\Users\kogit\Documents\Codex\backups\crimson-meta-wording-cleanup-20260524`
+
+### 変更点
+- `CrimsonClinicMystery/web/index.html`
+  - `見比べてください`、`外部情報と内部情報`、`単体では`、`噛み合わなくなります` などの外側から見た説明を削除。
+  - Kの依頼文を「公開ページと院内保管控えの扱い違いを確認する」内容へ変更。
+  - 調査リンクの説明を `CRN-1006の記録確認`、`公開案内と院内入口` へ変更。
+- `CrimsonClinicMystery/web/investigate/index.html`
+  - `検証協力者`、`作中サイトではなく`、`調査UI`、`プレイヤー`、`解放された` などのメタ文言を削除。
+  - 調査ノートを、CRN-1006関連記録の確認ページとして自然な文言に変更。
+- `CrimsonClinicMystery/web/admin/index.html`
+  - `単独では真相を確定できません`、`矛盾が見えます` を削除。
+  - `照合メモ` を `確認メモ` に変更。
+- `CrimsonClinicMystery/web/archive/index.html`
+  - `照合してください` 系の誘導を、保管棚確認の文言へ変更。
+- `CrimsonClinicMystery/web/logs/restricted/index.html`
+  - `犯行の確定`、`照合してください` を削除。
+  - `照合メモ` を `保管メモ` に変更。
+- `CrimsonClinicMystery/web/logs/missing/index.html`
+  - `照合メモ` を `保管メモ` に変更。
+- `CrimsonClinicMystery/web/contractor/index.html`
+  - `院内ログと照合してください` を院内ログ側に控えが残る文言へ変更。
+- `CrimsonClinicMystery/web/ledger/index.html`
+  - `照合できます`、`照合語` を作中資料寄りの表現へ変更。
+- `CrimsonClinicMystery/web/medical/index.html`
+  - `照合先` を `関連記録` に変更。
+- `CrimsonClinicMystery/web/mail/index.html`
+  - `院内スタッフ導線` を `院内スタッフ入口` に変更。
+- Booth同梱版 `CrimsonClinicMystery_BoothPackage/CrimsonClinicMystery_Booth_v1/web/...` にも同内容を反映済み。
+
+### 確認済み
+- 本体/BoothのHTMLで以下のメタ表現が残っていないことを確認:
+  - `メタ`
+  - `作中サイト`
+  - `プレイヤー`
+  - `矛盾が見え`
+  - `情報が薄い`
+  - `単体では真相`
+  - `噛み合`
+  - `見比べてください`
+  - `解放された`
+  - `回答入力`
+  - `検証協力者`
+  - `スタッフ導線`
+
+### 未完了事項
+- この追記時点では、最終のブラウザ確認、`git diff --check`、コミット、pushはこれから実施。
+
+### 最終確認追記
+- `rg` で本体/BoothのHTMLに指定系メタ表現が残っていないことを再確認。
+- `git diff --check` 問題なし。LF/CRLF警告のみ。
+- ブラウザで `http://127.0.0.1:4400/web/index.html` と `http://127.0.0.1:4400/web/investigate/index.html` を確認。
+  - 入口ページ、調査ノートとも指定系メタ表現なし。
+  - PC幅で横スクロールなし。
+- この追記後にコミット、push予定。
+
+### 追加確認追記
+- 広めの再検索で残った `ギミック`、`GIMMICK`、`見えます`、`わかる` 系の外側表現も削除。
+- `CrimsonClinicMystery/web/gimmick/index.html` は `記録整理控え` として作中資料寄りに改名・文言修正。
+- `investigate` 内のギミック案内も `CRN-1006 記録整理控え` に変更。
+- `medical` のリンク名を `ギミック調査室` から `記録整理控え` に変更。
+- 本体/BoothのHTMLで以下もヒットなしを確認:
+  - `ギミック`
+  - `GIMMICK`
+  - `見えます`
+  - `わかる`
+  - `分かる`
+- ブラウザで入口、調査ノート、記録整理控え、医療資料を確認し、指定系メタ表現なし・PC幅横スクロールなし。
