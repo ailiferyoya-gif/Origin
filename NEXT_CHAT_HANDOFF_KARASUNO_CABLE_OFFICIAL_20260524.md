@@ -80,3 +80,9 @@
 - 対応: CSSの `nav a:nth-child(1)` 固定緑指定を削除し、各下層ページの現在地リンクに `class="is-active"` と `aria-current="page"` を付与。
 - 対応: トップのヒーロー写真と運行情報パネルの重なりをなくし、写真下に自然に続く情報ブロックへ変更。
 - バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-active-nav-layout-20260524
+
+## 2026-05-24 追加修正: 公式トップ画像の車両種別修正
+- ユーザー指摘: `KarasunoCableMystery/web/official/index.html` で使われている画像の車両が路面電車のようでおかしい。
+- 対応: トップ専用に、路面電車・トラム・道路車両を避け、急勾配の鋼索鉄道/ケーブルカーとして新規画像 `karasuno-official-hero-funicular-20260524.png` をChatGPT生成。
+- 対応: 公式トップの画像参照を `karasuno-official-hero-funicular-20260524.png` に差し替え。
+- バックアップ: C:\Users\kogit\Documents\Codex\backups\karasuno-cable-hero-funicular-fix-20260524
