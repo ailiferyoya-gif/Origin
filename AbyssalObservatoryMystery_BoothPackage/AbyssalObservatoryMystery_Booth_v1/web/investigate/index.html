@@ -3,208 +3,322 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>資料照合ノート | 黒潮海底観測所 記録消失事件</title>
+<title>資料照合ノート | 黒潮海底観測所 OBS-1118</title>
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="../premium.css">
 </head>
-<body class="premium">
+<body class="premium case-entry story-mode">
 <div class="premium-bg" style="--hero:url('../assets/hero-observatory.png')"></div>
-<header class="wrap topbar"><a href="../index.html" class="btn">入口へ</a><div class="brand">INVESTIGATION NOTE</div><button class="btn" onclick="resetNote()">進行リセット</button></header>
-<main class="wrap investigate-shell">
-<section class="panel"><h1>資料照合ノート</h1><p>このページは作中サイトではなく、プレイヤーが資料を照合するための調査UIです。作中サイトは別ウィンドウで開き、このノートに戻って回答を入力してください。</p><p>未解放のカードは詳細が表示されません。前の段階を解くと、次の照合式と入力欄が開きます。</p></section>
+<header class="wrap topbar"><a class="btn" href="../index.html">入口へ</a><div class="brand">INVESTIGATION NOTE</div><button class="btn" onclick="resetNote()">進行リセット</button></header>
+<main class="wrap section story-layout">
+<section class="panel story-intro">
+  <p class="case-kicker">OBS-1118 CASE VERIFICATION</p>
+  <h1>資料照合ノート</h1>
+  <p>あなたが受け取った未整理ファイルは、閉鎖された黒潮海底観測所の復旧報告に添付されていたものです。新聞記事では研究員死亡、自治体資料では休職扱い、保守会社の控えでは夜間作業、潮流観測所では欠測処理。同じ夜が、資料ごとに違う名前で残っています。</p>
+  <p>このノートでは、公式資料から検索語を作り、公開資料、保存メール、管理画面、保守会社控え、潮流・無線記録を順番に重ねます。単独のページだけで結論を出さず、同じ時刻、同じ場所、同じ人物が別資料でどう扱われているかを確認してください。</p>
+  <div class="story-progress"><span id="progressCount">0/48</span><span>OBS-1118</span></div>
+</section>
+<section class="story-board panel">
+  <h2>調査の章立て</h2>
+  <div class="chapter-grid">
+    <article class="story-chapter"><p class="story-label">第一章</p><h2>入口確認</h2><p>施設名、事故番号、日付、被害者、公開上の扱いを確定する。</p><p class="small muted">照合 01〜05</p></article>
+    <article class="story-chapter"><p class="story-label">第二章</p><h2>認証作成</h2><p>保存メールと異常時刻から管理画面のPASSCODEを復元する。</p><p class="small muted">照合 06〜08</p></article>
+    <article class="story-chapter"><p class="story-label">第三章</p><h2>公開資料</h2><p>潮流、音響、展示、自治体資料を読み、表向きの欠測処理を追う。</p><p class="small muted">照合 09〜18</p></article>
+    <article class="story-chapter"><p class="story-label">第四章</p><h2>内部資料</h2><p>管理画面、保守会社控え、鍵台帳から夜間作業の実態を拾う。</p><p class="small muted">照合 19〜36</p></article>
+    <article class="story-chapter"><p class="story-label">第五章</p><h2>時系列復元</h2><p>02:16、02:21、03:04の順番を戻し、誰が退路を塞いだかを報告する。</p><p class="small muted">照合 37〜48</p></article>
+  </div>
+</section>
+<section class="question-list">
 <article class="q-card" data-q="1">
-<h3>照合 01</h3>
-<div class="locked-hide">
-<p>ニュース記事の死亡者名と施設の勤務表を照合してください。</p>
-<div class="answer-row"><input aria-label="回答1" autocomplete="off"><button onclick="checkAnswer(1)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="2">
-<h3>照合 02</h3>
-<div class="locked-hide">
-<p>自治体の閉鎖議事録と新聞の日付欄を照合し、事故日を答えてください。</p>
-<div class="answer-row"><input aria-label="回答2" autocomplete="off"><button onclick="checkAnswer(2)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="3">
-<h3>照合 03</h3>
-<div class="locked-hide">
-<p>潮流観測所の欠測ログとメール本文から、最初の異常時刻を答えてください。</p>
-<div class="answer-row"><input aria-label="回答3" autocomplete="off"><button onclick="checkAnswer(3)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="4">
-<h3>照合 04</h3>
-<div class="locked-hide">
-<p>施設サイトの巡回表と音響記録に共通する場所を答えてください。</p>
-<div class="answer-row"><input aria-label="回答4" autocomplete="off"><button onclick="checkAnswer(4)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="5">
-<h3>照合 05</h3>
-<div class="locked-hide">
-<p>市の公開文書で事故番号として扱われた管理IDを答えてください。</p>
-<div class="answer-row"><input aria-label="回答5" autocomplete="off"><button onclick="checkAnswer(5)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="6">
-<h3>照合 06</h3>
-<div class="locked-hide">
-<p>資料室の欠番表で、閲覧制限へ移された冊子名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答6" autocomplete="off"><button onclick="checkAnswer(6)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="7">
-<h3>照合 07</h3>
-<div class="locked-hide">
-<p>保守会社の請求書と施設の鍵台帳から、立入記録のあった部屋を答えてください。</p>
-<div class="answer-row"><input aria-label="回答7" autocomplete="off"><button onclick="checkAnswer(7)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="8">
-<h3>照合 08</h3>
-<div class="locked-hide">
-<p>検索結果に出る外部記録のうち、北東流速を記録したサイト名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答8" autocomplete="off"><button onclick="checkAnswer(8)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="9">
-<h3>照合 09</h3>
-<div class="locked-hide">
-<p>潮流観測所の表とラジオログを照合し、02時台の流速を答えてください。</p>
-<div class="answer-row"><input aria-label="回答9" autocomplete="off"><button onclick="checkAnswer(9)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="10">
-<h3>照合 10</h3>
-<div class="locked-hide">
-<p>無線局の録音台帳で欠落している記録名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答10" autocomplete="off"><button onclick="checkAnswer(10)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="11">
-<h3>照合 11</h3>
-<div class="locked-hide">
-<p>メールと保守会社の担当表から、夜間対応者名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答11" autocomplete="off"><button onclick="checkAnswer(11)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="12">
-<h3>照合 12</h3>
-<div class="locked-hide">
-<p>ブログ写真メモと施設備品表に共通する持ち出し物を答えてください。</p>
-<div class="answer-row"><input aria-label="回答12" autocomplete="off"><button onclick="checkAnswer(12)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="13">
-<h3>照合 13</h3>
-<div class="locked-hide">
-<p>管理画面の制限記録で、電源復帰が記録された時刻を答えてください。</p>
-<div class="answer-row"><input aria-label="回答13" autocomplete="off"><button onclick="checkAnswer(13)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="14">
-<h3>照合 14</h3>
-<div class="locked-hide">
-<p>自治体の人事処理で、三枝透はどの扱いにされたか答えてください。</p>
-<div class="answer-row"><input aria-label="回答14" autocomplete="off"><button onclick="checkAnswer(14)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="15">
-<h3>照合 15</h3>
-<div class="locked-hide">
-<p>新聞の続報と議事録添付の公開日を照合し、追記日を答えてください。</p>
-<div class="answer-row"><input aria-label="回答15" autocomplete="off"><button onclick="checkAnswer(15)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="16">
-<h3>照合 16</h3>
-<div class="locked-hide">
-<p>管理画面の表題に残る正式施設名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答16" autocomplete="off"><button onclick="checkAnswer(16)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="17">
-<h3>照合 17</h3>
-<div class="locked-hide">
-<p>施設鍵台帳とメール添付の一致語を答えてください。</p>
-<div class="answer-row"><input aria-label="回答17" autocomplete="off"><button onclick="checkAnswer(17)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="18">
-<h3>照合 18</h3>
-<div class="locked-hide">
-<p>保守会社の巡回メモと制限ログで塞がれていた場所を答えてください。</p>
-<div class="answer-row"><input aria-label="回答18" autocomplete="off"><button onclick="checkAnswer(18)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="19">
-<h3>照合 19</h3>
-<div class="locked-hide">
-<p>請求書の発行者として残る会社名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答19" autocomplete="off"><button onclick="checkAnswer(19)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="20">
-<h3>照合 20</h3>
-<div class="locked-hide">
-<p>潮流観測所で通常値ではなく空白扱いになっている記録語を答えてください。</p>
-<div class="answer-row"><input aria-label="回答20" autocomplete="off"><button onclick="checkAnswer(20)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="21">
-<h3>照合 21</h3>
-<div class="locked-hide">
-<p>掲示板の保存ログと新聞訂正欄で一致する日付を答えてください。</p>
-<div class="answer-row"><input aria-label="回答21" autocomplete="off"><button onclick="checkAnswer(21)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="22">
-<h3>照合 22</h3>
-<div class="locked-hide">
-<p>管理画面の制限記録で、最終照合に必要なログ名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答22" autocomplete="off"><button onclick="checkAnswer(22)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="23">
-<h3>照合 23</h3>
-<div class="locked-hide">
-<p>この情報群へ到達するためのプレイヤー用画面名を答えてください。</p>
-<div class="answer-row"><input aria-label="回答23" autocomplete="off"><button onclick="checkAnswer(23)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
-</article><article class="q-card" data-q="24">
-<h3>照合 24</h3>
-<div class="locked-hide">
-<p>最終照合として、犯人、被害者、場所、塞がれた退路を一文で答えてください。</p>
-<div class="answer-row"><input aria-label="回答24" autocomplete="off"><button onclick="checkAnswer(24)">照合</button></div>
-<p class="msg muted small"></p>
-</div>
-<p class="muted small locked-only">前段階を照合すると詳細が表示されます。</p>
+<div class="q-meta"><span>入口確認</span><span>照合 01</span></div>
+<h3>入口ページと公式資料を照合し、調査対象の正式施設名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 1" autocomplete="off"><button onclick="checkAnswer(1)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
 </article>
+<article class="q-card" data-q="2">
+<div class="q-meta"><span>入口確認</span><span>照合 02</span></div>
+<h3>市の公開文書と新聞記事に共通する事故番号を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 2" autocomplete="off"><button onclick="checkAnswer(2)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="3">
+<div class="q-meta"><span>入口確認</span><span>照合 03</span></div>
+<h3>公開文書と勤務表に共通する発生日を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 3" autocomplete="off"><button onclick="checkAnswer(3)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="4">
+<div class="q-meta"><span>入口確認</span><span>照合 04</span></div>
+<h3>新聞記事で死亡者として出て、勤務表にも施設確認者として残る人物名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 4" autocomplete="off"><button onclick="checkAnswer(4)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="5">
+<div class="q-meta"><span>入口確認</span><span>照合 05</span></div>
+<h3>新聞訂正欄と市の公開文書で、三枝透の人事処理はどの扱いに置き換えられていますか。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 5" autocomplete="off"><button onclick="checkAnswer(5)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="6">
+<div class="q-meta"><span>認証作成</span><span>照合 06</span></div>
+<h3>保存メールで公開側に残すと書かれている施設略号を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 6" autocomplete="off"><button onclick="checkAnswer(6)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="7">
+<div class="q-meta"><span>認証作成</span><span>照合 07</span></div>
+<h3>保存メール、潮流表、音響記録に共通する最初の異常時刻を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 7" autocomplete="off"><button onclick="checkAnswer(7)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="8">
+<div class="q-meta"><span>認証作成</span><span>照合 08</span></div>
+<h3>管理画面を開くため、施設略号と最初の異常時刻4桁を続けたPASSCODEを答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 8" autocomplete="off"><button onclick="checkAnswer(8)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="9">
+<div class="q-meta"><span>公開資料</span><span>照合 09</span></div>
+<h3>検索結果のうち、02時台の北東流速と欠測を扱う外部サイト名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 9" autocomplete="off"><button onclick="checkAnswer(9)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="10">
+<div class="q-meta"><span>公開資料</span><span>照合 10</span></div>
+<h3>流速表と掲示板の釣果欄を照合し、02:16の流速を方角込みで答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 10" autocomplete="off"><button onclick="checkAnswer(10)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="11">
+<div class="q-meta"><span>公開資料</span><span>照合 11</span></div>
+<h3>潮流観測所で、第三観測室と東側の異常を同時に扱う資料名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 11" autocomplete="off"><button onclick="checkAnswer(11)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="12">
+<div class="q-meta"><span>公開資料</span><span>照合 12</span></div>
+<h3>圧力差ログ、施設図、音響記録Dに共通する場所を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 12" autocomplete="off"><button onclick="checkAnswer(12)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="13">
+<div class="q-meta"><span>公開資料</span><span>照合 13</span></div>
+<h3>港湾無線局の録音台帳で欠落し、銀色ケースにコピーされた記録名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 13" autocomplete="off"><button onclick="checkAnswer(13)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="14">
+<div class="q-meta"><span>公開資料</span><span>照合 14</span></div>
+<h3>ブログ写真メモ、展示準備資料、音響記録Dの備考に共通する持ち出し物を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 14" autocomplete="off"><button onclick="checkAnswer(14)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="15">
+<div class="q-meta"><span>公開資料</span><span>照合 15</span></div>
+<h3>展示準備資料の除外品底面に残り、音響記録名とも重なる一文字を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 15" autocomplete="off"><button onclick="checkAnswer(15)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="16">
+<div class="q-meta"><span>公開資料</span><span>照合 16</span></div>
+<h3>資料移管一覧と議事録で、閲覧制限へ移された冊子名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 16" autocomplete="off"><button onclick="checkAnswer(16)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="17">
+<div class="q-meta"><span>公開資料</span><span>照合 17</span></div>
+<h3>審議会議事録と潮流観測所で、通常値ではなく空白扱いにされた記録語を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 17" autocomplete="off"><button onclick="checkAnswer(17)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="18">
+<div class="q-meta"><span>公開資料</span><span>照合 18</span></div>
+<h3>公開文書の追記日と議事録の公開日で一致する日付を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 18" autocomplete="off"><button onclick="checkAnswer(18)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="19">
+<div class="q-meta"><span>内部資料</span><span>照合 19</span></div>
+<h3>メール添付、保守担当表、制限記録に共通する夜間対応者名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 19" autocomplete="off"><button onclick="checkAnswer(19)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="20">
+<div class="q-meta"><span>内部資料</span><span>照合 20</span></div>
+<h3>鍵台帳と夜間保守記録で、21:48に貸与されたものを答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 20" autocomplete="off"><button onclick="checkAnswer(20)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="21">
+<div class="q-meta"><span>内部資料</span><span>照合 21</span></div>
+<h3>夜間保守記録で、保守用カードが貸与された時刻を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 21" autocomplete="off"><button onclick="checkAnswer(21)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="22">
+<div class="q-meta"><span>内部資料</span><span>照合 22</span></div>
+<h3>請求書控えと鍵台帳で、22:11に入室記録がある部屋を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 22" autocomplete="off"><button onclick="checkAnswer(22)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="23">
+<div class="q-meta"><span>内部資料</span><span>照合 23</span></div>
+<h3>鍵台帳でB棟冷却室に入室した時刻を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 23" autocomplete="off"><button onclick="checkAnswer(23)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="24">
+<div class="q-meta"><span>内部資料</span><span>照合 24</span></div>
+<h3>施設図、夜間保守記録、制限記録で閉鎖地点として重なる場所を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 24" autocomplete="off"><button onclick="checkAnswer(24)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="25">
+<div class="q-meta"><span>内部資料</span><span>照合 25</span></div>
+<h3>夜間保守記録と制限記録で、東ケーブルシャフトが閉鎖された時刻を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 25" autocomplete="off"><button onclick="checkAnswer(25)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="26">
+<div class="q-meta"><span>内部資料</span><span>照合 26</span></div>
+<h3>制限記録で、東ケーブルシャフトの処理状態は何と書かれていますか。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 26" autocomplete="off"><button onclick="checkAnswer(26)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="27">
+<div class="q-meta"><span>内部資料</span><span>照合 27</span></div>
+<h3>勤務表、制限記録、中継局メモで一致する予備電源復帰の時刻を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 27" autocomplete="off"><button onclick="checkAnswer(27)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="28">
+<div class="q-meta"><span>内部資料</span><span>照合 28</span></div>
+<h3>管理画面の制限記録で、03:04復帰と結びつくログ名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 28" autocomplete="off"><button onclick="checkAnswer(28)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="29">
+<div class="q-meta"><span>内部資料</span><span>照合 29</span></div>
+<h3>制限記録で、第三観測室について残る応答状態を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 29" autocomplete="off"><button onclick="checkAnswer(29)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="30">
+<div class="q-meta"><span>内部資料</span><span>照合 30</span></div>
+<h3>請求書控えの発行者であり、夜間保守記録を持つ会社名を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 30" autocomplete="off"><button onclick="checkAnswer(30)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="31">
+<div class="q-meta"><span>内部資料</span><span>照合 31</span></div>
+<h3>請求書控えで、東ケーブルシャフト作業の扱いを示す追記語を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 31" autocomplete="off"><button onclick="checkAnswer(31)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="32">
+<div class="q-meta"><span>内部資料</span><span>照合 32</span></div>
+<h3>請求書控えで、B棟冷却室の作業費に付いている作業区分を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 32" autocomplete="off"><button onclick="checkAnswer(32)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="33">
+<div class="q-meta"><span>外部照合</span><span>照合 33</span></div>
+<h3>新聞訂正欄と掲示板の古参コメントに共通する日付を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 33" autocomplete="off"><button onclick="checkAnswer(33)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="34">
+<div class="q-meta"><span>外部照合</span><span>照合 34</span></div>
+<h3>資料移管一覧で深度ログ第七冊に付けられ、最終的に隠蔽を示す公開状態を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 34" autocomplete="off"><button onclick="checkAnswer(34)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="35">
+<div class="q-meta"><span>外部照合</span><span>照合 35</span></div>
+<h3>閲覧制限記録で、制限理由として記されている語を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 35" autocomplete="off"><button onclick="checkAnswer(35)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="36">
+<div class="q-meta"><span>外部照合</span><span>照合 36</span></div>
+<h3>市の公開文書で、別紙扱いにされた欄の名前を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 36" autocomplete="off"><button onclick="checkAnswer(36)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="37">
+<div class="q-meta"><span>時系列復元</span><span>照合 37</span></div>
+<h3>流速表と掲示板の「北東に流される」を合わせ、異常方向を示す語を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 37" autocomplete="off"><button onclick="checkAnswer(37)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="38">
+<div class="q-meta"><span>時系列復元</span><span>照合 38</span></div>
+<h3>中継局メモの02:16欄で、低い音の正体として書かれた表現を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 38" autocomplete="off"><button onclick="checkAnswer(38)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="39">
+<div class="q-meta"><span>時系列復元</span><span>照合 39</span></div>
+<h3>中継局メモの02:21欄で、東ケーブルシャフト閉鎖と同時に残る通信状態を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 39" autocomplete="off"><button onclick="checkAnswer(39)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="40">
+<div class="q-meta"><span>時系列復元</span><span>照合 40</span></div>
+<h3>中継局メモの03:04欄で、予備電源復帰と同時に残る音を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 40" autocomplete="off"><button onclick="checkAnswer(40)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="41">
+<div class="q-meta"><span>時系列復元</span><span>照合 41</span></div>
+<h3>制限記録から、場所、閉鎖地点、復帰ログの三要素を順に並べて答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 41" autocomplete="off"><button onclick="checkAnswer(41)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="42">
+<div class="q-meta"><span>時系列復元</span><span>照合 42</span></div>
+<h3>最終報告前に、人物、被害者、場所、手段、塞がれた地点の五要素を順に答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 42" autocomplete="off"><button onclick="checkAnswer(42)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="43">
+<div class="q-meta"><span>反転確認</span><span>照合 43</span></div>
+<h3>新聞初報と市の説明で、表向きの事故原因として疑われた説明を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 43" autocomplete="off"><button onclick="checkAnswer(43)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="44">
+<div class="q-meta"><span>反転確認</span><span>照合 44</span></div>
+<h3>音響記録Dを読むとき、最後までミスリードになりやすい自然現象風の説明を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 44" autocomplete="off"><button onclick="checkAnswer(44)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="45">
+<div class="q-meta"><span>反転確認</span><span>照合 45</span></div>
+<h3>欠測や休職扱いを自然な事故ではなく、人が整理したものとして示す語を答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 45" autocomplete="off"><button onclick="checkAnswer(45)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="46">
+<div class="q-meta"><span>反転確認</span><span>照合 46</span></div>
+<h3>02:21の東ケーブルシャフト手動閉鎖によって起きた本当の行為を四字で答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 46" autocomplete="off"><button onclick="checkAnswer(46)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="47">
+<div class="q-meta"><span>最終照合</span><span>照合 47</span></div>
+<h3>五要素を使い、誰が誰をどこに閉じ込めたかを一文で答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 47" autocomplete="off"><button onclick="checkAnswer(47)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+<article class="q-card" data-q="48">
+<div class="q-meta"><span>最終照合</span><span>照合 48</span></div>
+<h3>最終報告として、犯人、被害者、場所、手段、塞がれた退路を一文で答えてください。</h3>
+<div class="locked-hide"><div class="answer-row"><input aria-label="回答 48" autocomplete="off"><button onclick="checkAnswer(48)">照合</button></div><p class="msg muted small"></p></div>
+<p class="muted small locked-only">前段階を照合すると入力欄が表示されます。</p>
+</article>
+
+</section>
 </main>
 <script src="../site.js"></script>
 <script src="../textflow.js"></script>
