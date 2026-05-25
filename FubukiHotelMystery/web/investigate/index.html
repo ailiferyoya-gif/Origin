@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>調査ノート</title>
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<div class="hero-bg" style="--hero:url('../assets/hero.png')"></div>
+<header class="wrap topbar"><a class="brand" href="../index.html">調査ノート</a><button class="btn ghost" onclick="resetNote()">進行をリセット</button></header>
+<main class="wrap">
+<section class="panel">
+  <h1>吹雪ホテル調査ノート</h1>
+  <p>資料を照合し、確認できた語句だけを入力してください。時刻は資料にある表記で入力できます。最終報告だけは一文でまとめます。</p>
+</section>
+<section class="panel">
+  <h2>第一章 入口と公開資料</h2>
+  <div class="q-card" data-q="1"><div class="q-head"><strong class="q-no">01</strong><span>依頼対象の施設名は何か。</span></div><details><summary>控え</summary><p>入口ページの大きな見出しを確認する。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(1)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="2"><div class="q-head"><strong class="q-no">02</strong><span>この調査資料の管理番号は何か。</span></div><details><summary>控え</summary><p>入口の右上と見出しに同じ番号がある。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(2)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="3"><div class="q-head"><strong class="q-no">03</strong><span>停電が発生した公開時刻はいつか。</span></div><details><summary>控え</summary><p>公式資料の告知と非常時案内を照合する。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(3)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="4"><div class="q-head"><strong class="q-no">04</strong><span>停電後、館内で赤く切り替わる設備は何か。</span></div><details><summary>控え</summary><p>非常時案内の最初の手順を見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(4)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="5"><div class="q-head"><strong class="q-no">05</strong><span>鍵のタグに書かれていた部屋番号は何か。</span></div><details><summary>控え</summary><p>保存メールの封筒の中身を読む。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(5)">照合</button></div><p class="msg"></p></div>
+</section>
+<section class="panel">
+  <h2>第二章 部屋と人物</h2>
+  <div class="q-card" data-q="6"><div class="q-head"><strong class="q-no">06</strong><span>鳥居真琴が公開名簿上で割り当てられた部屋はどこか。</span></div><details><summary>控え</summary><p>公式資料の客室案内に表がある。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(6)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="7"><div class="q-head"><strong class="q-no">07</strong><span>依頼人の氏名は誰か。</span></div><details><summary>控え</summary><p>保存メールの差出人と入口のあらすじを確認する。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(7)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="8"><div class="q-head"><strong class="q-no">08</strong><span>二階で従業員通路に近い部屋の横にある場所は何か。</span></div><details><summary>控え</summary><p>館内図の二階を見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(8)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="9"><div class="q-head"><strong class="q-no">09</strong><span>乾燥室側に入室跡が残った最初の時刻はいつか。</span></div><details><summary>控え</summary><p>気象台記録、サービス伝票、客室ログの同じ時刻を探す。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(9)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="10"><div class="q-head"><strong class="q-no">10</strong><span>蓮見が向かったと新聞で証言された場所はどこか。</span></div><details><summary>控え</summary><p>地方紙縮刷版の記事を読む。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(10)">照合</button></div><p class="msg"></p></div>
+</section>
+<section class="panel">
+  <h2>第三章 検索で見つかる外部記録</h2>
+  <div class="q-card" data-q="11"><div class="q-head"><strong class="q-no">11</strong><span>毛布が届けられた場所は何号室前か。</span></div><details><summary>控え</summary><p>検索画面でルームサービス関連の資料へ進む。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(11)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="12"><div class="q-head"><strong class="q-no">12</strong><span>失踪した前オーナーは誰か。</span></div><details><summary>控え</summary><p>公式資料、保存メール、新聞記事の共通人物。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(12)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="13"><div class="q-head"><strong class="q-no">13</strong><span>西館三階付近に白い光が見えた時刻はいつか。</span></div><details><summary>控え</summary><p>気象台記録の最後の行を見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(13)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="14"><div class="q-head"><strong class="q-no">14</strong><span>四階の書庫は何号室か。</span></div><details><summary>控え</summary><p>館内図の四階を見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(14)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="15"><div class="q-head"><strong class="q-no">15</strong><span>外扉の確認記録がある場所はどこか。</span></div><details><summary>控え</summary><p>発電機記録とルームサービス伝票の届け先を照合する。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(15)">照合</button></div><p class="msg"></p></div>
+</section>
+<section class="panel">
+  <h2>第四章 内部記録</h2>
+  <div class="q-card" data-q="16"><div class="q-head"><strong class="q-no">16</strong><span>二十三時四十八分に持ち出された鍵は何か。</span></div><details><summary>控え</summary><p>管理画面の客室ログと従業員控えを見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(16)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="17"><div class="q-head"><strong class="q-no">17</strong><span>焦げた紙片が回収された場所は何か。</span></div><details><summary>控え</summary><p>発電機記録の下部に回収場所が書かれている。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(17)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="18"><div class="q-head"><strong class="q-no">18</strong><span>蓮見の旧室は何号室か。</span></div><details><summary>控え</summary><p>客室案内の表を確認する。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(18)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="19"><div class="q-head"><strong class="q-no">19</strong><span>宿泊者掲示板で目撃された人物の服装は何か。</span></div><details><summary>控え</summary><p>掲示板保存の最初の投稿を見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(19)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="20"><div class="q-head"><strong class="q-no">20</strong><span>「午前零時の客を外へ出さないでください」の便箋は誰名義か。</span></div><details><summary>控え</summary><p>保存メールの封筒の中身に署名の有無がある。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(20)">照合</button></div><p class="msg"></p></div>
+</section>
+<section class="panel">
+  <h2>第五章 脱出経路と真相</h2>
+  <div class="q-card" data-q="21"><div class="q-head"><strong class="q-no">21</strong><span>乾燥室から発電機室へ向かうために使う通路は何か。</span></div><details><summary>控え</summary><p>館内図と非常時案内に同じ通路名が出る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(21)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="22"><div class="q-head"><strong class="q-no">22</strong><span>新聞が扱っていた十年前の事件は何か。</span></div><details><summary>控え</summary><p>記事見出しの出来事を短く答える。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(22)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="23"><div class="q-head"><strong class="q-no">23</strong><span>黒いコートの私物を持っていた人物は誰か。</span></div><details><summary>控え</summary><p>従業員控えの「黒いコート」の行を見る。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(23)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="24"><div class="q-head"><strong class="q-no">24</strong><span>焦げたメニューカードから読める、記録をずらす行為は何か。</span></div><details><summary>控え</summary><p>ルームサービス伝票の末尾に、十二分遅らせた対象が書かれている。</p></details><div class="answer-row locked-hide"><input><button onclick="checkAnswer(24)">照合</button></div><p class="msg"></p></div>
+  <div class="q-card" data-q="25"><div class="q-head"><strong class="q-no">最終</strong><span>鳥居、蓮見、西階段、暖炉の証拠がどうつながるかを一文で報告する。</span></div><details><summary>控え</summary><p>人物、時刻改ざん、消そうとした証拠を入れる。例文の形に寄せて書くと通りやすい。</p></details><div class="answer-row locked-hide"><input placeholder="最終報告"><button onclick="checkAnswer(25)">提出</button></div><p class="msg"></p></div>
+</section>
+<div class="footer-pad"></div>
+</main>
+<script src="../site.js"></script><script src="../textflow.js"></script>
+</body>
+</html>

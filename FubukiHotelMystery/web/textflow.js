@@ -1,0 +1,1 @@
+(()=>{const rx=/([、。]|て|に|を|は|が|の|で|と|へ|か)(?!<wbr>)/g;document.querySelectorAll("p,li,td,th,h1,h2,h3,a,button,span,strong").forEach(el=>{if(el.children.length||el.dataset.noFlow==="1")return;el.innerHTML=el.textContent.replace(rx,"$1<wbr>")})})();
