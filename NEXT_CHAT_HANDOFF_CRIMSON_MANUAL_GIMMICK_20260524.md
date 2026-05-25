@@ -606,3 +606,39 @@
 
 ### 未完了事項
 - この追記時点でコミット・pushはこれから実施。
+
+## 2026-05-25 CrimsonClinicMystery 章別ヒント導線追加追記
+
+### 作業状況
+- ユーザー要望: 48問化後、2〜3時間作品として安定させるためヒント設計を追加。
+- 変更前バックアップ取得済み:
+  - `C:\Users\kogit\Documents\Codex\backups\crimson-hints-20260525-222015`
+
+### 変更点
+- `CrimsonClinicMystery/web/hints/index.html` を新規追加。
+  - 章別の調査補助メモとして設計。
+  - 各章に「一段目 / 二段目 / 三段目」の段階ヒントを配置。
+  - 最終真相文を直接露出しないように調整。
+- `CrimsonClinicMystery/web/index.html`
+  - 調査リンクに `調査補助メモ` を追加。
+- `CrimsonClinicMystery/web/investigate/index.html`
+  - 調査ノート末尾から `調査補助メモ` へ進めるリンクを追加。
+- Booth同梱版:
+  - `CrimsonClinicMystery_BoothPackage/CrimsonClinicMystery_Booth_v1/web/...` に同内容を同期済み。
+
+### 確認済み
+- Node検証:
+  - 本体・Boothとも正答数 `48`
+  - 全正答判定 OK
+  - 最終回答判定 OK
+  - リンク欠落 `0`
+  - hintsページ存在確認 OK
+- `git diff --check` 問題なし。LF/CRLF警告のみ。
+- ブラウザ確認:
+  - 本体入口: ヒント導線あり、横スクロールなし。
+  - 本体 `hints/index.html`: details/summary `15` 件、横スクロールなし、最終真相文の直接露出なし。
+  - 本体 `investigate/index.html`: ヒント導線あり、48問、初期ロック47、横スクロールなし。
+  - Booth `hints/index.html`: details/summary `15` 件、横スクロールなし、最終真相文の直接露出なし。
+
+### 未完了事項
+- この追記時点でコミット・pushはこれから実施。
