@@ -1,29 +1,52 @@
 const answers=[
-  "笠井朋子",
+  "紅坂メディカルクリニック",
+  "紅坂診療所",
+  "CRN-1006",
   "2010年10月6日",
   "23:14",
+  "HOSP",
+  "HOSP2314",
+  "笠井朋子",
   "第二処置室",
-  "CRN-1006",
-  "カルテ第八冊",
-  "薬品保管庫",
-  "地域医療課",
-  "予備酸素ボンベ",
-  "酸素バルブログ",
-  "早瀬修",
-  "赤い鍵札",
-  "00:02",
   "退職扱い",
-  "2010/10/07",
-  "紅坂診療所",
+  "地域医療課",
+  "カルテ第八冊",
+  "酸素バルブログ",
+  "欠番",
+  "予備酸素ボンベ",
+  "赤い鍵札",
+  "2010/10/08",
+  "酸素",
+  "管理画面",
+  "早瀬修",
+  "薬品保管庫",
+  "00:02",
+  "薬剤棚ログ",
   "夜間カード",
   "裏口廊下",
   "紅坂医療設備",
-  "欠番",
-  "2010/10/08",
+  "裏口廊下",
+  "第二処置室",
+  "48分",
+  "酸素バルブログ",
   "薬剤棚ログ",
-  "管理画面",
+  "笠井朋子",
+  "早瀬修",
+  "小規模な業務事故",
+  "退路封鎖",
   "早瀬修が笠井朋子を第二処置室へ誘導し、夜間カードを使って裏口廊下から退路を塞いだ"
 ];
+
+const answerAliases={
+  4:["2010/10/6","2010/10/06","2010年10月6日"],
+  6:["HOSP","hosp"],
+  7:["HOSP2314","hosp2314"],
+  14:["欠番","欠落番号"],
+  18:["酸素","酸素系","酸素バルブ"],
+  29:["48分","四十八分","48"],
+  34:["小規模な業務事故","業務事故"],
+  35:["退路封鎖","退路の封鎖","退路を塞いだ"]
+};
 
 const finalAnswerGroups=[
   ["早瀬修","早瀬","はやせ","hayase"],
@@ -36,27 +59,30 @@ const finalAnswerGroups=[
 ];
 
 const missHints={
-  6:"医療資料のカルテ差分表で、改訂後も消えていない冊子名を確認してください。",
-  17:"医療資料の処方コード対照で、NC-17の院内対応欄を見てください。",
-  20:"酸素バルブログは未計測ではなく、番号ごと抜かれた扱いです。",
-  22:"RX-08は薬品保管庫に対応します。管理画面の制限ログ名と重ねてください。",
-  24:"医療資料の未改竄欄メモに残った人物、場所、夜間カード、裏口廊下を一文にしてください。"
+  6:"公式HPのお知らせ欄にある2010.10.08の夜間巡回表を見てください。番号順に英字だけを拾います。",
+  7:"前問の四文字に、最初の異常時刻を数字四桁で続けます。",
+  13:"資料目録では、薬剤棚ログとは別に欠落扱いの設備ログがあります。",
+  23:"RX-08は薬品保管庫に対応します。管理画面の制限ログ名と重ねてください。",
+  35:"酸素そのものではなく、第二処置室から出る道がどう扱われたかを四字でまとめます。",
+  36:"犯人、被害者、誘導先、夜間カード、塞がれた退路を一文に含めてください。"
 };
 
 const norm=s=>(s||"")
-  .replace(/[\s　。、，,.・「」『』（）()【】\[\]\/／\\\-ー―‐]/g,"")
+  .replace(/[\s　。．.・「」『』（）()［］\[\]/／\-ー―–—,，、]/g,"")
   .replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
   .toLowerCase();
 
 function matchesFinalAnswer(value){
   const input=norm(value);
-  if(input===norm(answers[23])) return true;
+  if(input===norm(answers[35])) return true;
   return finalAnswerGroups.every(group=>group.some(word=>input.includes(norm(word))));
 }
 
 function matchesAnswer(n,value){
-  if(n===24) return matchesFinalAnswer(value);
-  return norm(value)===norm(answers[n-1]);
+  if(n===36) return matchesFinalAnswer(value);
+  const candidates=[answers[n-1]].concat(answerAliases[n]||[]);
+  const input=norm(value);
+  return candidates.some(x=>input===norm(x));
 }
 
 let unlocked=Number(localStorage.getItem("mystery_unlocked")||"1");
@@ -84,9 +110,7 @@ function checkAnswer(n){
     }
     renderLocks();
   }else{
-    msg.textContent=n===24
-      ?"一致しません。犯人、被害者、場所、夜間カード、塞がれた退路を一文に含めてください。"
-      :(missHints[n]||"一致しません。別サイトの記録と重ねてください。");
+    msg.textContent=missHints[n]||"一致しません。別サイトの記録と重ねてください。";
     msg.className="msg ng";
   }
 }

@@ -12,8 +12,8 @@
     <p class="clinic-kicker">INTERNAL ACCESS</p>
     <h1>院内安全管理システム</h1>
     <p>保存メール、カルテ差分控え、薬剤棚ログ、夜間保守記録を閲覧します。</p>
-    <p class="small muted">PASSCODEは、旧診療所の施設コードと最初の異常時刻を続けたものです。</p>
-    <label>PASSCODE<input id="pw" placeholder="HOSP0000" autocomplete="off"></label>
+    <p class="small muted">PASSCODEは、公式HPの夜間巡回表に残る四文字と、最初の異常時刻四桁を続けたものです。</p>
+    <label>PASSCODE<input id="pw" placeholder="8文字" autocomplete="off"></label>
     <button onclick="login()">認証</button>
     <p id="msg" class="admin-msg"></p>
   </section>
@@ -40,7 +40,7 @@
 <script>
 function login(){
   const ok=document.getElementById("pw").value.replace(/\s/g,"").toUpperCase()==="HOSP2314";
-  document.getElementById("msg").textContent=ok?"認証しました。閲覧制限記録を表示します。":"認証できません。施設コードと異常時刻を確認してください。";
+  document.getElementById("msg").textContent=ok?"認証しました。閲覧制限記録を表示します。":"認証できません。巡回表の四文字と異常時刻を確認してください。";
   document.getElementById("vault").hidden=!ok;
 }
 </script>

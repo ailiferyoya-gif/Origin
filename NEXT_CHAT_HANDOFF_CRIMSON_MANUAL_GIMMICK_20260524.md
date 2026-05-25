@@ -495,3 +495,57 @@
 
 ### 未完了事項
 - この追記時点ではコミット、pushはこれから実施。
+
+## 2026-05-25 CrimsonClinicMystery 2〜3時間想定への再設計追記
+
+### 作業状況
+- ユーザー指摘: 現状は15分程度の謎解きに見えるが、想定は2〜3時間。
+- 変更前バックアップ取得済み:
+  - `C:\Users\kogit\Documents\Codex\backups\crimson-2to3h-redesign-20260525-214616`
+
+### 変更点
+- `CrimsonClinicMystery/web/index.html`
+  - 入口でログイン用パスワードを渡す構造を廃止。
+  - 公式HPの院内入口、夜間巡回控え、地域アーカイブの異常時刻を組み合わせて進む導線へ変更。
+- `CrimsonClinicMystery/web/official/index.html`
+  - 2010.10.08のお知らせに `H-保管棚 / O-酸素 / S-手洗い場 / P-処置室` の巡回札を配置。
+  - `HOSP` を公式HP内から導出する形に変更。
+- `CrimsonClinicMystery/web/admin/index.html`
+  - PASSCODEヒントを「巡回表の四文字 + 最初の異常時刻四桁」に変更。
+  - プレースホルダーから `HOSP0000` を削除し、直接答えに見えない `8文字` に変更。
+- `CrimsonClinicMystery/web/investigate/index.html`
+  - 調査ノートを24問から36問へ拡張。
+  - 構成を「開錠前調査」「外部資料照合」「内部資料照合」「真相整理」「最終照合」に再設計。
+  - 初期表示では36問中35問がロックされる進行に変更。
+  - ストーリー断片は回答後にだけ開くため、初期表示で真相やPASSCODEが見えない。
+- `CrimsonClinicMystery/web/site.js`
+  - 正答配列を36問へ更新。
+  - `HOSP`、`HOSP2314`、`48分`、`退路封鎖` などの別表記許容を追加。
+- `CrimsonClinicMystery/web/story.js`
+  - 進行表示を `0/36` 基準へ変更。
+  - 章進行を5段階に再設定。
+- `CrimsonClinicMystery/web/medical/index.html`
+  - 未改竄欄から最終真相を一文で直接出す記述を削除。
+  - 担当者名、被記録者名、誘導先、カード種別、退路欄を別資料と照合する表へ変更。
+- Booth同梱版:
+  - `CrimsonClinicMystery_BoothPackage/CrimsonClinicMystery_Booth_v1/web/...` に同内容を同期済み。
+
+### 確認済み
+- Node検証:
+  - 正答数 `36`
+  - 全正答判定 OK
+  - 最終回答判定 OK
+  - Crimson本体内リンク欠落 `0`
+- `git diff --check` 問題なし。LF/CRLF警告のみ。
+- ブラウザ確認:
+  - `index.html`
+  - `official/index.html`
+  - `investigate/index.html`
+  - `admin/index.html`
+  - PC幅で横スクロールなし。
+  - 入口と調査ノート初期表示に `HOSP2314` は出ない。
+  - 調査ノートは `qCount=36`、初期ロック `35`。
+  - 管理画面で `HOSP2314` 認証成功、閲覧制限記録表示。
+
+### 未完了事項
+- この追記時点でコミット・pushはこれから実施。
