@@ -5,40 +5,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>吹雪ホテル SNH-1224</title>
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="game.css">
 </head>
-<body>
-<div class="hero-bg" style="--hero:url('./assets/hero.png')"></div>
-<header class="wrap topbar">
-  <a class="brand" href="./index.html">FUBUKI HOTEL</a>
-  <div class="small">調査資料 / <span class="code">SNH-1224</span></div>
-</header>
-<main class="wrap entry">
-  <section class="panel">
-    <p class="kicker">調査依頼</p>
-    <h1 class="title">吹雪ホテル <span class="code">SNH-1224</span></h1>
-    <h2>あらすじ</h2>
-    <p>奥白嶺の稜線に建つ吹雪ホテルは、十年前の改装を最後に冬季営業を縮小していた。ところが今年の十二月、閉館中のはずの西館から非常灯が点いたという通報が三度続き、役場の保全課へ匿名の封筒が届いた。中には古い客室鍵、焦げたメニューカード、そして「午前零時の客を外へ出さないでください」と書かれた便箋が入っていた。</p>
-    <p>依頼人は、ホテル創業家の相続整理を担当する司法書士の鳥居真琴。彼女は、失踪した前オーナーの蓮見岳が残した台帳を確認するため、あなたに資料の照合を頼んできた。吹雪で県道は封鎖され、現地に入れるのは保全作業員が開けた短い時間だけ。外へ出る経路を探すことと、蓮見が最後にどこへ向かったのかを確かめることは、同じ作業になる。</p>
-    <p>ホテルの公開案内は整っている。だが封筒、停電ログ、ルームサービス伝票、宿泊者ノートは、同じ時刻を別々の言い方で記録している。誰かが西階段の時刻を書き換え、誰かが鍵を落とし、誰かが暖炉の灰に紙片を混ぜた。扉を開けるには、鍵の場所だけでなく、消された移動経路を組み直す必要がある。</p>
+<body class="game-body">
+<div class="start-modal" id="startModal">
+  <section class="start-card">
+    <p class="kicker">STORY ESCAPE MYSTERY</p>
+    <h1>吹雪ホテル <span class="code">SNH-1224</span></h1>
+    <p>奥白岳の稜線に建つ吹雪ホテル。大雪で送迎道路が閉ざされた夜、停電の直後に宿泊客の蓮見岬が姿を消した。外へ出た形跡はなく、残されたのは濡れた足跡、暖炉で焦げたメニューカード、そして「午前零時の客を外へ出さないでください」と書かれた封筒だった。</p>
+    <p>あなたは蓮見と古い縁を持つ人物から、館内で起きたことを確かめてほしいと頼まれる。ホテル内を移動し、気になる場所を調べ、集めた品を人物に見せながら、閉ざされた夜の真相へ近づいていく。</p>
+    <button id="startGame">ゲーム開始</button>
   </section>
-  <section class="panel">
-    <h2>進め方</h2>
-    <div class="axis">
-      <div><strong>1. ストーリーを読む</strong>ホテルへ入った状況、封筒、停電、午前零時の客を確認する。</div>
-      <div><strong>2. 脱出手順を組む</strong>館内図、封筒、管理室端末から、発電機室へ向かう経路を確かめる。</div>
-      <div><strong>3. 館内を探索する</strong>ロビーや西館に残った切り抜き、伝票、宿泊者ノート、静止画を読む。</div>
-      <div><strong>4. 推理する</strong>外へ出る経路と失踪の説明が食い違う場所を、調査ノートで順に整理する。</div>
+</div>
+<main class="game-shell">
+  <header class="game-top">
+    <div class="game-title"><strong>吹雪ホテル</strong><span>ストーリー から 脱出 そして 推理へ</span></div>
+    <div class="game-actions"><button id="hintBtn">状況整理</button><button id="resetGame">最初から</button></div>
+  </header>
+  <section class="game-stage">
+    <div class="scene-card" id="sceneCard">
+      <img class="scene-img" id="sceneImg" src="./assets/game-lobby.png" alt="">
+      <div class="scene-vignette"></div>
+      <div id="hotspots"></div>
+      <img class="character" id="charImg" src="" alt="">
+      <div class="dialog"><div class="speaker" id="speaker">吹雪ホテル</div><p id="dialogText">風除室の向こうで雪が窓を叩いている。まずはフロント周辺を調べよう。</p></div>
     </div>
-    <p class="small">この作品は吹雪ホテル内で完結します。資料はホテル内の案内、封筒、管理室端末、探索で見つかる物品として扱います。</p>
-  </section>
-  <section class="links" aria-label="調査リンク">
-    <a class="card-link" href="./story/index.html"><strong>物語を始める</strong><span>ホテルへ入る</span></a>
-    <a class="card-link" href="./escape/index.html"><strong>脱出手順</strong><span>発電機室への経路</span></a>
-    <a class="card-link" href="./official/index.html"><strong>館内案内</strong><span>地図と非常時案内</span></a>
-    <a class="card-link" href="./mail/index.html"><strong>封筒</strong><span>依頼文と鍵</span></a>
-    <a class="card-link" href="./investigate/index.html"><strong>推理ノート</strong><span>真相を整理する</span></a>
+    <aside class="side">
+      <section class="side-panel"><h2>移動</h2><div class="move-grid" id="moves"></div></section>
+      <section class="side-panel"><h2>持ち物</h2><div class="inventory" id="inventory"></div></section>
+      <section class="side-panel"><h2>人物</h2><div id="people"></div></section>
+      <section class="side-panel"><h2>記録</h2><div class="log" id="log"></div></section>
+      <section class="side-panel solve-box">
+        <h2>推理提出</h2>
+        <p class="small">誰が、どこを使い、どの証拠を隠そうとしたのか。一文でまとめてください。</p>
+        <textarea id="finalAnswer" placeholder="例: ..."></textarea>
+        <button id="submitFinal">提出</button>
+        <p id="finalMsg"></p>
+        <div class="ending" id="ending">発電室の外扉が開く。だが本当に閉じ込められていたのは、十年前から同じ夜を繰り返していた人たちの記憶だった。</div>
+      </section>
+    </aside>
   </section>
 </main>
+<script src="game.js"></script>
 <script src="textflow.js"></script>
 </body>
 </html>
