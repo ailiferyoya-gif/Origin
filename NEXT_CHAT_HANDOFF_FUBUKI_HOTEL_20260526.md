@@ -31,6 +31,27 @@
   - 状況整理
   - 最終推理提出
 
+## 2026-05-26 PC全画面化・3時間規模への増量
+
+- ユーザー指摘: PCでは縦にスクロールせず、全画面ゲームのように遊びたい。部屋数が少なく10分ほどで終わるため、3時間ほどになるように増量が必要。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\backups\fubuki-hotel-expanded-game-20260526`
+- `web/game.css` をPCでは `100dvh` のゲーム画面に変更。
+  - ページ全体は縦スクロールさせない。
+  - 右側の情報パネルだけ内部スクロール。
+  - iPhone幅では従来どおり縦積みで遊べる。
+- `web/index.html` の `game.css` / `game.js` にキャッシュ回避クエリを追加。
+- `web/game.js` を増築。
+  - 食堂、厨房、管理室、書斎ラウンジ、乾燥室、地下資料庫を追加。
+  - 管理室、厨房、乾燥室、301号室、地下資料庫、発電室に入室条件を追加。
+  - 証拠品を約30点まで増量。
+  - 調査ホットスポットを約40件以上へ増量。
+  - 人物への「見せる」反応を追加。
+  - 最終推理は、鳥居、西階段、乾燥室/従業員通路、時刻操作、暖炉の証拠隠し、十年前の関係を必要要素にした。
+- 発電室のロック条件を修正。
+  - ランタンは発電室内で拾うため、入室条件から外した。
+  - 入室条件は `ヒューズレバー + 従業員通路図`。
+
 ## 使用画像
 
 すべてChatGPT生成画像を使用。
@@ -47,6 +68,18 @@
   - 301号室
 - `FubukiHotelMystery/web/assets/game-generator.png`
   - 発電室
+- `FubukiHotelMystery/web/assets/game-dining.png`
+  - 食堂
+- `FubukiHotelMystery/web/assets/game-kitchen.png`
+  - 厨房
+- `FubukiHotelMystery/web/assets/game-office.png`
+  - 管理室
+- `FubukiHotelMystery/web/assets/game-lounge.png`
+  - 書斎ラウンジ
+- `FubukiHotelMystery/web/assets/game-drying.png`
+  - 乾燥室
+- `FubukiHotelMystery/web/assets/game-archive.png`
+  - 地下資料庫
 - `FubukiHotelMystery/web/assets/char-torii.png`
   - 鳥居真琴、背景透過済み
 - `FubukiHotelMystery/web/assets/char-hasumi.png`
@@ -85,3 +118,10 @@
 - ローカルサーバーで `FubukiHotelMystery/web/index.html` がHTTP 200。
 - ブラウザでゲーム開始、ロビー調査、持ち物入手、人物会話、二階廊下への移動、足跡調査まで確認。
 - ブラウザ上の本文に文字化けなし、コンソールエラーなし、横スクロールなし。
+- 増量後、ブラウザで主要ルートを通し確認。
+  - ゲーム開始から、ロビー、食堂、書斎ラウンジ、二階廊下、管理室、厨房、乾燥室、発電室、地下資料庫、301号室まで到達確認。
+  - 30個の持ち物取得を確認。
+  - PC幅で `scrollHeight == clientHeight`、ページ全体の縦スクロールなし。
+  - コンソールエラーなし。
+  - 本文文字化けなし。
+- 最終回答欄の自動入力は、ブラウザ操作側の仮想クリップボード制限で自動QA不可。提出条件のコード確認は済み。
