@@ -1,119 +1,67 @@
-const answers=[
-  "紅坂メディカルクリニック",
-  "紅坂診療所",
-  "CRN-1006",
-  "2010年10月6日",
-  "23:14",
-  "HOSP",
-  "HOSP2314",
-  "CRN-1006",
-  "笠井朋子",
-  "赤い鍵札",
-  "酸素バルブログ",
-  "笠井朋子",
-  "第二処置室",
-  "退職扱い",
-  "地域医療課",
-  "カルテ第八冊",
-  "酸素バルブログ",
-  "欠番",
-  "A-15",
-  "予備酸素ボンベ",
-  "赤い鍵札",
-  "裏口廊下",
-  "2010/10/08",
-  "酸素",
-  "管理画面",
-  "保存メール",
-  "早瀬修",
-  "22:31",
-  "第二処置室",
-  "薬品保管庫",
-  "00:02",
-  "薬剤棚ログ",
-  "夜間カード",
-  "裏口廊下",
-  "紅坂医療設備",
-  "裏口廊下",
-  "48分",
-  "警告 開錠 閉鎖 復旧",
-  "夜間カード",
-  "裏口廊下",
-  "酸素バルブログ",
-  "薬剤棚ログ",
-  "笠井朋子",
-  "早瀬修",
-  "小規模な業務事故",
-  "退路封鎖",
-  "早瀬修 笠井朋子 第二処置室 夜間カード 裏口廊下",
-  "早瀬修が笠井朋子を第二処置室へ誘導し、夜間カードを使って裏口廊下から退路を塞いだ"
-];
+const QUESTION_COUNT=48;
 
-const answerAliases={
-  4:["2010/10/6","2010/10/06","2010年10月6日"],
-  6:["HOSP","hosp"],
-  7:["HOSP2314","hosp2314"],
-  18:["欠番","欠落番号"],
-  19:["A15","A-15","a15","a-15"],
-  24:["酸素","酸素系","酸素バルブ"],
-  37:["48分","四十八分","48"],
-  38:["警告開錠閉鎖復旧","警告 開錠 閉鎖 復旧","警告、開錠、閉鎖、復旧"],
-  45:["小規模な業務事故","業務事故"],
-  46:["退路封鎖","退路の封鎖","退路を塞いだ"],
-  47:["早瀬修 笠井朋子 第二処置室 夜間カード 裏口廊下","早瀬修笠井朋子第二処置室夜間カード裏口廊下"]
-};
+const answerHashes=[["986647684"],["355437890"],["286413107"],["740773952","331051703","367772060","740773952"],["897076069"],["297220945","297220945","297220945"],["322610769","322610769","322610769"],["286413107"],["270034118"],["650413550"],["140315876"],["270034118"],["796577618"],["502812970"],["235073891"],["885980359"],["140315876"],["3742729","3742729","298057009"],["17407726","17407726","17407726","17407726","17407726"],["470795291"],["650413550"],["168121273"],["367772062"],["5030599","5030599","659040464","460354217"],["725017212"],["426664156"],["467232224"],["894828237"],["796577618"],["975508731"],["301331821"],["722675585"],["3707430"],["168121273"],["912849887"],["168121273"],["16657343","16657343","416306292","126995"],["212660809","212660809","212660809","212660809"],["3707430"],["168121273"],["140315876"],["722675585"],["270034118"],["467232224"],["499250586","499250586","101854596"],["561793636","561793636","401708633","685466522"],["876280907","876280907","876280907"],["478452731"]];
 
-const finalAnswerGroups=[
-  ["早瀬修","早瀬","はやせ","hayase"],
-  ["笠井朋子","笠井","かさい","kasai"],
-  ["第二処置室","第2処置室","二処置室","処置室"],
-  ["夜間カード","カード","入退室カード"],
-  ["裏口廊下","裏口","廊下"],
-  ["誘導","呼び出","呼出","向かわせ","行かせ"],
-  ["塞","閉鎖","封鎖","閉じ","逃げられ"]
-];
+const finalExactHashes=["478452731"];
+const fiveExactHashes=["876280907","876280907","876280907"];
+const finalGroupHashes=[["467232224","3566502","230155275","498848876"],["270034118","4269364","229531299","787968151"],["796577618","704368655","630207414","379831105"],["3707430","1764745","829104313"],["168121273","4729615","3318952"],["4791573","388540524","2974381","656467791","616150181"],["23539","5172720","3243352","5147314","155791422"]];
+const fiveGroupHashes=[["467232224","3566502"],["270034118","4269364"],["796577618","704368655","379831105"],["3707430","1764745"],["168121273","4729615"]];
 
-const fiveElementGroups=[
-  ["早瀬修","早瀬"],
-  ["笠井朋子","笠井"],
-  ["第二処置室","第2処置室","処置室"],
-  ["夜間カード","カード"],
-  ["裏口廊下","裏口"]
-];
+const missHints=decodeHintMap({"7":"5YmN5ZWP44Gu5Zub5paH5a2X44Gr44CB5pyA5Yid44Gu55Ww5bi45pmC5Yi744KS5pWw5a2X5Zub5qGB44Gn57aa44GR44G+44GZ44CC","38":"5pel5qyh5o6n44GI44Gu5aSc6ZaT54Wn5ZCI6aCG44KS44CB5pmC5Yi744Gu5pep44GE6aCG44Gr5Zub6Kqe44Gn5Lim44G544G+44GZ44CC","19":"6YW457Sg44OQ44Or44OW44Ot44Kw44Gu5qyg55Wq54Wn5ZCI56Wo44Gn44CBQS0xNOOBqEEtMTbjga7plpPjgavjgYLjgovmnqDjgpLopovjgabjgY/jgaDjgZXjgYTjgII=","46":"6YW457Sg44Gd44Gu44KC44Gu44Gn44Gv44Gq44GP44CB56ys5LqM5Yem572u5a6k44GL44KJ5Ye644KL6YGT44GM44Gp44GG5omx44KP44KM44Gf44GL44KS5Zub5a2X44Gn44G+44Go44KB44G+44GZ44CC","48":"54qv5Lq644CB6KKr5a6z6ICF44CB6KqY5bCO5YWI44CB5aSc6ZaT44Kr44O844OJ44CB5aGe44GM44KM44Gf6YCA6Lev44KS5LiA5paH44Gr5ZCr44KB44Gm44GP44Gg44GV44GE44CC","47":"5Lq654mp44CB6KKr5a6z6ICF44CB6KqY5bCO5YWI44CB44Kr44O844OJ44CB6YCA6Lev44Gu5LqU44Gk44KS6aCG44Gr5ZCr44KB44Gm44GP44Gg44GV44GE44CC","6":"5YWs5byPSFDjga7jgYrnn6XjgonjgZvmrITjgavjgYLjgosyMDEwLjEwLjA444Gu5aSc6ZaT5beh5Zue6KGo44KS6KaL44Gm44GP44Gg44GV44GE44CC55Wq5Y+36aCG44Gr6Iux5a2X44Gg44GR44KS5ou+44GE44G+44GZ44CC"});
 
-const missHints={
-  6:"公式HPのお知らせ欄にある2010.10.08の夜間巡回表を見てください。番号順に英字だけを拾います。",
-  7:"前問の四文字に、最初の異常時刻を数字四桁で続けます。",
-  19:"酸素バルブログの欠番照合票で、A-14とA-16の間にある枠を見てください。",
-  38:"日次控えの夜間照合順を、時刻の早い順に四語で並べます。",
-  46:"酸素そのものではなく、第二処置室から出る道がどう扱われたかを四字でまとめます。",
-  47:"人物、被害者、誘導先、カード、退路の五つを順に含めてください。",
-  48:"犯人、被害者、誘導先、夜間カード、塞がれた退路を一文に含めてください。"
-};
+function decodeHintMap(map){
+  const out={};
+  Object.keys(map).forEach(key=>{
+    const bin=atob(map[key]);
+    const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+    out[key]=new TextDecoder().decode(bytes);
+  });
+  return out;
+}
 
 const norm=s=>(s||"")
   .replace(/[\s　。．.・「」『』（）()［］\[\]/／\-ー―–—,，、]/g,"")
   .replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
   .toLowerCase();
 
-function matchesFinalAnswer(value){
+function hashText(value){
+  let h=7;
+  for(const ch of norm(value)){
+    h=(h*131+ch.charCodeAt(0))%1000000007;
+  }
+  return String(h);
+}
+
+function substringHashSet(value){
   const input=norm(value);
-  if(input===norm(answers[47])) return true;
-  return finalAnswerGroups.every(group=>group.some(word=>input.includes(norm(word))));
+  const set=new Set([hashText(input)]);
+  for(let start=0;start<input.length;start++){
+    for(let end=start+1;end<=input.length&&end<=start+12;end++){
+      set.add(hashText(input.slice(start,end)));
+    }
+  }
+  return set;
+}
+
+function matchesGroups(value,groups,exactHashes){
+  const exact=hashText(value);
+  if(exactHashes.includes(exact)) return true;
+  const parts=substringHashSet(value);
+  return groups.every(group=>group.some(hash=>parts.has(hash)));
+}
+
+function matchesFinalAnswer(value){
+  return matchesGroups(value,finalGroupHashes,finalExactHashes);
 }
 
 function matchesFiveElements(value){
-  const input=norm(value);
-  if(input===norm(answers[46])) return true;
-  return fiveElementGroups.every(group=>group.some(word=>input.includes(norm(word))));
+  return matchesGroups(value,fiveGroupHashes,fiveExactHashes);
 }
 
 function matchesAnswer(n,value){
   if(n===48) return matchesFinalAnswer(value);
   if(n===47) return matchesFiveElements(value);
-  const candidates=[answers[n-1]].concat(answerAliases[n]||[]);
-  const input=norm(value);
-  return candidates.some(x=>input===norm(x));
+  return (answerHashes[n-1]||[]).includes(hashText(value));
 }
 
 let unlocked=Number(localStorage.getItem("mystery_unlocked")||"1");
@@ -131,7 +79,7 @@ function checkAnswer(n){
   const input=card.querySelector("input");
   const msg=card.querySelector(".msg");
   if(matchesAnswer(n,input.value)){
-    msg.textContent=n===answers.length
+    msg.textContent=n===QUESTION_COUNT
       ?"真相が開示されました。"
       :"照合しました。次の記録を確認できます。";
     msg.className="msg ok";
