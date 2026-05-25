@@ -549,3 +549,60 @@
 
 ### 未完了事項
 - この追記時点でコミット・pushはこれから実施。
+
+## 2026-05-25 CrimsonClinicMystery 2〜3時間級ギミック深掘り追記
+
+### 作業状況
+- ユーザー指摘: 48〜90分程度ではなく、2〜3時間予定にさらに近づけたい。
+- 変更前バックアップ取得済み:
+  - `C:\Users\kogit\Documents\Codex\backups\crimson-2to3h-puzzle-depth-20260525-215723`
+
+### 変更点
+- `CrimsonClinicMystery/web/investigate/index.html`
+  - 調査ノートを36問から48問へ拡張。
+  - 新しい章構成:
+    - 開錠前調査 01〜07
+    - 検索導線 08〜11
+    - 外部資料照合 12〜24
+    - 内部資料照合 25〜36
+    - 時系列復元 / 真相整理 / 最終照合 37〜48
+  - 初期表示では48問中47問がロックされる進行。
+  - 「検索語を作る」「欠番枠を読む」「時刻順に並べる」「未訂正欄の五要素をまとめる」を追加。
+- `CrimsonClinicMystery/web/logs/missing/index.html`
+  - 欠番照合票を追加。
+  - A-14=23:14、A-16=00:02、その間の `A-15` が薬剤棚ログ側へ移管された手掛かりを追加。
+- `CrimsonClinicMystery/web/ledger/daily/index.html`
+  - 夜間照合順を追加。
+  - `警告 → 開錠 → 閉鎖 → 復旧` を時刻順で復元するギミックを追加。
+- `CrimsonClinicMystery/web/ledger/discard/index.html`
+  - 未採用カット同梱票を追加。
+  - 赤い鍵札、予備酸素ボンベ、裏口廊下が公開写真から切り落とされた情報として残るよう追加。
+- `CrimsonClinicMystery/web/search/index.html`
+  - 検索語の決め方メモを追加。
+  - 管理番号、氏名、赤い鍵札、ログ名を一単語検索へ戻す導線を追加。
+- `CrimsonClinicMystery/web/site.js`
+  - 正答配列を48問へ更新。
+  - `A-15`、`警告 開錠 閉鎖 復旧`、五要素回答、最終回答の別表記許容を追加。
+- `CrimsonClinicMystery/web/story.js`
+  - 進行表示を `0/48` 基準へ変更。
+  - 章進行を検索導線・公開資料・内部控え・時系列復元に合わせて更新。
+- Booth同梱版:
+  - `CrimsonClinicMystery_BoothPackage/CrimsonClinicMystery_Booth_v1/web/...` に同内容を同期済み。
+
+### 確認済み
+- Node検証:
+  - 本体・Boothとも正答数 `48`
+  - 全正答判定 OK
+  - 五要素回答判定 OK
+  - 最終回答判定 OK
+  - リンク欠落 `0`
+- `git diff --check` 問題なし。LF/CRLF警告のみ。
+- ブラウザ確認:
+  - 本体 `investigate/index.html`: `qCount=48`、初期ロック `47`、横スクロールなし、初期表示に `HOSP2314` なし。
+  - Booth `investigate/index.html`: `qCount=48`、初期ロック `47`、横スクロールなし、初期表示に `HOSP2314` なし。
+  - `logs/missing/index.html`: 欠番照合票と `A-15` 表示確認。
+  - `ledger/daily/index.html`: `警告 / 開錠 / 閉鎖 / 復旧` の時系列表示確認。
+  - `ledger/discard/index.html`: 未採用カット同梱票表示確認。
+
+### 未完了事項
+- この追記時点でコミット・pushはこれから実施。
