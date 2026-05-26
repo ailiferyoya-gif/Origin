@@ -1,5 +1,79 @@
 const qs = (id) => document.getElementById(id);
 
+let audioCtx = null;
+let storyIndex = 0;
+
+const storySlides = [
+  {
+    title: "封筒",
+    text: "その封筒は、雪で白く濡れていた。差出人の名前は鳥居真琴。中には古い真鍮鍵、焦げたメニューカードの切れ端、そして短い便箋が一枚だけ入っていた。"
+  },
+  {
+    title: "午前零時の客",
+    text: "便箋には、かすれた筆跡でこう書かれていた。「午前零時の客を外へ出さないでください」。冗談にしては、紙から立ちのぼる煤の匂いが生々しすぎた。"
+  },
+  {
+    title: "閉ざされたホテル",
+    text: "奥白岳の吹雪ホテルは、大雪で送迎道路を失っている。停電の直後、宿泊客の蓮見岬が姿を消した。玄関前の雪は崩れておらず、外へ出た足跡はない。"
+  },
+  {
+    title: "依頼",
+    text: "蓮見と古い縁を持つ人物は、あなたに館内で起きたことを確かめてほしいと頼んだ。鍵の行方、時刻のずれ、暖炉の灰。ばらばらの痕跡は、同じ夜へ向いている。"
+  },
+  {
+    title: "入館",
+    text: "ホテルの扉は重く、内側から冷気を吐いた。ここから先は、見えるものを調べ、持ち物を集め、人物に話しかけ、必要なら証拠を見せる。閉ざされた夜を、あなたの手でほどいていく。"
+  }
+];
+
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === "suspended") audioCtx.resume();
+}
+
+function playSound(kind = "click") {
+  if (!audioCtx) return;
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const map = {
+    click: [420, 0.035, 0.018],
+    page: [280, 0.09, 0.028],
+    move: [190, 0.13, 0.035],
+    item: [660, 0.16, 0.04],
+    talk: [330, 0.08, 0.026],
+    lock: [120, 0.12, 0.038],
+    solve: [740, 0.22, 0.05],
+    bad: [90, 0.18, 0.045]
+  };
+  const [freq, dur, vol] = map[kind] || map.click;
+  osc.type = kind === "bad" || kind === "lock" ? "sawtooth" : "sine";
+  osc.frequency.setValueAtTime(freq, now);
+  if (kind === "item" || kind === "solve") osc.frequency.exponentialRampToValueAtTime(freq * 1.45, now + dur);
+  gain.gain.setValueAtTime(vol, now);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(now);
+  osc.stop(now + dur);
+}
+
+function renderStory() {
+  const slide = storySlides[storyIndex];
+  qs("storyTitle").textContent = slide.title;
+  qs("storyText").textContent = slide.text;
+  qs("storyCount").textContent = `${storyIndex + 1} / ${storySlides.length}`;
+  qs("storyNext").textContent = storyIndex === storySlides.length - 1 ? "ホテルへ入る" : "次へ";
+}
+
+function enterGame() {
+  qs("storyModal").classList.add("hidden");
+  state.started = true;
+  save();
+  render();
+  addLog("吹雪ホテルに入った。");
+  playSound("move");
+}
+
 const itemNames = {
   envelope: "鳥居からの封筒",
   menu: "焦げたメニューカード",
@@ -339,11 +413,13 @@ function moveTo(id) {
   if (!scenes[state.scene].moves.includes(id) && id !== state.scene) return;
   if (!canEnter(id)) {
     speak("扉", lockMessages[id] || "まだ進めない。", null);
+    playSound("lock");
     return;
   }
   state.scene = id;
   render();
   addLog(`${scenes[id].name}へ移動した。`);
+  playSound("move");
 }
 
 function inspectSpot(id) {
@@ -352,6 +428,9 @@ function inspectSpot(id) {
   if (spot.item && !state.items.has(spot.item)) {
     state.items.add(spot.item);
     addLog(`${itemNames[spot.item]}を入手した。`);
+    playSound("item");
+  } else {
+    playSound("click");
   }
   state.flags.add(`spot:${id}`);
   speak(spot.label, spot.text, null);
@@ -363,6 +442,7 @@ function selectItem(id) {
   state.selected = state.selected === id ? null : id;
   renderInventory();
   save();
+  playSound("click");
 }
 
 function talk(id) {
@@ -371,12 +451,14 @@ function talk(id) {
   state.flags.add(`talk:${id}`);
   addLog(`${person.name}と話した。`);
   save();
+  playSound("talk");
 }
 
 function showItem(id) {
   const person = people[id];
   if (!state.selected) {
     speak(person.name, "見せるものを持ち物から選んでください。", person.img);
+    playSound("lock");
     return;
   }
   const line = person.show[state.selected] || "それについて、今は答えられることがありません。";
@@ -384,9 +466,11 @@ function showItem(id) {
   state.flags.add(`show:${id}:${state.selected}`);
   addLog(`${person.name}に${itemNames[state.selected]}を見せた。`);
   render(true);
+  playSound("talk");
 }
 
 function hint() {
+  playSound("page");
   if (state.items.size < 8) {
     speak("状況整理", "まずはロビー、食堂、二階廊下、書斎ラウンジを回り、封筒、伝票、名簿、暖炉の灰を集めよう。管理室パスで行ける場所が増える。", null);
   } else if (!state.items.has("masterKey")) {
@@ -419,6 +503,7 @@ function submitFinal() {
     : "まだ証拠か説明が足りない。人物、移動経路、西階段の時刻、暖炉で消された証拠、十年前の関係を入れてください。";
   qs("finalMsg").className = ok ? "ok" : "ng";
   qs("ending").classList.toggle("show", ok);
+  playSound(ok ? "solve" : "bad");
 }
 
 function resetGame() {
@@ -433,21 +518,37 @@ function resetGame() {
   qs("finalMsg").textContent = "";
   qs("ending").classList.remove("show");
   qs("startModal").classList.remove("hidden");
+  qs("storyModal").classList.add("hidden");
   render();
+  playSound("page");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   load();
-  qs("startGame").addEventListener("click", () => {
+  qs("startStory").addEventListener("click", () => {
+    ensureAudio();
     qs("startModal").classList.add("hidden");
-    state.started = true;
-    save();
-    render();
-    addLog("吹雪ホテルに入った。");
+    qs("storyModal").classList.remove("hidden");
+    storyIndex = 0;
+    renderStory();
+    playSound("page");
+  });
+  qs("storyNext").addEventListener("click", () => {
+    ensureAudio();
+    if (storyIndex < storySlides.length - 1) {
+      storyIndex += 1;
+      renderStory();
+      playSound("page");
+    } else {
+      enterGame();
+    }
   });
   qs("hintBtn").addEventListener("click", hint);
   qs("resetGame").addEventListener("click", resetGame);
   qs("submitFinal").addEventListener("click", submitFinal);
-  if (state.started) qs("startModal").classList.add("hidden");
+  if (state.started) {
+    qs("startModal").classList.add("hidden");
+    qs("storyModal").classList.add("hidden");
+  }
   render();
 });

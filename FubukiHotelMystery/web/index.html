@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>吹雪ホテル SNH-1224</title>
 <link rel="stylesheet" href="site.css">
-<link rel="stylesheet" href="game.css?v=20260526-expanded">
+<link rel="stylesheet" href="game.css?v=20260526-story-se">
 </head>
 <body class="game-body">
 <div class="start-modal" id="startModal">
@@ -14,7 +14,18 @@
     <h1>吹雪ホテル <span class="code">SNH-1224</span></h1>
     <p>奥白岳の稜線に建つ吹雪ホテル。大雪で送迎道路が閉ざされた夜、停電の直後に宿泊客の蓮見岬が姿を消した。外へ出た形跡はなく、残されたのは濡れた足跡、暖炉で焦げたメニューカード、そして「午前零時の客を外へ出さないでください」と書かれた封筒だった。</p>
     <p>あなたは蓮見と古い縁を持つ人物から、館内で起きたことを確かめてほしいと頼まれる。ホテル内を移動し、気になる場所を調べ、集めた品を人物に見せながら、閉ざされた夜の真相へ近づいていく。</p>
-    <button id="startGame">ゲーム開始</button>
+    <button id="startStory">物語を開始</button>
+  </section>
+</div>
+<div class="story-modal hidden" id="storyModal">
+  <section class="story-card">
+    <p class="kicker" id="storyKicker">PROLOGUE</p>
+    <h2 id="storyTitle">封筒</h2>
+    <p id="storyText"></p>
+    <div class="story-controls">
+      <span id="storyCount">1 / 5</span>
+      <button id="storyNext">次へ</button>
+    </div>
   </section>
 </div>
 <main class="game-shell">
@@ -46,7 +57,7 @@
     </aside>
   </section>
 </main>
-<script src="game.js?v=20260526-expanded"></script>
+<script src="game.js?v=20260526-story-se"></script>
 <script src="textflow.js"></script>
 </body>
 </html>
