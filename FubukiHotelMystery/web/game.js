@@ -2,6 +2,7 @@ const qs = (id) => document.getElementById(id);
 
 let audioCtx = null;
 let storyIndex = 0;
+let pendingZoomSpot = null;
 
 const storySlides = [
   {
@@ -144,6 +145,55 @@ const itemDetails = {
   metalTag: "307の金属札。部屋番号ではなく、十年前の保管箱番号だった。"
 };
 
+const zoomDetails = {
+  deskLock: {
+    img: "./assets/zoom-desk-lock.png",
+    title: "フロント引き出しの鍵穴",
+    text: "真鍮の鍵穴の周囲だけ霜が薄い。誰かが停電後に一度ここを開けている。封筒にあった仮パスワードを使えば、奥の引き出しが動きそうだ。",
+    prompt: "封筒に書かれていた仮パスワードを入力",
+    answers: ["snow0314"],
+    success: "小さなラッチが外れ、引き出しの底から管理室パスが出てきた。"
+  },
+  keyCabinet: {
+    img: "./assets/zoom-key-cabinet.png",
+    title: "管理室の鍵棚",
+    text: "鍵棚の奥に、ほこりの形だけが残っている空きフックがある。客室割と照合すると、蓮見の部屋に関係する番号だけが不自然に触られている。",
+    prompt: "客室割から、調べるべき部屋番号を入力",
+    answers: ["301"],
+    success: "301の列の奥に隠れていた旧館マスターキーを見つけた。"
+  },
+  chessCompartment: {
+    img: "./assets/zoom-chess-compartment.png",
+    title: "チェス盤の隠し棚",
+    text: "白いナイトだけが逆さに置かれ、盤の下に細い隙間がある。ロビーの呼び鈴で聞いた三つの音を、同じ順で棚に伝えれば開きそうだ。",
+    prompt: "呼び鈴の順番を数字で入力",
+    answers: ["321", "3-2-1", "３２１"],
+    success: "棚板が少し沈み、白いナイトの駒だけが外れた。"
+  },
+  freezerBase: {
+    img: "./assets/zoom-freezer-key.png",
+    title: "冷凍庫の足元",
+    text: "凍った水滴の下に小鍵が半分だけ埋もれている。控え伝票の時刻と足跡が重なる場所だ。誰かが厨房で鍵を落とし、急いで戻ったらしい。",
+    success: "氷を割ると、地下資料庫の棚に使われていた古い小鍵が取れた。"
+  },
+  archiveBox: {
+    img: "./assets/zoom-archive-box.png",
+    title: "地下資料庫の保管箱",
+    text: "古い宿帳の欄外に、部屋番号ではない保管箱番号が残っている。今夜の客室では空白だった番号だけが、十年前の記録では意味を持っている。",
+    prompt: "保管箱に対応する番号を入力",
+    answers: ["307"],
+    success: "箱の奥から、307と刻まれた金属札が見つかった。"
+  },
+  generatorPanel: {
+    img: "./assets/zoom-generator-panel.png",
+    title: "発電室の配電盤",
+    text: "五つの色札が外れかけている。厨房の香辛料棚と地下資料庫の系統図を合わせると、左から順に戻す色が分かる。",
+    prompt: "左から順に色を入力",
+    answers: ["赤白黒白赤", "赤,白,黒,白,赤", "赤 白 黒 白 赤", "redwhiteblackwhitered"],
+    success: "色札を戻すと非常灯が安定し、外扉の足元を照らせるようになった。"
+  }
+};
+
 const locks = {
   office: () => state.items.has("pass"),
   kitchen: () => state.items.has("ticket") || state.flags.has("show:clerk:ticket"),
@@ -184,7 +234,7 @@ const scenes = {
     spots: [
       { id: "envelope", label: "封筒", x: 71, y: 72, w: 10, h: 9, item: "envelope", text: "封筒には仮パスワード SNOW0314 と、307号室の鍵についての走り書きがある。差出人は鳥居真琴。" },
       { id: "fireplace", label: "暖炉", x: 6, y: 53, w: 16, h: 18, item: "menu", requires: { items: ["envelope"] }, lockedText: "暖炉の灰は崩れやすい。先に封筒の内容を確かめ、何を探すべきか絞った方がよさそうだ。", text: "封筒の文面を思い出しながら灰を崩すと、焦げたメニューカードが出てきた。鳥居、午前零時、献立を戻すな、という文字だけが残っている。" },
-      { id: "desk", label: "フロント", x: 52, y: 56, w: 14, h: 16, item: "pass", requires: { items: ["envelope"] }, lockedText: "フロントの引き出しには簡易ロックがある。封筒に書かれた仮パスワードが必要だ。", text: "封筒の仮パスワードで引き出しが開いた。管理室パスが残されている。停電時の非常灯で赤く照らされていたらしい。" },
+      { id: "desk", label: "フロント", x: 52, y: 56, w: 14, h: 16, item: "pass", zoom: "deskLock", requires: { items: ["envelope"] }, lockedText: "フロントの引き出しには簡易ロックがある。封筒に書かれた仮パスワードが必要だ。", text: "封筒の仮パスワードで引き出しが開いた。管理室パスが残されている。停電時の非常灯で赤く照らされていたらしい。" },
       { id: "notice", label: "掲示板", x: 28, y: 70, w: 12, h: 10, item: "clipping", text: "古い新聞切り抜き。十年前、改装前の西階段で宿泊客が転落した記事だ。関係者の名前に蓮見岬がある。" },
       { id: "bell", label: "呼び鈴", x: 62, y: 45, w: 8, h: 8, item: "bellCode", requires: { items: ["clipping"] }, lockedText: "呼び鈴はただ鳴るだけだ。掲示板の古い切り抜きにあった数字を思い出せば、鳴らす順番が分かるかもしれない。", text: "切り抜きの数字どおり、三回、二回、一回の順で打つと音が違う。書斎の棚に同じ三段の金具がある。" }
     ]
@@ -223,7 +273,7 @@ const scenes = {
     people: [],
     spots: [
       { id: "orders", label: "控え伝票", x: 29, y: 49, w: 13, h: 12, item: "orderSlip", text: "控え伝票には、23:54のメニューカードを鳥居が受け取った印がある。暖炉で燃えた紙片と同じ紙質だ。" },
-      { id: "freezer", label: "冷凍庫", x: 76, y: 26, w: 15, h: 32, item: "freezerKey", requires: { items: ["orderSlip"] }, lockedText: "冷凍庫の前にはいくつもの足跡が重なっている。先に控え伝票で誰が厨房へ来たか確認したい。", text: "控え伝票の配送時刻と足跡を重ねると、冷凍庫の下に小さな鍵が落ちていることに気づいた。鍵には旧館資料庫の刻印がある。" },
+      { id: "freezer", label: "冷凍庫", x: 76, y: 26, w: 15, h: 32, item: "freezerKey", zoom: "freezerBase", requires: { items: ["orderSlip"] }, lockedText: "冷凍庫の前にはいくつもの足跡が重なっている。先に控え伝票で誰が厨房へ来たか確認したい。", text: "控え伝票の配送時刻と足跡を重ねると、冷凍庫の下に小さな鍵が落ちていることに気づいた。鍵には旧館資料庫の刻印がある。" },
       { id: "spice", label: "香辛料", x: 52, y: 63, w: 10, h: 10, item: "spiceNote", requires: { items: ["freezerKey"] }, lockedText: "香辛料の並びは乱れている。冷凍庫まわりの小鍵が何に使われたか分かれば、順番にも意味が出そうだ。", text: "香辛料の走り書きには、赤、白、黒、白、赤、の順。発電盤の色札と同じ並びだ。" },
       { id: "dumbwaiter", label: "昇降機", x: 10, y: 28, w: 13, h: 24, text: "小型の昇降機は二階サービス通路へつながる。人は通れないが、鍵や伝票なら移動できる。" }
     ]
@@ -237,7 +287,7 @@ const scenes = {
     spots: [
       { id: "terminal", label: "端末", x: 47, y: 47, w: 16, h: 15, item: "terminalMemo", text: "端末には仮パスワード SNOW0314 の入力履歴が残る。停電の八分前に客室割が更新されている。" },
       { id: "map", label: "館内図", x: 14, y: 28, w: 18, h: 20, item: "staffRoute", requires: { items: ["terminalMemo"] }, lockedText: "館内図は古く、赤い書き込みの意味が分からない。先に端末の更新履歴を確認したい。", text: "端末の更新履歴と照合すると、乾燥室から発電室へ抜ける従業員通路が赤鉛筆で囲まれていることに気づく。" },
-      { id: "keys", label: "鍵棚", x: 73, y: 25, w: 12, h: 24, item: "masterKey", requires: { items: ["roomList"] }, lockedText: "鍵棚には番号札が多すぎる。客室割を確認してからでないと、必要な鍵を選べない。", text: "客室割で番号を絞ると、鍵棚の奥に旧館マスターキーが残っていることに気づく。301号室と地下資料庫の扉に使える。" },
+      { id: "keys", label: "鍵棚", x: 73, y: 25, w: 12, h: 24, item: "masterKey", zoom: "keyCabinet", requires: { items: ["roomList"] }, lockedText: "鍵棚には番号札が多すぎる。客室割を確認してからでないと、必要な鍵を選べない。", text: "客室割で番号を絞ると、鍵棚の奥に旧館マスターキーが残っていることに気づく。301号室と地下資料庫の扉に使える。" },
       { id: "roomList", label: "客室割", x: 36, y: 67, w: 12, h: 10, item: "roomList", requires: { items: ["terminalMemo"] }, lockedText: "客室割は何度も上書きされている。端末の履歴を見てから読み直す必要がある。", text: "端末履歴をもとに旧館の客室割を読む。鳥居は201、蓮見は301。307は今夜の宿泊客には割り当てられていない。" }
     ]
   },
@@ -249,7 +299,7 @@ const scenes = {
     people: ["hasumi"],
     spots: [
       { id: "guestBook", label: "宿泊者名簿", x: 18, y: 62, w: 14, h: 12, item: "guestBook", text: "名簿の十年前の欄に蓮見岬と鳥居真琴の名が並ぶ。二人は初対面ではない。" },
-      { id: "chess", label: "チェス盤", x: 49, y: 69, w: 13, h: 10, item: "chessPiece", requires: { items: ["bellCode"] }, lockedText: "白いナイトの駒だけが逆さだが、どう動かすか分からない。ロビーの呼び鈴の順番が使えそうだ。", text: "呼び鈴の三、二、一の順で棚を叩くと隠し棚が開いた。白いナイトの駒だけが中に残っている。" },
+      { id: "chess", label: "チェス盤", x: 49, y: 69, w: 13, h: 10, item: "chessPiece", zoom: "chessCompartment", requires: { items: ["bellCode"] }, lockedText: "白いナイトの駒だけが逆さだが、どう動かすか分からない。ロビーの呼び鈴の順番が使えそうだ。", text: "呼び鈴の三、二、一の順で棚を叩くと隠し棚が開いた。白いナイトの駒だけが中に残っている。" },
       { id: "diary", label: "破られた日誌", x: 70, y: 45, w: 13, h: 14, item: "tornPage", requires: { items: ["chessPiece"] }, lockedText: "日誌の破れ目は棚の奥へ続いている。隠し棚を開ける手がかりが必要だ。", text: "白いナイトの駒を外すと日誌の破れたページが抜けた。西階段の時計は改装後も手動で戻せる、と書かれている。" },
       { id: "portrait", label: "肖像画", x: 38, y: 25, w: 10, h: 18, text: "肖像画の裏に古い金具がある。呼び鈴と同じ三段式だ。" }
     ]
@@ -300,7 +350,7 @@ const scenes = {
     people: [],
     spots: [
       { id: "register", label: "古い宿帳", x: 21, y: 60, w: 16, h: 13, item: "oldRegister", requires: { items: ["freezerKey"] }, lockedText: "宿帳の棚は錆びた小鍵で閉じられている。厨房で鍵を探す必要がある。", text: "冷凍庫下の小鍵で棚が開く。十年前の宿帳には、蓮見が西階段の事故を隠したのではなく、鳥居をかばった記録がある。" },
-      { id: "cabinet", label: "金属棚", x: 69, y: 31, w: 14, h: 28, item: "metalTag", requires: { items: ["oldRegister"] }, lockedText: "金属棚には番号だけが並ぶ。十年前の宿帳を読まないと、どれを開けるべきか分からない。", text: "宿帳の保管箱番号を追うと、金属棚から307の札が見つかる。いま夜の部屋ではなく、十年前の保管箱番号だった。" },
+      { id: "cabinet", label: "金属棚", x: 69, y: 31, w: 14, h: 28, item: "metalTag", zoom: "archiveBox", requires: { items: ["oldRegister"] }, lockedText: "金属棚には番号だけが並ぶ。十年前の宿帳を読まないと、どれを開けるべきか分からない。", text: "宿帳の保管箱番号を追うと、金属棚から307の札が見つかる。いま夜の部屋ではなく、十年前の保管箱番号だった。" },
       { id: "cables", label: "系統図", x: 46, y: 42, w: 14, h: 16, item: "cableMap", requires: { items: ["metalTag", "spiceNote"] }, lockedText: "系統図の色札は外されている。307の金属札と厨房の色順がそろえば読めそうだ。", text: "307の札を基準に、厨房の赤、白、黒、白、赤を合わせる。発電系統図には、乾燥室と発電室の非常灯だけを残す切替手順が書かれている。" },
       { id: "ski", label: "壊れたスキー板", x: 8, y: 72, w: 14, h: 10, text: "古いスキー板の金具が銀皿と同じ形に曲がっている。手すりの傷は事故の再現に使われた。" }
     ]
@@ -312,8 +362,8 @@ const scenes = {
     moves: ["hallway", "drying", "archive"],
     people: [],
     spots: [
-      { id: "panel", label: "配電盤", x: 44, y: 23, w: 13, h: 22, requires: { items: ["fuse", "spiceNote", "cableMap"] }, lockedText: "配電盤は色札が外れている。ヒューズレバー、色の順番、系統図がそろわないと戻せない。", text: "ヒューズレバーを戻し、赤、白、黒、白、赤の順に札を合わせると非常灯が安定した。" },
-      { id: "door", label: "外扉", x: 72, y: 20, w: 18, h: 37, item: "snow", requires: { items: ["lantern"] }, lockedText: "外扉の足元は暗い。ランタンがあれば雪の崩れ方を確認できる。", text: "ランタンで照らすと、外扉の雪は内側だけ崩れている。蓮見がここから外へ出たという説明は成り立たない。" },
+      { id: "panel", label: "配電盤", x: 44, y: 23, w: 13, h: 22, zoom: "generatorPanel", requires: { items: ["fuse", "spiceNote", "cableMap"] }, lockedText: "配電盤は色札が外れている。ヒューズレバー、色の順番、系統図がそろわないと戻せない。", text: "ヒューズレバーを戻し、赤、白、黒、白、赤の順に札を合わせると非常灯が安定した。" },
+      { id: "door", label: "外扉", x: 72, y: 20, w: 18, h: 37, item: "snow", requires: { items: ["lantern"], flags: ["spot:panel"] }, lockedText: "外扉の足元はまだ暗い。ランタンだけでなく、配電盤を復旧して非常灯を安定させたい。", text: "ランタンと非常灯で照らすと、外扉の雪は内側だけ崩れている。蓮見がここから外へ出たという説明は成り立たない。" },
       { id: "lantern", label: "ランタン", x: 79, y: 70, w: 10, h: 12, item: "lantern", text: "煤けたランタン。伝票にある00:12の発電室配送と一致する。ランタンを運んだ人物は停電後にここへ来ている。" },
       { id: "switch", label: "切替スイッチ", x: 30, y: 36, w: 10, h: 16, text: "切替スイッチは館内全体ではなく、乾燥室と発電室だけを残す位置で止まっている。" }
     ]
@@ -436,7 +486,8 @@ function objectiveText() {
   if (!state.items.has("masterKey")) return "旧館の客室割と鍵棚を照合し、閉ざされた部屋へ入る手段を得る。";
   if (!state.items.has("oldRegister")) return "書斎ラウンジと地下資料庫をつなぎ、十年前の宿帳を探す。";
   if (!state.items.has("cableMap")) return "乾燥室と資料庫で、停電後に残った発電系統の痕跡を集める。";
-  if (!state.items.has("snow")) return "発電室まで進み、外へ出たように見せた雪跡の正体を確かめる。";
+  if (!state.flags.has("spot:panel")) return "発電室の配電盤を復旧し、外扉の足元を照らせる状態にする。";
+  if (!state.items.has("snow")) return "安定した非常灯とランタンで、外へ出たように見せた雪跡の正体を確かめる。";
   return `証拠はかなり揃った。推理タブで、人物・経路・時刻・隠した証拠を一文にまとめる。重要証拠 ${evidenceCount()} / 12`;
 }
 
@@ -510,6 +561,14 @@ function inspectSpot(id) {
     save();
     return;
   }
+  if (spot.zoom && !state.flags.has(`zoom:${spot.id}`)) {
+    openZoom(spot);
+    return;
+  }
+  collectSpot(spot);
+}
+
+function collectSpot(spot, detailText = null) {
   if (spot.item && !state.items.has(spot.item)) {
     state.items.add(spot.item);
     addLog(`${itemNames[spot.item]}を入手した。`);
@@ -517,10 +576,61 @@ function inspectSpot(id) {
   } else {
     playSound("click");
   }
-  state.flags.add(`spot:${id}`);
-  speak(spot.label, spot.text, null);
+  state.flags.add(`spot:${spot.id}`);
+  speak(spot.label, detailText || spot.text, null);
   renderInventory();
   render(true);
+}
+
+function openZoom(spot) {
+  const zoom = zoomDetails[spot.zoom];
+  if (!zoom) {
+    collectSpot(spot);
+    return;
+  }
+  pendingZoomSpot = spot;
+  qs("zoomImg").src = zoom.img;
+  qs("zoomTitle").textContent = zoom.title;
+  qs("zoomText").textContent = zoom.text;
+  qs("zoomMsg").textContent = "";
+  qs("zoomAnswer").value = "";
+  const hasPuzzle = Array.isArray(zoom.answers) && zoom.answers.length > 0;
+  qs("zoomPuzzle").classList.toggle("hidden", !hasPuzzle);
+  qs("zoomPrompt").textContent = zoom.prompt || "";
+  qs("zoomModal").classList.remove("hidden");
+  qs("zoomModal").setAttribute("aria-hidden", "false");
+  state.flags.add(`inspect:${spot.id}`);
+  playSound("page");
+  if (!hasPuzzle) {
+    state.flags.add(`zoom:${spot.id}`);
+    collectSpot(spot, zoom.success || spot.text);
+  } else {
+    setTimeout(() => qs("zoomAnswer").focus(), 0);
+  }
+  save();
+}
+
+function closeZoom() {
+  qs("zoomModal").classList.add("hidden");
+  qs("zoomModal").setAttribute("aria-hidden", "true");
+  pendingZoomSpot = null;
+}
+
+function submitZoomAnswer() {
+  if (!pendingZoomSpot) return;
+  const zoom = zoomDetails[pendingZoomSpot.zoom];
+  const answer = normalize(qs("zoomAnswer").value);
+  const ok = zoom.answers.some((entry) => normalize(entry) === answer);
+  if (!ok) {
+    qs("zoomMsg").textContent = "まだ違う。アップ画像と手元の資料をもう一度照合しよう。";
+    playSound("bad");
+    return;
+  }
+  state.flags.add(`zoom:${pendingZoomSpot.id}`);
+  qs("zoomMsg").textContent = "合っている。仕掛けが動いた。";
+  collectSpot(pendingZoomSpot, zoom.success || pendingZoomSpot.text);
+  playSound("solve");
+  setTimeout(closeZoom, 450);
 }
 
 function selectItem(id) {
@@ -621,6 +731,9 @@ function resetGame() {
   qs("finalAnswer").value = "";
   qs("finalMsg").textContent = "";
   qs("ending").classList.remove("show");
+  qs("zoomModal").classList.add("hidden");
+  qs("zoomModal").setAttribute("aria-hidden", "true");
+  pendingZoomSpot = null;
   qs("startModal").classList.remove("hidden");
   qs("storyModal").classList.add("hidden");
   render();
@@ -651,6 +764,11 @@ document.addEventListener("DOMContentLoaded", () => {
   qs("spotHintBtn").addEventListener("click", toggleSpotHint);
   qs("resetGame").addEventListener("click", resetGame);
   qs("submitFinal").addEventListener("click", submitFinal);
+  qs("zoomClose").addEventListener("click", closeZoom);
+  qs("zoomSubmit").addEventListener("click", submitZoomAnswer);
+  qs("zoomAnswer").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") submitZoomAnswer();
+  });
   document.querySelectorAll(".side-tab").forEach((button) => {
     button.addEventListener("click", () => {
       state.activeTab = button.dataset.tab;

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>吹雪ホテル SNH-1224</title>
 <link rel="stylesheet" href="site.css">
-<link rel="stylesheet" href="game.css?v=20260526-immersion-layout">
+<link rel="stylesheet" href="game.css?v=20260527-zoom-puzzles">
 </head>
 <body class="game-body">
 <div class="start-modal" id="startModal">
@@ -25,6 +25,25 @@
     <div class="story-controls">
       <span id="storyCount">1 / 5</span>
       <button id="storyNext">次へ</button>
+    </div>
+  </section>
+</div>
+<div class="zoom-modal hidden" id="zoomModal" aria-hidden="true">
+  <section class="zoom-card">
+    <button class="zoom-close" id="zoomClose" type="button" aria-label="閉じる">×</button>
+    <img id="zoomImg" src="" alt="">
+    <div class="zoom-copy">
+      <p class="kicker" id="zoomKicker">CLOSE INSPECTION</p>
+      <h2 id="zoomTitle"></h2>
+      <p id="zoomText"></p>
+      <div class="zoom-puzzle hidden" id="zoomPuzzle">
+        <label for="zoomAnswer" id="zoomPrompt"></label>
+        <div class="zoom-answer-row">
+          <input id="zoomAnswer" autocomplete="off">
+          <button id="zoomSubmit" type="button">試す</button>
+        </div>
+        <p id="zoomMsg"></p>
+      </div>
     </div>
   </section>
 </div>
@@ -65,7 +84,7 @@
     </aside>
   </section>
 </main>
-<script src="game.js?v=20260526-immersion-layout"></script>
+<script src="game.js?v=20260527-zoom-puzzles"></script>
 <script src="textflow.js"></script>
 </body>
 </html>

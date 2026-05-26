@@ -266,3 +266,58 @@
 - 未完了:
   - これでレイアウトの管理画面感は弱まったが、3時間級にするには内容面の増強がまだ必要。
   - 次は会話選択肢、アイテム合成、暗号入力、中間推理ロック、追加部屋画像の導入が有効。
+## 2026-05-27 拡大調査画像・小謎追加
+
+- ユーザー指摘:
+  - 画像を増やして没入感を上げたい。
+  - 例: 引き出しをクリックしたら引き出しの画像を表示し、どんな鍵穴か分かるようにしたい。
+  - 謎解き要素をもっと増やしたい。
+- 作業前バックアップ:
+  - `C:\Users\kogit\Documents\Codex\backups\fubuki-hotel-zoom-puzzles-20260527`
+- 追加画像:
+  - すべてChatGPT生成物。
+  - 生成元:
+    - `C:\Users\kogit\.codex\generated_images\019e5978-9772-7a82-8acb-df7af7452ae9`
+  - 追加先:
+    - `FubukiHotelMystery/web/assets/zoom-desk-lock.png`
+    - `FubukiHotelMystery/web/assets/zoom-key-cabinet.png`
+    - `FubukiHotelMystery/web/assets/zoom-chess-compartment.png`
+    - `FubukiHotelMystery/web/assets/zoom-freezer-key.png`
+    - `FubukiHotelMystery/web/assets/zoom-generator-panel.png`
+    - `FubukiHotelMystery/web/assets/zoom-archive-box.png`
+- `web/index.html`
+  - 拡大調査用の `zoomModal` を追加。
+  - `game.css` / `game.js` のキャッシュ回避クエリを `20260527-zoom-puzzles` に更新。
+- `web/game.css`
+  - 拡大画像モーダルのレイアウトを追加。
+  - PCでは画像+説明/入力の横並び。
+  - スマホでは縦並びになり、画像の高さを抑える。
+- `web/game.js`
+  - `zoomDetails` を追加。
+  - 調査対象に `zoom` キーを付与し、初回クリック時にアップ画像と観察文を表示。
+  - 入力式の小謎を追加。
+    - フロント引き出し: 封筒の仮パスワード `SNOW0314`
+    - 管理室の鍵棚: 客室割から `301`
+    - 書斎ラウンジのチェス盤: 呼び鈴順 `321`
+    - 地下資料庫の金属棚: 保管箱番号 `307`
+    - 発電室の配電盤: 色順 `赤白黒白赤`
+  - 冷凍庫はアップ画像表示後に小鍵を取得する演出に変更。
+  - 発電室の外扉は、ランタンだけでなく配電盤復旧後に調査できるよう変更。
+  - `openZoom()` / `closeZoom()` / `submitZoomAnswer()` / `collectSpot()` を追加。
+- 検証:
+  - ローカルで `game.css?v=20260527-zoom-puzzles` / `game.js?v=20260527-zoom-puzzles` 読み込み確認。
+  - `zoomModal` の存在確認。
+  - フロント引き出し:
+    - 封筒入手後にクリックでアップ画像表示。
+    - `SNOW0314` 入力で管理室パス入手。
+  - 管理室の鍵棚:
+    - 端末メモと客室割取得後にクリックでアップ画像表示。
+    - `301` 入力で旧館マスターキー入手。
+  - 主要ルート通し確認:
+    - フロント `SNOW0314`、鍵棚 `301`、チェス盤 `321`、金属棚 `307`、配電盤 `redwhiteblackwhitered` を入力。
+    - 外扉の雪跡、307の金属札、集合写真まで取得。
+    - 重要証拠 `12 / 12` 表示を確認。
+  - コンソールエラーなし。
+  - PC幅でページ全体の縦スクロールなし。
+- 未完了:
+  - さらに3時間級へ寄せる場合は、追加部屋画像、会話選択肢、アイテム合成、章ごとの中間推理ロックを追加する。
