@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>吹雪ホテル SNH-1224</title>
 <link rel="stylesheet" href="site.css">
-<link rel="stylesheet" href="game.css?v=20260526-item-puzzle">
+<link rel="stylesheet" href="game.css?v=20260526-immersion-layout">
 </head>
 <body class="game-body">
 <div class="start-modal" id="startModal">
@@ -42,13 +42,21 @@
       <div class="dialog"><div class="speaker" id="speaker">吹雪ホテル</div><p id="dialogText">風除室の向こうで雪が窓を叩いている。まずはフロント周辺を調べよう。</p></div>
     </div>
     <aside class="side">
-      <section class="side-panel"><h2>移動</h2><div class="move-grid" id="moves"></div></section>
-      <section class="side-panel"><h2>持ち物</h2><div class="inventory" id="inventory"></div></section>
-      <section class="side-panel"><h2>人物</h2><div id="people"></div></section>
-      <section class="side-panel"><h2>記録</h2><div class="log" id="log"></div></section>
-      <section class="side-panel solve-box">
+      <section class="side-panel objective-panel"><h2>現在の目的</h2><p id="objectiveText" class="objective-text"></p></section>
+      <div class="side-tabs" role="tablist" aria-label="調査パネル">
+        <button class="side-tab active" data-tab="move" type="button">移動</button>
+        <button class="side-tab" data-tab="items" type="button">持ち物</button>
+        <button class="side-tab" data-tab="people" type="button">人物</button>
+        <button class="side-tab" data-tab="log" type="button">記録</button>
+        <button class="side-tab" data-tab="solve" type="button">推理</button>
+      </div>
+      <section class="side-panel tab-panel active" data-panel="move"><h2>移動</h2><div class="move-grid" id="moves"></div></section>
+      <section class="side-panel tab-panel" data-panel="items"><h2>持ち物</h2><div class="inventory" id="inventory"></div></section>
+      <section class="side-panel tab-panel" data-panel="people"><h2>人物</h2><div id="people"></div></section>
+      <section class="side-panel tab-panel" data-panel="log"><h2>記録</h2><div class="log" id="log"></div></section>
+      <section class="side-panel tab-panel solve-box" data-panel="solve">
         <h2>推理提出</h2>
-        <p class="small">誰が、どこを使い、どの証拠を隠そうとしたのか。一文でまとめてください。</p>
+        <p class="small" id="solveLead">証拠が揃うまでは、ここはメモ欄として使えます。人物、移動経路、消された証拠、十年前の関係を一文でまとめてください。</p>
         <textarea id="finalAnswer" placeholder="例: ..."></textarea>
         <button id="submitFinal">提出</button>
         <p id="finalMsg"></p>
@@ -57,7 +65,7 @@
     </aside>
   </section>
 </main>
-<script src="game.js?v=20260526-item-puzzle"></script>
+<script src="game.js?v=20260526-immersion-layout"></script>
 <script src="textflow.js"></script>
 </body>
 </html>

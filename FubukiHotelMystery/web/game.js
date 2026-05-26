@@ -365,7 +365,8 @@ const state = {
   flags: new Set(),
   selected: null,
   started: false,
-  spotHint: false
+  spotHint: false,
+  activeTab: "move"
 };
 
 function save() {
@@ -375,7 +376,8 @@ function save() {
     flags: [...state.flags],
     selected: state.selected,
     started: state.started,
-    spotHint: state.spotHint
+    spotHint: state.spotHint,
+    activeTab: state.activeTab
   }));
 }
 
@@ -388,6 +390,7 @@ function load() {
     if (data.selected) state.selected = data.selected;
     if (data.started) state.started = true;
     if (typeof data.spotHint === "boolean") state.spotHint = data.spotHint;
+    if (data.activeTab) state.activeTab = data.activeTab;
   } catch {
     localStorage.removeItem("FubukiHotelAdventure");
   }
@@ -420,12 +423,39 @@ function meetsRequirement(requirement) {
   return itemsOk && flagsOk;
 }
 
+function evidenceCount() {
+  const required = ["menu", "footprint", "clockMemo", "ledger", "coat", "photo", "snow", "oldRegister", "cableMap", "staffRoute", "ticket", "metalTag"];
+  return required.filter((id) => state.items.has(id)).length;
+}
+
+function objectiveText() {
+  if (!state.items.has("envelope")) return "フロント周辺を調べ、依頼人が残した封筒を見つける。";
+  if (!state.items.has("pass")) return "封筒の内容を手がかりに、フロントと管理室への入り方を確かめる。";
+  if (!state.items.has("ticket")) return "二階廊下と食堂を調べ、暖炉に残された時刻の手がかりを追う。";
+  if (!state.items.has("staffRoute")) return "管理室の端末と館内図から、客用ではない移動経路を探す。";
+  if (!state.items.has("masterKey")) return "旧館の客室割と鍵棚を照合し、閉ざされた部屋へ入る手段を得る。";
+  if (!state.items.has("oldRegister")) return "書斎ラウンジと地下資料庫をつなぎ、十年前の宿帳を探す。";
+  if (!state.items.has("cableMap")) return "乾燥室と資料庫で、停電後に残った発電系統の痕跡を集める。";
+  if (!state.items.has("snow")) return "発電室まで進み、外へ出たように見せた雪跡の正体を確かめる。";
+  return `証拠はかなり揃った。推理タブで、人物・経路・時刻・隠した証拠を一文にまとめる。重要証拠 ${evidenceCount()} / 12`;
+}
+
+function syncTabs() {
+  document.querySelectorAll(".side-tab").forEach((button) => {
+    button.classList.toggle("active", button.dataset.tab === state.activeTab);
+  });
+  document.querySelectorAll(".tab-panel").forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.panel === state.activeTab);
+  });
+}
+
 function render(keepSpeech = false) {
   const scene = scenes[state.scene];
   qs("sceneImg").src = scene.img;
   if (!keepSpeech) speak(scene.name, scene.intro, null);
   qs("sceneCard").classList.toggle("show-hotspots", state.spotHint);
   qs("spotHintBtn").textContent = state.spotHint ? "調査ヒント ON" : "調査ヒント OFF";
+  qs("objectiveText").textContent = objectiveText();
   qs("hotspots").innerHTML = scene.spots.map((spot) => (
     `<button class="hotspot" title="${spot.label}" aria-label="${spot.label}" style="left:${spot.x}%;top:${spot.y}%;width:${spot.w}%;height:${spot.h}%" onclick="inspectSpot('${spot.id}')"></button>`
   )).join("");
@@ -436,6 +466,7 @@ function render(keepSpeech = false) {
   }).join("");
   renderInventory();
   renderPeople();
+  syncTabs();
   save();
 }
 
@@ -585,6 +616,7 @@ function resetGame() {
   state.selected = null;
   state.started = false;
   state.spotHint = false;
+  state.activeTab = "move";
   qs("log").innerHTML = "";
   qs("finalAnswer").value = "";
   qs("finalMsg").textContent = "";
@@ -619,6 +651,14 @@ document.addEventListener("DOMContentLoaded", () => {
   qs("spotHintBtn").addEventListener("click", toggleSpotHint);
   qs("resetGame").addEventListener("click", resetGame);
   qs("submitFinal").addEventListener("click", submitFinal);
+  document.querySelectorAll(".side-tab").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.activeTab = button.dataset.tab;
+      syncTabs();
+      save();
+      playSound("page");
+    });
+  });
   if (state.started) {
     qs("startModal").classList.add("hidden");
     qs("storyModal").classList.add("hidden");
