@@ -329,7 +329,8 @@ const state = {
   items: new Set(),
   flags: new Set(),
   selected: null,
-  started: false
+  started: false,
+  spotHint: false
 };
 
 function save() {
@@ -338,7 +339,8 @@ function save() {
     items: [...state.items],
     flags: [...state.flags],
     selected: state.selected,
-    started: state.started
+    started: state.started,
+    spotHint: state.spotHint
   }));
 }
 
@@ -350,6 +352,7 @@ function load() {
     if (Array.isArray(data.flags)) state.flags = new Set(data.flags);
     if (data.selected) state.selected = data.selected;
     if (data.started) state.started = true;
+    if (typeof data.spotHint === "boolean") state.spotHint = data.spotHint;
   } catch {
     localStorage.removeItem("FubukiHotelAdventure");
   }
@@ -379,6 +382,8 @@ function render(keepSpeech = false) {
   const scene = scenes[state.scene];
   qs("sceneImg").src = scene.img;
   if (!keepSpeech) speak(scene.name, scene.intro, null);
+  qs("sceneCard").classList.toggle("show-hotspots", state.spotHint);
+  qs("spotHintBtn").textContent = state.spotHint ? "調査ヒント ON" : "調査ヒント OFF";
   qs("hotspots").innerHTML = scene.spots.map((spot) => (
     `<button class="hotspot" title="${spot.label}" aria-label="${spot.label}" style="left:${spot.x}%;top:${spot.y}%;width:${spot.w}%;height:${spot.h}%" onclick="inspectSpot('${spot.id}')"></button>`
   )).join("");
@@ -484,6 +489,13 @@ function hint() {
   }
 }
 
+function toggleSpotHint() {
+  state.spotHint = !state.spotHint;
+  render(true);
+  save();
+  playSound("page");
+}
+
 function normalize(text) {
   return String(text || "").replace(/\s/g, "").toLowerCase();
 }
@@ -513,6 +525,7 @@ function resetGame() {
   state.flags = new Set();
   state.selected = null;
   state.started = false;
+  state.spotHint = false;
   qs("log").innerHTML = "";
   qs("finalAnswer").value = "";
   qs("finalMsg").textContent = "";
@@ -544,6 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   qs("hintBtn").addEventListener("click", hint);
+  qs("spotHintBtn").addEventListener("click", toggleSpotHint);
   qs("resetGame").addEventListener("click", resetGame);
   qs("submitFinal").addEventListener("click", submitFinal);
   if (state.started) {
