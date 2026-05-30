@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>昼凪記憶端末 | 復元解析型謎解き</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="terminal-case">
+    <section class="briefing" aria-label="事件写真と任務">
+      <div class="photo-frame">
+        <img src="./assets/terminal-room.png" alt="嵐の後に見つかった旧研究端末室。CRT画面が琥珀色に光っている。">
+        <button type="button" data-open-image>拡大</button>
+      </div>
+      <div class="brief-copy">
+        <p class="eyebrow">DIGITAL REMAINS / CASE MEM-2140</p>
+        <h1>昼凪記憶端末</h1>
+        <p>廃止された沿岸研究室から、停電直前まで動いていた端末が回収された。あなたの役目は、壊れたファイルを端末コマンドで復元し、最後に送信された警告の「場所・時刻・送信者」を特定すること。</p>
+      </div>
+      <div class="objective">
+        <span id="timer">60:00</span>
+        <p id="objectiveText">端末に <code>help</code> と入力して操作を確認してください。</p>
+      </div>
+    </section>
+
+    <section class="workbench" aria-label="復元端末">
+      <aside class="file-panel">
+        <h2>Recovered Disk</h2>
+        <div id="fileList" class="file-list"></div>
+        <button type="button" id="hintButton">解析メモ</button>
+        <button type="button" id="resetButton">初期化</button>
+      </aside>
+
+      <section class="screen" aria-label="端末画面">
+        <div class="screen-top">
+          <span>HIRUNAGI-MEMORY-TERM</span>
+          <span id="statusText">READ ONLY</span>
+        </div>
+        <div id="output" class="output" aria-live="polite"></div>
+        <form id="commandForm" class="command-line">
+          <span>&gt;</span>
+          <input id="commandInput" type="text" autocomplete="off" spellcheck="false" placeholder="command">
+          <button type="submit">Enter</button>
+        </form>
+      </section>
+
+      <section class="notebook" aria-label="解析ノート">
+        <h2>解析ノート</h2>
+        <dl>
+          <div>
+            <dt>場所</dt>
+            <dd id="placeSlot">未確定</dd>
+          </div>
+          <div>
+            <dt>時刻</dt>
+            <dd id="timeSlot">未確定</dd>
+          </div>
+          <div>
+            <dt>送信者</dt>
+            <dd id="senderSlot">未確定</dd>
+          </div>
+        </dl>
+        <p>最後は端末に <code>submit 場所 時刻 送信者</code> の形で送信してください。</p>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="imageModal" class="image-modal">
+    <button type="button" data-close-image>閉じる</button>
+    <img src="./assets/terminal-room.png" alt="旧研究端末室の拡大写真">
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
