@@ -1,0 +1,25 @@
+*{box-sizing:border-box}
+:root{--ink:#15252d;--muted:#6a7b84;--line:#d6e0e5;--green:#1f9d72;--dark:#12313f;--bg:#e9f0f3}
+body{margin:0;background:linear-gradient(180deg,#dfe9ed,#f7fafb);color:var(--ink);font-family:"Yu Gothic","Meiryo",sans-serif;line-height:1.65}
+button,input{font:inherit}
+.phone-shell{width:min(760px,100%);min-height:100vh;margin:auto;background:#f7fafb;display:grid;grid-template-rows:auto 1fr auto auto;box-shadow:0 0 0 1px rgba(20,40,50,.08),0 30px 80px rgba(20,40,50,.18)}
+.chat-header{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px;background:#12313f;color:#fff}
+.chat-header h1{font-size:1.05rem;margin:0;font-weight:700}
+.status{margin:0 0 2px;color:#b8d1d9;font-size:.78rem}
+.chat-header button{border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.08);color:#fff;border-radius:6px;padding:8px 10px;cursor:pointer}
+.chat-area{overflow:auto;padding:18px 14px;display:flex;flex-direction:column;gap:10px}
+.day{align-self:center;background:#d8e3e8;color:#53656e;border-radius:999px;padding:3px 10px;font-size:.75rem}
+.msg{max-width:min(88%,620px);border-radius:14px;padding:10px 12px;box-shadow:0 6px 18px rgba(20,40,50,.06);white-space:pre-wrap}
+.from-them{align-self:flex-start;background:#fff;border-top-left-radius:4px}
+.from-me{align-self:flex-end;background:#d8f7df;border-top-right-radius:4px}
+.name{display:block;color:#58717b;font-weight:700;font-size:.76rem;margin-bottom:3px}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.quick a{color:#12313f;text-decoration:none;border:1px solid var(--line);background:#f8fbfc;border-radius:999px;padding:5px 10px;font-size:.82rem}
+.reference{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
+.reference a{flex:1;min-width:130px;text-align:center;text-decoration:none;color:#12313f;border:1px solid var(--line);border-radius:6px;padding:8px;background:#f8fbfc}
+.composer{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px;background:#eef4f6;border-top:1px solid var(--line)}
+.composer input{width:100%;border:1px solid #c7d5dc;border-radius:999px;padding:11px 14px;background:#fff}
+.composer button{border:0;border-radius:999px;background:var(--green);color:#fff;padding:0 18px;cursor:pointer;font-weight:700}
+.hint{color:#6a4f19;background:#fff6da;border:1px solid #eadcaa}
+.done{background:#eefaf4;border:1px solid #bce6cb}
+@media(max-width:560px){.phone-shell{box-shadow:none}.msg{max-width:94%}.chat-header{padding:14px 12px}}
