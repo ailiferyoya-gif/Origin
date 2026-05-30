@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>水守町 防災写真帖</title>
-<link rel="stylesheet" href="style.css?v=20260530-highres">
+<link rel="stylesheet" href="style.css?v=20260530-modern-public">
 </head>
 <body>
 <div class="app">
@@ -14,14 +14,14 @@
       <h1>防災写真に残された、開かなかった水門の記録</h1>
     </div>
     <div class="top-actions">
-      <button id="hintToggle" type="button">調査印 OFF</button>
-      <button id="resetBtn" type="button">最初から</button>
+      <button id="hintToggle" type="button">注記表示 OFF</button>
+      <button id="resetBtn" type="button">表示を初期化</button>
     </div>
   </header>
 
   <section class="intro">
     <p>水守町が発行した防災啓発用の写真帖。川、橋、避難所、水門、町役場の記録写真が並ぶ。写真は穏やかだが、キャプションと資料を照合すると、十年前の水害の説明に小さなずれが見えてくる。</p>
-    <p>写真を開き、気になる場所を調べ、得た手がかりで各章の確認欄を埋めてください。最後に、この写真帖が隠していた操作記録の場所を特定します。</p>
+    <p>写真には、撮影当時の水位、案内表示、設備番号、時刻が残されています。掲載資料の記載と照合しながら、当時の防災対応を確認できます。</p>
   </section>
 
   <main class="layout">
@@ -34,25 +34,25 @@
     </section>
 
     <aside class="side">
-      <nav class="tabs" aria-label="調査パネル">
+      <nav class="tabs" aria-label="閲覧パネル">
         <button class="tab active" data-tab="photo" type="button">写真</button>
-        <button class="tab" data-tab="notes" type="button">手がかり</button>
+        <button class="tab" data-tab="notes" type="button">注記</button>
         <button class="tab" data-tab="docs" type="button">資料</button>
-        <button class="tab" data-tab="solve" type="button">確認</button>
+        <button class="tab" data-tab="solve" type="button">照会</button>
       </nav>
 
       <section class="panel active" data-panel="photo">
-        <h2 id="photoTitle">写真を選択</h2>
-        <p id="photoCaption">写真を開くと、キャプションと調査できる箇所が表示されます。</p>
+        <h2 id="photoTitle">写真を選んでください</h2>
+        <p id="photoCaption">写真を開くと、掲載時のキャプションと注記箇所が表示されます。</p>
         <div class="photo-frame">
           <img id="mainPhoto" src="" alt="">
           <div id="markers" class="markers"></div>
         </div>
-        <p id="inspectText" class="inspect-text">写真内の気になる場所を押すと、観察結果が記録されます。</p>
+        <p id="inspectText" class="inspect-text">注記箇所を押すと、資料照合用の記録が表示されます。</p>
       </section>
 
       <section class="panel" data-panel="notes">
-        <h2>手がかりノート</h2>
+        <h2>注記一覧</h2>
         <div id="notes" class="notes"></div>
       </section>
 
@@ -62,18 +62,18 @@
       </section>
 
       <section class="panel solve-panel" data-panel="solve">
-        <h2>章の確認</h2>
+        <h2>資料照会</h2>
         <div id="locks" class="locks"></div>
-        <h2>最終推理</h2>
-        <p class="small">水害当日に何が起き、どの記録がどこに隠されたのかを文章でまとめてください。</p>
-        <textarea id="finalAnswer" placeholder="例: G-4水門は..."></textarea>
-        <button id="finalBtn" type="button">提出</button>
+        <h2>情報公開請求用メモ</h2>
+        <p class="small">写真帖と公開資料を照合した内容を記録できます。水門番号、時刻、地区名、保管番号を含めると照会内容として整理されます。</p>
+        <textarea id="finalAnswer" placeholder="例: G-4水門は17:55時点で..."></textarea>
+        <button id="finalBtn" type="button">内容を整理</button>
         <p id="finalMsg"></p>
       </section>
     </aside>
   </main>
 </div>
 
-<script src="app.js?v=20260530-highres"></script>
+<script src="app.js?v=20260530-modern-public"></script>
 </body>
 </html>
