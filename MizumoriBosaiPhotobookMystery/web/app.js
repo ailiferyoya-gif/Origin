@@ -1,87 +1,70 @@
 const $ = (id) => document.getElementById(id);
 
 const sourcePhotos = [
-  ["river-embankment", "北堤防の水位標", "令和六年六月、北堤防の点検時に撮影。", "photo-01-river-embankment.jpg", "赤い水位線は1.8mを示す。旧台帳の数値0.9mとは一致しない。", "1.8"],
-  ["evacuation-sign", "避難案内板", "水守町中央通りの避難案内。", "photo-02-evacuation-sign.jpg", "案内板の避難方向は、町の掲示資料と一部だけ逆向きになっている。", "逆向き"],
-  ["mizuho-bridge", "水穂橋たもと", "橋脚付近の現況。", "photo-03-mizuho-bridge.jpg", "橋の下の古い番号板にG-4と読める刻印がある。", "G-4"],
-  ["townhall-board", "町役場 通知欄", "防災月間の掲示物が残る一角。", "photo-04-townhall-board.jpg", "掲示予定は17:40だが、付箋の最終時刻は17:55になっている。", "17:55"],
-  ["school-gym", "水守小 体育館", "避難所備品の配置記録。", "photo-05-school-gym.jpg", "入口近くの箱だけ未開封で、搬入日が本誌の公開日より前になっている。", "未開封"],
-  ["stockpile-shelf", "備蓄棚の札", "南倉庫の保管棚。", "photo-06-stockpile-shelf.jpg", "棚札の2-1-4だけ、印字ではなく後から貼られている。", "2-1-4"],
-  ["floodgate-distance", "水門 遠景", "河川敷側から見た水門。", "photo-07-floodgate-distance.jpg", "閉門ランプは消えているが、説明文では閉門完了とされている。", "消灯"],
-  ["shopping-flags", "商店街ののぼり", "防災協力店の掲示風景。", "photo-08-shopping-flags.jpg", "一枚だけ標語の語順が異なり、先頭文字が水門側を指している。", "標語違い"],
-  ["fire-brigade", "消防団詰所", "出動板のある詰所前。", "photo-09-fire-brigade.jpg", "出動板は18:12を示すが、公開資料では18:30出動とある。", "18:12"],
-  ["park-water-pillar", "公園の水位柱", "新町公園の記録柱。", "photo-10-park-water-pillar.jpg", "平成十六年の線だけ塗り直され、下から別の線が透けている。", "塗装"],
-  ["old-drainage", "旧排水路跡", "東側住宅地に残る旧水路の入口。", "photo-11-old-drainage.jpg", "格子の鍵穴は新しいが、銘板は撤去済みの旧型を示している。", "鍵穴違い"],
-  ["south-bulletin", "南町会掲示板", "避難訓練後の掲示板。", "photo-12-south-bulletin.jpg", "雨天中止の紙の下に、実施済みの押印が見えている。", "実施済み"],
-  ["control-panel", "管理盤 表示部", "水門管理棟内の表示部。", "photo-13-control-panel.jpg", "操作履歴の端が写り、手動閉鎖の文字だけ残っている。", "手動閉鎖"],
-  ["key-box", "鍵保管箱", "管理棟の壁面にある保管箱。", "photo-14-key-box.jpg", "小さな札にG4-1755とあり、掲示欄の時刻と対応している。", "G4-1755"],
-  ["hill-road", "高台への道", "避難路として掲載された坂道。", "photo-15-hill-road.jpg", "案内矢印の影が、撮影時刻にしては逆へ伸びている。", "影"],
-  ["mayor-map", "町長室の地図", "式典写真の背景に写る古い地図。", "photo-16-mayor-map.jpg", "地図のG区画だけ赤いピンが外されている。", "地図"],
-  ["rain-gauge", "雨量計記録板", "観測所横の手書き記録。", "photo-17-rain-gauge.jpg", "雨量上昇の始点は17:48。公表値の18:20より早い。", "17:48"],
-  ["clinic-sign", "臨時救護所の看板", "旧診療所前に置かれた看板。", "photo-18-clinic-sign.jpg", "看板の搬入印は、避難所開設より先の日付になっている。", "診療"],
-  ["management-hut", "水門管理棟", "河川敷側の管理棟外観。", "photo-19-management-hut.jpg", "扉の施錠札は外側にあり、内部不在の説明と合わない。", "施錠"],
-  ["underpass", "地下道入口", "駅前地下道の防水扉。", "photo-20-underpass.jpg", "浸水跡の高さは、町発表の到達水位より上に残っている。", "地下"],
-  ["memorial-plaza", "記念広場", "復旧記念碑の周辺。", "photo-21-memorial-plaza.jpg", "碑文の年度だけ新しい石片で差し替えられている。", "碑文"],
-  ["flood-drill", "合同防災訓練", "広報誌に掲載された訓練写真。", "photo-22-flood-drill.jpg", "腕章の班名は当時存在しないはずのG-4班になっている。", "訓練"],
-  ["basement-archive", "地下書庫入口", "庁舎地下の資料室扉。", "photo-23-basement-archive.jpg", "扉番号B2-14は、棚札2-1-4と同じ数字列で構成されている。", "B2-14"],
-  ["closed-floodgate", "水門閉鎖後の写真", "翌朝に撮影された水門正面。", "photo-24-closed-floodgate.jpg", "G-4、17:55、1.8mが同じ場所に重なる。", "G-4"]
+  ["river-embankment", "北堤防の水位標", "川沿いの堤防に立つ水位標。", "photo-01-river-embankment.jpg", "水位標の赤い帯が、過去の到達線より高い位置に残っている。", "赤い帯"],
+  ["evacuation-sign", "避難案内板", "用水路沿いに設置された避難案内。", "photo-02-evacuation-sign.jpg", "黄色い案内板の矢印は右を向いている。公開図の矢印とは向きが合わない。", "右"],
+  ["mizuho-bridge", "水穂橋下", "橋脚と河川敷の通路。", "photo-03-mizuho-bridge.jpg", "橋脚の下に赤いコーンが置かれ、通行止めの痕跡が残る。", "赤いコーン"],
+  ["townhall-board", "町役場前掲示板", "町役場前の掲示板と時計。", "photo-04-townhall-board.jpg", "掲示板の右上に時計が写る。時刻資料と照らす起点になる。", "時計"],
+  ["school-gym", "避難所体育館", "避難所に使われる体育館の床面。", "photo-05-school-gym.jpg", "床に泥跡が残り、手前側まで水が入ったことが分かる。", "泥跡"],
+  ["stockpile-shelf", "備蓄棚", "毛布や箱が並ぶ備蓄棚。", "photo-06-stockpile-shelf.jpg", "棚の箱と毛布の並びが一列だけ乱れている。後から入れ替えた棚に見える。", "棚"],
+  ["floodgate-distance", "水門遠景", "川に面した大型水門。", "photo-07-floodgate-distance.jpg", "水門の中央部は暗く、閉じ切った状態には見えない。", "中央部"],
+  ["shopping-flags", "商店街の防災旗", "雨の商店街に並ぶ防災旗。", "photo-08-shopping-flags.jpg", "色の違う旗が連続しており、中央の黄色い旗だけが目立つ。", "黄色"],
+  ["fire-brigade", "消防団詰所", "古い詰所内の出動板。", "photo-09-fire-brigade.jpg", "机の上の出動板と長靴が残り、急いで出た後のように見える。", "長靴"],
+  ["park-water-pillar", "公園の水位柱", "公園内に立つ水位記録柱。", "photo-10-park-water-pillar.jpg", "水位柱の上部に赤い表示があり、下の色帯とは扱いが違う。", "赤"],
+  ["old-drainage", "旧排水路跡", "錆びた柵で囲われた旧排水路。", "photo-11-old-drainage.jpg", "柵の中央に白い注意札があり、古い設備なのに新しい表示が残る。", "白い札"],
+  ["south-bulletin", "南町会掲示板", "町会掲示板に貼られた複数の紙。", "photo-12-south-bulletin.jpg", "掲示紙の一部だけが傾き、下に別の紙が残っている。", "傾いた紙"],
+  ["control-panel", "管理盤", "水門設備の操作盤。", "photo-13-control-panel.jpg", "操作盤の赤いランプと緑のランプが同時に点いている。", "赤と緑"],
+  ["key-box", "鍵保管箱", "管理用の鍵が並ぶ保管箱。", "photo-14-key-box.jpg", "鍵の列に一か所だけ黄色い札があり、他の鍵と区別されている。", "黄色い札"],
+  ["hill-road", "高台への道", "住宅地から高台へ向かう坂道。", "photo-15-hill-road.jpg", "坂道の手すりが川側へ続く。避難経路の説明と向きが逆になる。", "手すり"],
+  ["mayor-map", "説明会場の地図", "説明会場で示された町内図。", "photo-16-mayor-map.jpg", "地図の前に立つ人物が、水門付近を隠す位置にいる。", "地図"],
+  ["rain-gauge", "雨量観測小屋", "川沿いにある観測小屋。", "photo-17-rain-gauge.jpg", "小屋の窓は閉じ、外の水たまりが深い。観測中止とは考えにくい。", "観測小屋"],
+  ["clinic-sign", "臨時救護所前", "旧診療所前に置かれた掲示板。", "photo-18-clinic-sign.jpg", "入口前の掲示板は濡れているが、建物の内側は点灯している。", "点灯"],
+  ["management-hut", "水門管理棟", "水門横の管理棟。", "photo-19-management-hut.jpg", "扉の小窓が暗く、管理棟に人がいたという説明と合わない。", "暗い窓"],
+  ["underpass", "地下道入口", "駅前地下道の防水扉付近。", "photo-20-underpass.jpg", "壁面の濡れた線が高く、写真の右奥まで水が抜けていない。", "濡れた線"],
+  ["memorial-plaza", "記念広場", "復旧記念碑のある広場。", "photo-21-memorial-plaza.jpg", "記念碑の周囲だけ新しい木が植えられ、古い痕跡を囲うように見える。", "記念碑"],
+  ["flood-drill", "合同防災訓練", "土のうを使った訓練風景。", "photo-22-flood-drill.jpg", "土のうの列が水門側ではなく校庭側を守る向きになっている。", "土のう"],
+  ["basement-archive", "地下書庫入口", "地下の資料室前。", "photo-23-basement-archive.jpg", "奥の扉だけ金属製で、保管場所として他の部屋と扱いが違う。", "金属扉"],
+  ["closed-floodgate", "閉鎖後の水門", "夜明け前に撮影された水門。", "photo-24-closed-floodgate.jpg", "水門上部に赤い灯りが残り、閉鎖後も警告状態だったことが分かる。", "赤い灯り"]
 ];
 
 const photos = sourcePhotos.map((row, index) => ({
-  id: row[0],
-  title: row[1],
-  caption: row[2],
-  img: `./assets/${row[3]}`,
-  clue: row[4],
-  answer: row[5],
-  chapter: index < 6 ? 1 : index < 12 ? 2 : index < 18 ? 3 : 4,
+  id: row[0], title: row[1], caption: row[2], img: `./assets/${row[3]}`,
+  clue: row[4], answer: row[5], chapter: index < 6 ? 1 : index < 12 ? 2 : index < 18 ? 3 : 4,
   marker: markerFor(index)
 }));
 
 const docs = [
-  { chapter: 1, title: "公開台帳抜粋", text: "北堤防の旧台帳は水位0.9mを基準としていたが、現地写真の標識は1.8mを基準にしている。" },
-  { chapter: 1, title: "避難案内改訂", text: "避難案内の矢印は改訂時に差し替えられた。旧図面では水門G-4側への誘導が残っている。" },
-  { chapter: 2, title: "時系列整理", text: "17:40 G-4点検予定、17:55 最終操作、18:12 消防団出動、18:30 町発表、18:45 避難所開設。" },
-  { chapter: 2, title: "町会掲示控え", text: "南町会の控えには18:12出動とあり、町の広報資料より早い時刻が記録されている。" },
-  { chapter: 3, title: "管理区画図", text: "G区画の管理番号は水門設備に使われる。G-4は北堤防側の手動水門を示す。" },
-  { chapter: 3, title: "雨量記録", text: "雨量上昇は17:48から始まっており、公表時刻より前に危険水位へ近づいていた。" },
-  { chapter: 4, title: "地下書庫目録", text: "B2-14: 水門操作記録、棚2-1-4、旧南町会控えを同梱。" }
+  { chapter: 1, title: "公開台帳抜粋", text: "北堤防の到達水位は低く記載されているが、写真の水位標ではより高い位置に赤い帯が残る。" },
+  { chapter: 1, title: "避難案内改訂", text: "改訂前の案内図では水門側へ向かう経路が残っていた。現地の黄色い案内板は右方向を示している。" },
+  { chapter: 2, title: "現場整理表", text: "橋下、商店街、詰所、町会掲示板の写真には、町の発表より前に動きがあった跡が写る。" },
+  { chapter: 2, title: "出動時刻控え", text: "消防団の控えには18:12の出動記録がある。広報資料の18:30より早い。" },
+  { chapter: 3, title: "水門管理区画", text: "管理盤、鍵保管箱、地図、観測小屋の写真は、G-4水門の手動操作と関係する。" },
+  { chapter: 3, title: "観測記録", text: "雨量観測は中止されておらず、17:48以降も現場は観測可能だった。" },
+  { chapter: 4, title: "地下書庫目録", text: "B2-14: 水門操作記録、地下浸水写真、閉鎖後写真、旧町会控えを同梱。" }
 ];
 
 const locks = [
-  { id: "lock1", title: "第一照会", chapter: 1, asks: ["1.8", "逆向き", "G-4", "17:55"], reveal: "北堤防、水門G-4、17:55の三点が同じ資料群に集まる。" },
-  { id: "lock2", title: "第二照会", chapter: 2, asks: ["未開封", "標語違い", "18:12", "実施済み"], reveal: "町の広報時刻より前に、現場側では避難準備と出動が始まっていた。" },
-  { id: "lock3", title: "第三照会", chapter: 3, asks: ["G4-1755", "地図", "17:48", "影"], reveal: "G-4は公表より前に危険を示していたが、発表資料では時刻が遅らされている。" },
-  { id: "lock4", title: "第四照会", chapter: 4, asks: ["施錠", "地下", "B2-14", "G-4"], reveal: "地下書庫B2-14に、G-4の手動閉鎖遅延を示す記録が残されている。" }
+  { id: "lock1", title: "第一照会", chapter: 1, asks: ["赤い帯", "右", "時計", "泥跡"], reveal: "写真の表面だけでも、水位、案内方向、時刻、浸水範囲が公表説明とずれている。" },
+  { id: "lock2", title: "第二照会", chapter: 2, asks: ["中央部", "黄色", "長靴", "傾いた紙"], reveal: "水門周辺と町内の複数地点に、発表前の対応痕跡が残っている。" },
+  { id: "lock3", title: "第三照会", chapter: 3, asks: ["赤と緑", "黄色い札", "地図", "観測小屋"], reveal: "操作盤、鍵、地図、観測小屋は、G-4水門の手動操作を示す資料群としてつながる。" },
+  { id: "lock4", title: "第四照会", chapter: 4, asks: ["暗い窓", "濡れた線", "金属扉", "赤い灯り"], reveal: "管理棟不在、地下浸水、保管記録、閉鎖後の警告灯が同じ説明のずれを示している。" }
 ];
 
-const state = {
-  selected: 0,
-  clues: new Set(),
-  solved: new Set(),
-  hint: false,
-  activeTab: "photo"
-};
+const state = { selected: 0, clues: new Set(), solved: new Set(), hint: false, activeTab: "photo", zoom: 1 };
 
 function markerFor(index) {
   const points = [
-    [64,58,18,16],[44,42,20,18],[52,66,18,14],[69,28,18,14],[38,76,20,12],[55,45,18,14],
-    [63,48,20,16],[47,30,22,14],[58,38,20,14],[50,55,18,16],[42,58,20,16],[61,42,20,16],
-    [53,50,22,18],[48,45,18,16],[58,38,20,18],[62,52,22,16],[45,58,24,14],[70,54,20,14],
-    [54,40,22,18],[62,52,20,16],[48,62,18,12],[78,45,16,18],[50,43,18,16],[58,50,26,20]
+    [38,62,12,22],[53,58,26,22],[78,70,18,14],[72,20,18,14],[36,78,28,16],[52,46,24,18],
+    [50,54,30,20],[55,45,18,24],[60,58,26,18],[46,28,22,20],[52,63,18,24],[56,48,26,18],
+    [49,30,28,24],[53,45,20,20],[40,45,32,16],[62,42,28,30],[40,42,26,22],[48,56,26,22],
+    [47,44,22,24],[58,58,32,18],[42,57,22,24],[44,66,30,18],[54,48,22,28],[62,18,22,16]
   ];
   const [x,y,w,h] = points[index];
   return {x,y,w,h};
 }
 
 function save() {
-  localStorage.setItem("MizumoriBosaiPhotobook", JSON.stringify({
-    selected: state.selected,
-    clues: [...state.clues],
-    solved: [...state.solved],
-    hint: state.hint,
-    activeTab: state.activeTab
-  }));
+  localStorage.setItem("MizumoriBosaiPhotobook", JSON.stringify({ selected: state.selected, clues: [...state.clues], solved: [...state.solved], hint: state.hint, activeTab: state.activeTab }));
 }
 
 function load() {
@@ -92,29 +75,14 @@ function load() {
     if (Array.isArray(data.solved)) state.solved = new Set(data.solved);
     if (typeof data.hint === "boolean") state.hint = data.hint;
     if (data.activeTab) state.activeTab = data.activeTab;
-  } catch {
-    localStorage.removeItem("MizumoriBosaiPhotobook");
-  }
+  } catch { localStorage.removeItem("MizumoriBosaiPhotobook"); }
 }
 
-function maxChapter() {
-  if (!state.solved.has("lock1")) return 1;
-  if (!state.solved.has("lock2")) return 2;
-  if (!state.solved.has("lock3")) return 3;
-  return 4;
-}
-
-function isUnlocked(photo) {
-  return photo.chapter <= maxChapter();
-}
+function maxChapter() { if (!state.solved.has("lock1")) return 1; if (!state.solved.has("lock2")) return 2; if (!state.solved.has("lock3")) return 3; return 4; }
+function isUnlocked(photo) { return photo.chapter <= maxChapter(); }
 
 function render() {
-  renderGrid();
-  renderPhoto();
-  renderNotes();
-  renderDocs();
-  renderLocks();
-  syncTabs();
+  renderGrid(); renderPhoto(); renderNotes(); renderDocs(); renderLocks(); syncTabs();
   $("hintToggle").textContent = state.hint ? "注記表示 ON" : "注記表示 OFF";
   save();
 }
@@ -154,81 +122,66 @@ function renderDocs() {
 
 function renderLocks() {
   $("locks").innerHTML = locks.map((lock) => {
-    const available = lock.chapter <= maxChapter();
-    const solved = state.solved.has(lock.id);
+    const available = lock.chapter <= maxChapter(); const solved = state.solved.has(lock.id);
     const inputs = lock.asks.map((_, index) => `<input data-lock="${lock.id}" data-index="${index}" placeholder="参照値 ${index + 1}" ${available && !solved ? "" : "disabled"}> `).join("");
     return `<div class="lock-box"><strong>${lock.title}</strong><p class="small">${solved ? lock.reveal : "写真注記から参照値を入力してください。"}</p>${solved ? "" : inputs + `<button type="button" ${available ? "" : "disabled"} onclick="submitLock('${lock.id}')">照会する</button><p id="${lock.id}Msg"></p>`}</div>`;
   }).join("");
 }
 
-function syncTabs() {
-  document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === state.activeTab));
-  document.querySelectorAll(".panel").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === state.activeTab));
-}
-
-function selectPhoto(index) {
-  if (!isUnlocked(photos[index])) return;
-  state.selected = index;
-  state.activeTab = "photo";
-  render();
-}
-
-function inspectCurrent() {
-  const photo = photos[state.selected];
-  state.clues.add(photo.id);
-  $("inspectText").textContent = photo.clue;
-  renderNotes();
-  renderGrid();
-  save();
-}
+function syncTabs() { document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === state.activeTab)); document.querySelectorAll(".panel").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === state.activeTab)); }
+function selectPhoto(index) { if (!isUnlocked(photos[index])) return; state.selected = index; state.activeTab = "photo"; render(); }
+function inspectCurrent() { const photo = photos[state.selected]; state.clues.add(photo.id); $("inspectText").textContent = photo.clue; renderNotes(); renderGrid(); save(); }
 
 function submitLock(id) {
   const lock = locks.find((entry) => entry.id === id);
   const values = [...document.querySelectorAll(`input[data-lock="${id}"]`)].map((input) => normalize(input.value));
   const ok = lock.asks.every((answer, index) => normalize(answer) === values[index]);
   const msg = $(`${id}Msg`);
-  if (!ok) {
-    msg.textContent = "照会内容を整理できませんでした。写真注記と公開資料を見直してください。";
-    msg.className = "ng";
-    return;
-  }
-  state.solved.add(id);
-  msg.textContent = lock.reveal;
-  msg.className = "ok";
-  render();
+  if (!ok) { msg.textContent = "照会内容を整理できませんでした。写真注記と公開資料を見直してください。"; msg.className = "ng"; return; }
+  state.solved.add(id); msg.textContent = lock.reveal; msg.className = "ok"; render();
 }
 
-function normalize(value) {
-  return String(value || "").replace(/\s|\u3000|-/g, "").toLowerCase();
-}
+function normalize(value) { return String(value || "").replace(/\s|\u3000|-/g, "").toLowerCase(); }
 
 function submitFinal() {
   const answer = normalize($("finalAnswer").value);
-  const ok = ["g4", "1755", "遅延", "b214"].every((word) => answer.includes(word)) && (answer.includes("水門") || answer.includes("g4")) && answer.includes("改ざん");
-  $("finalMsg").textContent = ok
-    ? "照合しました。G-4水門は17:55の時点で閉鎖遅延が発生し、後年の広報資料で時刻と水位が改ざんされています。地下書庫B2-14の記録と一致します。"
-    : "整理内容を照合できませんでした。G-4、17:55、閉鎖遅延、改ざん、B2-14の関係を記入してください。";
+  const ok = ["g4", "1755", "水門", "b214"].every((word) => answer.includes(word)) && (answer.includes("遅延") || answer.includes("閉鎖"));
+  $("finalMsg").textContent = ok ? "照合しました。G-4水門の閉鎖遅延と、後年の説明資料のずれが地下書庫B2-14の記録と一致します。" : "整理内容を照合できませんでした。G-4、17:55、水門、閉鎖遅延、B2-14の関係を記入してください。";
   $("finalMsg").className = ok ? "ok" : "ng";
 }
 
-document.querySelectorAll(".tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    state.activeTab = tab.dataset.tab;
-    render();
-  });
-});
+function openZoom() {
+  const photo = photos[state.selected];
+  state.zoom = 1;
+  $("zoomTitle").textContent = `${String(state.selected + 1).padStart(2, "0")}. ${photo.title}`;
+  $("zoomImage").src = photo.img;
+  $("zoomModal").classList.add("open");
+  $("zoomModal").setAttribute("aria-hidden", "false");
+  updateZoom();
+}
 
-$("hintToggle").addEventListener("click", () => {
-  state.hint = !state.hint;
-  render();
-});
+function closeZoom() { $("zoomModal").classList.remove("open"); $("zoomModal").setAttribute("aria-hidden", "true"); }
+function updateZoom() {
+  const image = $("zoomImage");
+  const baseWidth = image.naturalWidth || 1586;
+  image.style.width = `${Math.round(baseWidth * state.zoom)}px`;
+  image.style.height = "auto";
+}
+function changeZoom(delta) { state.zoom = Math.min(4, Math.max(0.7, Math.round((state.zoom + delta) * 10) / 10)); updateZoom(); }
 
-$("resetBtn").addEventListener("click", () => {
-  localStorage.removeItem("MizumoriBosaiPhotobook");
-  location.reload();
-});
-
+document.querySelectorAll(".tab").forEach((tab) => { tab.addEventListener("click", () => { state.activeTab = tab.dataset.tab; render(); }); });
+$("hintToggle").addEventListener("click", () => { state.hint = !state.hint; render(); });
+$("resetBtn").addEventListener("click", () => { localStorage.removeItem("MizumoriBosaiPhotobook"); location.reload(); });
 $("finalBtn").addEventListener("click", submitFinal);
+$("zoomOpen").addEventListener("click", openZoom);
+$("mainPhoto").addEventListener("click", openZoom);
+$("zoomImage").addEventListener("load", updateZoom);
+$("zoomClose").addEventListener("click", closeZoom);
+$("zoomIn").addEventListener("click", () => changeZoom(0.3));
+$("zoomOut").addEventListener("click", () => changeZoom(-0.3));
+$("zoomReset").addEventListener("click", () => { state.zoom = 1; updateZoom(); });
+$("zoomModal").addEventListener("click", (event) => { if (event.target.id === "zoomModal") closeZoom(); });
+document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeZoom(); });
 
 load();
 render();

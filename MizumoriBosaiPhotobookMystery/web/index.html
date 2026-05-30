@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>水守町 防災写真帖</title>
-<link rel="stylesheet" href="style.css?v=20260530-encoding-fix">
+<link rel="stylesheet" href="style.css?v=20260530-zoom-rework">
 </head>
 <body>
 <div class="app">
@@ -20,8 +20,8 @@
   </header>
 
   <section class="intro">
-    <p>水守町が発行した防災啓発用の写真帖。川、橋、避難所、水門、町役場の記録写真が並ぶ。写真は穏やかだが、キャプションと資料を照合すると、十年前の水害の説明に小さなずれが見えてくる。</p>
-    <p>写真には、撮影当時の水位、案内表示、設備番号、時刻が残されています。掲載資料の記載と照合しながら、当時の防災対応を確認できます。</p>
+    <p>水守町が公開している防災広報用の写真帖です。川、橋、避難所、備蓄棚、水門、役場の掲示など、町内各所の記録写真を年代順に掲載しています。</p>
+    <p>写真に添えられた説明は平静ですが、現場に写る水位標、掲示板、矢印、扉、照明、備品の位置を見比べると、十年前の水害説明に小さなずれが残されています。</p>
   </section>
 
   <main class="layout">
@@ -42,13 +42,18 @@
       </nav>
 
       <section class="panel active" data-panel="photo">
-        <h2 id="photoTitle">写真を選んでください</h2>
-        <p id="photoCaption">写真を開くと、掲載時のキャプションと注記箇所が表示されます。</p>
+        <div class="photo-head">
+          <div>
+            <h2 id="photoTitle">写真を選んでください</h2>
+            <p id="photoCaption">写真を開くと、掲載時の説明と注記対象が表示されます。</p>
+          </div>
+          <button id="zoomOpen" type="button">拡大</button>
+        </div>
         <div class="photo-frame">
           <img id="mainPhoto" src="" alt="">
           <div id="markers" class="markers"></div>
         </div>
-        <p id="inspectText" class="inspect-text">注記箇所を押すと、資料照合用の記録が表示されます。</p>
+        <p id="inspectText" class="inspect-text">写真内の注記対象を表示できます。</p>
       </section>
 
       <section class="panel" data-panel="notes">
@@ -65,7 +70,7 @@
         <h2>資料照会</h2>
         <div id="locks" class="locks"></div>
         <h2>情報公開請求用メモ</h2>
-        <p class="small">写真帖と公開資料を照合した内容を記録できます。水門番号、時刻、地区名、保管番号を含めると照会内容として整理されます。</p>
+        <p class="small">写真帖と公開資料を見比べ、どの水門で、いつ、どのような説明のずれが残されたのかを整理してください。</p>
         <textarea id="finalAnswer" placeholder="例: G-4水門は17:55時点で..."></textarea>
         <button id="finalBtn" type="button">内容を整理</button>
         <p id="finalMsg"></p>
@@ -74,6 +79,21 @@
   </main>
 </div>
 
-<script src="app.js?v=20260530-encoding-fix"></script>
+<div id="zoomModal" class="zoom-modal" aria-hidden="true">
+  <div class="zoom-toolbar">
+    <strong id="zoomTitle">写真</strong>
+    <div class="zoom-actions">
+      <button id="zoomOut" type="button">縮小</button>
+      <button id="zoomReset" type="button">等倍</button>
+      <button id="zoomIn" type="button">拡大</button>
+      <button id="zoomClose" type="button">閉じる</button>
+    </div>
+  </div>
+  <div id="zoomStage" class="zoom-stage">
+    <img id="zoomImage" src="" alt="">
+  </div>
+</div>
+
+<script src="app.js?v=20260530-zoom-rework"></script>
 </body>
 </html>
