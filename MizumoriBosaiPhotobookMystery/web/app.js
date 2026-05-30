@@ -1,30 +1,30 @@
 const $ = (id) => document.getElementById(id);
 
 const sourcePhotos = [
-  ["river-embankment", "北堤防の水位標", "川沿いの堤防に立つ水位標。", "photo-01-river-embankment.jpg", "水位標の赤い帯が、過去の到達線より高い位置に残っている。", "赤い帯"],
-  ["evacuation-sign", "避難案内板", "用水路沿いに設置された避難案内。", "photo-02-evacuation-sign.jpg", "黄色い案内板の矢印は右を向いている。公開図の矢印とは向きが合わない。", "右"],
-  ["mizuho-bridge", "水穂橋下", "橋脚と河川敷の通路。", "photo-03-mizuho-bridge.jpg", "橋脚の下に赤いコーンが置かれ、通行止めの痕跡が残る。", "赤いコーン"],
-  ["townhall-board", "町役場前掲示板", "町役場前の掲示板と時計。", "photo-04-townhall-board.jpg", "掲示板の右上に時計が写る。時刻資料と照らす起点になる。", "時計"],
-  ["school-gym", "避難所体育館", "避難所に使われる体育館の床面。", "photo-05-school-gym.jpg", "床に泥跡が残り、手前側まで水が入ったことが分かる。", "泥跡"],
-  ["stockpile-shelf", "備蓄棚", "毛布や箱が並ぶ備蓄棚。", "photo-06-stockpile-shelf.jpg", "棚の箱と毛布の並びが一列だけ乱れている。後から入れ替えた棚に見える。", "棚"],
-  ["floodgate-distance", "水門遠景", "川に面した大型水門。", "photo-07-floodgate-distance.jpg", "水門の中央部は暗く、閉じ切った状態には見えない。", "中央部"],
-  ["shopping-flags", "商店街の防災旗", "雨の商店街に並ぶ防災旗。", "photo-08-shopping-flags.jpg", "色の違う旗が連続しており、中央の黄色い旗だけが目立つ。", "黄色"],
-  ["fire-brigade", "消防団詰所", "古い詰所内の出動板。", "photo-09-fire-brigade.jpg", "机の上の出動板と長靴が残り、急いで出た後のように見える。", "長靴"],
-  ["park-water-pillar", "公園の水位柱", "公園内に立つ水位記録柱。", "photo-10-park-water-pillar.jpg", "水位柱の上部に赤い表示があり、下の色帯とは扱いが違う。", "赤"],
-  ["old-drainage", "旧排水路跡", "錆びた柵で囲われた旧排水路。", "photo-11-old-drainage.jpg", "柵の中央に白い注意札があり、古い設備なのに新しい表示が残る。", "白い札"],
-  ["south-bulletin", "南町会掲示板", "町会掲示板に貼られた複数の紙。", "photo-12-south-bulletin.jpg", "掲示紙の一部だけが傾き、下に別の紙が残っている。", "傾いた紙"],
-  ["control-panel", "管理盤", "水門設備の操作盤。", "photo-13-control-panel.jpg", "操作盤の赤いランプと緑のランプが同時に点いている。", "赤と緑"],
-  ["key-box", "鍵保管箱", "管理用の鍵が並ぶ保管箱。", "photo-14-key-box.jpg", "鍵の列に一か所だけ黄色い札があり、他の鍵と区別されている。", "黄色い札"],
-  ["hill-road", "高台への道", "住宅地から高台へ向かう坂道。", "photo-15-hill-road.jpg", "坂道の手すりが川側へ続く。避難経路の説明と向きが逆になる。", "手すり"],
-  ["mayor-map", "説明会場の地図", "説明会場で示された町内図。", "photo-16-mayor-map.jpg", "地図の前に立つ人物が、水門付近を隠す位置にいる。", "地図"],
-  ["rain-gauge", "雨量観測小屋", "川沿いにある観測小屋。", "photo-17-rain-gauge.jpg", "小屋の窓は閉じ、外の水たまりが深い。観測中止とは考えにくい。", "観測小屋"],
-  ["clinic-sign", "臨時救護所前", "旧診療所前に置かれた掲示板。", "photo-18-clinic-sign.jpg", "入口前の掲示板は濡れているが、建物の内側は点灯している。", "点灯"],
-  ["management-hut", "水門管理棟", "水門横の管理棟。", "photo-19-management-hut.jpg", "扉の小窓が暗く、管理棟に人がいたという説明と合わない。", "暗い窓"],
-  ["underpass", "地下道入口", "駅前地下道の防水扉付近。", "photo-20-underpass.jpg", "壁面の濡れた線が高く、写真の右奥まで水が抜けていない。", "濡れた線"],
-  ["memorial-plaza", "記念広場", "復旧記念碑のある広場。", "photo-21-memorial-plaza.jpg", "記念碑の周囲だけ新しい木が植えられ、古い痕跡を囲うように見える。", "記念碑"],
-  ["flood-drill", "合同防災訓練", "土のうを使った訓練風景。", "photo-22-flood-drill.jpg", "土のうの列が水門側ではなく校庭側を守る向きになっている。", "土のう"],
-  ["basement-archive", "地下書庫入口", "地下の資料室前。", "photo-23-basement-archive.jpg", "奥の扉だけ金属製で、保管場所として他の部屋と扱いが違う。", "金属扉"],
-  ["closed-floodgate", "閉鎖後の水門", "夜明け前に撮影された水門。", "photo-24-closed-floodgate.jpg", "水門上部に赤い灯りが残り、閉鎖後も警告状態だったことが分かる。", "赤い灯り"]
+  ["river-embankment", "北堤防の水位標", "川沿いの水位標と堤防通路。", "photo-01-river-embankment.jpg", "水位標の中央に赤い帯が残る。校正メモで削除対象になっていた高水位の目印。", ["赤い帯", "赤帯"]],
+  ["evacuation-sign", "避難案内板", "用水路沿いに立つ黄色い避難案内。", "photo-02-evacuation-sign.jpg", "黄色い板の黒い矢印は右を向く。改訂差分表で問題視された旧誘導方向。", ["右矢印", "右", "矢印"]],
+  ["mizuho-bridge", "水穂橋下", "橋脚下の通路と赤いコーン。", "photo-03-mizuho-bridge.jpg", "橋脚下に赤いコーンが並ぶ。水が引いた後の通行止めではなく、事前に塞いだ跡に見える。", ["赤いコーン", "コーン"]],
+  ["townhall-board", "町役場前掲示板", "掲示板と庁舎外壁の時計。", "photo-04-townhall-board.jpg", "掲示板の上に時計が写る。時刻欄を黒塗りした理由になる写り込み。", ["掲示板時計", "時計"]],
+  ["school-gym", "避難所体育館", "避難所体育館の入口付近。", "photo-05-school-gym.jpg", "入口から手前の床に泥跡が続く。開設前浸水の削除指示と対応する跡。", ["泥跡", "泥"]],
+  ["stockpile-shelf", "備蓄棚", "毛布と箱が並ぶ備蓄棚。", "photo-06-stockpile-shelf.jpg", "棚の一段だけ箱と毛布の向きが乱れている。後日撮影用に整えた棚ではない。", ["乱れた棚", "棚"]],
+  ["floodgate-distance", "水門遠景", "川に面した大型水門の遠景。", "photo-07-floodgate-distance.jpg", "水門中央の開口部が暗いまま残る。閉鎖完了欄に添付されていた写真と食い違う部分。", ["水門中央", "中央部"]],
+  ["shopping-flags", "商店街の防災旗", "雨の商店街に並ぶ防災週間の旗。", "photo-08-shopping-flags.jpg", "連続する旗のうち、中央の黄色い旗だけが他の色列から外れて目立つ。巡回済み地点の目印。", ["黄色い旗", "黄色", "旗"]],
+  ["fire-brigade", "消防団詰所", "消防団詰所内の机と装備。", "photo-09-fire-brigade.jpg", "机の前に長靴と上着が残る。出動前展示ではなく、出動直後の控え写真と対応する。", ["長靴"]],
+  ["park-water-pillar", "公園の水位柱", "公園内に立つ色帯付きの水位柱。", "photo-10-park-water-pillar.jpg", "水位柱には赤、黄、青の帯がある。北堤防の赤い帯と同じ高さの扱いを示す。", ["色帯", "赤黄青", "赤"]],
+  ["old-drainage", "旧排水路跡", "錆びた柵で閉じられた旧排水路。", "photo-11-old-drainage.jpg", "柵の中央に白い注意札が新しく付いている。古い設備なのに最近触られた跡がある。", ["白い注意札", "白い札"]],
+  ["south-bulletin", "南町会掲示板", "雨に濡れた南町会掲示板。", "photo-12-south-bulletin.jpg", "掲示紙の一部が傾き、下の紙が見える。差し替え前掲示の残りとして照合できる。", ["傾いた紙", "貼り替え"]],
+  ["control-panel", "管理盤", "水門設備の操作盤。", "photo-13-control-panel.jpg", "操作盤の赤いランプと緑のランプが同時に点いている。管理表の「通常監視」と合わない状態。", ["赤緑ランプ", "赤と緑", "ランプ"]],
+  ["key-box", "鍵保管箱", "管理棟内の鍵保管箱。", "photo-14-key-box.jpg", "鍵の列に一つだけ黄色い札が付く。管理表でG-4予備鍵とされる札色。", ["黄色い鍵札", "黄色い札", "鍵札"]],
+  ["hill-road", "高台への道", "川沿いから高台へ続く坂道。", "photo-15-hill-road.jpg", "白い手すりが川沿いへ長く続く。避難経路として示すなら分岐説明が必要な道に見える。", ["白い手すり", "手すり"]],
+  ["mayor-map", "説明会場の地図", "水害対策本部会議の説明写真。", "photo-16-mayor-map.jpg", "演台の横に町内地図がある。管理区画図のG区画を隠す写真として扱われている。", ["会議地図", "地図"]],
+  ["rain-gauge", "雨量観測小屋", "川沿いの観測小屋。", "photo-17-rain-gauge.jpg", "観測小屋の窓は閉じているが、外灯と周辺機器は残っている。観測停止届と照合する対象。", ["観測小屋", "小屋"]],
+  ["clinic-sign", "臨時救護所前", "旧診療所前の掲示板と入口。", "photo-18-clinic-sign.jpg", "掲示板は雨で濡れている一方、入口側は明るい。救護所準備の時刻と照合できる。", ["明るい入口", "点灯", "入口"]],
+  ["management-hut", "水門管理棟", "水門横の小さな管理棟。", "photo-19-management-hut.jpg", "扉の横の窓が暗い。B2-14の不在メモと対応する確認点。", ["暗い窓", "窓"]],
+  ["underpass", "地下道入口", "駅前地下道の防水扉付近。", "photo-20-underpass.jpg", "壁と床に濡れた線が奥まで続く。地下浸水写真の水位跡として扱われている。", ["濡れた線", "水の跡"]],
+  ["memorial-plaza", "記念広場", "復旧記念碑のある広場。", "photo-21-memorial-plaza.jpg", "記念碑の周囲だけ新しい植栽で囲われている。古い痕跡を避けて整備したように見える。", ["記念碑", "植栽"]],
+  ["flood-drill", "合同防災訓練", "土のうとポンプを使った訓練風景。", "photo-22-flood-drill.jpg", "土のうとポンプが手前に置かれている。水門側ではなく施設側を守る配置になっている。", ["土のう", "ポンプ"]],
+  ["basement-archive", "地下書庫入口", "地下資料室前の廊下。", "photo-23-basement-archive.jpg", "奥に重い金属扉がある。B2-14の保管場所を示す目印。", ["金属扉", "扉"]],
+  ["closed-floodgate", "閉鎖後の水門", "夜明け前の水門正面。", "photo-24-closed-floodgate.jpg", "水門上部に赤い灯りが残る。閉鎖後も警告状態だったことを示す記録。", ["赤い灯り", "赤灯"]]
 ];
 
 const photos = sourcePhotos.map((row, index) => ({
@@ -34,20 +34,53 @@ const photos = sourcePhotos.map((row, index) => ({
 }));
 
 const docs = [
-  { chapter: 1, title: "公開台帳抜粋", text: "北堤防の到達水位は低く記載されているが、写真の水位標ではより高い位置に赤い帯が残る。" },
-  { chapter: 1, title: "避難案内改訂", text: "改訂前の案内図では水門側へ向かう経路が残っていた。現地の黄色い案内板は右方向を示している。" },
-  { chapter: 2, title: "現場整理表", text: "橋下、商店街、詰所、町会掲示板の写真には、町の発表より前に動きがあった跡が写る。" },
-  { chapter: 2, title: "出動時刻控え", text: "消防団の控えには18:12の出動記録がある。広報資料の18:30より早い。" },
-  { chapter: 3, title: "水門管理区画", text: "管理盤、鍵保管箱、地図、観測小屋の写真は、G-4水門の手動操作と関係する。" },
-  { chapter: 3, title: "観測記録", text: "雨量観測は中止されておらず、17:48以降も現場は観測可能だった。" },
-  { chapter: 4, title: "地下書庫目録", text: "B2-14: 水門操作記録、地下浸水写真、閉鎖後写真、旧町会控えを同梱。" }
+  { chapter: 1, title: "平成26年9月2日 広報みずもり臨時号", text: "北堤防の水位は青帯上端以下で推移。南町の避難案内板は左回り高台経路へ差し替え済み。町役場掲示は17:30時点で更新完了。水守小体育館は18:45の開設まで浸水なし。" },
+  { chapter: 1, title: "令和6年 再掲写真 校正メモA", text: "臨時号本文との差分確認: 写真01は赤い帯が写る。写真02は右向き矢印が残る。写真04は掲示板時計が写る。写真05は体育館床面に泥跡がある。" },
+  { chapter: 2, title: "平成26年9月3日 地域安全ニュース", text: "G-4水門は17:55に閉鎖完了。商店街巡回と消防団出動は町発表後の18:30以降。南町会掲示板の差し替えは翌朝実施。" },
+  { chapter: 2, title: "令和6年 再掲写真 目印欄", text: "安全ニュースとの差分確認: 写真07は水門中央が暗い。写真08は黄色い防災旗が巡回済み地点を示す。写真09は長靴が残る。写真12は傾いた紙の下に旧掲示が見える。" },
+  { chapter: 3, title: "平成26年9月5日 町長会見要旨", text: "G-4は自動監視の通常運転。予備鍵の使用なし。会議ではG区画を個別に扱っていない。雨量観測は17:40に停止済み。" },
+  { chapter: 3, title: "令和6年 再掲写真 操作系統メモ", text: "会見要旨との差分確認: 写真13は赤緑ランプが同時点灯。写真14は黄色い鍵札。写真16は会議地図。写真17は観測小屋が写る。四点ともG-4の手動操作系統に属する。" },
+  { chapter: 4, title: "平成27年3月11日 復旧記念記事", text: "管理棟には当時職員が常駐。駅前地下道の浸水は膝下以下。関係資料は通常書庫へ移管。水門は閉鎖後に警告灯を消灯。" },
+  { chapter: 4, title: "地下書庫 B2-14 再点検記録", text: "復旧記念記事との差分確認: 写真19は暗い窓、写真20は高い濡れた線、写真23は金属扉の保管庫、写真24は赤い灯り。B2-14にG-4閉鎖遅延の説明資料として束ねられていた。" }
 ];
 
 const locks = [
-  { id: "lock1", title: "第一照会", chapter: 1, asks: ["赤い帯", "右", "時計", "泥跡"], reveal: "写真の表面だけでも、水位、案内方向、時刻、浸水範囲が公表説明とずれている。" },
-  { id: "lock2", title: "第二照会", chapter: 2, asks: ["中央部", "黄色", "長靴", "傾いた紙"], reveal: "水門周辺と町内の複数地点に、発表前の対応痕跡が残っている。" },
-  { id: "lock3", title: "第三照会", chapter: 3, asks: ["赤と緑", "黄色い札", "地図", "観測小屋"], reveal: "操作盤、鍵、地図、観測小屋は、G-4水門の手動操作を示す資料群としてつながる。" },
-  { id: "lock4", title: "第四照会", chapter: 4, asks: ["暗い窓", "濡れた線", "金属扉", "赤い灯り"], reveal: "管理棟不在、地下浸水、保管記録、閉鎖後の警告灯が同じ説明のずれを示している。" }
+  {
+    id: "lock1",
+    title: "第一照会",
+    chapter: 1,
+    prompt: "平成26年の臨時号と令和6年の再掲写真メモを比較し、臨時号本文と食い違う写真側の要素を順に入力してください。",
+    fields: ["写真01 水位標 / 臨時号: 青帯以下", "写真02 案内板 / 臨時号: 左回り経路", "写真04 掲示板 / 臨時号: 17:30更新完了", "写真05 体育館 / 臨時号: 浸水なし"],
+    asks: [["赤い帯", "赤帯"], ["右矢印", "右", "矢印"], ["掲示板時計", "時計"], ["泥跡", "泥"]],
+    reveal: "当時の臨時号は、赤い帯、右向き矢印、掲示板時計、泥跡と食い違う。公開本文の平静な説明が、写真で崩れ始める。"
+  },
+  {
+    id: "lock2",
+    title: "第二照会",
+    chapter: 2,
+    prompt: "平成26年の地域安全ニュースと再掲写真の目印欄を比較し、18:30以前の動きを示す写真側の要素を入力してください。",
+    fields: ["写真07 水門 / 記事: 17:55閉鎖完了", "写真08 商店街 / 記事: 巡回は18:30以降", "写真09 詰所 / 記事: 出動は18:30以降", "写真12 掲示板 / 記事: 翌朝差し替え"],
+    asks: [["水門中央", "中央部"], ["黄色い旗", "黄色", "旗"], ["長靴"], ["傾いた紙", "貼り替え"]],
+    reveal: "安全ニュースの時刻説明に対し、水門中央、黄色い旗、長靴、傾いた紙が発表前の動きを示す。G-4側の対応は記事より早く始まっていた。"
+  },
+  {
+    id: "lock3",
+    title: "第三照会",
+    chapter: 3,
+    prompt: "平成26年の町長会見要旨と再掲写真の操作系統メモを比較し、通常運転説明と食い違う要素を入力してください。",
+    fields: ["写真13 操作盤 / 会見: 通常運転", "写真14 鍵箱 / 会見: 予備鍵使用なし", "写真16 会議 / 会見: G区画扱いなし", "写真17 観測 / 会見: 17:40停止済み"],
+    asks: [["赤緑ランプ", "赤と緑", "ランプ"], ["黄色い鍵札", "黄色い札", "鍵札"], ["会議地図", "地図"], ["観測小屋", "小屋"]],
+    reveal: "会見要旨に対し、赤緑ランプ、黄色い鍵札、会議地図、観測小屋がG-4の手動操作を示す。17:55の判断は通常運転では説明できない。"
+  },
+  {
+    id: "lock4",
+    title: "第四照会",
+    chapter: 4,
+    prompt: "平成27年の復旧記念記事とB2-14再点検記録を比較し、記事の説明と食い違う写真側の要素を入力してください。",
+    fields: ["写真19 管理棟 / 記事: 職員常駐", "写真20 地下道 / 記事: 膝下以下", "写真23 書庫 / 記事: 通常書庫", "写真24 水門 / 記事: 警告灯消灯"],
+    asks: [["暗い窓", "窓"], ["濡れた線", "水の跡"], ["金属扉", "扉"], ["赤い灯り", "赤灯"]],
+    reveal: "復旧記念記事に対し、暗い窓、濡れた線、金属扉、赤い灯りがB2-14の再点検記録と一致する。G-4閉鎖遅延は公開記事から外された資料束として残っていた。"
+  }
 ];
 
 const state = { selected: 0, clues: new Set(), solved: new Set(), hint: false, activeTab: "photo", zoom: 1 };
@@ -123,8 +156,9 @@ function renderDocs() {
 function renderLocks() {
   $("locks").innerHTML = locks.map((lock) => {
     const available = lock.chapter <= maxChapter(); const solved = state.solved.has(lock.id);
-    const inputs = lock.asks.map((_, index) => `<input data-lock="${lock.id}" data-index="${index}" placeholder="参照値 ${index + 1}" ${available && !solved ? "" : "disabled"}> `).join("");
-    return `<div class="lock-box"><strong>${lock.title}</strong><p class="small">${solved ? lock.reveal : "写真注記から参照値を入力してください。"}</p>${solved ? "" : inputs + `<button type="button" ${available ? "" : "disabled"} onclick="submitLock('${lock.id}')">照会する</button><p id="${lock.id}Msg"></p>`}</div>`;
+    const inputs = lock.asks.map((_, index) => `<label class="field-label">${lock.fields[index]}<input data-lock="${lock.id}" data-index="${index}" placeholder="写真で見える物" ${available && !solved ? "" : "disabled"}></label>`).join("");
+    const prompt = lock.prompt || "写真注記から参照値を入力してください。";
+    return `<div class="lock-box"><strong>${lock.title}</strong><p class="small">${solved ? lock.reveal : prompt}</p>${solved ? "" : inputs + `<button type="button" ${available ? "" : "disabled"} onclick="submitLock('${lock.id}')">照会する</button><p id="${lock.id}Msg"></p>`}</div>`;
   }).join("");
 }
 
@@ -135,7 +169,7 @@ function inspectCurrent() { const photo = photos[state.selected]; state.clues.ad
 function submitLock(id) {
   const lock = locks.find((entry) => entry.id === id);
   const values = [...document.querySelectorAll(`input[data-lock="${id}"]`)].map((input) => normalize(input.value));
-  const ok = lock.asks.every((answer, index) => normalize(answer) === values[index]);
+  const ok = lock.asks.every((answer, index) => answerMatches(answer, values[index]));
   const msg = $(`${id}Msg`);
   if (!ok) { msg.textContent = "照会内容を整理できませんでした。写真注記と公開資料を見直してください。"; msg.className = "ng"; return; }
   state.solved.add(id); msg.textContent = lock.reveal; msg.className = "ok"; render();
@@ -143,10 +177,19 @@ function submitLock(id) {
 
 function normalize(value) { return String(value || "").replace(/\s|\u3000|-/g, "").toLowerCase(); }
 
+function answerMatches(expected, value) {
+  if (!value) return false;
+  const options = Array.isArray(expected) ? expected : [expected];
+  return options.some((entry) => {
+    const answer = normalize(entry);
+    return answer === value || answer.includes(value) || value.includes(answer);
+  });
+}
+
 function submitFinal() {
   const answer = normalize($("finalAnswer").value);
-  const ok = ["g4", "1755", "水門", "b214"].every((word) => answer.includes(word)) && (answer.includes("遅延") || answer.includes("閉鎖"));
-  $("finalMsg").textContent = ok ? "照合しました。G-4水門の閉鎖遅延と、後年の説明資料のずれが地下書庫B2-14の記録と一致します。" : "整理内容を照合できませんでした。G-4、17:55、水門、閉鎖遅延、B2-14の関係を記入してください。";
+  const ok = ["g4", "1755", "水門", "b214"].every((word) => answer.includes(word)) && (answer.includes("遅延") || answer.includes("閉鎖")) && (answer.includes("改ざん") || answer.includes("ずれ"));
+  $("finalMsg").textContent = ok ? "照合しました。G-4水門の閉鎖遅延と、後年の説明資料のずれが地下書庫B2-14の記録と一致します。" : "整理内容を照合できませんでした。G-4、17:55、水門、閉鎖遅延、B2-14、説明資料のずれを結び付けてください。";
   $("finalMsg").className = ok ? "ok" : "ng";
 }
 
