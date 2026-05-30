@@ -94,3 +94,15 @@
 ### 残課題
 - ブラウザプラグインが利用できなかったため、実ブラウザ上のスクリーンショット確認は未実施。
 - 公開URL反映後、iPhone幅で拡大ビューの操作感を確認する。
+
+## 2026-05-30 Nazotoki Archive統合確認
+### 対応内容
+- ルート `index.html` のNazotoki Archiveに `MizumoriBosaiPhotobookMystery` のカードが登録済みであることを確認。
+- 公開URL `https://ailiferyoya-gif.github.io/Origin/index.html?check=mizumori` でも `MizumoriBosaiPhotobookMystery` と `水守町` が返ることを確認。
+- Archive上の作品数表記は `現在 42 作品`。
+
+### バックアップ
+- `C:\Users\kogit\Documents\Codex\backups\nazotoki-archive-mizumori-20260530`
+
+### 未完了事項
+- Archive側の追加変更は不要。公開ページにも反映済み。
