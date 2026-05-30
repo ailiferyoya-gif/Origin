@@ -1,0 +1,401 @@
+:root {
+  color-scheme: light;
+  --paper: #f4f1ea;
+  --ink: #1f2729;
+  --muted: #637073;
+  --line: #d8d2c4;
+  --panel: #fffdf8;
+  --night: #182b33;
+  --teal: #1b6a72;
+  --rust: #a94f2b;
+  --gold: #b58a39;
+  --blue: #276ca8;
+  --shadow: 0 24px 70px rgba(31, 39, 41, .12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Yu Gothic", "Meiryo", sans-serif;
+  background:
+    linear-gradient(120deg, rgba(27, 106, 114, .12), transparent 34%),
+    linear-gradient(260deg, rgba(169, 79, 43, .12), transparent 38%),
+    var(--paper);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  width: min(1380px, calc(100% - 28px));
+  min-height: calc(100vh - 28px);
+  margin: 14px auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, .72fr);
+  gap: 14px;
+}
+
+.case-pane,
+.chat-pane {
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 248, .88);
+  box-shadow: var(--shadow);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.case-pane {
+  padding: 28px;
+}
+
+.case-header {
+  max-width: 780px;
+}
+
+.eyebrow,
+.photo-label,
+.doc-kicker,
+.composer label {
+  margin: 0;
+  font-size: .74rem;
+  letter-spacing: .12em;
+  color: var(--teal);
+  font-weight: 700;
+}
+
+h1 {
+  margin: 8px 0 12px;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 4.9rem);
+  line-height: 1.03;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.case-header p:last-child,
+.photo-card p,
+.doc p {
+  color: #4f5b5e;
+  line-height: 1.85;
+}
+
+.photo-card {
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: minmax(280px, .86fr) minmax(240px, .5fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.photo-button {
+  position: relative;
+  padding: 0;
+  min-height: 280px;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #101a1f;
+}
+
+.photo-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-button span {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(255, 253, 248, .92);
+  color: var(--night);
+  font-weight: 700;
+  font-size: .88rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+
+.tab {
+  border: 0;
+  border-bottom: 3px solid transparent;
+  padding: 12px 16px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.tab.active {
+  color: var(--night);
+  border-color: var(--rust);
+}
+
+.evidence-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.doc {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 16px;
+  min-height: 190px;
+}
+
+.doc.locked {
+  opacity: .52;
+}
+
+.doc h2 {
+  margin: 6px 0 8px;
+  font-size: 1.08rem;
+  letter-spacing: 0;
+}
+
+.doc mark {
+  background: rgba(181, 138, 57, .24);
+  color: var(--ink);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.doc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: .9rem;
+}
+
+.doc th,
+.doc td {
+  border-bottom: 1px solid #e7e0d2;
+  padding: 6px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.chat-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 28px);
+  background: #edf2ef;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  background: var(--night);
+  color: #f9fbf7;
+}
+
+.chat-header p {
+  margin: 0 0 2px;
+  color: #b8c8cc;
+  font-size: .82rem;
+}
+
+.timer {
+  text-align: right;
+}
+
+.timer span {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.timer small {
+  color: #b8c8cc;
+}
+
+.progress-track {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding: 12px 18px;
+  background: #dfe7e3;
+}
+
+.progress-dot {
+  height: 6px;
+  border-radius: 999px;
+  background: #a9b8b9;
+}
+
+.progress-dot.active {
+  background: var(--teal);
+}
+
+.messages {
+  flex: 1;
+  overflow: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bubble {
+  max-width: 88%;
+  padding: 11px 13px;
+  border-radius: 8px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.bubble.source {
+  align-self: flex-start;
+  background: #ffffff;
+  border: 1px solid #d6dedb;
+}
+
+.bubble.player {
+  align-self: flex-end;
+  background: #cfe8df;
+  border: 1px solid #bad6cc;
+}
+
+.bubble.system {
+  align-self: center;
+  max-width: 95%;
+  background: #fff5d8;
+  border: 1px solid #ecd79e;
+  color: #5b4418;
+  font-size: .92rem;
+}
+
+.composer {
+  padding: 14px 18px 8px;
+  background: #f8fbf8;
+  border-top: 1px solid #cfdbd7;
+}
+
+.composer div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.composer input {
+  min-width: 0;
+  border: 1px solid #becbc8;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+}
+
+.composer button,
+.quick-actions button {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 14px;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 800;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 0 18px 16px;
+  background: #f8fbf8;
+}
+
+.quick-actions button {
+  background: #ffffff;
+  color: var(--night);
+  border: 1px solid #becbc8;
+}
+
+.image-modal {
+  width: min(1120px, calc(100% - 32px));
+  border: 0;
+  border-radius: 8px;
+  padding: 0;
+  background: #101a1f;
+}
+
+.image-modal::backdrop {
+  background: rgba(13, 20, 22, .76);
+}
+
+.image-modal img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: rgba(255, 253, 248, .94);
+  font-weight: 800;
+}
+
+@media (max-width: 1060px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-pane {
+    min-height: 720px;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    width: 100%;
+    margin: 0;
+  }
+
+  .case-pane,
+  .chat-pane {
+    border-radius: 0;
+  }
+
+  .case-pane {
+    padding: 18px;
+  }
+
+  .photo-card,
+  .evidence-board {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-button {
+    min-height: 220px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+}
