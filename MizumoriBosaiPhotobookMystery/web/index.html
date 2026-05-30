@@ -4,96 +4,59 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>水守町 防災写真帖</title>
-<link rel="stylesheet" href="style.css?v=20260530-public-articles">
+<link rel="stylesheet" href="style.css?v=20260530-separated-sites">
 </head>
 <body>
-<div class="app">
-  <header class="topbar">
+<header class="site-header">
+  <div class="wrap header-grid">
     <div>
-      <p class="kicker">水守町 防災写真帖</p>
-      <h1>防災写真に残された、開かなかった水門の記録</h1>
+      <p class="kicker">水守町 防災情報アーカイブ</p>
+      <h1>水守町 防災写真帖</h1>
+      <p class="lead">町内の河川、避難所、防災設備、広報掲示を記録した写真資料です。防災啓発、地域学習、施設点検の参考として公開しています。</p>
     </div>
-    <div class="top-actions">
-      <button id="hintToggle" type="button">注記表示 OFF</button>
-      <button id="resetBtn" type="button">表示を初期化</button>
-    </div>
-  </header>
+    <nav class="site-nav" aria-label="関連ページ">
+      <a href="./materials/">公開資料</a>
+    </nav>
+  </div>
+</header>
 
-  <section class="intro">
-    <p>水守町が公開している防災広報用の写真帖です。川、橋、避難所、備蓄棚、水門、役場の掲示など、町内各所の記録写真を年代順に掲載しています。</p>
-    <p>写真に添えられた説明は平静ですが、現場に写る水位標、掲示板、矢印、扉、照明、備品の位置を見比べると、十年前の水害説明に小さなずれが残されています。</p>
+<main class="wrap">
+  <section class="notice" aria-label="お知らせ">
+    <strong>掲載内容</strong>
+    <span>令和6年度の防災月間に合わせ、町内24地点の写真を再掲しました。写真は年代順ではなく、施設分類ごとに並べています。</span>
   </section>
 
-  <main class="layout">
-    <section class="album">
-      <div class="section-head">
-        <h2>写真帖</h2>
-        <p id="progressText">0 / 24</p>
-      </div>
-      <div id="photoGrid" class="photo-grid"></div>
-    </section>
+  <section class="gallery-head">
+    <div>
+      <h2>写真一覧</h2>
+      <p>写真を選択すると大きく表示できます。</p>
+    </div>
+    <p id="photoCount">24件</p>
+  </section>
 
-    <aside class="side">
-      <nav class="tabs" aria-label="閲覧パネル">
-        <button class="tab active" data-tab="photo" type="button">写真</button>
-        <button class="tab" data-tab="notes" type="button">注記</button>
-        <button class="tab" data-tab="docs" type="button">資料</button>
-        <button class="tab" data-tab="solve" type="button">照会</button>
-      </nav>
+  <div id="photoGrid" class="photo-grid"></div>
+</main>
 
-      <section class="panel active" data-panel="photo">
-        <div class="photo-head">
-          <div>
-            <h2 id="photoTitle">写真を選んでください</h2>
-            <p id="photoCaption">写真を開くと、掲載時の説明と注記対象が表示されます。</p>
-          </div>
-          <button id="zoomOpen" type="button">拡大</button>
-        </div>
-        <div class="photo-frame">
-          <img id="mainPhoto" src="" alt="">
-          <div id="markers" class="markers"></div>
-        </div>
-        <p id="inspectText" class="inspect-text">写真内の注記対象を表示できます。</p>
-      </section>
-
-      <section class="panel" data-panel="notes">
-        <h2>注記一覧</h2>
-        <div id="notes" class="notes"></div>
-      </section>
-
-      <section class="panel" data-panel="docs">
-        <h2>資料</h2>
-        <div id="docs" class="docs"></div>
-      </section>
-
-      <section class="panel solve-panel" data-panel="solve">
-        <h2>資料照会</h2>
-        <div id="locks" class="locks"></div>
-        <h2>情報公開請求用メモ</h2>
-        <p class="small">写真帖と公開資料を見比べ、どの水門で、いつ、どのような説明のずれが残されたのかを整理してください。</p>
-        <textarea id="finalAnswer" placeholder="例: G-4水門は17:55時点で..."></textarea>
-        <button id="finalBtn" type="button">内容を整理</button>
-        <p id="finalMsg"></p>
-      </section>
-    </aside>
-  </main>
-</div>
-
-<div id="zoomModal" class="zoom-modal" aria-hidden="true">
-  <div class="zoom-toolbar">
-    <strong id="zoomTitle">写真</strong>
-    <div class="zoom-actions">
+<div id="photoModal" class="photo-modal" aria-hidden="true">
+  <div class="modal-toolbar">
+    <strong id="modalTitle">写真</strong>
+    <div class="modal-actions">
       <button id="zoomOut" type="button">縮小</button>
       <button id="zoomReset" type="button">等倍</button>
       <button id="zoomIn" type="button">拡大</button>
-      <button id="zoomClose" type="button">閉じる</button>
+      <button id="modalClose" type="button">閉じる</button>
     </div>
   </div>
-  <div id="zoomStage" class="zoom-stage">
-    <img id="zoomImage" src="" alt="">
+  <div id="modalStage" class="modal-stage">
+    <img id="modalImage" src="" alt="">
   </div>
+  <p id="modalCaption" class="modal-caption"></p>
 </div>
 
-<script src="app.js?v=20260530-public-articles"></script>
+<footer class="footer wrap">
+  <p>水守町 防災情報アーカイブ</p>
+</footer>
+
+<script src="photobook.js?v=20260530-separated-sites"></script>
 </body>
 </html>
