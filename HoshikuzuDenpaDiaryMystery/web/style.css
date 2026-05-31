@@ -1,0 +1,302 @@
+:root {
+  --ink: #271c2f;
+  --paper: #fff7ed;
+  --pink: #d84f86;
+  --violet: #6750a4;
+  --cyan: #168a9a;
+  --yellow: #d89a2b;
+  --line: #ead8ce;
+  --soft: #f8eaf0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Yu Gothic", "Meiryo", sans-serif;
+  background:
+    linear-gradient(120deg, rgba(216, 79, 134, .15), transparent 32%),
+    linear-gradient(260deg, rgba(22, 138, 154, .14), transparent 38%),
+    #f4efe9;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.shell {
+  width: min(1320px, calc(100% - 24px));
+  margin: 12px auto;
+  display: grid;
+  gap: 12px;
+}
+
+.hero,
+.game {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 247, 237, .92);
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(39, 28, 47, .13);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(300px, .95fr) 1fr;
+}
+
+.photo {
+  position: relative;
+  border: 0;
+  padding: 0;
+  min-height: 330px;
+  background: #140d18;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo span,
+.image-modal button {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  border: 0;
+  border-radius: 7px;
+  padding: 9px 12px;
+  background: rgba(255, 247, 237, .93);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.intro {
+  padding: 28px;
+}
+
+.kicker {
+  margin: 0;
+  color: var(--violet);
+  font-size: .75rem;
+  letter-spacing: .14em;
+  font-weight: 900;
+}
+
+h1 {
+  margin: 8px 0 14px;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 5.2rem);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.intro p:last-of-type,
+.manual p,
+.manual li,
+.diary header p {
+  color: #625468;
+  line-height: 1.8;
+}
+
+.timer {
+  margin-top: 16px;
+  color: var(--cyan);
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr) 320px;
+  min-height: 560px;
+}
+
+.manual,
+.diary,
+.decoder {
+  padding: 18px;
+}
+
+.manual,
+.decoder {
+  background: #fffdf8;
+}
+
+.manual {
+  border-right: 1px solid var(--line);
+}
+
+.decoder {
+  border-left: 1px solid var(--line);
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  color: var(--violet);
+}
+
+.manual button,
+form button {
+  width: 100%;
+  border: 0;
+  border-radius: 7px;
+  padding: 11px 12px;
+  margin-top: 8px;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 900;
+}
+
+.cards {
+  display: grid;
+  gap: 10px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff;
+}
+
+.card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.card strong {
+  color: var(--pink);
+}
+
+.card p {
+  margin: 8px 0 0;
+  line-height: 1.75;
+}
+
+.card button {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--soft);
+  color: var(--ink);
+  padding: 8px 10px;
+  font-weight: 800;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+  padding: 14px;
+}
+
+.panel p {
+  margin: 0 0 6px;
+  color: #756a78;
+}
+
+.panel strong {
+  font-size: 1.4rem;
+  color: var(--pink);
+}
+
+.vowel-grid {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.vowel-grid span {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px;
+  background: #fff;
+}
+
+form {
+  display: grid;
+  gap: 8px;
+}
+
+label {
+  color: var(--violet);
+  font-weight: 900;
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 12px;
+  background: #fff;
+}
+
+.result {
+  min-height: 54px;
+  color: var(--cyan);
+  font-weight: 900;
+  line-height: 1.7;
+}
+
+.image-modal {
+  width: min(1120px, calc(100% - 32px));
+  border: 0;
+  border-radius: 8px;
+  padding: 0;
+  background: #120b17;
+}
+
+.image-modal::backdrop {
+  background: rgba(16, 10, 20, .78);
+}
+
+.image-modal img {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 1040px) {
+  .hero,
+  .game {
+    grid-template-columns: 1fr;
+  }
+
+  .manual,
+  .decoder {
+    border: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .shell {
+    width: 100%;
+    margin: 0;
+  }
+
+  .hero,
+  .game {
+    border-radius: 0;
+  }
+
+  .intro,
+  .manual,
+  .diary,
+  .decoder {
+    padding: 16px;
+  }
+}
