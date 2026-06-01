@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KUROYOMI RELICS | Objects That Remember</title>
+  <title>KUROYOMI RELICS | Moving Catalogue</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -21,25 +21,39 @@
   </header>
 
   <main id="top">
-    <section class="hero">
+    <section class="hero" aria-label="Moving relic showcase">
+      <div class="hero-stage" aria-hidden="true">
+        <img class="stage-image active" src="./assets/obsidian-box.png" alt="">
+        <img class="stage-image" src="./assets/mask-fragment.png" alt="">
+        <img class="stage-image" src="./assets/brass-key.png" alt="">
+        <img class="stage-image" src="./assets/black-perfume.png" alt="">
+      </div>
+
       <div class="hero-copy">
         <p class="eyebrow">PRIVATE CATALOGUE / VOL. 09</p>
-        <h1>Objects That Remember Before You Do.</h1>
-        <p>黒読は、記憶に触れてしまった器物だけを扱う架空の収蔵室です。購入ではなく、招待。展示ではなく、封印。手元に置いた瞬間から、持ち主のほうが保管されます。</p>
+        <h1>KUROYOMI RELICS</h1>
+        <p>招待制の呪物カタログ。展示品は持ち主を選ばず、記憶だけを選びます。</p>
         <div class="hero-actions">
           <a href="#collection">View Collection</a>
-          <button type="button" data-open="obsidian-box.png">Inspect Relic</button>
+          <button type="button" data-open="obsidian-box.png" data-label="Obsidian Box">Inspect</button>
         </div>
       </div>
-      <figure class="hero-visual">
-        <img src="./assets/obsidian-box.png" alt="赤い光が漏れる黒曜石の箱">
-        <figcaption>ARCHIVE 00 / OBSIDIAN BOX</figcaption>
-      </figure>
-      <aside class="vertical-note" aria-label="Catalogue status">
-        <span>SEALED</span>
-        <span>NO PUBLIC SALE</span>
-        <span>OPEN AFTER MIDNIGHT</span>
-      </aside>
+
+      <div class="stage-index" aria-label="Current relic">
+        <span id="stageNumber">01</span>
+        <small id="stageName">OBSIDIAN BOX</small>
+      </div>
+    </section>
+
+    <section class="moving-strip" aria-label="Relic image strip">
+      <div class="strip-track">
+        <img src="./assets/mask-fragment.png" alt="白い仮面片">
+        <img src="./assets/brass-key.png" alt="真鍮の鍵">
+        <img src="./assets/black-perfume.png" alt="黒い香水瓶">
+        <img src="./assets/obsidian-box.png" alt="黒曜石の箱">
+        <img src="./assets/mask-fragment.png" alt="">
+        <img src="./assets/brass-key.png" alt="">
+      </div>
     </section>
 
     <section class="statement">
@@ -49,8 +63,9 @@
     <section class="collection" id="collection">
       <div class="section-head">
         <p class="eyebrow">SELECTED RELICS</p>
-        <h2>Only three are awake tonight.</h2>
+        <h2>Only the images are allowed to move.</h2>
       </div>
+
       <div class="product-grid">
         <article class="product">
           <button type="button" data-open="mask-fragment.png" data-label="Mask Fragment">
@@ -62,7 +77,7 @@
             <span>Crack glows when a lie is spoken nearby.</span>
           </div>
         </article>
-        <article class="product">
+        <article class="product tall">
           <button type="button" data-open="brass-key.png" data-label="Breathing Key">
             <img src="./assets/brass-key.png" alt="ガラスの聖遺物箱に吊られた古い真鍮鍵">
           </button>
@@ -86,20 +101,23 @@
     </section>
 
     <section class="ritual" id="ritual">
+      <figure>
+        <img src="./assets/obsidian-box.png" alt="赤い光が漏れる黒曜石の箱">
+      </figure>
       <div>
         <p class="eyebrow">HANDLING RITUAL</p>
         <h2>Three rules before touching the case.</h2>
+        <ol>
+          <li><span>01</span> Do not name the former owner aloud.</li>
+          <li><span>02</span> Keep mirrors turned away until dawn.</li>
+          <li><span>03</span> If the object feels warm, leave first.</li>
+        </ol>
       </div>
-      <ol>
-        <li><span>01</span> Do not name the former owner aloud.</li>
-        <li><span>02</span> Keep mirrors turned away until dawn.</li>
-        <li><span>03</span> If the object feels warm, leave first.</li>
-      </ol>
     </section>
 
     <section class="contact" id="contact">
       <p class="eyebrow">INQUIRY</p>
-      <h2>Write only after the room becomes quiet.</h2>
+      <h2>Write after the room becomes quiet.</h2>
       <form>
         <label>
           Name

@@ -7,6 +7,7 @@
 ## User Request
 - User asked for a stylish site like `https://mimeyoi.co/`, but full of ominous atmosphere.
 - Implemented as an original fictional premium relic catalogue rather than a copy.
+- Follow-up correction: the reference site's images move and are more visually dominant than the text. The site was revised to use a full-viewport animated image stage, moving image strip, floating product cards, and reduced hero copy.
 
 ## New Project
 - `KuroyomiRelicsSite`
@@ -25,8 +26,8 @@
 ## Backup
 - `C:\Users\kogit\Documents\Codex\backups\ominous-stylish-site-pre-20260601\index.html.bak`
 
-## Verification To Do
-- JS syntax check passed.
-- Local HTTP check passed for HTML/CSS/JS/images/root index.
-- Root index count updated from `48` to `49`.
+## Verification
+- JS syntax check passed after the motion-focused revision.
+- Local HTTP check passed for HTML/CSS/JS and all four images.
+- UTF-8 content check confirmed Japanese text is valid even if PowerShell displays mojibake.
 - Commit and push after final status check.
