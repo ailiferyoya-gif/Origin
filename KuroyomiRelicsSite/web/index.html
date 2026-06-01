@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KUROYOMI RELICS | Objects That Remember</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="KUROYOMI RELICS home">
+      <span>黒読</span>
+      <strong>KUROYOMI RELICS</strong>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#collection">Collection</a>
+      <a href="#ritual">Ritual</a>
+      <a href="#contact">Inquiry</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">PRIVATE CATALOGUE / VOL. 09</p>
+        <h1>Objects That Remember Before You Do.</h1>
+        <p>黒読は、記憶に触れてしまった器物だけを扱う架空の収蔵室です。購入ではなく、招待。展示ではなく、封印。手元に置いた瞬間から、持ち主のほうが保管されます。</p>
+        <div class="hero-actions">
+          <a href="#collection">View Collection</a>
+          <button type="button" data-open="obsidian-box.png">Inspect Relic</button>
+        </div>
+      </div>
+      <figure class="hero-visual">
+        <img src="./assets/obsidian-box.png" alt="赤い光が漏れる黒曜石の箱">
+        <figcaption>ARCHIVE 00 / OBSIDIAN BOX</figcaption>
+      </figure>
+      <aside class="vertical-note" aria-label="Catalogue status">
+        <span>SEALED</span>
+        <span>NO PUBLIC SALE</span>
+        <span>OPEN AFTER MIDNIGHT</span>
+      </aside>
+    </section>
+
+    <section class="statement">
+      <p>We do not authenticate curses. We authenticate the silence around them.</p>
+    </section>
+
+    <section class="collection" id="collection">
+      <div class="section-head">
+        <p class="eyebrow">SELECTED RELICS</p>
+        <h2>Only three are awake tonight.</h2>
+      </div>
+      <div class="product-grid">
+        <article class="product">
+          <button type="button" data-open="mask-fragment.png" data-label="Mask Fragment">
+            <img src="./assets/mask-fragment.png" alt="黒いベルベットケースに収められた白い仮面片">
+          </button>
+          <div>
+            <p>NO. 13</p>
+            <h3>Mask Fragment</h3>
+            <span>Crack glows when a lie is spoken nearby.</span>
+          </div>
+        </article>
+        <article class="product">
+          <button type="button" data-open="brass-key.png" data-label="Breathing Key">
+            <img src="./assets/brass-key.png" alt="ガラスの聖遺物箱に吊られた古い真鍮鍵">
+          </button>
+          <div>
+            <p>NO. 21</p>
+            <h3>Breathing Key</h3>
+            <span>Condensation appears inside locked rooms.</span>
+          </div>
+        </article>
+        <article class="product">
+          <button type="button" data-open="black-perfume.png" data-label="Red Night Vessel">
+            <img src="./assets/black-perfume.png" alt="黒い香水瓶に入った暗赤色の液体">
+          </button>
+          <div>
+            <p>NO. 34</p>
+            <h3>Red Night Vessel</h3>
+            <span>One drop returns a forgotten room smell.</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="ritual" id="ritual">
+      <div>
+        <p class="eyebrow">HANDLING RITUAL</p>
+        <h2>Three rules before touching the case.</h2>
+      </div>
+      <ol>
+        <li><span>01</span> Do not name the former owner aloud.</li>
+        <li><span>02</span> Keep mirrors turned away until dawn.</li>
+        <li><span>03</span> If the object feels warm, leave first.</li>
+      </ol>
+    </section>
+
+    <section class="contact" id="contact">
+      <p class="eyebrow">INQUIRY</p>
+      <h2>Write only after the room becomes quiet.</h2>
+      <form>
+        <label>
+          Name
+          <input type="text" placeholder="匿名可">
+        </label>
+        <label>
+          Desired Object
+          <select>
+            <option>Obsidian Box</option>
+            <option>Mask Fragment</option>
+            <option>Breathing Key</option>
+            <option>Red Night Vessel</option>
+          </select>
+        </label>
+        <label>
+          What did it remember?
+          <textarea rows="4" placeholder="短く記入してください"></textarea>
+        </label>
+        <button type="button">Seal Inquiry</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <span>© KUROYOMI RELICS</span>
+    <span>Fictional private catalogue. Do not open unattended.</span>
+  </footer>
+
+  <dialog class="image-modal" id="imageModal">
+    <button type="button" data-close>Close</button>
+    <img src="./assets/obsidian-box.png" alt="選択された呪物を拡大表示">
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
