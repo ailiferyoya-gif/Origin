@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0d0f14" />
+    <title>奈落の継承者</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app" id="app">
+      <section class="topbar" aria-label="探索状況">
+        <div>
+          <span class="label">階層</span>
+          <strong id="floorText">1</strong>
+        </div>
+        <div>
+          <span class="label">最高</span>
+          <strong id="bestFloorText">1</strong>
+        </div>
+        <div>
+          <span class="label">G</span>
+          <strong id="goldText">0</strong>
+        </div>
+        <div>
+          <span class="label">灰</span>
+          <strong id="ashText">0</strong>
+        </div>
+        <button class="icon-button" id="resetButton" type="button" aria-label="挑戦をリセット">↻</button>
+      </section>
+
+      <nav class="screen-nav" aria-label="画面切替">
+        <button type="button" data-screen="prep">準備</button>
+        <button type="button" data-screen="battle">戦闘</button>
+        <button type="button" data-screen="bestiary">図鑑</button>
+        <button type="button" data-screen="goals">目標</button>
+      </nav>
+
+      <section class="screen-panel" id="prepPanel" aria-label="準備">
+        <h2>出発準備</h2>
+        <p id="prepSummary">灰で仲間を解放し、恒久能力を整えて奈落へ向かう。</p>
+        <div class="prep-hero">
+          <img id="prepHeroImage" src="./assets/dark-hero.png" alt="選択中の味方" />
+          <div>
+            <span class="label">選択中</span>
+            <strong id="selectedHeroName">黒衣の継承者</strong>
+            <p id="selectedHeroText">標準的な探索者。</p>
+          </div>
+        </div>
+        <div class="panel-actions">
+          <button type="button" id="departButton">出発</button>
+          <button type="button" id="newRunPrepButton">最初から</button>
+        </div>
+        <h3>味方解放</h3>
+        <div class="character-list" id="characterList"></div>
+        <h3>恒久強化</h3>
+        <div class="upgrade-list" id="prepUpgradeList"></div>
+        <h3>記録</h3>
+        <p id="campSummary">探索の記録を読み込み中。</p>
+        <div class="panel-grid" id="recordList"></div>
+      </section>
+
+      <section class="screen-panel hidden" id="campPanel" aria-label="拠点">
+        <h2>黒灯の拠点</h2>
+        <p id="campSummary">探索の記録を読み込み中。</p>
+        <div class="panel-grid" id="recordList"></div>
+        <div class="panel-actions">
+          <button type="button" id="returnBattleButton">探索へ戻る</button>
+          <button type="button" id="restartRunButton">新しい挑戦</button>
+        </div>
+      </section>
+
+      <section class="screen-panel hidden" id="bestiaryPanel" aria-label="敵図鑑">
+        <h2>敵図鑑</h2>
+        <p id="bestiarySummary">未発見の敵は影として記録される。</p>
+        <div class="bestiary-list" id="bestiaryList"></div>
+      </section>
+
+      <section class="screen-panel hidden" id="goalsPanel" aria-label="目標">
+        <h2>目標</h2>
+        <p>達成した目標から灰やゴールドを受け取れます。</p>
+        <div id="goalsList"></div>
+      </section>
+
+      <section class="battlefield" id="battlefield" aria-label="戦闘">
+        <div class="enemy-card">
+          <div class="name-row">
+            <strong id="enemyName">敵</strong>
+            <span id="enemyIntent">攻撃</span>
+          </div>
+          <div class="bar">
+            <span id="enemyHpBar"></span>
+          </div>
+          <p id="enemyHpText">HP 0 / 0</p>
+          <img id="enemyImage" alt="敵キャラクター" src="./assets/abyss-hound.png" />
+        </div>
+
+        <div class="player-card">
+          <img id="heroImage" alt="主人公" src="./assets/dark-hero.png" />
+          <div class="player-stats">
+            <div>
+              <span class="label">HP</span>
+              <strong id="heroHpText">0 / 0</strong>
+            </div>
+            <div>
+              <span class="label">MP</span>
+              <strong id="heroMpText">0 / 0</strong>
+            </div>
+            <div>
+              <span class="label">Lv</span>
+              <strong id="levelText">1</strong>
+            </div>
+            <div>
+              <span class="label">EXP</span>
+              <strong id="expText">0 / 0</strong>
+            </div>
+          </div>
+          <div class="bar hp"><span id="heroHpBar"></span></div>
+          <div class="bar mp"><span id="heroMpBar"></span></div>
+        </div>
+      </section>
+
+      <section class="equip-strip" id="equipStrip" aria-label="装備">
+        <img id="lootImage" src="./assets/cursed-loot.png" alt="装備アイコン" />
+        <div>
+          <span class="label">能力</span>
+          <p id="statsText">攻撃 0 / 防御 0</p>
+          <span class="label">装備</span>
+          <p id="equipText">なし</p>
+        </div>
+      </section>
+
+      <section class="choices hidden" id="lootPanel" aria-label="戦利品">
+        <h2>戦利品</h2>
+        <div id="lootChoices"></div>
+      </section>
+
+      <section class="choices hidden" id="deathPanel" aria-label="探索終了">
+        <h2>探索終了</h2>
+        <p id="deathText">探索は途切れた。</p>
+        <div id="upgradeChoices"></div>
+      </section>
+
+      <section class="actions" id="actionPanel" aria-label="コマンド">
+        <button type="button" data-action="attack">攻撃</button>
+        <button type="button" data-action="skill">魂火</button>
+        <button type="button" data-action="guard">防御</button>
+        <button type="button" data-action="potion">黒薬</button>
+      </section>
+
+      <section class="log" id="logPanel" aria-label="ログ">
+        <p id="logText">奈落の扉が開く。倒し、奪い、より深く潜れ。</p>
+      </section>
+    </main>
+    <script src="./game.js"></script>
+  </body>
+</html>
