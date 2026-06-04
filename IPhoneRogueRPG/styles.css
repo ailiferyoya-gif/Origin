@@ -20,9 +20,11 @@
 
 html,
 body {
+  width: 100%;
   min-height: 100%;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   background:
     radial-gradient(circle at 18% 6%, rgba(160, 34, 42, 0.24), transparent 30%),
     radial-gradient(circle at 92% 20%, rgba(94, 74, 155, 0.2), transparent 28%),
@@ -31,6 +33,7 @@ body {
 }
 
 button {
+  max-width: 100%;
   border: 0;
   border-radius: 8px;
   color: var(--text);
@@ -39,14 +42,26 @@ button {
   touch-action: manipulation;
 }
 
+img,
+svg,
+canvas {
+  max-width: 100%;
+}
+
 .app {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto auto auto;
   gap: 9px;
-  width: min(100vw, 480px);
+  width: min(100%, 480px);
+  max-width: 100%;
   height: 100dvh;
   margin: 0 auto;
-  padding: calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 10px);
+  padding:
+    calc(env(safe-area-inset-top) + 10px)
+    max(10px, env(safe-area-inset-right))
+    calc(env(safe-area-inset-bottom) + 10px)
+    max(10px, env(safe-area-inset-left));
+  overflow-x: clip;
 }
 
 .topbar,
@@ -63,7 +78,7 @@ button {
 
 .topbar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr) 42px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) 38px;
   gap: 6px;
   align-items: center;
   border-radius: 8px;
@@ -72,7 +87,7 @@ button {
 
 .screen-nav {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 6px;
 }
 
@@ -82,6 +97,39 @@ button {
   background: rgba(28, 25, 32, 0.88);
   color: #d7ccbb;
   font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.screen-panel,
+.screen-panel *,
+.topbar,
+.topbar *,
+.screen-nav,
+.screen-nav *,
+.battlefield,
+.battlefield *,
+.player-card,
+.player-card *,
+.enemy-card,
+.enemy-card *,
+.equip-strip,
+.equip-strip *,
+.choices,
+.choices *,
+.log,
+.log *,
+.actions,
+.actions * {
+  min-width: 0;
+}
+
+strong,
+p,
+span,
+small {
+  overflow-wrap: anywhere;
 }
 
 .screen-nav button.active {
@@ -117,6 +165,7 @@ button {
   color: #ded5c5;
   font-size: 13px;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .panel-grid,
@@ -130,7 +179,7 @@ button {
 
 .prep-hero {
   display: grid;
-  grid-template-columns: 78px 1fr;
+  grid-template-columns: 70px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   border: 1px solid rgba(226, 189, 102, 0.18);
@@ -140,7 +189,7 @@ button {
 }
 
 .prep-hero img {
-  width: 78px;
+  width: 70px;
   height: 94px;
   object-fit: contain;
 }
@@ -162,7 +211,7 @@ button {
 }
 
 .character-card {
-  grid-template-columns: 54px 1fr auto;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(64px, auto);
   align-items: center;
 }
 
@@ -171,14 +220,18 @@ button {
 }
 
 .character-card img {
-  width: 54px;
-  height: 64px;
+  width: 48px;
+  height: 60px;
   object-fit: contain;
 }
 
 .character-card button {
-  min-width: 72px;
+  min-width: 0;
   min-height: 42px;
+  padding: 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background: linear-gradient(180deg, #4a3238, #281f27);
 }
 
@@ -242,7 +295,7 @@ button {
 }
 
 .icon-button {
-  width: 42px;
+  width: 38px;
   height: 42px;
   background: #302b31;
   font-size: 21px;
@@ -282,10 +335,12 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
 }
 
 #enemyIntent {
-  min-width: 78px;
+  flex: 0 1 78px;
+  min-width: 0;
   border: 1px solid rgba(226, 189, 102, 0.48);
   border-radius: 999px;
   padding: 4px 8px;
@@ -345,7 +400,7 @@ button {
 
 .player-card {
   display: grid;
-  grid-template-columns: 78px 1fr;
+  grid-template-columns: 70px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   border-radius: 8px;
@@ -354,7 +409,7 @@ button {
 
 #heroImage {
   grid-row: span 3;
-  width: 78px;
+  width: 70px;
   height: 96px;
   object-fit: contain;
   filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.45));
@@ -362,7 +417,7 @@ button {
 
 .player-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.58fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -458,7 +513,7 @@ button {
 
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
