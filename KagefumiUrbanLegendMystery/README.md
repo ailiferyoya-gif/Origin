@@ -5,6 +5,7 @@
 ## 開始
 
 `web/index.html` から開始。主導線は `web/chat/index.html` と `web/search/index.html`。
+各独立サイトは作品内リンク集ではなく、検索結果から辿る。
 
 ## 想定プレイ時間
 
