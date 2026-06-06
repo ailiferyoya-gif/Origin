@@ -30,6 +30,8 @@ const sfxFiles = {
 const audioState = {
   enabled: true,
   unlocked: false,
+  oggSupported: null,
+  context: null,
   sounds: {},
 };
 
@@ -222,7 +224,28 @@ const els = {
 const navButtons = Array.from(document.querySelectorAll("[data-screen]"));
 
 let state = loadGame() || newGame(loadMeta());
+setupIosRuntime();
 render();
+
+function setupIosRuntime() {
+  syncAppHeight();
+  if (typeof window !== "undefined" && window.addEventListener) {
+    window.addEventListener("resize", syncAppHeight, { passive: true });
+    window.addEventListener("orientationchange", () => window.setTimeout(syncAppHeight, 250), { passive: true });
+  }
+  if (typeof document !== "undefined" && document.addEventListener) {
+    document.addEventListener("gesturestart", (event) => event.preventDefault());
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+    document.addEventListener("pointerdown", unlockAudio, { passive: true, once: true });
+    document.addEventListener("touchend", unlockAudio, { passive: true, once: true });
+  }
+}
+
+function syncAppHeight() {
+  if (typeof document === "undefined" || !document.documentElement) return;
+  const height = typeof window !== "undefined" && window.innerHeight ? window.innerHeight : 0;
+  if (height > 0) document.documentElement.style.setProperty("--app-height", `${height}px`);
+}
 
 function baseMeta() {
   return {
@@ -378,6 +401,7 @@ function pick(list) {
 
 function getSound(name) {
   if (typeof Audio === "undefined" || !audioState.enabled) return null;
+  if (!canPlayOgg()) return null;
   if (!audioState.sounds[name]) {
     const sound = new Audio(sfxFiles[name]);
     sound.preload = "auto";
@@ -387,9 +411,21 @@ function getSound(name) {
   return audioState.sounds[name];
 }
 
+function canPlayOgg() {
+  if (audioState.oggSupported !== null) return audioState.oggSupported;
+  if (typeof Audio === "undefined") {
+    audioState.oggSupported = false;
+    return audioState.oggSupported;
+  }
+  const probe = new Audio();
+  audioState.oggSupported = Boolean(probe.canPlayType?.('audio/ogg; codecs="vorbis"'));
+  return audioState.oggSupported;
+}
+
 function unlockAudio() {
   if (audioState.unlocked || typeof Audio === "undefined") return;
   audioState.unlocked = true;
+  unlockSynthAudio();
   for (const name of Object.keys(sfxFiles)) {
     const sound = getSound(name);
     if (!sound) continue;
@@ -399,10 +435,55 @@ function unlockAudio() {
 
 function playSfx(name) {
   const source = getSound(name);
-  if (!source) return;
+  if (!source) {
+    playSynthSfx(name);
+    return;
+  }
   const sound = source.cloneNode();
   sound.volume = source.volume;
   sound.play().catch(() => {});
+}
+
+function unlockSynthAudio() {
+  const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
+  if (!AudioContextClass || audioState.context) return;
+  try {
+    audioState.context = new AudioContextClass();
+    audioState.context.resume?.();
+  } catch {
+    audioState.context = null;
+  }
+}
+
+function playSynthSfx(name) {
+  unlockSynthAudio();
+  const context = audioState.context;
+  if (!audioState.enabled || !context) return;
+  const presets = {
+    attack: [150, 86, 0.08, "square", 0.07],
+    skill: [420, 920, 0.16, "sawtooth", 0.06],
+    guard: [180, 120, 0.12, "triangle", 0.055],
+    potion: [520, 760, 0.18, "sine", 0.055],
+    hit: [110, 65, 0.1, "square", 0.065],
+    victory: [480, 880, 0.28, "triangle", 0.06],
+    equip: [360, 540, 0.12, "sine", 0.055],
+    sell: [620, 420, 0.1, "triangle", 0.05],
+    death: [160, 48, 0.32, "sawtooth", 0.055],
+  };
+  const [start, end, duration, type, volume] = presets[name] || presets.attack;
+  const now = context.currentTime;
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(start, now);
+  oscillator.frequency.exponentialRampToValueAtTime(Math.max(1, end), now + duration);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(volume, now + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+  oscillator.start(now);
+  oscillator.stop(now + duration + 0.02);
 }
 
 function rarityForFloor(floor) {

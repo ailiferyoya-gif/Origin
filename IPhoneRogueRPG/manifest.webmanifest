@@ -1,0 +1,19 @@
+{
+  "name": "奈落の継承者",
+  "short_name": "奈落RPG",
+  "description": "iPhone向けダークファンタジー・ローグライクRPG",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0f14",
+  "theme_color": "#0d0f14",
+  "icons": [
+    {
+      "src": "./assets/dark-hero.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
