@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>メッセージ</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="chat-ui">
+<header class="site-header">
+  <a class="brand" href="../index.html">七瀬調査通信</a>
+  <nav><a href="../chat/index.html">Nトーク</a><a href="../search/index.html">NanaSearch</a><a href="../news/index.html">東区タイムズ</a><a href="../city/index.html">七瀬市公開資料室</a><a href="../school/index.html">七瀬第二中学校</a><a href="../rail/index.html">東七瀬交通</a><a href="../store/index.html">ミナミマート七瀬通り店</a><a href="../map/index.html">七瀬まち歩きガイド</a><a href="../board/index.html">七瀬ローカルログ</a></nav>
+</header>
+<main class="chat-shell">
+  <section class="phone">
+    <header><span>匿名</span><small>オンライン</small></header>
+    <div id="messages" class="messages"></div>
+    <form id="chatForm"><input id="answer" autocomplete="off" placeholder="メッセージを入力"><button>送信</button></form>
+  </section>
+  <aside class="brief">
+    <p class="kicker">Received</p>
+    <h1>七瀬通りの影踏み電話</h1>
+    <p>差出人は名乗らない。ただ、複数の公開サイトを照合すれば「消えた人」の話ではないと分かる、とだけ書いている。</p>
+    <a href="../search/index.html">検索を開く</a>
+    <a href="../index.html">リンク集へ</a>
+  </aside>
+</main>
+<script>
+const steps = [{"prompt":"七瀬通りの都市伝説を調べたい。最初は検索で噂の名前をそのまま調べて。記事に出てくる時刻だけ送って。","answers":["23:17","２３：１７","2317"],"ok":"その時刻が噂の表向きの芯だね。次は市の公開資料。記事に出てくる通路名を検索して、本当の場所を送って。"},{"prompt":"市の資料では、電話の場所は何という通路として管理されている？","answers":["旧第三連絡道","旧第3連絡道","第三連絡道","第3連絡道"],"ok":"合ってる。そこで照明不調が起きている。次は学校資料。連絡した生徒の名前を確認して。"},{"prompt":"公開記事から外された連絡者名を送って。","answers":["高瀬奈央","たかせなお","高瀬 奈央"],"ok":"名前が出た。消えた人じゃなく、連絡した人。次は交通と店舗記録。表示時刻が何分ずれていたか送って。"},{"prompt":"駅と店舗の資料で一致する時刻のズレは？","answers":["4分","４分","四分"],"ok":"23:17は表示時刻で、実時刻は23:13。次は地図で、実際に噂が結びついた出口を確認して。"},{"prompt":"旧第三連絡道のどの出口が中心？","answers":["C2","c2","C2出口","c2出口"],"ok":"最後にまとめる。都市伝説は誰かが消えた話じゃない。学校、店舗、掲示板の記録から、本当は何を守るために名前が伏せられた？"},{"prompt":"最終報告を短く送って。例: 〇〇のため","answers":["目撃者保護","目撃者の保護","生徒保護","高瀬奈央の保護"],"ok":"報告完了。影踏み電話は、23:17に人が消える都市伝説ではなく、23:13にC2出口で黒い雨具の人物を見た生徒の名前を隠すため、時刻と場所がぼかされた記録から生まれた話だった。"}];
+let step = Number(localStorage.getItem("kagefumiStep") || 0);
+const messages = document.getElementById("messages");
+function add(text, who="them"){ const p=document.createElement("p"); p.className="bubble "+who; p.textContent=text; messages.appendChild(p); messages.scrollTop=messages.scrollHeight; }
+function intro(){
+  messages.innerHTML = "";
+  add("記者の人？ 七瀬通りの件を追ってほしい。");
+  for(let i=0;i<step;i++){ add(steps[i].ok); }
+  if(step < steps.length) add(steps[step].prompt); else add("記録は揃っている。必要なら検索結果を保存して。");
+}
+function clean(s){ return (s || "").replace(/\s+/g,"").toLowerCase(); }
+document.getElementById("chatForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const input = document.getElementById("answer");
+  const value = input.value.trim();
+  if(!value) return;
+  add(value, "me");
+  input.value = "";
+  if(step >= steps.length){ add("もう報告は受け取っている。"); return; }
+  const ok = steps[step].answers.some(a => clean(a) === clean(value));
+  if(ok){
+    add(steps[step].ok);
+    step += 1;
+    localStorage.setItem("kagefumiStep", step);
+    if(step < steps.length) setTimeout(() => add(steps[step].prompt), 450);
+  } else {
+    add("そこじゃない。公開されているページ同士を照合して、同じ言葉で送って。");
+  }
+});
+intro();
+</script>
+</body>
+</html>
