@@ -3,154 +3,125 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KUROYOMI RELICS | Moving Catalogue</title>
+  <title>KUROYOMI RELICS | Premium Dark Catalogue</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="KUROYOMI RELICS home">
+    <a class="brand" href="#top">
       <span>黒読</span>
       <strong>KUROYOMI RELICS</strong>
     </a>
     <nav aria-label="Primary navigation">
-      <a href="#collection">Collection</a>
-      <a href="#ritual">Ritual</a>
-      <a href="#contact">Inquiry</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#archive">Archive</a>
+      <a href="#booth">BOOTH</a>
     </nav>
   </header>
 
   <main id="top">
-    <section class="hero" aria-label="Moving relic showcase">
-      <div class="hero-stage" aria-hidden="true">
-        <img class="stage-image active" src="./assets/obsidian-box.png" alt="">
-        <img class="stage-image" src="./assets/mask-fragment.png" alt="">
-        <img class="stage-image" src="./assets/brass-key.png" alt="">
-        <img class="stage-image" src="./assets/black-perfume.png" alt="">
+    <section class="hero" aria-label="呪物カタログ">
+      <div class="hero-media">
+        <figure class="relic-frame active" data-relic="0">
+          <img src="./assets/obsidian-box.png" alt="黒曜石の箱">
+        </figure>
+        <figure class="relic-frame" data-relic="1">
+          <img src="./assets/mask-fragment.png" alt="白い仮面片">
+        </figure>
+        <figure class="relic-frame" data-relic="2">
+          <img src="./assets/brass-key.png" alt="真鍮の鍵">
+        </figure>
+        <figure class="relic-frame" data-relic="3">
+          <img src="./assets/black-perfume.png" alt="黒い香水瓶">
+        </figure>
       </div>
 
-      <div class="hero-copy">
-        <p class="eyebrow">PRIVATE CATALOGUE / VOL. 09</p>
-        <h1>KUROYOMI RELICS</h1>
-        <p>招待制の呪物カタログ。展示品は持ち主を選ばず、記憶だけを選びます。</p>
-        <div class="hero-actions">
-          <a href="#collection">View Collection</a>
-          <button type="button" data-open="obsidian-box.png" data-label="Obsidian Box">Inspect</button>
+      <aside class="hero-panel">
+        <p class="eyebrow">PRIVATE DIGITAL OBJECT</p>
+        <div class="number" id="relicNumber">01</div>
+        <h1 id="relicTitle">Obsidian Box</h1>
+        <p id="relicCopy">赤い継ぎ目から、見覚えのない部屋の夜だけが漏れている。</p>
+        <div class="meta">
+          <span id="relicCode">KRY-00</span>
+          <span id="relicState">SEALED</span>
         </div>
-      </div>
-
-      <div class="stage-index" aria-label="Current relic">
-        <span id="stageNumber">01</span>
-        <small id="stageName">OBSIDIAN BOX</small>
-      </div>
+        <div class="controls" aria-label="Relic selector">
+          <button class="thumb active" type="button" data-select="0"><img src="./assets/obsidian-box.png" alt=""></button>
+          <button class="thumb" type="button" data-select="1"><img src="./assets/mask-fragment.png" alt=""></button>
+          <button class="thumb" type="button" data-select="2"><img src="./assets/brass-key.png" alt=""></button>
+          <button class="thumb" type="button" data-select="3"><img src="./assets/black-perfume.png" alt=""></button>
+        </div>
+        <button class="inspect" type="button" id="inspectButton">Inspect Object</button>
+      </aside>
     </section>
 
-    <section class="moving-strip" aria-label="Relic image strip">
-      <div class="strip-track">
-        <img src="./assets/mask-fragment.png" alt="白い仮面片">
-        <img src="./assets/brass-key.png" alt="真鍮の鍵">
-        <img src="./assets/black-perfume.png" alt="黒い香水瓶">
-        <img src="./assets/obsidian-box.png" alt="黒曜石の箱">
-        <img src="./assets/mask-fragment.png" alt="">
-        <img src="./assets/brass-key.png" alt="">
-      </div>
-    </section>
-
-    <section class="statement">
-      <p>We do not authenticate curses. We authenticate the silence around them.</p>
-    </section>
-
-    <section class="collection" id="collection">
-      <div class="section-head">
-        <p class="eyebrow">SELECTED RELICS</p>
-        <h2>Only the images are allowed to move.</h2>
-      </div>
-
-      <div class="product-grid">
-        <article class="product">
-          <button type="button" data-open="mask-fragment.png" data-label="Mask Fragment">
-            <img src="./assets/mask-fragment.png" alt="黒いベルベットケースに収められた白い仮面片">
-          </button>
-          <div>
-            <p>NO. 13</p>
-            <h3>Mask Fragment</h3>
-            <span>Crack glows when a lie is spoken nearby.</span>
-          </div>
-        </article>
-        <article class="product tall">
-          <button type="button" data-open="brass-key.png" data-label="Breathing Key">
-            <img src="./assets/brass-key.png" alt="ガラスの聖遺物箱に吊られた古い真鍮鍵">
-          </button>
-          <div>
-            <p>NO. 21</p>
-            <h3>Breathing Key</h3>
-            <span>Condensation appears inside locked rooms.</span>
-          </div>
-        </article>
-        <article class="product">
-          <button type="button" data-open="black-perfume.png" data-label="Red Night Vessel">
-            <img src="./assets/black-perfume.png" alt="黒い香水瓶に入った暗赤色の液体">
-          </button>
-          <div>
-            <p>NO. 34</p>
-            <h3>Red Night Vessel</h3>
-            <span>One drop returns a forgotten room smell.</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="ritual" id="ritual">
-      <figure>
-        <img src="./assets/obsidian-box.png" alt="赤い光が漏れる黒曜石の箱">
-      </figure>
+    <section class="marquee" aria-label="moving product strip">
       <div>
-        <p class="eyebrow">HANDLING RITUAL</p>
-        <h2>Three rules before touching the case.</h2>
-        <ol>
-          <li><span>01</span> Do not name the former owner aloud.</li>
-          <li><span>02</span> Keep mirrors turned away until dawn.</li>
-          <li><span>03</span> If the object feels warm, leave first.</li>
-        </ol>
+        <span>SEALED CATALOGUE</span>
+        <span>OBJECTS THAT REMEMBER</span>
+        <span>PRIVATE VIEWING ONLY</span>
+        <span>OPEN AFTER MIDNIGHT</span>
       </div>
     </section>
 
-    <section class="contact" id="contact">
-      <p class="eyebrow">INQUIRY</p>
-      <h2>Write after the room becomes quiet.</h2>
-      <form>
-        <label>
-          Name
-          <input type="text" placeholder="匿名可">
-        </label>
-        <label>
-          Desired Object
-          <select>
-            <option>Obsidian Box</option>
-            <option>Mask Fragment</option>
-            <option>Breathing Key</option>
-            <option>Red Night Vessel</option>
-          </select>
-        </label>
-        <label>
-          What did it remember?
-          <textarea rows="4" placeholder="短く記入してください"></textarea>
-        </label>
-        <button type="button">Seal Inquiry</button>
-      </form>
+    <section class="gallery" id="gallery">
+      <div class="section-copy reveal">
+        <p class="eyebrow">IMAGE FIRST</p>
+        <h2>文字は控えめに。視線は、封印されたものへ。</h2>
+      </div>
+      <div class="gallery-grid">
+        <article class="gallery-card reveal">
+          <img src="./assets/mask-fragment.png" alt="白い仮面片">
+          <p>NO.13 / MASK FRAGMENT</p>
+        </article>
+        <article class="gallery-card reveal tall">
+          <img src="./assets/brass-key.png" alt="真鍮の鍵">
+          <p>NO.21 / BREATHING KEY</p>
+        </article>
+        <article class="gallery-card reveal">
+          <img src="./assets/black-perfume.png" alt="黒い香水瓶">
+          <p>NO.34 / RED NIGHT VESSEL</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="archive" id="archive">
+      <figure class="archive-image reveal">
+        <img src="./assets/obsidian-box.png" alt="黒曜石の箱">
+      </figure>
+      <div class="archive-copy reveal">
+        <p class="eyebrow">ARCHIVE NOTE</p>
+        <h2>これは商品ページではなく、閲覧体験として販売するための標本です。</h2>
+        <p>招待制カタログとして閲覧する、単体HTMLのダークWeb作品です。BOOTH配布時は、このページ一式をZIP化し、購入者がローカルで開ける形にします。外部ライブラリはAnime.jsをローカル同梱し、画像はChatGPT生成素材のみを使用しています。</p>
+      </div>
+    </section>
+
+    <section class="booth" id="booth">
+      <p class="eyebrow">BOOTH PACKAGE</p>
+      <h2>Download package ready.</h2>
+      <div class="package-grid">
+        <span>index.html</span>
+        <span>style.css</span>
+        <span>app.js</span>
+        <span>assets/*.png</span>
+        <span>vendor/anime.min.js</span>
+        <span>README / Terms</span>
+      </div>
     </section>
   </main>
 
   <footer>
     <span>© KUROYOMI RELICS</span>
-    <span>Fictional private catalogue. Do not open unattended.</span>
+    <span>Powered by Anime.js / Images generated with ChatGPT</span>
   </footer>
 
   <dialog class="image-modal" id="imageModal">
     <button type="button" data-close>Close</button>
-    <img src="./assets/obsidian-box.png" alt="選択された呪物を拡大表示">
+    <img src="./assets/obsidian-box.png" alt="選択中の呪物を拡大表示">
   </dialog>
 
+  <script src="./vendor/anime.min.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>

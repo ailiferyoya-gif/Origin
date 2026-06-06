@@ -1,0 +1,11 @@
+Third Party Notices
+===================
+
+Anime.js v3.2.2
+Copyright (c) 2020 Julian Garnier
+License: MIT
+Included file:
+- web/vendor/anime.min.js
+- web/vendor/anime-LICENSE.md
+
+All product images in this package were generated with ChatGPT for this project.
