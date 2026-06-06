@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'BIZ UDGothic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./clinic-font-001.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'BIZ UDGothic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./clinic-font-002.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'BIZ UDPMincho';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./clinic-font-003.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'BIZ UDPMincho';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./clinic-font-004.woff2) format('woff2');
+}

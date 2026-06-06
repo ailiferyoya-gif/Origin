@@ -16,6 +16,20 @@
 - 実プレイで難易度と所要時間を確認。
 - 必要ならヒントPDF、解答PDF、導入PDFを作成。
 
+## 2026-06-06 入口ページ再改修
+
+- `web/index.html` を病院らしいプレミアム入口ページに再構築。
+- 清潔な白/ブルーグレーの診療案内風レイアウトにし、夜間記録だけ赤く不穏に見せる方向へ調整。
+- ローカル同梱フォントを追加。
+  - `web/fonts/clinic-fonts.css`
+  - BIZ UDGothic / BIZ UDPMincho
+  - OFLライセンス同梱。
+- 入口ページ用のAnime.js演出を追加。
+  - `web/vendor/anime.min.js`
+  - `web/vendor/anime-LICENSE.md`
+  - `web/clinic-premium.js`
+- 第三者表記を `THIRD_PARTY_NOTICES_20260606.txt` として追加。
+
 ## 2026-05-18 追加
 
 - 携帯風ページ5ページを追加。CSSなし、隠しリンクあり。
@@ -134,3 +148,22 @@
 - 本体版とBooth版の両方に反映。
 - 確認: 48問の既存正答がすべて通ること、調査ノートで48問/48断片が復元されること、初期表示でパスコードと最終真相が見えないこと、コンソールエラーなしを確認。
 - 注意: 静的Web配布のため、ブラウザで実行されるデータを完全秘匿することはできない。通常のページソース検索・JS検索で平文回答や真相文が直接見えない状態までの対策。
+
+## 2026-06-06 入口ページ再改修
+
+- `web/index.html` を病院らしいプレミアム入口ページに再構築。
+- 清潔な白/ブルーグレーの診療案内風レイアウトにし、夜間記録だけ赤く不穏に見せる方向へ調整。
+- ローカル同梱フォントを追加。
+  - `web/fonts/clinic-fonts.css`
+  - BIZ UDGothic / BIZ UDPMincho
+  - OFLライセンス同梱。
+- Anime.jsをローカル同梱し、入口ページの画像切替とスクロール出現に使用。
+  - `web/vendor/anime.min.js`
+  - `web/vendor/anime-LICENSE.md`
+  - `web/clinic-premium.js`
+- 第三者表記を `THIRD_PARTY_NOTICES_20260606.txt` として追加。
+- ローカル販売確認用ZIPを作成。
+  - `C:\Users\kogit\Documents\Codex\CRIMSON_CLINIC_BOOTH_20260606.zip`
+- 検証:
+  - `clinic-premium.js` の構文チェックOK。
+  - ローカルHTTPで入口HTML/CSS/JS/Anime.js/fonts/代表画像が200 OK。

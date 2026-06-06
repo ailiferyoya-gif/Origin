@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -6,42 +6,107 @@
 <title>紅坂診療所 CRN-1006</title>
 <link rel="stylesheet" href="site.css">
 </head>
-<body class="premium start-page case-entry">
-<div class="premium-bg" style="--hero:url('./assets/hero.png')"></div>
-<header class="wrap topbar">
-  <a class="brand" href="./index.html">CRIMSON CLINIC</a>
-  <div class="small">調査資料 / CRN-1006</div>
+<body class="clinic-entry-v2 case-entry">
+<header class="clinic-v2-header">
+  <a class="clinic-v2-logo" href="./index.html">
+    <span>紅坂診療所</span>
+    <small>Crimson Clinic Archive</small>
+  </a>
+  <nav aria-label="調査導線">
+    <a href="./official/index.html">公式資料</a>
+    <a href="./investigate/index.html">調査ノート</a>
+    <a href="./search/index.html">外部検索</a>
+    <a href="./admin/index.html">管理画面</a>
+  </nav>
 </header>
-<main class="wrap entry-minimal">
-  <section class="story-panel synopsis-panel" id="synopsis">
-    <p class="case-kicker">Kからの依頼</p>
-    <h1 class="case-title">紅坂診療所 <span class="case-code">CRN-1006</span></h1>
-    <h2>あらすじ</h2>
-        <p>あなたのもとに、差出人を「K」とだけ名乗る人物から短い依頼文が届いた。添付されていたのは、紅坂メディカルクリニックの公式HPのURLと、院内スタッフ用ログイン画面が公式HPのどこかに残っているという一文だけだった。依頼文にはこうある。「旧診療所の夜間記録を確認してください。公開ページに残された文言と、院内保管の控えで扱いが違う箇所があります。」</p>
-        <p>紅坂診療所は、かつて町はずれの坂道に建っていた小さな私設診療所です。現在は移転し、公式HPでは旧診療所の記録も安全管理資料として整理済みとされています。表向きには、2010年10月6日の夜に起きた古い設備事故の記録にすぎません。けれど、公式HPに残された夜間巡回の控えと、地域アーカイブに残る異常時刻を合わせると、公開ページには載らない院内保管の控えへ進めます。</p>
-        <p>公式HPには診療案内、閉院後の移管案内、夜間の運用記録が残っています。院内保管の控えには、夜間カード、薬剤棚ログ、保存メール、制限記録が並んでいます。さらに地域アーカイブには、当時の新聞資料や町資料が保存されています。同じ日付、同じ部屋名、同じログ名が、資料ごとに別の処理名で残されています。</p>
-        <p>中心にある管理番号は <span class="case-code">CRN-1006</span>。Kの依頼は、事故原因の再調査ではありません。旧診療所がその夜の記録をどう整理し、どの項目を公開資料から外し、誰を別の扱いに置き換えたのかを、残された控えから確認することです。</p>
-  </section>
 
-  <section class="story-panel">
-    <h2>調査の仕方</h2>
-    <div class="truth-axis">
-      <div><strong>1. 公式資料を読む</strong>公開されている案内、管理番号、日付、場所、人物名を確認する。</div>
-      <div><strong>2. 保存メールや管理画面を確認する</strong>略号、時刻、内部処理の控えを見つけ、公開情報との差を控える。</div>
-      <div><strong>3. 検索画面で外部資料へ進む</strong>新聞資料、自治体資料、掲示板保存ログなどは検索語から辿る。</div>
-      <div><strong>4. 記録を並べる</strong>同じ日付、同じ場所、同じ名前が資料ごとにどう扱われているかを見比べる。</div>
+<main>
+  <section class="clinic-v2-hero">
+    <div class="clinic-v2-stage" aria-hidden="true">
+      <img class="is-active" src="./assets/clinic-home-reception-2026.png" alt="">
+      <img src="./assets/clinic-facility-corridor-2026.png" alt="">
+      <img src="./assets/clinic-night-treatment-2026.png" alt="">
+      <img src="./assets/clinic-record-room-2026.png" alt="">
     </div>
-    <p class="fear-note">Kから渡された資料は、公式HPのURLと「公式ページの中に院内入口が残っている」という短い依頼文だけです。新聞資料、町資料、保存メール、院内記録は、それぞれ公式HPや地域アーカイブから確認してください。</p>
+    <div class="clinic-v2-copy">
+      <p class="clinic-v2-kicker">MEDICAL ARCHIVE / CRN-1006</p>
+      <h1>公開された診療記録には、夜だけ読めない行がある。</h1>
+      <p>差出人Kから届いたのは、紅坂メディカルクリニックの公式HPと「院内入口がまだ残っている」という短い依頼文だけでした。公開ページ、保存メール、管理画面、地域アーカイブを照合し、2010年10月6日の記録がどのように整理されたのかを確認してください。</p>
+      <div class="clinic-v2-actions">
+        <a href="./investigate/index.html">調査を開始</a>
+        <a href="./official/index.html">公式資料を見る</a>
+      </div>
+    </div>
+    <aside class="clinic-v2-status">
+      <span>CASE STATUS</span>
+      <strong id="clinicStatus">OPEN RECORD</strong>
+      <small id="clinicStatusNote">受付記録を表示中</small>
+    </aside>
   </section>
 
-  <section class="case-links" aria-label="調査リンク">
-    <a class="case-link-card" href="./investigate/index.html"><strong>調査ノート</strong><span>記録確認と進行管理</span></a>
-    <a class="case-link-card" href="./official/index.html"><strong>公式資料</strong><span>公開されている案内</span></a>
-    <a class="case-link-card" href="./mail/index.html"><strong>保存メール</strong><span>内部連絡と控え</span></a>
-    <a class="case-link-card" href="./search/index.html"><strong>検索画面</strong><span>外部資料を探す入口</span></a>
-    <a class="case-link-card" href="./admin/index.html"><strong>管理画面</strong><span>制限付き内部記録</span></a>
+  <section class="clinic-v2-band" aria-label="調査概要">
+    <article>
+      <span>01</span>
+      <h2>公開資料</h2>
+      <p>診療案内、移管案内、夜間運用記録に残る日付と部屋名を確認します。</p>
+    </article>
+    <article>
+      <span>02</span>
+      <h2>内部控え</h2>
+      <p>保存メール、夜間カード、薬剤棚ログから公開版との差分を拾います。</p>
+    </article>
+    <article>
+      <span>03</span>
+      <h2>外部照合</h2>
+      <p>新聞資料や町資料で、同じ人物と時刻が別名で扱われた理由を追います。</p>
+    </article>
+  </section>
+
+  <section class="clinic-v2-section">
+    <div class="clinic-v2-section-head">
+      <p class="clinic-v2-kicker">REQUEST FROM K</p>
+      <h2>依頼文</h2>
+    </div>
+    <blockquote class="clinic-v2-request">
+      <p>旧診療所の夜間記録を確認してください。公開ページに残された文言と、院内保管の控えで扱いが違う箇所があります。</p>
+      <cite>K / received 22:40</cite>
+    </blockquote>
+  </section>
+
+  <section class="clinic-v2-section clinic-v2-grid-section">
+    <div class="clinic-v2-card">
+      <p class="clinic-v2-kicker">HOW TO INVESTIGATE</p>
+      <h2>調査の仕方</h2>
+      <ol>
+        <li>公式HPに残る日付、場所、人物名を控える。</li>
+        <li>保存メールと管理画面で、略号と内部処理名を見つける。</li>
+        <li>検索画面から外部資料へ進み、同じ記録の扱いを比べる。</li>
+        <li>最終的に、公開資料から外された項目を一文にまとめる。</li>
+      </ol>
+    </div>
+    <div class="clinic-v2-card clinic-v2-alert-card">
+      <p class="clinic-v2-kicker">RESTRICTED NOTE</p>
+      <h2>夜間記録</h2>
+      <p>中心にある管理番号は <b>CRN-1006</b>。事故原因の再調査ではなく、旧診療所がその夜の記録をどう整理し、誰を別の扱いに置き換えたのかを確認する依頼です。</p>
+    </div>
+  </section>
+
+  <section class="clinic-v2-section">
+    <div class="clinic-v2-section-head">
+      <p class="clinic-v2-kicker">ENTRY POINTS</p>
+      <h2>調査入口</h2>
+    </div>
+    <div class="clinic-v2-links" aria-label="調査リンク">
+      <a href="./investigate/index.html"><span>Investigation</span><strong>調査ノート</strong><small>記録確認と進行管理</small></a>
+      <a href="./official/index.html"><span>Official</span><strong>公式資料</strong><small>公開されている案内</small></a>
+      <a href="./mail/index.html"><span>Mail</span><strong>保存メール</strong><small>内部連絡と控え</small></a>
+      <a href="./search/index.html"><span>Search</span><strong>検索画面</strong><small>外部資料を探す入口</small></a>
+      <a href="./admin/index.html"><span>Admin</span><strong>管理画面</strong><small>制限付き内部記録</small></a>
+    </div>
   </section>
 </main>
-<script src="textflow.js"></script>
+
+<script src="./vendor/anime.min.js"></script>
+<script src="./clinic-premium.js"></script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+Crimson Clinic Mystery - Third Party Notices
+===========================================
+
+Anime.js v3.2.2
+- License: MIT
+- Included files:
+  - web/vendor/anime.min.js
+  - web/vendor/anime-LICENSE.md
+
+BIZ UDGothic
+- License: SIL Open Font License
+- Included files:
+  - web/fonts/clinic-font-001.woff2
+  - web/fonts/clinic-font-002.woff2
+  - web/fonts/BIZ-UDGothic-OFL.txt
+
+BIZ UDPMincho
+- License: SIL Open Font License
+- Included files:
+  - web/fonts/clinic-font-003.woff2
+  - web/fonts/clinic-font-004.woff2
+  - web/fonts/BIZ-UDPMincho-OFL.txt
+
+Image Assets
+- Existing image assets in web/assets are project assets generated for this work.
+- Sprite sheets are not used.
