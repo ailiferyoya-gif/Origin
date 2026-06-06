@@ -29,6 +29,13 @@
 - `KuroyomiRelicsSite/web/vendor/anime-LICENSE.md`
 - Anime.js v3.2.2, MIT License.
 
+## Local Fonts
+- `KuroyomiRelicsSite/web/fonts/fonts.css`
+- Cormorant Garamond, IBM Plex Sans JP, Kaisei Opti.
+- OFL license files are included in `KuroyomiRelicsSite/web/fonts/`.
+- CSS now uses Cormorant Garamond for Latin display, Kaisei Opti for Japanese display, and IBM Plex Sans JP for body/UI text.
+- Font files are locally bundled, so the BOOTH ZIP does not depend on Google Fonts CDN.
+
 ## BOOTH Package Docs
 - `KuroyomiRelicsSite/README_BOOTH.txt`
 - `KuroyomiRelicsSite/TERMS_SAMPLE.txt`
@@ -43,6 +50,7 @@
 - JS syntax check passed.
 - Local HTTP check passed for HTML/CSS/JS/vendor/images.
 - UTF-8 check passed for Japanese text and local Anime.js reference.
+- Local HTTP check passed for `fonts.css` and representative `.woff2` files.
 - BOOTH package docs exist.
-- Local BOOTH checking ZIP was built.
+- Local BOOTH checking ZIP was rebuilt with fonts included.
 - Commit and push after final status check.

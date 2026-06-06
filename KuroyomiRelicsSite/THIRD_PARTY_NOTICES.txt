@@ -8,4 +8,28 @@ Included file:
 - web/vendor/anime.min.js
 - web/vendor/anime-LICENSE.md
 
+Cormorant Garamond
+License: SIL Open Font License
+Included files:
+- web/fonts/font-001.woff2
+- web/fonts/font-002.woff2
+- web/fonts/font-003.woff2
+- web/fonts/Cormorant-Garamond-OFL.txt
+
+IBM Plex Sans JP
+License: SIL Open Font License
+Included files:
+- web/fonts/font-004.woff2
+- web/fonts/font-005.woff2
+- web/fonts/font-006.woff2
+- web/fonts/IBM-Plex-Sans-JP-OFL.txt
+
+Kaisei Opti
+License: SIL Open Font License
+Included files:
+- web/fonts/font-007.woff2
+- web/fonts/font-008.woff2
+- web/fonts/font-009.woff2
+- web/fonts/Kaisei-Opti-OFL.txt
+
 All product images in this package were generated with ChatGPT for this project.

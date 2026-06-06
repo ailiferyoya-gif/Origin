@@ -21,3 +21,10 @@ KUROYOMI RELICS
 - Anime.js v3.2.2
 - MIT License
 - license file: web/vendor/anime-LICENSE.md
+
+同梱フォント:
+- Cormorant Garamond
+- IBM Plex Sans JP
+- Kaisei Opti
+- SIL Open Font License
+- license files: web/fonts/*OFL.txt
