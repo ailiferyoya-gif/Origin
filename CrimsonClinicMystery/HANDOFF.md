@@ -25,10 +25,7 @@
   - `web/fonts/clinic-fonts.css`
   - BIZ UDGothic / BIZ UDPMincho
   - OFLライセンス同梱。
-- 公式ページ用のAnime.js演出を追加。
-  - `web/vendor/anime.min.js`
-  - `web/vendor/anime-LICENSE.md`
-  - `web/clinic-premium.js`
+- 2026-06-06 Product Design再改修で、当初追加したAnime.js演出と `web/clinic-premium.js` は未使用になったため削除。
 - 第三者表記を `THIRD_PARTY_NOTICES_20260606.txt` として追加。
 
 ## 2026-05-18 追加
@@ -159,13 +156,27 @@
   - `web/fonts/clinic-fonts.css`
   - BIZ UDGothic / BIZ UDPMincho
   - OFLライセンス同梱。
-- Anime.jsをローカル同梱し、公式ページの画像切替とスクロール出現に使用。
-  - `web/vendor/anime.min.js`
-  - `web/vendor/anime-LICENSE.md`
-  - `web/clinic-premium.js`
+- 2026-06-06 Product Design再改修で、当初追加したAnime.js演出と `web/clinic-premium.js` は未使用になったため削除。
 - 第三者表記を `THIRD_PARTY_NOTICES_20260606.txt` として追加。
 - ローカル販売確認用ZIPを作成。
   - `C:\Users\kogit\Documents\Codex\CRIMSON_CLINIC_BOOTH_20260606.zip`
 - 検証:
-  - `clinic-premium.js` の構文チェックOK。
-  - ローカルHTTPで入口HTML/CSS/JS/Anime.js/fonts/代表画像が200 OK。
+  - ローカルHTTPで入口HTML/CSS/fonts/代表画像が200 OK。
+
+## 2026-06-06 公式ページ Product Design 再改修
+
+- `web/official/index.html` を一度旧公式ページへ戻してから、Product Design方針で再構築。
+- `web/index.html` は通常入口ページのまま維持。
+- 公式ページ専用クラス `clinic-official-pro` を追加し、画像主役の医療公式サイトとして再設計。
+- 既存のChatGPT生成画像を使用。
+  - `clinic-home-reception-2026.png`
+  - `clinic-facility-corridor-2026.png`
+  - `clinic-care-prep-2026.png`
+  - `clinic-night-treatment-2026.png`
+  - `clinic-lobby.png`
+  - `clinic-safety-office-2026.png`
+  - `clinic-record-room-2026.png`
+- BIZ UDGothic / BIZ UDPMincho を公式サイト側にも適用。
+- ヒーロー画像の自動切替、診療案内、ニュース、夜間対応、診療時間、院内写真、旧診療所移管資料導線を整理。
+- 未使用になった前回案の `web/clinic-premium.js`、`web/vendor/anime.min.js`、`web/vendor/anime-LICENSE.md`、`clinic-entry-v2` CSSブロックを削除。
+- 第三者表記は現在同梱しているフォント表記へ更新。

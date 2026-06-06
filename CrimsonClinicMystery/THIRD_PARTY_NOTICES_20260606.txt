@@ -1,12 +1,6 @@
 Crimson Clinic Mystery - Third Party Notices
 ===========================================
 
-Anime.js v3.2.2
-- License: MIT
-- Included files:
-  - web/vendor/anime.min.js
-  - web/vendor/anime-LICENSE.md
-
 BIZ UDGothic
 - License: SIL Open Font License
 - Included files:
