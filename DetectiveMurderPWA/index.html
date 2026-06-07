@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10130f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="最後の客人">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>最後の客人</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/scene-study.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <p class="kicker">DETECTIVE CASE FILE</p>
+      <h1>最後の客人</h1>
+      <p class="subtitle">雨夜の鳴瀬邸殺人事件</p>
+      <div class="case-status">
+        <p id="objectiveText">現場を調べ、7人の被疑者から矛盾を集めろ。</p>
+        <div class="meter"><span>捜査進行</span><strong id="progressText">0%</strong><i><b id="progressBar"></b></i></div>
+      </div>
+    </section>
+
+    <section class="toast" id="toast" hidden></section>
+
+    <section class="panel" data-view="story">
+      <div class="panel-head"><h2>事件の始まり</h2><span>導入</span></div>
+      <div class="story-view" id="storyView"></div>
+    </section>
+
+    <section class="panel" data-view="scene" hidden>
+      <div class="panel-head"><h2>現場調査</h2><span id="chapterLabel"></span></div>
+      <div class="scene-tabs" id="sceneTabs"></div>
+      <div class="scene-card" id="sceneCard"></div>
+    </section>
+
+    <section class="panel" data-view="suspects" hidden>
+      <div class="panel-head"><h2>被疑者尋問</h2><span>7人</span></div>
+      <div class="suspect-list" id="suspectList"></div>
+      <div class="interview" id="interview"></div>
+    </section>
+
+    <section class="panel" data-view="evidence" hidden>
+      <div class="panel-head"><h2>証拠保管庫</h2><span id="evidenceCount">0/0</span></div>
+      <div class="evidence-grid" id="evidenceGrid"></div>
+    </section>
+
+    <section class="panel" data-view="deduction" hidden>
+      <div class="panel-head"><h2>推理と告発</h2><span id="contradictionCount">0/14</span></div>
+      <div class="contradiction-list" id="contradictionList"></div>
+      <article class="accuse-box" id="accuseBox"></article>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-tab="story" type="button">物語</button>
+    <button class="tab" data-tab="scene" type="button">現場</button>
+    <button class="tab" data-tab="suspects" type="button">尋問</button>
+    <button class="tab" data-tab="evidence" type="button">証拠</button>
+    <button class="tab" data-tab="deduction" type="button">告発</button>
+  </nav>
+
+  <dialog class="modal" id="evidenceModal">
+    <button class="modal-close" id="modalClose" type="button">閉じる</button>
+    <img id="modalImage" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalBody"></p>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

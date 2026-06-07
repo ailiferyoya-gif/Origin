@@ -1,0 +1,13 @@
+{
+  "name": "最後の客人",
+  "short_name": "最後の客人",
+  "description": "被疑者尋問と証拠提示で犯人を追い詰める探偵ミステリーPWA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0d0b",
+  "theme_color": "#10130f",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "assets/scene-study.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}
