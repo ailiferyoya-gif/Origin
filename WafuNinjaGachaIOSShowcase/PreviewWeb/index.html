@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>影月忍里 Web Preview</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="phone" data-screen="village">
+    <img id="screenBg" class="bg" src="assets/generated/village-bg.png" alt="">
+    <div class="shade"></div>
+    <div class="particles" aria-hidden="true"></div>
+    <div id="flash" class="flash" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <button id="backButton" class="icon" aria-label="Back">‹</button>
+      <div class="title">
+        <strong id="screenTitle">影月忍里</strong>
+        <span id="screenSubtitle">里Lv.5 / 防衛 0</span>
+      </div>
+      <div id="ticketCurrency" class="currency">札 7</div>
+      <div id="gemCurrency" class="currency">勾玉 12,840</div>
+    </header>
+
+    <nav class="tabs" aria-label="Game sections">
+      <button class="tab active" data-tab="village">里</button>
+      <button class="tab" data-tab="ninjas">忍者</button>
+      <button class="tab" data-tab="missions">任務</button>
+      <button class="tab" data-tab="gacha">ガチャ</button>
+    </nav>
+
+    <section id="villagePanel" class="game-panel"></section>
+    <section id="ninjasPanel" class="game-panel" hidden></section>
+    <section id="missionsPanel" class="game-panel" hidden></section>
+
+    <section id="stage" class="stage" hidden>
+      <div class="portal" aria-hidden="true">
+        <div class="smoke smoke-a"></div>
+        <div class="smoke smoke-b"></div>
+        <div class="smoke smoke-c"></div>
+        <div class="smoke smoke-d"></div>
+        <div class="smoke-ring smoke-ring-a"></div>
+        <div class="smoke-ring smoke-ring-b"></div>
+        <div class="smoke-burst"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="core">忍</div>
+      </div>
+      <p id="caption" class="portal-caption">煙遁・影結びの術</p>
+      <button id="summon" class="summon">十連招集 <b>3000</b> 勾玉</button>
+      <div class="rates">
+        <span>UR <b>0.1%</b></span>
+        <span>SSR <b>3.4%</b></span>
+        <span>覚醒片 <b id="shardCount">0</b></span>
+      </div>
+    </section>
+
+    <section id="results" class="results" hidden>
+      <h1>招集結果</h1>
+      <div class="grid"></div>
+      <button id="again" class="continue">もう一度回す</button>
+    </section>
+
+    <section id="rareCutin" class="rare-cutin" hidden>
+      <img src="../Sources/GachaIOSShowcase/Resources/VFX/star_05.png" alt="">
+      <strong>SSR 忍頭確定</strong>
+      <span>MOON SHADOW CONTRACT</span>
+    </section>
+
+    <section id="newGet" class="new-get" hidden>
+      <img class="new-get-burst" src="../Sources/GachaIOSShowcase/Resources/VFX/spark_03.png" alt="">
+      <div class="new-get-copy">
+        <span>NEW</span>
+        <strong>朧丸</strong>
+        <em>SSR Shadow Moon Shinobi</em>
+      </div>
+      <img class="new-get-hero" src="../Sources/GachaIOSShowcase/Resources/ssr_hero.png" alt="">
+      <button id="newGetNext" class="new-get-next">結果を見る</button>
+    </section>
+
+    <section class="banner" hidden>
+      <div>
+        <h2>影月忍伝</h2>
+        <p>SSR忍頭・新規忍者の出現率アップ中</p>
+      </div>
+      <span>残り 6日</span>
+      <div class="progress"><i></i></div>
+    </section>
+
+    <section id="confirmModal" class="modal" hidden>
+      <div class="modal-card">
+        <span id="confirmKicker" class="scene-kicker">CONFIRM</span>
+        <h2 id="confirmTitle">確認</h2>
+        <p id="confirmBody"></p>
+        <div id="confirmDetails" class="modal-details"></div>
+        <div class="modal-actions">
+          <button id="confirmCancel">戻る</button>
+          <button id="confirmOk">実行</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="seTap" preload="auto" src="../Sources/GachaIOSShowcase/Resources/summon_tap.wav"></audio>
+  <audio id="seCharge" preload="auto" src="../Sources/GachaIOSShowcase/Resources/summon_charge.wav"></audio>
+  <audio id="seSSR" preload="auto" src="../Sources/GachaIOSShowcase/Resources/ssr_burst.wav"></audio>
+  <audio id="seSettle" preload="auto" src="../Sources/GachaIOSShowcase/Resources/result_settle.wav"></audio>
+  <audio id="seFan" preload="auto" src="../Sources/GachaIOSShowcase/Resources/card_fan.ogg"></audio>
+  <audio id="sePlace" preload="auto" src="../Sources/GachaIOSShowcase/Resources/card_place.ogg"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
