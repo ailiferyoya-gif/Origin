@@ -558,6 +558,7 @@ function renderNinjaRow(ninja, index) {
 }
 
 function renderFormation() {
+  if (!game.formation) normalizeGameState();
   const selected = formationNinjas();
   const selectedIds = new Set(selected.map(ninja => ninja.id));
   const maxMinions = Math.max(0, game.minions.available);
@@ -1186,12 +1187,19 @@ function goBack() {
 }
 
 function saveGame(silent = false) {
-  normalizeGameState();
-  game.savedAt = Date.now();
-  localStorage.setItem(storageKey, JSON.stringify(game));
-  if (!silent) {
-    screenSubtitle.textContent = "保存しました";
-    window.setTimeout(renderHeader, 900);
+  try {
+    normalizeGameState();
+    game.savedAt = Date.now();
+    localStorage.setItem(storageKey, JSON.stringify(game));
+    if (!silent) {
+      screenSubtitle.textContent = "保存しました";
+      window.setTimeout(renderHeader, 900);
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    if (!silent) screenSubtitle.textContent = "保存に失敗しました";
+    return false;
   }
 }
 
@@ -1199,6 +1207,7 @@ function loadGame(silent = true) {
   const raw = localStorage.getItem(storageKey);
   if (!raw) {
     normalizeGameState();
+    if (!silent) screenSubtitle.textContent = "保存データがありません";
     return false;
   }
   try {
@@ -1207,10 +1216,13 @@ function loadGame(silent = true) {
     maintainWorldRaids();
     if (!silent) {
       screenSubtitle.textContent = "読み込みました";
-      window.setTimeout(renderHeader, 900);
     }
+    return true;
   } catch {
     localStorage.removeItem(storageKey);
+    normalizeGameState();
+    if (!silent) screenSubtitle.textContent = "保存データを修復しました";
+    return false;
   }
 }
 
@@ -1284,8 +1296,9 @@ document.addEventListener("click", event => {
   if (action === "recruit") recruitMinions();
   if (action === "save-game") saveGame(false);
   if (action === "load-game") {
-    loadGame(false);
+    const loaded = loadGame(true);
     render();
+    screenSubtitle.textContent = loaded ? "読み込みました" : "保存データがありません";
   }
   if (action === "confirm-upgrade") confirmUpgradeFacility(target.dataset.id);
   if (action === "confirm-train") confirmTrainNinja(target.dataset.id);
