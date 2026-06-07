@@ -1,0 +1,99 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b0d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="赤いワンピース">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>赤いワンピースの少女</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-1024.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell" aria-live="polite">
+    <section class="hero" id="caseHero">
+      <div class="status-row">
+        <span class="eyebrow">調査中の都市伝説</span>
+        <span class="case-no">#07</span>
+      </div>
+      <h1>赤いワンピースの少女</h1>
+      <p class="subtitle">旧市街トンネル失踪事件</p>
+      <div class="case-card">
+        <p>2008年、旧市街トンネル付近で少女が失踪したという噂。目撃情報と断片的な記録をもとに、真相を調査せよ。</p>
+        <div class="progress-wrap">
+          <span>調査進行度</span>
+          <strong id="progressValue">0%</strong>
+          <div class="progress"><i id="progressBar"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice" id="notice" hidden></section>
+
+    <section class="panel" data-view="chat">
+      <div class="panel-head">
+        <h2>最新のチャット</h2>
+        <button class="ghost" type="button" data-action="mark-read">既読にする</button>
+      </div>
+      <div class="chat-list" id="chatList"></div>
+      <div class="choice-row" id="choiceRow"></div>
+    </section>
+
+    <section class="panel" data-view="search" hidden>
+      <div class="panel-head">
+        <h2>検索</h2>
+        <span class="hint">キーワードを試す</span>
+      </div>
+      <label class="search-box">
+        <span>調査ワード</span>
+        <input id="searchInput" type="search" autocomplete="off" placeholder="例: トンネル 2008 赤いワンピース">
+      </label>
+      <div class="quick-tags" id="quickTags"></div>
+      <div class="result-list" id="resultList"></div>
+    </section>
+
+    <section class="panel" data-view="evidence" hidden>
+      <div class="panel-head">
+        <h2>新しい証拠</h2>
+        <span id="evidenceCount">0/0</span>
+      </div>
+      <div class="evidence-grid" id="evidenceGrid"></div>
+    </section>
+
+    <section class="panel" data-view="answer" hidden>
+      <div class="panel-head">
+        <h2>あなたの最終回答</h2>
+        <span id="answerState">未回答</span>
+      </div>
+      <p class="question">この都市伝説の「少女」の正体は何だったのか。証拠から導いた答えを記録せよ。</p>
+      <label class="answer-box">
+        <span>回答</span>
+        <input id="answerInput" type="text" autocomplete="off" placeholder="例: 赤い〇〇">
+      </label>
+      <button class="primary" type="button" id="submitAnswer">回答を送信する</button>
+      <div class="ending" id="ending" hidden></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="調査メニュー">
+    <button class="tab active" type="button" data-tab="chat"><span>チャット</span><b id="chatBadge">2</b></button>
+    <button class="tab" type="button" data-tab="search"><span>検索</span></button>
+    <button class="tab" type="button" data-tab="evidence"><span>証拠</span><b id="evidenceBadge">0</b></button>
+    <button class="tab" type="button" data-tab="answer"><span>回答</span></button>
+  </nav>
+
+  <dialog class="modal" id="evidenceModal">
+    <button class="modal-close" type="button" id="closeModal">閉じる</button>
+    <img id="modalImage" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalBody"></p>
+    <dl id="modalMeta"></dl>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

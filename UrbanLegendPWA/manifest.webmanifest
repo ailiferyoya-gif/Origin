@@ -1,0 +1,13 @@
+﻿{
+  "name": "赤いワンピースの少女",
+  "short_name": "赤いワンピース",
+  "description": "iPhoneで遊べる短編都市伝説ミステリーPWA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07090b",
+  "theme_color": "#090b0d",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "assets/icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
