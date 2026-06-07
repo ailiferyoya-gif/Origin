@@ -138,6 +138,22 @@ body {
   font-size: 19px;
 }
 
+.sound-toggle {
+  flex: 0 0 36px;
+}
+
+.sound-toggle.sound-on {
+  color: rgba(0,0,0,.86);
+  background: #ffd45e;
+  border-color: rgba(255,255,255,.48);
+  box-shadow: 0 8px 22px rgba(255,212,94,.24);
+}
+
+.sound-toggle.sound-off {
+  color: rgba(255,255,255,.66);
+  background: rgba(0,0,0,.32);
+}
+
 .currency {
   display: grid;
   place-items: center;
@@ -737,7 +753,7 @@ body {
   position: relative;
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 7px;
   padding: 10px 14px 0;
 }
@@ -748,7 +764,7 @@ body {
   border-radius: 999px;
   color: rgba(255,255,255,.74);
   background: rgba(0,0,0,.32);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   backdrop-filter: blur(12px);
 }
@@ -1012,6 +1028,79 @@ button:disabled {
   object-fit: contain;
   border-radius: 8px;
   background: radial-gradient(circle, rgba(255,255,255,.16), rgba(0,0,0,.24));
+}
+
+.formation-lineup {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
+.formation-slot {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(255,212,94,.28);
+  border-radius: 8px;
+  background: rgba(0,0,0,.26);
+  text-align: center;
+}
+
+.formation-slot img {
+  width: 100%;
+  height: 82px;
+  object-fit: contain;
+  display: block;
+}
+
+.formation-slot strong,
+.formation-slot span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.formation-slot strong {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.formation-slot span {
+  margin-top: 3px;
+  color: rgba(255,255,255,.7);
+  font-size: 10px;
+}
+
+.formation-card.selected {
+  border-color: rgba(255,212,94,.92);
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255,212,94,.24), transparent 42%),
+    rgba(0,0,0,.3);
+  box-shadow: inset 0 0 0 1px rgba(255,212,94,.22), 0 10px 24px rgba(255,212,94,.12);
+}
+
+.formation-mini {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 2px;
+}
+
+.formation-mini span,
+.formation-mini button {
+  min-height: 28px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: rgba(0,0,0,.28);
+  color: rgba(255,255,255,.78);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.formation-mini button {
+  color: rgba(0,0,0,.86);
+  background: #ffd45e;
 }
 
 .ninja-row.ssr {

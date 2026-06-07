@@ -16,11 +16,13 @@ const screenSubtitle = document.querySelector("#screenSubtitle");
 const screenBg = document.querySelector("#screenBg");
 const phone = document.querySelector(".phone");
 const backButton = document.querySelector("#backButton");
+const soundToggle = document.querySelector("#soundToggle");
 const banner = document.querySelector(".banner");
 const tabs = [...document.querySelectorAll(".tab")];
 const panels = {
   village: document.querySelector("#villagePanel"),
   ninjas: document.querySelector("#ninjasPanel"),
+  formation: document.querySelector("#formationPanel"),
   missions: document.querySelector("#missionsPanel")
 };
 
@@ -43,6 +45,7 @@ const sounds = {
 const backgrounds = {
   village: "assets/generated/village-bg.png",
   ninjas: "assets/generated/dojo-bg.png",
+  formation: "assets/generated/dojo-bg.png",
   missions: "assets/generated/mission-bg.png",
   gacha: "../Sources/GachaIOSShowcase/Resources/summon_background.png"
 };
@@ -141,7 +144,7 @@ const raidBosses = [
 
 const storageKey = "kagezuki-ninja-village-preview-v3";
 let activeTab = "village";
-let activeView = { village: "home", ninjas: "list", missions: "board" };
+let activeView = { village: "home", ninjas: "list", formation: "home", missions: "board" };
 let selectedFacilityId = null;
 let selectedNinjaId = null;
 let selectedMissionKind = null;
@@ -173,10 +176,13 @@ function createInitialGame() {
       equipment("eq-kunai", "武器", "黒鉄苦無", "R", 2, 420),
       equipment("eq-mask", "装飾品", "夜見の面", "R", 1, 360)
     ],
+    formation: { ninjaIds: owned.slice(0, 3), minions: 36 },
+    settings: { soundEnabled: true },
     defense: { ninjaIds: ["ninja-ssr-oboromaru", "ninja-sr-hayate"], minions: 84 },
     activities: [],
     reports: [],
-    raidEvents: createInitialRaids()
+    raidEvents: createInitialRaids(),
+    savedAt: null
   };
 }
 
@@ -244,6 +250,7 @@ function report(text, details = [], type = "system") {
 }
 
 function play(sound) {
+  if (game.settings?.soundEnabled === false) return;
   const audio = sounds[sound];
   if (!audio) return;
   audio.currentTime = 0;
@@ -279,6 +286,43 @@ function getNinja(id) {
   return game.ninjas.find(item => item.id === id);
 }
 
+function normalizeGameState() {
+  const fresh = createInitialGame();
+  game.resources = { ...fresh.resources, ...(game.resources || {}) };
+  game.minions = { ...fresh.minions, ...(game.minions || {}) };
+  game.owned = Array.isArray(game.owned) ? game.owned : [...fresh.owned];
+  game.facilities = Array.isArray(game.facilities) ? game.facilities : [...fresh.facilities];
+  game.ninjas = Array.isArray(game.ninjas) ? game.ninjas : [...fresh.ninjas];
+  game.equipment = Array.isArray(game.equipment) ? game.equipment : [...fresh.equipment];
+  game.defense = { ...fresh.defense, ...(game.defense || {}) };
+  game.activities = Array.isArray(game.activities) ? game.activities : [];
+  game.reports = Array.isArray(game.reports) ? game.reports : [];
+  game.raidEvents = Array.isArray(game.raidEvents) ? game.raidEvents : createInitialRaids();
+  game.settings = { ...fresh.settings, ...(game.settings || {}) };
+  const ownedIds = new Set(game.ninjas.map(ninja => ninja.id));
+  const savedFormation = game.formation || {};
+  const ninjaIds = Array.isArray(savedFormation.ninjaIds) ? savedFormation.ninjaIds.filter(id => ownedIds.has(id)) : [];
+  const fallbackIds = game.ninjas.slice(0, 3).map(ninja => ninja.id);
+  game.formation = {
+    ninjaIds: (ninjaIds.length ? ninjaIds : fallbackIds).slice(0, 3),
+    minions: Math.min(game.minions.available, Math.max(0, Number(savedFormation.minions ?? fresh.formation.minions)))
+  };
+  game.savedAt = game.savedAt || null;
+}
+
+function formationNinjas() {
+  const ids = game.formation?.ninjaIds || [];
+  const chosen = ids.map(id => getNinja(id)).filter(Boolean);
+  if (chosen.length > 0) return chosen;
+  return game.ninjas.slice(0, 3);
+}
+
+function formationPower() {
+  const main = formationNinjas().reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
+  const minions = Math.min(game.formation?.minions ?? 0, game.minions.available);
+  return main + minions * 34;
+}
+
 function getDifficulty(id = selectedDifficultyId) {
   return difficultyCatalog.find(item => item.id === id) || difficultyCatalog[1];
 }
@@ -298,8 +342,7 @@ function defensePower() {
 }
 
 function teamPower() {
-  const main = game.ninjas.slice(0, 3).reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
-  return main + game.minions.available * 34;
+  return formationPower();
 }
 
 function canPay(cost) {
@@ -333,8 +376,18 @@ function closeConfirm() {
 
 function render() {
   renderCurrencies();
+  renderSoundToggle();
   renderHeader();
   renderCurrentPanel();
+}
+
+function renderSoundToggle() {
+  if (!soundToggle) return;
+  const enabled = game.settings?.soundEnabled !== false;
+  soundToggle.textContent = enabled ? "♪" : "×";
+  soundToggle.classList.toggle("sound-on", enabled);
+  soundToggle.classList.toggle("sound-off", !enabled);
+  soundToggle.setAttribute("aria-label", enabled ? "Sound on" : "Sound off");
 }
 
 function renderCurrencies() {
@@ -352,6 +405,7 @@ function renderHeader() {
   const titles = {
     village: activeView.village === "facility" ? getFacility(selectedFacilityId).name : "影月の里",
     ninjas: activeView.ninjas === "detail" ? getNinja(selectedNinjaId).name : "忍者名簿",
+    formation: "出撃編成",
     missions: activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板"
   };
   screenTitle.textContent = titles[activeTab];
@@ -361,6 +415,7 @@ function renderHeader() {
 function renderCurrentPanel() {
   if (activeTab === "village") renderVillage();
   if (activeTab === "ninjas") renderNinjas();
+  if (activeTab === "formation") renderFormation();
   if (activeTab === "missions") renderMissions();
 }
 
@@ -380,6 +435,10 @@ function renderVillage() {
         <div><b>${game.minions.available}/${game.minions.total}</b><span>待機忍び</span></div>
       </div>
       <div class="resource-grid">${renderResourceTiles()}</div>
+      <div class="formation-mini">
+        ${formationNinjas().map(ninja => `<span>${ninja.rarity} ${ninja.name}</span>`).join("")}
+        <button data-tab="formation">編成変更</button>
+      </div>
       <div class="action-grid">
         <button data-action="collect">産物回収</button>
         <button data-action="recruit">忍び招集</button>
@@ -495,6 +554,49 @@ function renderNinjaRow(ninja, index) {
       <div><strong>${ninja.rarity} ${ninja.name}${ninja.isNew ? " NEW" : ""}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>${ninja.skill}: ${ninja.skillText}</small></div>
       <em>詳細</em>
     </button>
+  `;
+}
+
+function renderFormation() {
+  const selected = formationNinjas();
+  const selectedIds = new Set(selected.map(ninja => ninja.id));
+  const maxMinions = Math.max(0, game.minions.available);
+  game.formation.minions = Math.min(game.formation.minions, maxMinions);
+  return `
+    <div class="panel-card hero-panel formation-hero">
+      <span class="scene-kicker">SORTIE FORMATION</span>
+      <h1>出撃編成</h1>
+      <p>任務・PvP・PvE・レイドに出撃する忍者を最大3名まで選びます。ここで選んだ編成が戦力計算に反映されます。</p>
+      <div class="village-metrics">
+        <div><b>${yen(formationPower())}</b><span>編成戦力</span></div>
+        <div><b>${selected.length}/3</b><span>出撃忍者</span></div>
+        <div><b>${game.formation.minions}</b><span>随伴忍び</span></div>
+      </div>
+      <div class="formation-lineup">
+        ${selected.map(ninja => `
+          <article class="formation-slot ${ninja.rarityKey}">
+            <img src="${ninja.img}" alt="">
+            <strong>${ninja.rarity} ${ninja.name}</strong>
+            <span>Lv.${ninja.level} / ${yen(ninja.power + equippedPower(ninja.id))}</span>
+          </article>
+        `).join("")}
+      </div>
+      <label class="range-row">随伴忍び <input id="formationMinions" type="range" min="0" max="${maxMinions}" value="${game.formation.minions}"><b>${game.formation.minions}</b></label>
+      <div class="action-grid">
+        <button data-action="save-game">編成を保存</button>
+        <button data-tab="missions">任務へ</button>
+      </div>
+    </div>
+    <div class="panel-card">
+      <h2>忍者選択</h2>
+      <div class="list-stack">${game.ninjas.map(ninja => `
+        <button class="row-card ninja-row formation-card ${ninja.rarityKey} ${selectedIds.has(ninja.id) ? "selected" : ""}" data-formation-ninja="${ninja.id}">
+          <img src="${ninja.img}" alt="">
+          <div><strong>${selectedIds.has(ninja.id) ? "出撃中 " : ""}${ninja.rarity} ${ninja.name}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>${ninja.skill}: ${ninja.skillText}</small></div>
+          <em>${selectedIds.has(ninja.id) ? "選択済" : "選択"}</em>
+        </button>
+      `).join("")}</div>
+    </div>
   `;
 }
 
@@ -619,6 +721,10 @@ function renderMissionSelect(kind) {
       <div class="stat-grid">
         <div><span>味方戦力</span><b>${yen(teamPower())}</b></div>
         <div><span>予想報酬</span><b>${resourceText(rewards)}</b></div>
+      </div>
+      <div class="formation-mini">
+        ${formationNinjas().map(ninja => `<span>${ninja.rarity} ${ninja.name}</span>`).join("")}
+        <button data-tab="formation">編成変更</button>
       </div>
       <div class="action-grid">
         <button data-action="confirm-mission" data-kind="${kind}" ${game.minions.available >= required ? "" : "disabled"}>${kind === "raid" ? "参加して攻撃" : "出発する"}</button>
@@ -1080,6 +1186,8 @@ function goBack() {
 }
 
 function saveGame(silent = false) {
+  normalizeGameState();
+  game.savedAt = Date.now();
   localStorage.setItem(storageKey, JSON.stringify(game));
   if (!silent) {
     screenSubtitle.textContent = "保存しました";
@@ -1089,9 +1197,13 @@ function saveGame(silent = false) {
 
 function loadGame(silent = true) {
   const raw = localStorage.getItem(storageKey);
-  if (!raw) return;
+  if (!raw) {
+    normalizeGameState();
+    return false;
+  }
   try {
-    Object.assign(game, JSON.parse(raw));
+    Object.assign(game, createInitialGame(), JSON.parse(raw));
+    normalizeGameState();
     maintainWorldRaids();
     if (!silent) {
       screenSubtitle.textContent = "読み込みました";
@@ -1105,6 +1217,13 @@ function loadGame(silent = true) {
 document.addEventListener("click", event => {
   const target = event.target.closest("button");
   if (!target) return;
+  if (target === soundToggle) {
+    game.settings.soundEnabled = game.settings.soundEnabled === false;
+    saveGame(true);
+    renderSoundToggle();
+    if (game.settings.soundEnabled) play("tap");
+    return;
+  }
   if (target.dataset.tab) showTab(target.dataset.tab);
   if (target.dataset.facility) {
     selectedFacilityId = target.dataset.facility;
@@ -1114,6 +1233,18 @@ document.addEventListener("click", event => {
   if (target.dataset.ninja) {
     selectedNinjaId = target.dataset.ninja;
     activeView.ninjas = "detail";
+    render();
+  }
+  if (target.dataset.formationNinja) {
+    const id = target.dataset.formationNinja;
+    const current = game.formation.ninjaIds.filter(ninjaId => getNinja(ninjaId));
+    const exists = current.includes(id);
+    if (exists && current.length > 1) {
+      game.formation.ninjaIds = current.filter(ninjaId => ninjaId !== id);
+    } else if (!exists) {
+      game.formation.ninjaIds = [...current, id].slice(-3);
+    }
+    saveGame(true);
     render();
   }
   if (target.dataset.missionKind) {
@@ -1199,6 +1330,11 @@ document.addEventListener("change", event => {
   }
   if (event.target.id === "defenseMinions") {
     game.defense.minions = Number(event.target.value);
+    saveGame(true);
+    render();
+  }
+  if (event.target.id === "formationMinions") {
+    game.formation.minions = Number(event.target.value);
     saveGame(true);
     render();
   }

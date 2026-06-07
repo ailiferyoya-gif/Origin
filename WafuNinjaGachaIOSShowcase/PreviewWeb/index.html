@@ -19,6 +19,7 @@
         <strong id="screenTitle">影月忍里</strong>
         <span id="screenSubtitle">里Lv.5 / 防衛 0</span>
       </div>
+      <button id="soundToggle" class="icon sound-toggle sound-on" aria-label="Sound on">♪</button>
       <div id="ticketCurrency" class="currency">札 7</div>
       <div id="gemCurrency" class="currency">勾玉 12,840</div>
     </header>
@@ -26,12 +27,14 @@
     <nav class="tabs" aria-label="Game sections">
       <button class="tab active" data-tab="village">里</button>
       <button class="tab" data-tab="ninjas">忍者</button>
+      <button class="tab" data-tab="formation">編成</button>
       <button class="tab" data-tab="missions">任務</button>
       <button class="tab" data-tab="gacha">ガチャ</button>
     </nav>
 
     <section id="villagePanel" class="game-panel"></section>
     <section id="ninjasPanel" class="game-panel" hidden></section>
+    <section id="formationPanel" class="game-panel" hidden></section>
     <section id="missionsPanel" class="game-panel" hidden></section>
 
     <section id="stage" class="stage" hidden>
