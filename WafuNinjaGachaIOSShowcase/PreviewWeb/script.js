@@ -142,6 +142,27 @@ const raidBosses = [
   { id: "raid-tengu", name: "山嶽天狗・黒嶺", hp: 280000, element: "風", caller: "天狗岳砦" }
 ];
 
+const raidBossArt = {
+  "raid-centipede": "assets/generated/raids/raid-centipede-cutout.png",
+  "raid-oni": "assets/generated/raids/raid-oni-cutout.png",
+  "raid-serpent": "assets/generated/raids/raid-serpent-cutout.png",
+  "raid-firebird": "assets/generated/raids/raid-firebird-cutout.png",
+  "raid-tengu": "assets/generated/raids/raid-tengu-cutout.png"
+};
+
+const raidCompanions = [
+  { name: "霧隠レイ", power: 21400, avatar: "霧" },
+  { name: "黒羽ソウマ", power: 28600, avatar: "羽" },
+  { name: "火鉢アカネ", power: 24300, avatar: "火" },
+  { name: "水鏡ナギ", power: 19800, avatar: "水" },
+  { name: "山吹コウ", power: 17600, avatar: "山" },
+  { name: "月影ミオ", power: 31200, avatar: "月" },
+  { name: "雷花ジン", power: 26700, avatar: "雷" },
+  { name: "白露シノ", power: 22900, avatar: "白" },
+  { name: "朱雀レン", power: 29400, avatar: "朱" },
+  { name: "影縫サキ", power: 25100, avatar: "影" }
+];
+
 const storageKey = "kagezuki-ninja-village-preview-v3";
 const firebaseConfigStorageKey = `${storageKey}-firebase-config`;
 const saveSlotCount = 3;
@@ -198,10 +219,13 @@ function createWorldRaid(boss = randomFrom(raidBosses), caller = randomFrom(npcV
   const diff = difficultyCatalog.find(item => item.id === difficulty) || difficultyCatalog[1];
   const hp = Math.round(boss.hp * diff.multiplier);
   const seedDamage = Math.round(hp * (0.08 + Math.random() * 0.14));
+  const members = createRaidMembers(caller, playerSummoned);
+  const baseId = boss.baseId || boss.id;
   return {
     ...boss,
     id: `${boss.id}-${Date.now()}-${Math.floor(Math.random() * 9999)}`,
-    baseId: boss.id,
+    baseId,
+    img: raidBossArt[baseId] || raidBossArt["raid-oni"],
     caller: playerSummoned ? "影月の里" : caller.name,
     difficulty,
     difficultyName: diff.name,
@@ -209,8 +233,66 @@ function createWorldRaid(boss = randomFrom(raidBosses), caller = randomFrom(npcV
     hpLeft: Math.max(1, hp - seedDamage),
     participants: playerSummoned ? 22 + Math.floor(Math.random() * 18) : 18 + Math.floor(caller.power / 1450) + Math.floor(Math.random() * 12),
     progress: Math.round(seedDamage / hp * 100),
-    playerSummoned
+    playerSummoned,
+    playerJoined: playerSummoned,
+    members,
+    logs: seedRaidLogs(members, seedDamage),
+    lastNpcStrikeAt: Date.now()
   };
+}
+
+function createRaidMembers(caller = npcVillages[0], playerSummoned = false) {
+  const shuffled = [...raidCompanions].sort(() => Math.random() - 0.5).slice(0, 7);
+  return [
+    { name: playerSummoned ? "影月の里" : caller.name, power: caller.power || teamPower(), avatar: playerSummoned ? "主" : "里" },
+    ...shuffled
+  ];
+}
+
+function seedRaidLogs(members, seedDamage = 0) {
+  const starters = members.slice(0, 3);
+  return starters.map((member, index) => ({
+    id: `raid-log-${Date.now()}-${index}-${Math.random()}`,
+    actor: member.name,
+    damage: Math.max(1200, Math.round((member.power || 12000) * (0.12 + Math.random() * 0.16))),
+    taken: Math.round(500 + Math.random() * 1100),
+    text: index === 0 ? "開幕連携" : "追撃",
+    type: "npc",
+    at: Date.now() - (starters.length - index) * 1400
+  })).concat(seedDamage ? [{
+    id: `raid-log-seed-${Date.now()}-${Math.random()}`,
+    actor: "共闘隊",
+    damage: seedDamage,
+    taken: Math.round(seedDamage * 0.04),
+    text: "戦闘進行",
+    type: "npc",
+    at: Date.now()
+  }] : []);
+}
+
+function normalizeRaidState(raid) {
+  const baseId = raid.baseId || raidBosses.find(boss => raid.id?.startsWith(boss.id))?.id || "raid-oni";
+  const boss = raidBosses.find(item => item.id === baseId) || raidBosses[1];
+  const diff = getDifficulty(raid.difficulty || "normal");
+  const hp = Number(raid.hp || Math.round(boss.hp * diff.multiplier));
+  const normalized = {
+    ...boss,
+    ...raid,
+    baseId,
+    img: raid.img || raidBossArt[baseId] || raidBossArt["raid-oni"],
+    difficulty: raid.difficulty || diff.id,
+    difficultyName: raid.difficultyName || diff.name,
+    hp,
+    hpLeft: Math.max(0, Math.min(hp, Number(raid.hpLeft ?? hp))),
+    participants: Number(raid.participants || 18),
+    members: Array.isArray(raid.members) && raid.members.length ? raid.members : createRaidMembers({ name: raid.caller || boss.caller, power: diff.enemy }, raid.playerSummoned),
+    logs: Array.isArray(raid.logs) ? raid.logs.slice(0, 30) : [],
+    lastNpcStrikeAt: Number(raid.lastNpcStrikeAt || Date.now()),
+    playerJoined: Boolean(raid.playerJoined || raid.playerSummoned)
+  };
+  if (!normalized.logs.length) normalized.logs = seedRaidLogs(normalized.members, Math.round((hp - normalized.hpLeft) * 0.45));
+  normalized.progress = Math.min(100, Math.round((1 - normalized.hpLeft / normalized.hp) * 100));
+  return normalized;
 }
 
 function maintainWorldRaids() {
@@ -300,7 +382,7 @@ function normalizeGameState() {
   game.defense = { ...fresh.defense, ...(game.defense || {}) };
   game.activities = Array.isArray(game.activities) ? game.activities : [];
   game.reports = Array.isArray(game.reports) ? game.reports : [];
-  game.raidEvents = Array.isArray(game.raidEvents) ? game.raidEvents : createInitialRaids();
+  game.raidEvents = Array.isArray(game.raidEvents) ? game.raidEvents.map(normalizeRaidState) : createInitialRaids();
   game.settings = { ...fresh.settings, ...(game.settings || {}) };
   const ownedIds = new Set(game.ninjas.map(ninja => ninja.id));
   const savedFormation = game.formation || {};
@@ -630,7 +712,7 @@ function renderHeader() {
     village: activeView.village === "facility" ? getFacility(selectedFacilityId).name : "影月の里",
     ninjas: activeView.ninjas === "detail" ? getNinja(selectedNinjaId).name : "忍者名簿",
     formation: "出撃編成",
-    missions: activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板"
+    missions: activeView.missions === "raid" ? "レイド戦場" : activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板"
   };
   screenTitle.textContent = titles[activeTab];
   screenSubtitle.textContent = `里Lv.${game.villageLevel} / 防衛 ${yen(defensePower())}`;
@@ -883,6 +965,10 @@ function renderEquipmentRow(item) {
 }
 
 function renderMissions() {
+  if (activeView.missions === "raid") {
+    panels.missions.innerHTML = renderRaidBattle(selectedNpcId);
+    return;
+  }
   if (activeView.missions === "select") {
     panels.missions.innerHTML = renderMissionSelect(selectedMissionKind);
     return;
@@ -1029,6 +1115,72 @@ function renderActivities() {
       </article>
     `;
   }).join("");
+}
+
+function renderRaidBattle(raidId) {
+  const raid = game.raidEvents.find(item => item.id === raidId) || game.raidEvents[0];
+  if (!raid) return `<div class="panel-card"><h1>レイドなし</h1><button data-action="mission-board">任務板へ</button></div>`;
+  const difficulty = getDifficulty(raid.difficulty);
+  const rewards = scaleRewards(missionCatalog.raid.baseRewards, difficulty.multiplier);
+  const rate = Math.max(0, raid.hpLeft / raid.hp);
+  const latestPlayerHit = [...(raid.logs || [])].find(item => item.type === "player");
+  const allLogs = [...(raid.logs || [])].sort((a, b) => b.at - a.at).slice(0, 12);
+  const members = (raid.members || []).slice(0, 8);
+  const joined = raid.playerJoined || raid.playerSummoned;
+  const defeated = raid.hpLeft <= 0;
+  const required = Math.max(1, Math.ceil(difficulty.minions * 0.35));
+  return `
+    <div class="raid-battle-panel">
+      <div class="raid-hud">
+        <button class="raid-back" data-action="mission-board">任務板</button>
+        <div class="raid-boss-chip"><b>${raid.element}</b><span>${raid.name}</span></div>
+        <div class="raid-hp-read">${Math.round(rate * 100)}%</div>
+      </div>
+      <div class="raid-boss-bar"><i style="width:${rate * 100}%"></i></div>
+      <div class="raid-mode"><span>${raid.difficultyName}</span><i style="width:${Math.max(8, raid.progress)}%"></i></div>
+      <div class="raid-stage">
+        <div class="raid-enemy-side">
+          <img src="${raid.img}" alt="${raid.name}">
+          <span class="raid-aura"></span>
+        </div>
+        <div class="raid-damage-call ${latestPlayerHit ? "is-live" : ""}">
+          <small>TOTAL</small>
+          <b>${yen(latestPlayerHit?.damage || Math.max(0, raid.hp - raid.hpLeft))}</b>
+        </div>
+        <div class="raid-ally-side">
+          ${formationNinjas().map(ninja => `
+            <div class="raid-ally-card ${ninja.rarityKey}">
+              <img src="${ninja.img}" alt="${ninja.name}">
+              <span>${ninja.rarity}</span>
+            </div>
+          `).join("")}
+          <div class="raid-member-stack">
+            ${members.slice(0, 5).map(member => `<span title="${member.name}">${member.avatar || member.name.slice(0, 1)}</span>`).join("")}
+          </div>
+        </div>
+      </div>
+      <div class="raid-action-row">
+        <button class="raid-attack-button" data-action="${joined ? "raid-attack" : "join-raid"}" ${defeated || game.minions.available < required ? "disabled" : ""}>
+          ${defeated ? "討伐完了" : joined ? "一斉攻撃" : "参加する"}
+        </button>
+        <div>
+          <strong>必要忍び ${required}</strong>
+          <span>残HP ${yen(Math.max(0, raid.hpLeft))} / 報酬 ${resourceText(rewards)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-card raid-log-panel">
+      <h2>共闘ログ</h2>
+      <div class="raid-log-list">
+        ${allLogs.map(log => `
+          <article class="raid-log-entry ${log.type}">
+            <b>${log.actor}</b>
+            <span>${log.text} / 与ダメージ ${yen(log.damage)} / 被ダメージ ${yen(log.taken || 0)}</span>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+  `;
 }
 
 function renderReport(item) {
@@ -1229,6 +1381,97 @@ function equipItem(ninjaId, equipId) {
   render();
 }
 
+function raidRewards(raid) {
+  return scaleRewards(missionCatalog.raid.baseRewards, getDifficulty(raid?.difficulty || "normal").multiplier);
+}
+
+function pushRaidLog(raid, entry) {
+  raid.logs = [
+    { id: `raid-log-${Date.now()}-${Math.random()}`, at: Date.now(), ...entry },
+    ...(Array.isArray(raid.logs) ? raid.logs : [])
+  ].slice(0, 32);
+}
+
+function enterRaidBattle(raid) {
+  if (!raid) return;
+  raid.playerJoined = true;
+  raid.participants = Math.max(raid.participants || 0, (raid.members?.length || 0) + 1);
+  if (!raid.members?.some(member => member.name === "影月の里")) {
+    raid.members = [{ name: "影月の里", power: teamPower(), avatar: "主" }, ...(raid.members || [])].slice(0, 10);
+  }
+  pushRaidLog(raid, { actor: "影月の里", damage: 0, taken: 0, text: "戦場に参加", type: "player" });
+  selectedNpcId = raid.id;
+  selectedMissionKind = "raid";
+  activeView.missions = "raid";
+  saveGame(true);
+  render();
+  play("charge");
+}
+
+function playerRaidAttack() {
+  const raid = game.raidEvents.find(item => item.id === selectedNpcId);
+  if (!raid || raid.hpLeft <= 0) return;
+  const difficulty = getDifficulty(raid.difficulty);
+  const required = Math.max(1, Math.ceil(difficulty.minions * 0.35));
+  if (game.minions.available < required) {
+    screenSubtitle.textContent = "出撃可能な忍びが足りません";
+    return;
+  }
+  raid.playerJoined = true;
+  game.minions.available -= required;
+  const damage = Math.min(raid.hpLeft, Math.round(teamPower() * (0.32 + difficulty.multiplier * 0.18) + Math.random() * 2600));
+  const damageTaken = Math.round(difficulty.enemy * (0.16 + difficulty.multiplier * 0.12) + Math.random() * 1200);
+  const lost = Math.min(required, Math.max(1, Math.floor(damageTaken / 2400)));
+  raid.hpLeft = Math.max(0, raid.hpLeft - damage);
+  raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
+  game.minions.total = Math.max(0, game.minions.total - lost);
+  game.minions.available += Math.max(0, required - lost);
+  game.minions.injured += Math.max(0, Math.floor(lost * 0.7));
+  pushRaidLog(raid, {
+    actor: "影月の里",
+    damage,
+    taken: damageTaken,
+    text: raid.hpLeft <= 0 ? "討伐撃破" : "一斉攻撃",
+    type: "player"
+  });
+  if (raid.hpLeft <= 0) {
+    const rewards = raidRewards(raid);
+    addRewards(rewards);
+    game.reports.unshift(report(`${raid.name} 討伐成功`, [
+      `与ダメージ: ${yen(damage)} / 被ダメージ: ${yen(damageTaken)}`,
+      `失った忍び: ${lost}`,
+      `報酬: ${resourceText(rewards)}`
+    ], "combat"));
+    play("ssr");
+  } else {
+    play("place");
+  }
+  saveGame(true);
+  render();
+  fireFlash();
+}
+
+function tickRaidNpcCombat(raid, now = Date.now()) {
+  if (!raid || raid.hpLeft <= 0) return false;
+  const interval = 1900 + Math.random() * 1800;
+  if (now - (raid.lastNpcStrikeAt || 0) < interval) return false;
+  const member = randomFrom((raid.members || raidCompanions).filter(item => item.name !== "影月の里")) || randomFrom(raidCompanions);
+  const difficulty = getDifficulty(raid.difficulty);
+  const damage = Math.min(raid.hpLeft, Math.round((member.power || 16000) * (0.08 + difficulty.multiplier * 0.035) + Math.random() * 1800));
+  const taken = Math.round(400 + difficulty.enemy * 0.06 + Math.random() * 900);
+  raid.hpLeft = Math.max(0, raid.hpLeft - damage);
+  raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
+  raid.lastNpcStrikeAt = now;
+  pushRaidLog(raid, {
+    actor: member.name,
+    damage,
+    taken,
+    text: raid.hpLeft <= 0 ? "最後の一撃" : randomFrom(["忍具連撃", "背面奇襲", "術式援護", "追撃"]),
+    type: "npc"
+  });
+  return true;
+}
+
 function confirmMission(kind) {
   const mission = missionCatalog[kind];
   const npc = npcVillages.find(item => item.id === selectedNpcId) || npcVillages[0];
@@ -1241,7 +1484,7 @@ function confirmMission(kind) {
     body: `${difficulty.name} / ${targetName}`,
     details: [`味方戦力: ${yen(teamPower())}`, `予想敵戦力: ${yen(Math.round(difficulty.enemy * difficulty.multiplier))}`, `見込み報酬: ${resourceText(rewards)}`, `必要忍び: ${difficulty.minions}`],
     ok: kind === "raid" ? "攻撃" : "出発",
-    onOk: () => kind === "raid" ? resolveRaid(targetRaid, rewards, difficulty) : startMission(kind, rewards, difficulty, targetName)
+    onOk: () => kind === "raid" ? enterRaidBattle(targetRaid) : startMission(kind, rewards, difficulty, targetName)
   });
 }
 
@@ -1466,7 +1709,7 @@ function showTab(tabName) {
 function goBack() {
   if (activeTab === "village" && activeView.village === "facility") activeView.village = "home";
   else if (activeTab === "ninjas" && activeView.ninjas === "detail") activeView.ninjas = "list";
-  else if (activeTab === "missions" && activeView.missions === "select") activeView.missions = "board";
+  else if (activeTab === "missions" && (activeView.missions === "select" || activeView.missions === "raid")) activeView.missions = "board";
   else return;
   render();
 }
@@ -1591,7 +1834,7 @@ document.addEventListener("click", event => {
     selectedMissionKind = target.dataset.missionKind;
     selectedNpcId = target.dataset.missionKind === "raid" ? game.raidEvents[0].id : npcVillages[0].id;
     selectedAllies = [];
-    activeView.missions = "select";
+    activeView.missions = "raid";
     render();
   }
   if (target.dataset.difficulty) {
@@ -1674,11 +1917,17 @@ document.addEventListener("click", event => {
     render();
   }
   if (action === "confirm-mission") confirmMission(target.dataset.kind);
+  if (action === "join-raid") {
+    const raid = game.raidEvents.find(item => item.id === selectedNpcId);
+    enterRaidBattle(raid);
+  }
+  if (action === "raid-attack") playerRaidAttack();
   if (action === "summon-player-raid") {
     const raid = createWorldRaid(randomFrom(raidBosses), { name: "影月の里", power: teamPower() }, target.dataset.difficultyId, true);
     game.raidEvents.unshift(raid);
     selectedNpcId = raid.id;
     selectedMissionKind = "raid";
+    activeView.missions = "raid";
     render();
   }
   if (action === "mission-board") {
@@ -1731,10 +1980,10 @@ againButton.addEventListener("click", async () => {
 });
 
 setInterval(() => {
+  const now = Date.now();
   game.raidEvents.forEach(raid => {
     if (raid.hpLeft > 0) {
-      raid.hpLeft = Math.max(0, raid.hpLeft - (120 + raid.participants * 35));
-      raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
+      tickRaidNpcCombat(raid, now);
     }
   });
   maintainWorldRaids();
