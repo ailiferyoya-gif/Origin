@@ -150,6 +150,14 @@ const raidBossArt = {
   "raid-tengu": "assets/generated/raids/raid-tengu-cutout.png"
 };
 
+const raidRewardTable = {
+  "raid-centipede": { money: 2600, herbs: 260, toolParts: 130, gems: 90 },
+  "raid-oni": { money: 3400, iron: 360, toolParts: 180, gems: 120 },
+  "raid-serpent": { money: 3000, wood: 260, silk: 160, gems: 105 },
+  "raid-firebird": { money: 3200, gunpowder: 180, toolParts: 160, gems: 115 },
+  "raid-tengu": { money: 3900, iron: 320, silk: 180, gems: 150 }
+};
+
 const raidCompanions = [
   { name: "霧隠レイ", power: 21400, avatar: "霧" },
   { name: "黒羽ソウマ", power: 28600, avatar: "羽" },
@@ -852,19 +860,19 @@ function renderFacilityStatus(facility) {
 function renderWorkshop() {
   return `
     <div class="panel-card">
-      <span class="scene-kicker">WORKSHOP</span>
-      <h2>Equipment Forge</h2>
-      <p>Craft slot-based gear: weapon, body, head, feet, ring, bracelet, and gem. Rarity rolls from N to UR.</p>
+      <span class="scene-kicker">兵装工房</span>
+      <h2>兵装工房</h2>
+      <p>武器・体・頭・足・指輪・腕輪・宝石を生産できます。レア度はNからURまで抽選されます。</p>
       <div class="action-grid">
-        ${equipmentSlots.map(slot => `<button data-action="craft-equipment" data-slot="${slot}">${slot} Craft</button>`).join("")}
-        <button data-action="enhance-all">Enhance All</button>
+        ${equipmentSlots.map(slot => `<button data-action="craft-equipment" data-slot="${slot}">${slot}を生産</button>`).join("")}
+        <button data-action="enhance-all">一括強化</button>
       </div>
       <div class="rarity-strip">
         ${equipmentRarityTable.map(item => `<span class="equip-rarity ${item.rarity.toLowerCase()}">${item.rarity}</span>`).join("")}
       </div>
     </div>
     <div class="panel-card">
-      <h2>Equipment Storage</h2>
+      <h2>装備倉庫</h2>
       <div class="list-stack">${game.equipment.map(renderEquipmentRow).join("")}</div>
     </div>
   `;
@@ -877,7 +885,7 @@ function renderNinjas() {
   }
   panels.ninjas.innerHTML = `
     <div class="panel-card">
-      <span class="scene-kicker">SHINOBI ROSTER</span>
+      <span class="scene-kicker">忍者名簿</span>
       <h1>所持忍者</h1>
       <p>忍者をタップすると詳細、スキル、装備、レベル上げを確認できます。</p>
       <div class="list-stack">${game.ninjas.map((ninja, index) => renderNinjaRow(ninja, index)).join("")}</div>
@@ -906,38 +914,38 @@ function renderFormation() {
   game.formation.minions = Math.min(game.formation.minions, maxMinions);
   return `
     <div class="panel-card hero-panel formation-hero">
-      <span class="scene-kicker">SORTIE FORMATION</span>
-      <h1>Formation</h1>
-      <p>Tap a slot, then tap a ninja to place that ninja in the selected sortie slot.</p>
+      <span class="scene-kicker">出撃編成</span>
+      <h1>出撃編成</h1>
+      <p>枠をタップしてから忍者を選ぶと、その位置に配置されます。</p>
       <div class="village-metrics">
-        <div><b>${yen(formationPower())}</b><span>Power</span></div>
-        <div><b>${game.formation.ninjaIds.length}/3</b><span>Ninjas</span></div>
-        <div><b>${game.formation.minions}</b><span>Minions</span></div>
+        <div><b>${yen(formationPower())}</b><span>編成戦力</span></div>
+        <div><b>${game.formation.ninjaIds.length}/3</b><span>忍者</span></div>
+        <div><b>${game.formation.minions}</b><span>随伴忍び</span></div>
       </div>
       <div class="formation-lineup formation-slot-grid">
         ${ids.map((id, index) => {
           const ninja = id ? getNinja(id) : null;
           return `
             <button class="formation-slot ${ninja?.rarityKey || "empty"} ${selectedFormationSlot === index ? "active" : ""}" data-formation-slot="${index}">
-              ${ninja ? `<img src="${ninja.img}" alt=""><strong>${ninja.rarity} ${ninja.name}</strong><span>Lv.${ninja.level} / ${yen(ninja.power + equippedPower(ninja.id))}</span>` : `<b>+</b><strong>Empty</strong><span>Select slot</span>`}
+              ${ninja ? `<img src="${ninja.img}" alt=""><strong>${ninja.rarity} ${ninja.name}</strong><span>Lv.${ninja.level} / ${yen(ninja.power + equippedPower(ninja.id))}</span>` : `<b>+</b><strong>空き枠</strong><span>枠を選択</span>`}
             </button>
           `;
         }).join("")}
       </div>
-      <label class="range-row">Minions <input id="formationMinions" type="range" min="0" max="${maxMinions}" value="${game.formation.minions}"><b>${game.formation.minions}</b></label>
+      <label class="range-row">随伴忍び <input id="formationMinions" type="range" min="0" max="${maxMinions}" value="${game.formation.minions}"><b>${game.formation.minions}</b></label>
       <div class="action-grid">
-        <button data-action="save-game">Save Formation</button>
-        <button data-action="load-game">Load</button>
-        <button data-tab="missions">Missions</button>
+        <button data-action="save-game">編成保存</button>
+        <button data-action="load-game">読込</button>
+        <button data-tab="missions">任務へ</button>
       </div>
     </div>
     <div class="panel-card">
-      <h2>Place Ninja</h2>
+      <h2>忍者を配置</h2>
       <div class="list-stack">${game.ninjas.map(ninja => `
         <button class="row-card ninja-row formation-card ${ninja.rarityKey} ${selectedIds.has(ninja.id) ? "selected" : ""}" data-formation-ninja="${ninja.id}">
           <img src="${ninja.img}" alt="">
-          <div><strong>${selectedIds.has(ninja.id) ? "In Formation " : ""}${ninja.rarity} ${ninja.name}</strong><span>${ninja.role} / Lv.${ninja.level} / Power ${yen(ninja.power + equippedPower(ninja.id))}</span><small>${ninja.skill}: ${ninja.skillText}</small></div>
-          <em>${selectedIds.has(ninja.id) ? "Swap" : "Place"}</em>
+          <div><strong>${selectedIds.has(ninja.id) ? "編成中 " : ""}${ninja.rarity} ${ninja.name}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>${ninja.skill}: ${ninja.skillText}</small></div>
+          <em>${selectedIds.has(ninja.id) ? "入替" : "配置"}</em>
         </button>
       `).join("")}</div>
     </div>
@@ -958,7 +966,7 @@ function renderNinjaDetail(id) {
         <div class="loadout-ring">
           ${equipmentSlots.map((slot, index) => {
             const item = current(slot);
-            return `<button class="loadout-slot slot-${index} ${activeSlot === slot ? "active" : ""}" data-equip-slot="${slot}" data-ninja-id="${id}"><b>${slot}</b><span>${item ? `${item.rarity} ${item.name}` : "Empty"}</span></button>`;
+            return `<button class="loadout-slot slot-${index} ${activeSlot === slot ? "active" : ""}" data-equip-slot="${slot}" data-ninja-id="${id}"><b>${slot}</b><span>${item ? `${item.rarity} ${item.name}` : "未装備"}</span></button>`;
           }).join("")}
         </div>
       </div>
@@ -969,30 +977,30 @@ function renderNinjaDetail(id) {
       </div>
     </div>
     <div class="panel-card">
-      <h2>Status</h2>
+      <h2>ステータス</h2>
       <div class="stat-grid">
         <div><span>Lv</span><b>${ninja.level}</b></div>
-        <div><span>Power</span><b>${yen(ninja.power + equippedPower(id))}</b></div>
+        <div><span>戦力</span><b>${yen(ninja.power + equippedPower(id))}</b></div>
         <div><span>HP</span><b>${yen(ninja.hp)}</b></div>
         <div><span>ATK</span><b>${yen(ninja.attack)}</b></div>
         <div><span>DEF</span><b>${yen(ninja.defense)}</b></div>
         <div><span>SPD</span><b>${yen(ninja.speed)}</b></div>
       </div>
       <div class="action-grid">
-        <button data-action="confirm-train" data-id="${id}" ${canPay(trainCost) ? "" : "disabled"}>Level Up</button>
-        <button data-action="clear-equips" data-id="${id}">Clear Gear</button>
+        <button data-action="confirm-train" data-id="${id}" ${canPay(trainCost) ? "" : "disabled"}>レベル上げ</button>
+        <button data-action="clear-equips" data-id="${id}">装備解除</button>
       </div>
-      <p>Cost: ${resourceText(trainCost)}</p>
+      <p>必要素材: ${resourceText(trainCost)}</p>
     </div>
     <div class="panel-card">
-      <h2>${activeSlot} Gear</h2>
+      <h2>${activeSlot}を選択</h2>
       <div class="list-stack equip-pick-list">
         ${availableBySlot(activeSlot).map(item => `
           <button class="row-card equipment-pick ${item.equippedBy === id ? "selected" : ""}" data-action="equip-item" data-ninja-id="${id}" data-equip-id="${item.id}">
             <b class="row-emblem">${item.rarity}</b>
-            <div><strong>${item.name}</strong><span>${item.slot} Lv.${item.level} / Power +${yen(item.power)}</span><small>${item.equippedBy ? `${getNinja(item.equippedBy)?.name || "Unknown"} equipped` : "Available"}</small></div>
+            <div><strong>${item.name}</strong><span>${item.slot} Lv.${item.level} / 戦力 +${yen(item.power)}</span><small>${item.equippedBy ? `${getNinja(item.equippedBy)?.name || "不明"}が装備中` : "装備可能"}</small></div>
           </button>
-        `).join("") || `<article class="row-card empty-row"><div><strong>No ${activeSlot} gear</strong><span>Craft it in the forge.</span></div></article>`}
+        `).join("") || `<article class="row-card empty-row"><div><strong>${activeSlot}の装備がありません</strong><span>兵装工房で生産できます。</span></div></article>`}
       </div>
     </div>
   `;
@@ -1019,7 +1027,7 @@ function renderMissions() {
   }
   panels.missions.innerHTML = `
     <div class="panel-card">
-      <span class="scene-kicker">MISSION BOARD</span>
+      <span class="scene-kicker">任務板</span>
       <h1>任務板</h1>
       <p>難易度、NPC、共闘相手を選び、確認画面を通して出発します。</p>
       <div class="mission-grid">
@@ -1056,7 +1064,7 @@ function renderMissionSelect(kind) {
   const required = difficulty.minions;
   return `
     <div class="panel-card hero-panel">
-      <span class="scene-kicker">MISSION SETUP</span>
+      <span class="scene-kicker">任務準備</span>
       <h1>${mission.title}</h1>
       <p>${mission.text}</p>
       <div class="village-metrics">
@@ -1163,9 +1171,10 @@ function renderActivities() {
 
 function renderRaidBattle(raidId) {
   const raid = game.raidEvents.find(item => item.id === raidId) || game.raidEvents[0];
-  if (!raid) return `<div class="panel-card"><h1>No Raid</h1><button data-action="mission-board">Mission Board</button></div>`;
+  if (!raid) return `<div class="panel-card"><h1>レイドなし</h1><button data-action="mission-board">任務へ</button></div>`;
   const difficulty = getDifficulty(raid.difficulty);
   const rewards = raidRewards(raid);
+  const resultRewards = raidResultRewards(raid);
   const rate = Math.max(0, raid.hpLeft / raid.hp);
   const joined = raid.playerJoined || raid.playerSummoned;
   const defeated = raid.hpLeft <= 0;
@@ -1175,7 +1184,7 @@ function renderRaidBattle(raidId) {
   return `
     <div class="raid-battle-panel raid-live-panel">
       <div class="raid-hud">
-        <button class="raid-back" data-action="mission-board">Board</button>
+        <button class="raid-back" data-action="mission-board">任務</button>
         <div class="raid-boss-chip"><b>${raidElementLabel(raid)}</b><span>${raid.name}</span></div>
         <div class="raid-hp-read">${Math.round(rate * 100)}%</div>
       </div>
@@ -1186,17 +1195,17 @@ function renderRaidBattle(raidId) {
         <span>${raid.difficultyName} / ${raid.caller}</span>
       </div>
       <div class="raid-action-row">
-        <button class="raid-attack-button" data-action="${joined ? "raid-attack" : "join-raid"}" ${defeated || game.minions.available < required ? "disabled" : ""}>${defeated ? "Cleared" : joined ? "Attack" : "Join"}</button>
-        <div><strong>Need ${required} minions</strong><span>Reward ${resourceText(rewards)}</span></div>
+        <button class="raid-attack-button" data-action="${joined ? "raid-attack" : "join-raid"}" ${defeated || game.minions.available < required ? "disabled" : ""}>${defeated ? "討伐成功" : joined ? "攻撃" : "参戦"}</button>
+        <div><strong>必要忍び ${required}</strong><span>基本報酬 ${resourceText(rewards)}</span></div>
       </div>
     </div>
     <div class="panel-card raid-log-panel">
-      <h2>Attack Log</h2>
+      <h2>攻撃ログ</h2>
       <div class="raid-log-list">
-        ${logs.map(log => `<article class="raid-log-entry ${log.type}"><b>${log.actor}</b><span>${log.text} / DMG ${yen(log.damage || 0)} / Taken ${yen(log.taken || 0)}</span></article>`).join("") || `<article class="raid-log-entry"><b>Standby</b><span>Join the raid to start combat.</span></article>`}
+        ${logs.map(log => `<article class="raid-log-entry ${log.type}"><b>${log.actor}</b><span>${log.text} / 与ダメージ ${yen(log.damage || 0)} / 被ダメージ ${yen(log.taken || 0)}</span></article>`).join("") || `<article class="raid-log-entry"><b>待機中</b><span>参戦すると戦闘が開始されます。</span></article>`}
       </div>
     </div>
-    ${defeated ? `<div class="panel-card raid-result-panel"><span class="scene-kicker">RAID RESULT</span><h2>Result Ranking</h2><div class="raid-ranking-list">${ranking.map((row, index) => `<article class="raid-rank-row ${index === 0 ? "top" : ""}"><b>${index + 1}</b><div><strong>${row.actor}</strong><span>Damage ${yen(row.damage)}</span></div></article>`).join("")}</div></div>` : ""}
+    ${defeated ? `<div class="panel-card raid-result-panel"><span class="scene-kicker">討伐結果</span><h2>討伐リザルト</h2><div class="raid-ranking-list">${ranking.map((row, index) => `<article class="raid-rank-row ${index === 0 ? "top" : ""}"><b>${index + 1}</b><div><strong>${row.actor}</strong><span>与ダメージ ${yen(row.damage)}</span></div></article>`).join("")}</div><div class="raid-result-reward"><strong>獲得見込み</strong><span>${resourceText(resultRewards) || "報酬なし"}</span></div><button class="raid-claim-button" data-action="claim-raid-result" data-raid-id="${raid.id}">リザルト確認</button></div>` : ""}
   `;
 }
 
@@ -1217,7 +1226,7 @@ function renderResourceTiles() {
 function renderSavePanel() {
   return `
     <div class="panel-card save-panel">
-      <span class="scene-kicker">SAVE DATA</span>
+      <span class="scene-kicker">保存データ</span>
       <h2>セーブ管理</h2>
       <p>端末内に保存します。別端末へ移す場合はセーブコードを使ってください。</p>
       <div class="cloud-auth-card">
@@ -1355,10 +1364,10 @@ function craftEquipment(slot) {
   };
   if (["??", "??", "??"].includes(normalizedSlot)) cost.silk = 120;
   showConfirm({
-    title: `Craft ${normalizedSlot}?`,
-    body: "The forge creates slot-based equipment with rarity from N to UR.",
-    details: [`Cost: ${resourceText(cost)}`, "Rarity: N / R / SR / SSR / UR", "The result is added to storage."],
-    ok: "Craft",
+    title: `${normalizedSlot}を生産しますか？`,
+    body: "兵装工房で部位ごとの装備を生産します。レア度はNからURまで抽選されます。",
+    details: [`必要素材: ${resourceText(cost)}`, "レア度: N / R / SR / SSR / UR", "完成品は装備倉庫に追加"],
+    ok: "生産",
     onOk: () => {
       if (!canPay(cost)) return;
       pay(cost);
@@ -1366,7 +1375,7 @@ function craftEquipment(slot) {
       const rarityData = equipmentRarityTable.find(item => rarityRoll < item.rate) || equipmentRarityTable[equipmentRarityTable.length - 1];
       const item = equipment(`eq-${Date.now()}`, normalizedSlot, randomFrom(equipmentNames[normalizedSlot]), rarityData.rarity, 1, rarityData.power + Math.floor(Math.random() * 180));
       game.equipment.unshift(item);
-      game.reports.unshift(report(`${item.rarity} ${item.name} crafted.`, [`Slot: ${normalizedSlot}`, `Power +${yen(item.power)}`]));
+      game.reports.unshift(report(`${item.rarity} ${item.name}を生産しました。`, [`部位: ${normalizedSlot}`, `戦力 +${yen(item.power)}`]));
       saveGame(true);
       render();
     }
@@ -1403,7 +1412,8 @@ function equipItem(ninjaId, equipId) {
 }
 
 function raidRewards(raid) {
-  return scaleRewards(missionCatalog.raid.baseRewards, getDifficulty(raid?.difficulty || "normal").multiplier);
+  const base = raidRewardTable[raid?.baseId] || missionCatalog.raid.baseRewards;
+  return scaleRewards(base, getDifficulty(raid?.difficulty || "normal").multiplier);
 }
 
 function pushRaidLog(raid, entry) {
@@ -1415,12 +1425,12 @@ function pushRaidLog(raid, entry) {
 
 function raidElementLabel(raid) {
   return ({
-    "raid-centipede": "POISON",
-    "raid-oni": "ONI",
-    "raid-serpent": "WATER",
-    "raid-firebird": "FIRE",
-    "raid-tengu": "WIND"
-  })[raid?.baseId] || "BOSS";
+    "raid-centipede": "毒",
+    "raid-oni": "鬼",
+    "raid-serpent": "水",
+    "raid-firebird": "火",
+    "raid-tengu": "風"
+  })[raid?.baseId] || "敵";
 }
 
 function raidDamageRanking(raid) {
@@ -1434,14 +1444,48 @@ function raidDamageRanking(raid) {
     .sort((a, b) => b.damage - a.damage);
 }
 
+function raidPlayerDamage(raid) {
+  return raidDamageRanking(raid).find(row => row.actor === "影月の里")?.damage || 0;
+}
+
+function raidResultRewards(raid) {
+  const base = raidRewards(raid);
+  const ranking = raidDamageRanking(raid);
+  const total = ranking.reduce((sum, row) => sum + row.damage, 0);
+  const playerDamage = raidPlayerDamage(raid);
+  if (!playerDamage || !total) return {};
+  const contribution = Math.max(0.12, Math.min(1, playerDamage / total));
+  return Object.fromEntries(Object.entries(base).map(([key, value]) => [key, Math.max(1, Math.round(value * contribution))]));
+}
+
+function claimRaidResult(raidId) {
+  const raid = game.raidEvents.find(item => item.id === raidId);
+  if (!raid || raid.hpLeft > 0) return;
+  if (!raid.rewarded) {
+    const rewards = raidResultRewards(raid);
+    addRewards(rewards);
+    raid.rewarded = true;
+    game.reports.unshift(report(`${raid.name} 討伐報酬`, [
+      `与ダメージ: ${yen(raidPlayerDamage(raid))}`,
+      `獲得: ${resourceText(rewards)}`
+    ], "combat"));
+  }
+  game.raidEvents = game.raidEvents.filter(item => item.id !== raidId);
+  selectedNpcId = game.raidEvents[0]?.id || null;
+  activeView.missions = "board";
+  maintainWorldRaids();
+  saveGame(true);
+  render();
+}
+
 function enterRaidBattle(raid) {
   if (!raid) return;
   raid.playerJoined = true;
   raid.participants = Math.max(raid.participants || 0, (raid.members?.length || 0) + 1);
-  if (!raid.members?.some(member => member.name === "Player")) {
-    raid.members = [{ name: "Player", power: teamPower(), avatar: "P" }, ...(raid.members || [])].slice(0, 10);
+  if (!raid.members?.some(member => member.name === "影月の里")) {
+    raid.members = [{ name: "影月の里", power: teamPower(), avatar: "主" }, ...(raid.members || [])].slice(0, 10);
   }
-  pushRaidLog(raid, { actor: "Player", damage: 0, taken: 0, text: "Joined", type: "player" });
+  pushRaidLog(raid, { actor: "影月の里", damage: 0, taken: 0, text: "参戦", type: "player" });
   selectedNpcId = raid.id;
   selectedMissionKind = "raid";
   activeView.missions = "raid";
@@ -1456,7 +1500,7 @@ function playerRaidAttack() {
   const difficulty = getDifficulty(raid.difficulty);
   const required = Math.max(1, Math.ceil(difficulty.minions * 0.35));
   if (game.minions.available < required) {
-    screenSubtitle.textContent = "Not enough available minions";
+    screenSubtitle.textContent = "出撃可能な忍びが足りません";
     return;
   }
   raid.playerJoined = true;
@@ -1469,12 +1513,9 @@ function playerRaidAttack() {
   game.minions.total = Math.max(0, game.minions.total - lost);
   game.minions.available += Math.max(0, required - lost);
   game.minions.injured += Math.max(0, Math.floor(lost * 0.7));
-  pushRaidLog(raid, { actor: "Player", damage, taken: damageTaken, text: raid.hpLeft <= 0 ? "Final blow" : "Attack", type: "player" });
-  if (raid.hpLeft <= 0 && !raid.rewarded) {
-    raid.rewarded = true;
-    const rewards = raidRewards(raid);
-    addRewards(rewards);
-    game.reports.unshift(report(`${raid.name} cleared`, [`Damage: ${yen(damage)} / Taken: ${yen(damageTaken)}`, `Lost minions: ${lost}`, `Reward: ${resourceText(rewards)}`], "combat"));
+  pushRaidLog(raid, { actor: "影月の里", damage, taken: damageTaken, text: raid.hpLeft <= 0 ? "最後の一撃" : "攻撃", type: "player" });
+  if (raid.hpLeft <= 0) {
+    game.reports.unshift(report(`${raid.name} 討伐成功`, [`与ダメージ: ${yen(damage)} / 被ダメージ: ${yen(damageTaken)}`, `失った忍び: ${lost}`, "報酬はリザルト確認時に付与"] , "combat"));
     play("ssr");
   } else {
     play("place");
@@ -1488,14 +1529,14 @@ function tickRaidNpcCombat(raid, now = Date.now()) {
   if (!raid || raid.hpLeft <= 0 || !(raid.playerJoined || raid.playerSummoned)) return false;
   const interval = 1700 + Math.random() * 1400;
   if (now - (raid.lastNpcStrikeAt || 0) < interval) return false;
-  const member = randomFrom((raid.members || raidCompanions).filter(item => item.name !== "Player")) || randomFrom(raidCompanions);
+  const member = randomFrom((raid.members || raidCompanions).filter(item => item.name !== "影月の里")) || randomFrom(raidCompanions);
   const difficulty = getDifficulty(raid.difficulty);
   const damage = Math.min(raid.hpLeft, Math.round((member.power || 16000) * (0.08 + difficulty.multiplier * 0.035) + Math.random() * 1800));
   const taken = Math.round(400 + difficulty.enemy * 0.06 + Math.random() * 900);
   raid.hpLeft = Math.max(0, raid.hpLeft - damage);
   raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
   raid.lastNpcStrikeAt = now;
-  pushRaidLog(raid, { actor: member.name, damage, taken, text: raid.hpLeft <= 0 ? "Final blow" : randomFrom(["Ninja tools", "Back strike", "Jutsu support", "Follow-up"]), type: "npc" });
+  pushRaidLog(raid, { actor: member.name, damage, taken, text: raid.hpLeft <= 0 ? "最後の一撃" : randomFrom(["忍具連撃", "背面奇襲", "術式援護", "追撃"]), type: "npc" });
   return true;
 }
 
@@ -1957,6 +1998,7 @@ document.addEventListener("click", event => {
     enterRaidBattle(raid);
   }
   if (action === "raid-attack") playerRaidAttack();
+  if (action === "claim-raid-result") claimRaidResult(target.dataset.raidId);
   if (action === "summon-player-raid") {
     const raid = createWorldRaid(randomFrom(raidBosses), { name: "影月の里", power: teamPower() }, target.dataset.difficultyId, true);
     game.raidEvents.unshift(raid);
