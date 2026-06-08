@@ -399,7 +399,7 @@ function renderCurrencies() {
 function renderHeader() {
   if (activeTab === "gacha") {
     screenTitle.textContent = "影月忍伝";
-    screenSubtitle.textContent = "SSR忍頭 出現率アップ中";
+    screenSubtitle.textContent = "忍者招集 開催中";
     return;
   }
   const titles = {
@@ -415,7 +415,7 @@ function renderHeader() {
 function renderCurrentPanel() {
   if (activeTab === "village") renderVillage();
   if (activeTab === "ninjas") renderNinjas();
-  if (activeTab === "formation") renderFormation();
+  if (activeTab === "formation") panels.formation.innerHTML = renderFormation();
   if (activeTab === "missions") renderMissions();
 }
 
@@ -585,6 +585,7 @@ function renderFormation() {
       <label class="range-row">随伴忍び <input id="formationMinions" type="range" min="0" max="${maxMinions}" value="${game.formation.minions}"><b>${game.formation.minions}</b></label>
       <div class="action-grid">
         <button data-action="save-game">編成を保存</button>
+        <button data-action="load-game">読込</button>
         <button data-tab="missions">任務へ</button>
       </div>
     </div>
@@ -1107,6 +1108,9 @@ async function summon() {
   if (activeTab !== "gacha") return;
   currentCards = pullTen();
   const featured = currentCards[0];
+  const featuredRank = rarityRank(featured.rarity);
+  const hasPremium = featuredRank >= 3;
+  const showSpotlight = hasPremium || !featured.duplicate;
   summonButton.disabled = true;
   summonButton.textContent = "忍魂を結んでいます...";
   caption.textContent = "煙が濃く集まり、札が震える";
@@ -1114,35 +1118,43 @@ async function summon() {
   play("tap");
   await wait(360);
   play("charge");
-  caption.textContent = "高レアの気配... SR以上確定";
+  caption.textContent = "煙の奥で札がほどける";
   await wait(850);
-  stage.classList.add("rainbow");
-  caption.textContent = "月光の煙、忍頭出現";
-  fireFlash();
-  await wait(520);
-  rareCutin.hidden = false;
-  rareCutin.classList.add("show");
-  play("ssr");
-  await wait(1180);
-  rareCutin.hidden = true;
-  rareCutin.classList.remove("show");
+  if (hasPremium) {
+    stage.classList.add("rainbow");
+    caption.textContent = `${featured.label}の気配、月影が走る`;
+    fireFlash();
+    await wait(520);
+    rareCutin.querySelector("strong").textContent = `${featured.label} 忍者出現`;
+    rareCutin.hidden = false;
+    rareCutin.classList.add("show");
+    play("ssr");
+    await wait(1180);
+    rareCutin.hidden = true;
+    rareCutin.classList.remove("show");
+  } else {
+    caption.textContent = "煙が晴れ、忍影が姿を現す";
+    await wait(420);
+  }
   stage.hidden = true;
-  newGet.hidden = false;
-  newGet.classList.add("show");
-  newGet.querySelector(".new-get-copy span").textContent = featured.duplicate ? "覚醒片" : "NEW";
-  newGet.querySelector(".new-get-copy strong").textContent = featured.name;
-  newGet.querySelector(".new-get-copy em").textContent = featured.duplicate ? `${featured.label} 重複 +${featured.shards}` : `${featured.label} ${featured.skill}`;
-  newGet.querySelector(".new-get-hero").src = featured.img;
-  play("ssr");
-  await new Promise(resolve => {
-    const timer = setTimeout(resolve, 1700);
-    newGetNext.onclick = () => {
-      clearTimeout(timer);
-      resolve();
-    };
-  });
-  newGet.hidden = true;
-  newGet.classList.remove("show");
+  if (showSpotlight) {
+    newGet.hidden = false;
+    newGet.classList.add("show");
+    newGet.querySelector(".new-get-copy span").textContent = featured.duplicate ? "覚醒片" : "NEW";
+    newGet.querySelector(".new-get-copy strong").textContent = featured.name;
+    newGet.querySelector(".new-get-copy em").textContent = featured.duplicate ? `${featured.label} 重複 +${featured.shards}` : `${featured.label} ${featured.skill}`;
+    newGet.querySelector(".new-get-hero").src = featured.img;
+    play(hasPremium ? "ssr" : "place");
+    await new Promise(resolve => {
+      const timer = setTimeout(resolve, hasPremium ? 1700 : 1200);
+      newGetNext.onclick = () => {
+        clearTimeout(timer);
+        resolve();
+      };
+    });
+    newGet.hidden = true;
+    newGet.classList.remove("show");
+  }
   resultsView.hidden = false;
   play("fan");
   grid.innerHTML = "";
@@ -1152,7 +1164,7 @@ async function summon() {
     await wait(index === 0 ? 260 : 92);
     if (index === 0) {
       fireFlash();
-      play("ssr");
+      play(hasPremium ? "ssr" : "place");
     } else if (index % 3 === 0) {
       play("place");
     }
