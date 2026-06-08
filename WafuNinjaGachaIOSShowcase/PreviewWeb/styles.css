@@ -1159,6 +1159,35 @@ button:disabled {
   text-align: center;
 }
 
+button.formation-slot {
+  color: white;
+}
+
+.formation-slot.active {
+  border-color: rgba(255,212,94,.95);
+  box-shadow: inset 0 0 0 1px rgba(255,212,94,.24), 0 0 22px rgba(255,212,94,.18);
+}
+
+.formation-slot.empty {
+  min-height: 136px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 6px;
+  border-style: dashed;
+}
+
+.formation-slot.empty b {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,212,94,.38);
+  border-radius: 8px;
+  color: #ffd45e;
+  font-size: 26px;
+}
+
 .formation-slot img {
   width: 100%;
   height: 82px;
@@ -1418,6 +1447,98 @@ button:disabled {
   height: 150px;
   object-fit: contain;
   filter: drop-shadow(0 16px 20px rgba(0,0,0,.52)) drop-shadow(0 0 20px rgba(255,212,94,.28));
+}
+
+.ninja-loadout-detail {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.ninja-loadout-stage {
+  position: relative;
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+}
+
+.ninja-art-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(260px, 72vw);
+  height: 318px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 42%, rgba(255,212,94,.16), rgba(0,0,0,.22) 54%, transparent 72%);
+}
+
+.ninja-loadout-detail .ninja-art-wrap img {
+  width: min(250px, 70vw);
+  height: 318px;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 24px rgba(0,0,0,.62)) drop-shadow(0 0 24px rgba(255,212,94,.28));
+}
+
+.loadout-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.loadout-slot {
+  position: absolute;
+  z-index: 2;
+  width: 92px;
+  min-height: 58px;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  color: white;
+  background: rgba(0,0,0,.48);
+  box-shadow: 0 10px 20px rgba(0,0,0,.26);
+  pointer-events: auto;
+}
+
+.loadout-slot.active {
+  border-color: rgba(255,212,94,.92);
+  box-shadow: 0 0 22px rgba(255,212,94,.2), inset 0 0 16px rgba(255,212,94,.12);
+}
+
+.loadout-slot b,
+.loadout-slot span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loadout-slot b {
+  color: #ffd45e;
+  font-size: 12px;
+}
+
+.loadout-slot span {
+  color: rgba(255,255,255,.74);
+  font-size: 9px;
+}
+
+.loadout-slot.slot-0 { left: 4px; top: 22px; }
+.loadout-slot.slot-1 { right: 4px; top: 22px; }
+.loadout-slot.slot-2 { left: 0; top: 138px; }
+.loadout-slot.slot-3 { right: 0; top: 138px; }
+.loadout-slot.slot-4 { left: 18px; bottom: 16px; }
+.loadout-slot.slot-5 { right: 18px; bottom: 16px; }
+.loadout-slot.slot-6 { left: 50%; bottom: 0; transform: translateX(-50%); }
+
+.ninja-loadout-info {
+  text-align: center;
+}
+
+.equipment-pick.selected {
+  border-color: rgba(255,212,94,.8);
+  background: rgba(255,212,94,.1);
 }
 
 .equip-slots {
@@ -1842,6 +1963,81 @@ button:disabled {
 .raid-simple-panel .raid-enemy-side img,
 .raid-simple-panel .raid-damage-call.is-live b {
   animation: none;
+}
+
+.raid-live-panel {
+  min-height: 510px;
+}
+
+.raid-live-stage {
+  min-height: 300px;
+}
+
+.raid-live-panel .raid-action-row {
+  margin-top: 6px;
+}
+
+.raid-live-panel .raid-attack-button {
+  min-height: 56px;
+  font-size: 19px;
+}
+
+.raid-result-panel {
+  margin-top: 10px;
+  background:
+    radial-gradient(circle at 50% 0, rgba(255,212,94,.24), transparent 42%),
+    rgba(0,0,0,.32);
+}
+
+.raid-ranking-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.raid-rank-row {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  background: rgba(0,0,0,.25);
+}
+
+.raid-rank-row > b {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: rgba(0,0,0,.84);
+  background: rgba(255,255,255,.7);
+  font-size: 14px;
+}
+
+.raid-rank-row.top {
+  border-color: rgba(255,212,94,.72);
+  background: rgba(255,212,94,.1);
+}
+
+.raid-rank-row.top > b {
+  background: #ffd45e;
+}
+
+.raid-rank-row strong,
+.raid-rank-row span {
+  display: block;
+}
+
+.raid-rank-row strong {
+  font-size: 13px;
+}
+
+.raid-rank-row span {
+  color: rgba(255,255,255,.72);
+  font-size: 11px;
 }
 
 .rarity-strip {
