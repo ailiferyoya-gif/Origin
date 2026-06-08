@@ -910,6 +910,75 @@ body {
   font-size: 15px;
 }
 
+.save-status {
+  display: grid;
+  grid-template-columns: 1.35fr .8fr .8fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.save-status div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  padding: 9px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 8px;
+  background: rgba(0,0,0,.25);
+}
+
+.save-status span,
+.save-slot span {
+  color: rgba(255,255,255,.66);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.save-status b,
+.save-slot strong {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.save-slot-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.save-slot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 58px 58px;
+  gap: 8px;
+  align-items: center;
+  min-height: 58px;
+  padding: 9px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 8px;
+  background: rgba(0,0,0,.23);
+}
+
+.save-slot div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.save-slot button {
+  min-height: 36px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  color: rgba(0,0,0,.84);
+  background: #ffd45e;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.save-slot button:last-child {
+  color: white;
+  background: rgba(255,255,255,.12);
+}
+
 .action-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

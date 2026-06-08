@@ -143,6 +143,7 @@ const raidBosses = [
 ];
 
 const storageKey = "kagezuki-ninja-village-preview-v3";
+const saveSlotCount = 3;
 let activeTab = "village";
 let activeView = { village: "home", ninjas: "list", formation: "home", missions: "board" };
 let selectedFacilityId = null;
@@ -310,6 +311,56 @@ function normalizeGameState() {
   game.savedAt = game.savedAt || null;
 }
 
+function saveSlotKey(slot) {
+  return `${storageKey}-slot-${slot}`;
+}
+
+function saveStamp(value = game.savedAt) {
+  if (!value) return "未保存";
+  return new Date(value).toLocaleString("ja-JP", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function applyLoadedGame(loaded) {
+  Object.assign(game, createInitialGame(), loaded);
+  normalizeGameState();
+  maintainWorldRaids();
+}
+
+function makeSavePayload() {
+  normalizeGameState();
+  game.savedAt = Date.now();
+  return JSON.stringify(game);
+}
+
+function readSaveMeta(slot) {
+  try {
+    const raw = localStorage.getItem(saveSlotKey(slot));
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return {
+      savedAt: data.savedAt || null,
+      villageLevel: data.villageLevel || 1,
+      ninjas: Array.isArray(data.ninjas) ? data.ninjas.length : 0,
+      gems: data.gems || 0
+    };
+  } catch {
+    return { broken: true };
+  }
+}
+
+function encodeSaveText(text) {
+  return btoa(unescape(encodeURIComponent(text)));
+}
+
+function decodeSaveText(text) {
+  return decodeURIComponent(escape(atob(text.trim())));
+}
+
 function formationNinjas() {
   const ids = game.formation?.ninjaIds || [];
   const chosen = ids.map(id => getNinja(id)).filter(Boolean);
@@ -446,6 +497,7 @@ function renderVillage() {
         <button data-action="load-game">読込</button>
       </div>
     </div>
+    ${renderSavePanel()}
     <div class="panel-card">
       <span class="scene-kicker">FACILITIES</span>
       <h2>施設画面</h2>
@@ -818,6 +870,43 @@ function renderResourceTiles() {
   return Object.entries(game.resources).map(([key, value]) => `
     <div class="resource-tile"><span>${resourceLabels[key] || key}</span><b>${yen(value)}</b></div>
   `).join("");
+}
+
+function renderSavePanel() {
+  return `
+    <div class="panel-card save-panel">
+      <span class="scene-kicker">SAVE DATA</span>
+      <h2>セーブ管理</h2>
+      <p>端末内に保存します。別端末へ移す場合はセーブコードを使ってください。</p>
+      <div class="save-status">
+        <div><span>現在データ</span><b>${saveStamp()}</b></div>
+        <div><span>忍者</span><b>${game.ninjas.length}名</b></div>
+        <div><span>勾玉</span><b>${yen(game.gems)}</b></div>
+      </div>
+      <div class="save-slot-list">
+        ${Array.from({ length: saveSlotCount }, (_, index) => renderSaveSlot(index + 1)).join("")}
+      </div>
+      <div class="action-grid">
+        <button data-action="export-save">セーブコード出力</button>
+        <button data-action="import-save">セーブコード入力</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderSaveSlot(slot) {
+  const meta = readSaveMeta(slot);
+  const label = meta?.broken ? "破損データ" : meta ? `${saveStamp(meta.savedAt)} / 里Lv.${meta.villageLevel} / 忍者${meta.ninjas}名` : "空きスロット";
+  return `
+    <article class="save-slot">
+      <div>
+        <strong>スロット${slot}</strong>
+        <span>${label}</span>
+      </div>
+      <button data-action="save-slot" data-slot="${slot}">保存</button>
+      <button data-action="load-slot" data-slot="${slot}" ${meta && !meta.broken ? "" : "disabled"}>読込</button>
+    </article>
+  `;
 }
 
 function scaleRewards(rewards, multiplier) {
@@ -1200,9 +1289,8 @@ function goBack() {
 
 function saveGame(silent = false) {
   try {
-    normalizeGameState();
-    game.savedAt = Date.now();
-    localStorage.setItem(storageKey, JSON.stringify(game));
+    const payload = makeSavePayload();
+    localStorage.setItem(storageKey, payload);
     if (!silent) {
       screenSubtitle.textContent = "保存しました";
       window.setTimeout(renderHeader, 900);
@@ -1215,25 +1303,69 @@ function saveGame(silent = false) {
   }
 }
 
-function loadGame(silent = true) {
-  const raw = localStorage.getItem(storageKey);
+function saveGameSlot(slot) {
+  try {
+    const payload = makeSavePayload();
+    localStorage.setItem(storageKey, payload);
+    localStorage.setItem(saveSlotKey(slot), payload);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+function loadGame(silent = true, slot = null) {
+  const key = slot ? saveSlotKey(slot) : storageKey;
+  const raw = localStorage.getItem(key);
   if (!raw) {
     normalizeGameState();
     if (!silent) screenSubtitle.textContent = "保存データがありません";
     return false;
   }
   try {
-    Object.assign(game, createInitialGame(), JSON.parse(raw));
-    normalizeGameState();
-    maintainWorldRaids();
+    applyLoadedGame(JSON.parse(raw));
+    localStorage.setItem(storageKey, JSON.stringify(game));
     if (!silent) {
       screenSubtitle.textContent = "読み込みました";
     }
     return true;
   } catch {
-    localStorage.removeItem(storageKey);
+    localStorage.removeItem(key);
     normalizeGameState();
     if (!silent) screenSubtitle.textContent = "保存データを修復しました";
+    return false;
+  }
+}
+
+function exportSaveCode() {
+  try {
+    const code = encodeSaveText(makeSavePayload());
+    window.prompt("このセーブコードをコピーしてください", code);
+    localStorage.setItem(storageKey, JSON.stringify(game));
+    screenSubtitle.textContent = "セーブコードを出力しました";
+    return true;
+  } catch (error) {
+    console.error(error);
+    screenSubtitle.textContent = "セーブコード出力に失敗しました";
+    return false;
+  }
+}
+
+function importSaveCode() {
+  const code = window.prompt("セーブコードを貼り付けてください");
+  if (!code) return false;
+  try {
+    const raw = decodeSaveText(code);
+    const loaded = JSON.parse(raw);
+    applyLoadedGame(loaded);
+    const payload = JSON.stringify(game);
+    localStorage.setItem(storageKey, payload);
+    screenSubtitle.textContent = "セーブコードを読み込みました";
+    return true;
+  } catch (error) {
+    console.error(error);
+    screenSubtitle.textContent = "セーブコードが読み込めません";
     return false;
   }
 }
@@ -1311,6 +1443,26 @@ document.addEventListener("click", event => {
     const loaded = loadGame(true);
     render();
     screenSubtitle.textContent = loaded ? "読み込みました" : "保存データがありません";
+  }
+  if (action === "save-slot") {
+    const ok = saveGameSlot(target.dataset.slot);
+    render();
+    screenSubtitle.textContent = ok ? `スロット${target.dataset.slot}に保存しました` : "保存に失敗しました";
+  }
+  if (action === "load-slot") {
+    const loaded = loadGame(true, target.dataset.slot);
+    render();
+    screenSubtitle.textContent = loaded ? `スロット${target.dataset.slot}を読み込みました` : "保存データがありません";
+  }
+  if (action === "export-save") {
+    const exported = exportSaveCode();
+    render();
+    if (exported) screenSubtitle.textContent = "セーブコードを出力しました";
+  }
+  if (action === "import-save") {
+    const loaded = importSaveCode();
+    render();
+    if (loaded) screenSubtitle.textContent = "セーブコードを読み込みました";
   }
   if (action === "confirm-upgrade") confirmUpgradeFacility(target.dataset.id);
   if (action === "confirm-train") confirmTrainNinja(target.dataset.id);
