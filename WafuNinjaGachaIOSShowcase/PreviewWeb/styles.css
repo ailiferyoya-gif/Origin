@@ -961,10 +961,6 @@ body {
   font-weight: 900;
 }
 
-.cloud-actions button:only-child {
-  grid-column: 1 / -1;
-}
-
 .save-status div {
   min-width: 0;
   display: grid;

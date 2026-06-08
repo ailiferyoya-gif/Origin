@@ -143,6 +143,7 @@ const raidBosses = [
 ];
 
 const storageKey = "kagezuki-ninja-village-preview-v3";
+const firebaseConfigStorageKey = `${storageKey}-firebase-config`;
 const saveSlotCount = 3;
 let activeTab = "village";
 let activeView = { village: "home", ninjas: "list", formation: "home", missions: "board" };
@@ -362,9 +363,55 @@ function decodeSaveText(text) {
   return decodeURIComponent(escape(atob(text.trim())));
 }
 
+function getStoredFirebaseConfig() {
+  try {
+    return JSON.parse(localStorage.getItem(firebaseConfigStorageKey) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function getFirebaseConfig() {
+  return { ...(window.NINJA_FIREBASE_CONFIG || {}), ...getStoredFirebaseConfig() };
+}
+
 function hasFirebaseConfig() {
-  const config = window.NINJA_FIREBASE_CONFIG || {};
+  const config = getFirebaseConfig();
   return Boolean(config.apiKey && config.authDomain && config.projectId && config.appId);
+}
+
+function parseFirebaseConfigText(text) {
+  const objectText = text.trim().match(/\{[\s\S]*\}/)?.[0] || text.trim();
+  try {
+    return JSON.parse(objectText);
+  } catch {
+    return Function(`"use strict"; return (${objectText});`)();
+  }
+}
+
+function promptFirebaseConfig() {
+  const input = window.prompt("Firebase Web設定を貼り付けてください");
+  if (!input) return false;
+  try {
+    const config = parseFirebaseConfigText(input);
+    if (!config.apiKey || !config.authDomain || !config.projectId || !config.appId) {
+      screenSubtitle.textContent = "Firebase設定の項目が不足しています";
+      return false;
+    }
+    localStorage.setItem(firebaseConfigStorageKey, JSON.stringify({
+      apiKey: config.apiKey,
+      authDomain: config.authDomain,
+      projectId: config.projectId,
+      appId: config.appId
+    }));
+    screenSubtitle.textContent = "Firebase設定を保存しました。再読み込みしてください";
+    window.setTimeout(() => window.location.reload(), 900);
+    return true;
+  } catch (error) {
+    console.error(error);
+    screenSubtitle.textContent = "Firebase設定を読み取れません";
+    return false;
+  }
 }
 
 function cloudUserLabel() {
@@ -380,7 +427,7 @@ function initCloudAuth() {
   }
   try {
     if (!window.firebase.apps.length) {
-      window.firebase.initializeApp(window.NINJA_FIREBASE_CONFIG);
+      window.firebase.initializeApp(getFirebaseConfig());
     }
     cloudAuth = { ready: true, enabled: true, user: null, status: "未ログイン" };
     window.firebase.auth().onAuthStateChanged(user => {
@@ -1012,7 +1059,7 @@ function renderSavePanel() {
         <div class="cloud-actions">
           ${cloudAuth.user
             ? `<button data-action="cloud-save">クラウド保存</button><button data-action="cloud-load">クラウド読込</button><button data-action="google-logout">ログアウト</button>`
-            : `<button data-action="google-login" ${cloudAuth.enabled ? "" : "disabled"}>Googleログイン</button>`}
+            : `<button data-action="google-login" ${cloudAuth.enabled ? "" : "disabled"}>Googleログイン</button><button data-action="firebase-config">Firebase設定</button>`}
         </div>
       </div>
       <div class="save-status">
@@ -1600,6 +1647,9 @@ document.addEventListener("click", event => {
     const loaded = importSaveCode();
     render();
     if (loaded) screenSubtitle.textContent = "セーブコードを読み込みました";
+  }
+  if (action === "firebase-config") {
+    promptFirebaseConfig();
   }
   if (action === "google-login") {
     signInWithGoogle().then(() => render());

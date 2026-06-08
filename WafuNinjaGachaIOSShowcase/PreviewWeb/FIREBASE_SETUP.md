@@ -7,7 +7,9 @@
    - ローカル確認用に必要なら `localhost`
 4. Firestore Database を作成します。
 5. Project settings > Your apps から Web アプリを追加し、Firebase config をコピーします。
-6. `PreviewWeb/firebase-config.js` の空欄をコピーした値で埋めます。
+6. ゲームの里画面 > セーブ管理 > Firebase設定 にコピーした設定を貼り付けます。
+
+コードに固定したい場合は、`PreviewWeb/firebase-config.js` の空欄をコピーした値で埋めます。
 
 ```js
 window.NINJA_FIREBASE_CONFIG = {
