@@ -154,6 +154,7 @@ let selectedNpcId = null;
 let selectedAllies = [];
 let pendingConfirm = null;
 let currentCards = [];
+let cloudAuth = { ready: false, enabled: false, user: null, status: "Firebase未設定" };
 
 const game = createInitialGame();
 loadGame(true);
@@ -359,6 +360,131 @@ function encodeSaveText(text) {
 
 function decodeSaveText(text) {
   return decodeURIComponent(escape(atob(text.trim())));
+}
+
+function hasFirebaseConfig() {
+  const config = window.NINJA_FIREBASE_CONFIG || {};
+  return Boolean(config.apiKey && config.authDomain && config.projectId && config.appId);
+}
+
+function cloudUserLabel() {
+  if (!cloudAuth.enabled) return "Firebase設定待ち";
+  if (!cloudAuth.user) return "未ログイン";
+  return cloudAuth.user.displayName || cloudAuth.user.email || "Googleユーザー";
+}
+
+function initCloudAuth() {
+  if (!window.firebase || !hasFirebaseConfig()) {
+    cloudAuth = { ready: true, enabled: false, user: null, status: "Firebase設定待ち" };
+    return;
+  }
+  try {
+    if (!window.firebase.apps.length) {
+      window.firebase.initializeApp(window.NINJA_FIREBASE_CONFIG);
+    }
+    cloudAuth = { ready: true, enabled: true, user: null, status: "未ログイン" };
+    window.firebase.auth().onAuthStateChanged(user => {
+      cloudAuth.user = user;
+      cloudAuth.status = user ? "ログイン中" : "未ログイン";
+      render();
+    });
+    window.firebase.auth().getRedirectResult().catch(error => {
+      console.error(error);
+      cloudAuth.status = "Googleログインに失敗しました";
+      render();
+    });
+  } catch (error) {
+    console.error(error);
+    cloudAuth = { ready: true, enabled: false, user: null, status: "Firebase初期化失敗" };
+  }
+}
+
+async function signInWithGoogle() {
+  if (!cloudAuth.enabled || !window.firebase) {
+    screenSubtitle.textContent = "Firebase設定を入力してください";
+    return false;
+  }
+  const provider = new window.firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+  try {
+    await window.firebase.auth().signInWithPopup(provider);
+    screenSubtitle.textContent = "Googleログインしました";
+    return true;
+  } catch (error) {
+    if (error?.code === "auth/popup-blocked" || error?.code === "auth/popup-closed-by-user") {
+      await window.firebase.auth().signInWithRedirect(provider);
+      return true;
+    }
+    console.error(error);
+    screenSubtitle.textContent = "Googleログインに失敗しました";
+    return false;
+  }
+}
+
+async function signOutGoogle() {
+  if (!cloudAuth.enabled || !window.firebase) return false;
+  await window.firebase.auth().signOut();
+  screenSubtitle.textContent = "ログアウトしました";
+  return true;
+}
+
+function cloudSaveRef() {
+  if (!cloudAuth.user || !window.firebase) return null;
+  return window.firebase.firestore()
+    .collection("users")
+    .doc(cloudAuth.user.uid)
+    .collection("saves")
+    .doc("main");
+}
+
+async function saveGameCloud() {
+  const ref = cloudSaveRef();
+  if (!ref) {
+    screenSubtitle.textContent = "Googleログインが必要です";
+    return false;
+  }
+  try {
+    const payload = makeSavePayload();
+    await ref.set({
+      payload,
+      savedAt: game.savedAt,
+      updatedAt: window.firebase.firestore.FieldValue.serverTimestamp(),
+      version: 1
+    });
+    localStorage.setItem(storageKey, payload);
+    screenSubtitle.textContent = "クラウド保存しました";
+    return true;
+  } catch (error) {
+    console.error(error);
+    screenSubtitle.textContent = "クラウド保存に失敗しました";
+    return false;
+  }
+}
+
+async function loadGameCloud() {
+  const ref = cloudSaveRef();
+  if (!ref) {
+    screenSubtitle.textContent = "Googleログインが必要です";
+    return false;
+  }
+  try {
+    const snap = await ref.get();
+    if (!snap.exists) {
+      screenSubtitle.textContent = "クラウド保存がありません";
+      return false;
+    }
+    const data = snap.data();
+    const loaded = JSON.parse(data.payload);
+    applyLoadedGame(loaded);
+    localStorage.setItem(storageKey, JSON.stringify(game));
+    screenSubtitle.textContent = "クラウド読込しました";
+    render();
+    return true;
+  } catch (error) {
+    console.error(error);
+    screenSubtitle.textContent = "クラウド読込に失敗しました";
+    return false;
+  }
 }
 
 function formationNinjas() {
@@ -878,6 +1004,17 @@ function renderSavePanel() {
       <span class="scene-kicker">SAVE DATA</span>
       <h2>セーブ管理</h2>
       <p>端末内に保存します。別端末へ移す場合はセーブコードを使ってください。</p>
+      <div class="cloud-auth-card">
+        <div>
+          <strong>Googleアカウント</strong>
+          <span>${cloudUserLabel()} / ${cloudAuth.status}</span>
+        </div>
+        <div class="cloud-actions">
+          ${cloudAuth.user
+            ? `<button data-action="cloud-save">クラウド保存</button><button data-action="cloud-load">クラウド読込</button><button data-action="google-logout">ログアウト</button>`
+            : `<button data-action="google-login" ${cloudAuth.enabled ? "" : "disabled"}>Googleログイン</button>`}
+        </div>
+      </div>
       <div class="save-status">
         <div><span>現在データ</span><b>${saveStamp()}</b></div>
         <div><span>忍者</span><b>${game.ninjas.length}名</b></div>
@@ -1464,6 +1601,18 @@ document.addEventListener("click", event => {
     render();
     if (loaded) screenSubtitle.textContent = "セーブコードを読み込みました";
   }
+  if (action === "google-login") {
+    signInWithGoogle().then(() => render());
+  }
+  if (action === "google-logout") {
+    signOutGoogle().then(() => render());
+  }
+  if (action === "cloud-save") {
+    saveGameCloud().then(() => render());
+  }
+  if (action === "cloud-load") {
+    loadGameCloud();
+  }
   if (action === "confirm-upgrade") confirmUpgradeFacility(target.dataset.id);
   if (action === "confirm-train") confirmTrainNinja(target.dataset.id);
   if (action === "craft-equipment") craftEquipment(target.dataset.slot);
@@ -1542,4 +1691,5 @@ setInterval(() => {
   if (activeTab === "missions") render();
 }, 1000);
 
+initCloudAuth();
 showTab("village");
