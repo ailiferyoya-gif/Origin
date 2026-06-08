@@ -1,0 +1,10 @@
+{
+  "name": "Instant Duel TD",
+  "short_name": "Duel TD",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#101827",
+  "theme_color": "#101827",
+  "orientation": "portrait",
+  "icons": []
+}

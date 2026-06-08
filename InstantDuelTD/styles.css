@@ -1,0 +1,211 @@
+:root {
+  color-scheme: dark;
+  --bg: #101827;
+  --panel: rgba(14, 22, 34, 0.9);
+  --panel-2: rgba(32, 43, 61, 0.94);
+  --line: rgba(255, 255, 255, 0.13);
+  --text: #f8fafc;
+  --muted: #aeb8c7;
+  --gold: #f5c451;
+  --red: #ff6678;
+  --blue: #62b6ff;
+  font-family: "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: radial-gradient(circle at 50% -12%, #31455e 0, var(--bg) 48%);
+  color: var(--text);
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+button {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 900;
+}
+
+.app {
+  width: min(100vw, 430px);
+  height: 100svh;
+  min-height: -webkit-fill-available;
+  margin: 0 auto;
+  padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.topbar,
+.scoreline,
+.controls {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+}
+
+.eyebrow,
+.meter span,
+.gold span {
+  display: block;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.scoreline {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  overflow: hidden;
+}
+
+.meter,
+.gold {
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.meter b,
+.gold b {
+  display: block;
+  margin-top: 2px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.enemy b { color: var(--red); }
+.self b { color: var(--blue); }
+.gold b { color: var(--gold); }
+
+.arenaWrap {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #0b1220;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 370px;
+}
+
+.status {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(9, 12, 20, 0.78);
+  text-align: center;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.status.hidden { display: none; }
+
+.controls { padding: 8px; }
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.tab.active {
+  background: #f8fafc;
+  color: #111827;
+}
+
+.rerollRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+#rerollBtn {
+  background: linear-gradient(180deg, #f7d577, #c78c24);
+  color: #1f1300;
+}
+
+#rerollCount {
+  color: var(--muted);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.card {
+  min-height: 92px;
+  padding: 8px;
+  display: grid;
+  align-content: space-between;
+  text-align: left;
+}
+
+.card.selected {
+  outline: 2px solid var(--gold);
+  background: rgba(245, 196, 81, 0.18);
+}
+
+.card strong,
+.card span {
+  display: block;
+  min-width: 0;
+}
+
+.card strong {
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.card span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+@media (max-height: 720px) {
+  .card { min-height: 80px; }
+  .topbar,
+  .meter,
+  .gold,
+  .controls {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
