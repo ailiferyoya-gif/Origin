@@ -1799,6 +1799,75 @@ button:disabled {
   line-height: 1.35;
 }
 
+.raid-simple-panel {
+  min-height: 430px;
+}
+
+.raid-simple-panel::before {
+  background: linear-gradient(180deg, rgba(5,8,13,.55), rgba(5,8,13,.72));
+}
+
+.raid-simple-stage {
+  position: relative;
+  z-index: 1;
+  min-height: 338px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+}
+
+.raid-simple-stage img {
+  width: min(330px, 88vw);
+  height: 276px;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 26px rgba(0,0,0,.64));
+}
+
+.raid-simple-stage strong {
+  color: #ffd45e;
+  font-size: 17px;
+  font-weight: 1000;
+  text-shadow: 0 2px 8px rgba(0,0,0,.8);
+}
+
+.raid-simple-stage span {
+  color: rgba(255,255,255,.72);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.raid-simple-panel .raid-boss-bar i,
+.raid-simple-panel .raid-mode i,
+.raid-simple-panel .raid-enemy-side img,
+.raid-simple-panel .raid-damage-call.is-live b {
+  animation: none;
+}
+
+.rarity-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.equip-rarity {
+  min-width: 44px;
+  padding: 5px 8px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 7px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 1000;
+  background: rgba(0,0,0,.28);
+}
+
+.equip-rarity.ur { color: #ffe37a; border-color: rgba(255,227,122,.72); }
+.equip-rarity.ssr { color: #ffc0df; border-color: rgba(255,127,190,.62); }
+.equip-rarity.sr { color: #9ed4ff; border-color: rgba(111,190,255,.55); }
+.equip-rarity.r { color: #c7ffa0; border-color: rgba(143,230,96,.5); }
+.equip-rarity.n { color: rgba(255,255,255,.76); }
+
 @keyframes raidEnemyBreath {
   0%, 100% { transform: scaleX(-1) translateY(0) scale(1); }
   50% { transform: scaleX(-1) translateY(-5px) scale(1.025); }

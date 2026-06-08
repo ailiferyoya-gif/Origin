@@ -163,6 +163,24 @@ const raidCompanions = [
   { name: "影縫サキ", power: 25100, avatar: "影" }
 ];
 
+const equipmentSlots = ["武器", "体", "頭", "足", "指輪", "腕輪", "宝石"];
+const equipmentRarityTable = [
+  { rarity: "UR", rate: 0.01, power: 1540 },
+  { rarity: "SSR", rate: 0.07, power: 980 },
+  { rarity: "SR", rate: 0.22, power: 620 },
+  { rarity: "R", rate: 0.45, power: 340 },
+  { rarity: "N", rate: 1, power: 180 }
+];
+const equipmentNames = {
+  "武器": ["月影の忍刀", "黒鉄苦無", "煙裂き鎖鎌", "風切手裏剣"],
+  "体": ["黒漆の忍装束", "影縫い胴丸", "山霞の鎖帷子"],
+  "頭": ["夜見の面", "霧隠れ鉢金", "天狗羽の頭巾"],
+  "足": ["韋駄天脚絆", "水蜘蛛の足袋", "黒縄の草鞋"],
+  "指輪": ["煙遁の指輪", "火走りの指輪", "水鏡の指輪"],
+  "腕輪": ["雷鳴の腕輪", "隠密の手甲", "百足封じの腕輪"],
+  "宝石": ["月光石", "緋毒の勾玉", "蒼蛇の宝珠"]
+};
+
 const storageKey = "kagezuki-ninja-village-preview-v3";
 const firebaseConfigStorageKey = `${storageKey}-firebase-config`;
 const saveSlotCount = 3;
@@ -195,10 +213,13 @@ function createInitialGame() {
     ninjas: owned.map((id, index) => ninjaFromPool(pool.find(card => card.id === id), [13, 18, 24, 11][index], false)),
     equipment: [
       equipment("eq-blade", "武器", "月影の忍刀", "SSR", 5, 1480),
-      equipment("eq-armor", "防具", "黒漆の忍装束", "SR", 4, 920),
-      equipment("eq-charm", "装飾品", "煙遁の護符", "SR", 3, 740),
+      equipment("eq-armor", "体", "黒漆の忍装束", "SR", 4, 920),
+      equipment("eq-charm", "指輪", "煙遁の指輪", "SR", 3, 740),
       equipment("eq-kunai", "武器", "黒鉄苦無", "R", 2, 420),
-      equipment("eq-mask", "装飾品", "夜見の面", "R", 1, 360)
+      equipment("eq-mask", "頭", "夜見の面", "R", 1, 360),
+      equipment("eq-tabi", "足", "水蜘蛛の足袋", "N", 1, 190),
+      equipment("eq-bracelet", "腕輪", "隠密の手甲", "R", 1, 310),
+      equipment("eq-gem", "宝石", "月光石", "SR", 2, 690)
     ],
     formation: { ninjaIds: owned.slice(0, 3), minions: 36 },
     settings: { soundEnabled: true },
@@ -379,6 +400,12 @@ function normalizeGameState() {
   game.facilities = Array.isArray(game.facilities) ? game.facilities : [...fresh.facilities];
   game.ninjas = Array.isArray(game.ninjas) ? game.ninjas : [...fresh.ninjas];
   game.equipment = Array.isArray(game.equipment) ? game.equipment : [...fresh.equipment];
+  game.equipment.forEach(item => {
+    if (item.slot === "防具") item.slot = "体";
+    if (item.slot === "装飾品") item.slot = item.name?.includes("面") ? "頭" : "指輪";
+    if (!equipmentSlots.includes(item.slot)) item.slot = "武器";
+    if (!item.rarity) item.rarity = "N";
+  });
   game.defense = { ...fresh.defense, ...(game.defense || {}) };
   game.activities = Array.isArray(game.activities) ? game.activities : [];
   game.reports = Array.isArray(game.reports) ? game.reports : [];
@@ -824,16 +851,18 @@ function renderWorkshop() {
   return `
     <div class="panel-card">
       <span class="scene-kicker">WORKSHOP</span>
-      <h2>工房メニュー</h2>
+      <h2>????</h2>
+      <p>?????????????????????????????N/R/SR/SSR/UR????????</p>
       <div class="action-grid">
-        <button data-action="craft-equipment" data-slot="武器">武器を生産</button>
-        <button data-action="craft-equipment" data-slot="防具">防具を生産</button>
-        <button data-action="craft-equipment" data-slot="装飾品">装飾品を生産</button>
-        <button data-action="enhance-all">一括強化</button>
+        ${equipmentSlots.map(slot => `<button data-action="craft-equipment" data-slot="${slot}">${slot}???</button>`).join("")}
+        <button data-action="enhance-all">????</button>
+      </div>
+      <div class="rarity-strip">
+        ${equipmentRarityTable.map(item => `<span class="equip-rarity ${item.rarity.toLowerCase()}">${item.rarity}</span>`).join("")}
       </div>
     </div>
     <div class="panel-card">
-      <h2>装備倉庫</h2>
+      <h2>????</h2>
       <div class="list-stack">${game.equipment.map(renderEquipmentRow).join("")}</div>
     </div>
   `;
@@ -942,7 +971,7 @@ function renderNinjaDetail(id) {
     <div class="panel-card">
       <h2>装備</h2>
       <div class="equip-slots">
-        ${["武器", "防具", "装飾品"].map(slot => `
+        ${equipmentSlots.map(slot => `
           <div class="equip-slot">
             <strong>${slot}</strong>
             <span>${equipped.find(item => item.slot === slot)?.name || "未装備"}</span>
@@ -1119,65 +1148,20 @@ function renderActivities() {
 
 function renderRaidBattle(raidId) {
   const raid = game.raidEvents.find(item => item.id === raidId) || game.raidEvents[0];
-  if (!raid) return `<div class="panel-card"><h1>レイドなし</h1><button data-action="mission-board">任務板へ</button></div>`;
-  const difficulty = getDifficulty(raid.difficulty);
-  const rewards = scaleRewards(missionCatalog.raid.baseRewards, difficulty.multiplier);
+  if (!raid) return `<div class="panel-card"><h1>?????</h1><button data-action="mission-board">????</button></div>`;
   const rate = Math.max(0, raid.hpLeft / raid.hp);
-  const latestPlayerHit = [...(raid.logs || [])].find(item => item.type === "player");
-  const allLogs = [...(raid.logs || [])].sort((a, b) => b.at - a.at).slice(0, 12);
-  const members = (raid.members || []).slice(0, 8);
-  const joined = raid.playerJoined || raid.playerSummoned;
-  const defeated = raid.hpLeft <= 0;
-  const required = Math.max(1, Math.ceil(difficulty.minions * 0.35));
   return `
-    <div class="raid-battle-panel">
+    <div class="raid-battle-panel raid-simple-panel">
       <div class="raid-hud">
-        <button class="raid-back" data-action="mission-board">任務板</button>
+        <button class="raid-back" data-action="mission-board">???</button>
         <div class="raid-boss-chip"><b>${raid.element}</b><span>${raid.name}</span></div>
         <div class="raid-hp-read">${Math.round(rate * 100)}%</div>
       </div>
       <div class="raid-boss-bar"><i style="width:${rate * 100}%"></i></div>
-      <div class="raid-mode"><span>${raid.difficultyName}</span><i style="width:${Math.max(8, raid.progress)}%"></i></div>
-      <div class="raid-stage">
-        <div class="raid-enemy-side">
-          <img src="${raid.img}" alt="${raid.name}">
-          <span class="raid-aura"></span>
-        </div>
-        <div class="raid-damage-call ${latestPlayerHit ? "is-live" : ""}">
-          <small>TOTAL</small>
-          <b>${yen(latestPlayerHit?.damage || Math.max(0, raid.hp - raid.hpLeft))}</b>
-        </div>
-        <div class="raid-ally-side">
-          ${formationNinjas().map(ninja => `
-            <div class="raid-ally-card ${ninja.rarityKey}">
-              <img src="${ninja.img}" alt="${ninja.name}">
-              <span>${ninja.rarity}</span>
-            </div>
-          `).join("")}
-          <div class="raid-member-stack">
-            ${members.slice(0, 5).map(member => `<span title="${member.name}">${member.avatar || member.name.slice(0, 1)}</span>`).join("")}
-          </div>
-        </div>
-      </div>
-      <div class="raid-action-row">
-        <button class="raid-attack-button" data-action="${joined ? "raid-attack" : "join-raid"}" ${defeated || game.minions.available < required ? "disabled" : ""}>
-          ${defeated ? "討伐完了" : joined ? "一斉攻撃" : "参加する"}
-        </button>
-        <div>
-          <strong>必要忍び ${required}</strong>
-          <span>残HP ${yen(Math.max(0, raid.hpLeft))} / 報酬 ${resourceText(rewards)}</span>
-        </div>
-      </div>
-    </div>
-    <div class="panel-card raid-log-panel">
-      <h2>共闘ログ</h2>
-      <div class="raid-log-list">
-        ${allLogs.map(log => `
-          <article class="raid-log-entry ${log.type}">
-            <b>${log.actor}</b>
-            <span>${log.text} / 与ダメージ ${yen(log.damage)} / 被ダメージ ${yen(log.taken || 0)}</span>
-          </article>
-        `).join("")}
+      <div class="raid-simple-stage">
+        <img src="${raid.img}" alt="${raid.name}">
+        <strong>HP ${yen(Math.max(0, raid.hpLeft))} / ${yen(raid.hp)}</strong>
+        <span>${raid.difficultyName} / ${raid.caller}</span>
       </div>
     </div>
   `;
@@ -1330,22 +1314,33 @@ function confirmTrainNinja(id) {
 }
 
 function craftEquipment(slot) {
-  const cost = { money: 1800, iron: slot === "防具" ? 420 : 300, toolParts: 180 };
-  if (slot === "装飾品") cost.silk = 120;
+  const normalizedSlot = equipmentSlots.includes(slot) ? slot : "??";
+  const cost = {
+    money: 1800,
+    iron: ["??", "?", "?", "?"].includes(normalizedSlot) ? 420 : 220,
+    toolParts: 180
+  };
+  if (["??", "??", "??"].includes(normalizedSlot)) cost.silk = 120;
   showConfirm({
-    title: `${slot}を生産しますか？`,
-    body: "工房Lvに応じて品質が変わります。",
-    details: [`必要素材: ${resourceText(cost)}`, "RからSSRまで抽選", "完成品は装備倉庫に追加"],
-    ok: "生産",
+    title: `${normalizedSlot}????????`,
+    body: "??????????????????????????????????????????",
+    details: [`????: ${resourceText(cost)}`, "???: N / R / SR / SSR / UR", "???????????"],
+    ok: "??",
     onOk: () => {
       if (!canPay(cost)) return;
       pay(cost);
       const rarityRoll = Math.random();
-      const rarity = rarityRoll < 0.08 ? "SSR" : rarityRoll < 0.34 ? "SR" : "R";
-      const names = { 武器: ["影縫い苦無", "朱月の忍刀", "霧裂き小太刀"], 防具: ["黒羽の忍装束", "鎖帷子・影", "火除け羽織"], 装飾品: ["煙遁の護符", "夜見の面", "鈴守り"] };
-      const item = equipment(`eq-${Date.now()}`, slot, randomFrom(names[slot]), rarity, 1, (rarity === "SSR" ? 980 : rarity === "SR" ? 620 : 340) + Math.floor(Math.random() * 180));
+      const rarityData = equipmentRarityTable.find(item => rarityRoll < item.rate) || equipmentRarityTable[equipmentRarityTable.length - 1];
+      const item = equipment(
+        `eq-${Date.now()}`,
+        normalizedSlot,
+        randomFrom(equipmentNames[normalizedSlot]),
+        rarityData.rarity,
+        1,
+        rarityData.power + Math.floor(Math.random() * 180)
+      );
       game.equipment.unshift(item);
-      game.reports.unshift(report(`${rarity} ${item.name}を生産しました。`, [`種別: ${slot}`, `戦力 +${yen(item.power)}`]));
+      game.reports.unshift(report(`${item.rarity} ${item.name}????????`, [`??: ${normalizedSlot}`, `?? +${yen(item.power)}`]));
       saveGame(true);
       render();
     }
@@ -1980,12 +1975,6 @@ againButton.addEventListener("click", async () => {
 });
 
 setInterval(() => {
-  const now = Date.now();
-  game.raidEvents.forEach(raid => {
-    if (raid.hpLeft > 0) {
-      tickRaidNpcCombat(raid, now);
-    }
-  });
   maintainWorldRaids();
   if (activeTab === "missions") render();
 }, 1000);
