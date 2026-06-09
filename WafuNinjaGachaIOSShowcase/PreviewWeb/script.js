@@ -223,6 +223,7 @@ let selectedNpcId = null;
 let selectedAllies = [];
 let selectedFormationSlot = 0;
 let selectedEquipSlot = "武器";
+let ninjaPage = 0;
 let pendingConfirm = null;
 let currentCards = [];
 let cloudAuth = { ready: false, enabled: false, user: null, status: "Firebase未設定" };
@@ -237,7 +238,7 @@ function createInitialGame() {
     tickets: 7,
     awakeningShards: 0,
     resources: { money: 15800, wood: 4200, iron: 3100, herbs: 1100, toolParts: 680, silk: 240, gunpowder: 90 },
-    minions: { total: 156, available: 124, injured: 18 },
+    minions: { total: 0, available: 0, injured: 0 },
     villageLevel: 5,
     owned,
     facilities: facilityCatalog.map(item => ({ id: item.id, level: item.id === "storehouse" ? 4 : item.id === "dojo" ? 3 : 2 })),
@@ -252,9 +253,9 @@ function createInitialGame() {
       equipment("eq-bracelet", "腕輪", "隠密の手甲", "R", 1, 310),
       equipment("eq-gem", "宝石", "月光石", "SR", 2, 690)
     ],
-    formation: { ninjaIds: owned.slice(0, 3), minions: 36 },
+    formation: { ninjaIds: owned.slice(0, 3) },
     settings: { soundEnabled: true },
-    defense: { ninjaIds: ["ninja-ssr-oboromaru", "ninja-sr-hayate"], minions: 84 },
+    defense: { ninjaIds: ["ninja-ssr-oboromaru", "ninja-sr-hayate"] },
     activities: [],
     reports: [],
     raidEvents: createInitialRaids(),
@@ -386,8 +387,6 @@ function ninjaFromPool(card, level = 1, isNew = true) {
     level,
     img: card.img,
     isNew,
-    maxMinions: 18 + rankBonus * 12 + Math.floor(level / 5),
-    assignedMinions: 10 + rankBonus * 8,
     power: card.basePower + level * 86,
     hp: 820 + level * 42 + rankBonus * 210,
     attack: 220 + level * 18 + rankBonus * 90,
@@ -444,6 +443,13 @@ function normalizeGameState() {
   game.owned = Array.isArray(game.owned) ? game.owned : [...fresh.owned];
   game.facilities = Array.isArray(game.facilities) ? game.facilities : [...fresh.facilities];
   game.ninjas = Array.isArray(game.ninjas) ? game.ninjas : [...fresh.ninjas];
+  game.ninjas.forEach(ninja => {
+    const maxHp = Math.max(1, Number(ninja.hp || ninja.maxHp || 1));
+    ninja.hp = maxHp;
+    ninja.hpCurrent = Math.max(0, Math.min(maxHp, Number(ninja.hpCurrent ?? maxHp)));
+    delete ninja.assignedMinions;
+    delete ninja.maxMinions;
+  });
   game.equipment = Array.isArray(game.equipment) ? game.equipment : [...fresh.equipment];
   game.equipment.forEach(item => {
     if (item.slot === "防具") item.slot = "体";
@@ -463,7 +469,7 @@ function normalizeGameState() {
   const fallbackIds = game.ninjas.slice(0, 3).map(ninja => ninja.id);
   game.formation = {
     ninjaIds: (ninjaIds.length ? ninjaIds : fallbackIds).slice(0, 3),
-    minions: Math.min(game.minions.available, Math.max(0, Number(savedFormation.minions ?? fresh.formation.minions)))
+    minions: 0
   };
   game.savedAt = game.savedAt || null;
 }
@@ -696,10 +702,46 @@ function formationNinjas() {
   return game.ninjas.slice(0, 3);
 }
 
+function ninjaPageItems(size = 9) {
+  const maxPage = Math.max(0, Math.ceil(game.ninjas.length / size) - 1);
+  ninjaPage = Math.min(maxPage, Math.max(0, ninjaPage));
+  return {
+    items: game.ninjas.slice(ninjaPage * size, ninjaPage * size + size),
+    page: ninjaPage,
+    maxPage
+  };
+}
+
+function aliveFormationNinjas() {
+  return formationNinjas().filter(ninja => (ninja.hpCurrent ?? ninja.hp) > 0);
+}
+
+function ninjaHp(ninja) {
+  const max = Math.max(1, Number(ninja.hp || ninja.maxHp || 1));
+  const current = Math.max(0, Math.min(max, Number(ninja.hpCurrent ?? max)));
+  return { current, max, rate: current / max };
+}
+
+function damageFormationNinjas(totalDamage) {
+  const targets = aliveFormationNinjas();
+  if (!targets.length) return [];
+  const per = Math.max(1, Math.ceil(totalDamage / targets.length));
+  return targets.map(ninja => {
+    const hp = ninjaHp(ninja);
+    const taken = Math.min(hp.current, Math.max(1, Math.round(per * (0.82 + Math.random() * 0.36))));
+    ninja.hpCurrent = Math.max(0, hp.current - taken);
+    return `${ninja.name} HP -${yen(taken)} (${yen(ninja.hpCurrent)}/${yen(hp.max)})`;
+  });
+}
+
+function restoreNinjaHp(ninja, amount = null) {
+  const hp = ninjaHp(ninja);
+  const heal = amount ?? Math.ceil(hp.max * 0.35);
+  ninja.hpCurrent = Math.min(hp.max, hp.current + heal);
+}
+
 function formationPower() {
-  const main = formationNinjas().reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
-  const minions = Math.min(game.formation?.minions ?? 0, game.minions.available);
-  return main + minions * 34;
+  return aliveFormationNinjas().reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
 }
 
 function getDifficulty(id = selectedDifficultyId) {
@@ -707,7 +749,7 @@ function getDifficulty(id = selectedDifficultyId) {
 }
 
 function totalPower() {
-  const ninjaPower = game.ninjas.reduce((sum, ninja) => sum + ninja.power + ninja.assignedMinions * 38 + equippedPower(ninja.id), 0);
+  const ninjaPower = game.ninjas.reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
   return Math.round(ninjaPower);
 }
 
@@ -717,7 +759,7 @@ function equippedPower(ninjaId) {
 
 function defensePower() {
   const defenders = game.ninjas.filter(ninja => game.defense.ninjaIds.includes(ninja.id));
-  return defenders.reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0) + game.defense.minions * 42;
+  return defenders.reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
 }
 
 function teamPower() {
@@ -803,32 +845,33 @@ function renderVillage() {
     panels.village.innerHTML = renderFacilityDetail(selectedFacilityId);
     return;
   }
+  const injured = game.ninjas.filter(ninja => ninjaHp(ninja).current <= 0).length;
   panels.village.innerHTML = `
-    <div class="panel-card hero-panel">
+    <div class="panel-card hero-panel village-home compact-screen">
       <span class="scene-kicker">NINJA VILLAGE</span>
       <h1>影月の里</h1>
-      <p>施設を選んで詳細へ入り、強化・生産・防衛を管理します。</p>
-      <div class="village-metrics">
+      <div class="village-metrics compact-metrics">
         <div><b>${yen(totalPower())}</b><span>総戦力</span></div>
         <div><b>${yen(defensePower())}</b><span>防衛</span></div>
-        <div><b>${game.minions.available}/${game.minions.total}</b><span>待機忍び</span></div>
+        <div><b>${injured}</b><span>戦闘不能</span></div>
       </div>
       <div class="resource-grid">${renderResourceTiles()}</div>
       <div class="formation-mini">
-        ${formationNinjas().map(ninja => `<span>${ninja.rarity} ${ninja.name}</span>`).join("")}
-        <button data-tab="formation">編成変更</button>
+        ${formationNinjas().map(ninja => {
+          const hp = ninjaHp(ninja);
+          return `<span>${ninja.rarity} ${ninja.name} HP ${yen(hp.current)}/${yen(hp.max)}</span>`;
+        }).join("")}
+        <button data-tab="formation">編成</button>
       </div>
       <div class="action-grid">
         <button data-action="collect">産物回収</button>
-        <button data-action="recruit">忍び招集</button>
+        <button data-action="heal-party">療養</button>
         <button data-action="save-game">保存</button>
         <button data-action="load-game">読込</button>
       </div>
     </div>
-    ${renderSavePanel()}
-    <div class="panel-card">
+    <div class="panel-card compact-section">
       <span class="scene-kicker">FACILITIES</span>
-      <h2>施設画面</h2>
       <div class="facility-grid">
         ${facilityCatalog.map(base => {
           const facility = getFacility(base.id);
@@ -842,15 +885,19 @@ function renderVillage() {
         }).join("")}
       </div>
     </div>
-    <div class="panel-card">
-      <h2>防衛編成</h2>
-      <div class="list-stack">${game.ninjas.slice(0, 6).map(ninja => `
-        <label class="row-card check-row">
-          <input type="checkbox" data-defense="${ninja.id}" ${game.defense.ninjaIds.includes(ninja.id) ? "checked" : ""}>
-          <div><strong>${ninja.name}</strong><span>${ninja.rarity} / 防衛 ${yen(ninja.power + equippedPower(ninja.id))}</span></div>
-        </label>
-      `).join("")}</div>
-      <label class="range-row">配置する忍び <input id="defenseMinions" type="range" min="0" max="${game.minions.available}" value="${Math.min(game.defense.minions, game.minions.available)}"><b>${game.defense.minions}</b></label>
+    <div class="panel-card compact-section">
+      <h2>防衛</h2>
+      <div class="defense-chip-grid">${game.ninjas.slice(0, 6).map(ninja => {
+        const hp = ninjaHp(ninja);
+        return `
+          <label class="defense-chip ${game.defense.ninjaIds.includes(ninja.id) ? "selected" : ""}">
+            <input type="checkbox" data-defense="${ninja.id}" ${game.defense.ninjaIds.includes(ninja.id) ? "checked" : ""}>
+            <img src="${ninja.img}" alt="">
+            <span>${ninja.name}</span>
+            <small>HP ${yen(hp.current)}</small>
+          </label>
+        `;
+      }).join("")}</div>
     </div>
   `;
 }
@@ -934,21 +981,37 @@ function renderNinjas() {
     panels.ninjas.innerHTML = renderNinjaDetail(selectedNinjaId);
     return;
   }
+  const page = ninjaPageItems(9);
   panels.ninjas.innerHTML = `
-    <div class="panel-card">
-      <span class="scene-kicker">忍者名簿</span>
-      <h1>所持忍者</h1>
-      <p>忍者をタップすると詳細、スキル、装備、レベル上げを確認できます。</p>
-      <div class="list-stack">${game.ninjas.map((ninja, index) => renderNinjaRow(ninja, index)).join("")}</div>
+    <div class="panel-card compact-screen">
+      <span class="scene-kicker">????</span>
+      <h1>????</h1>
+      <div class="ninja-pick-grid roster-grid">${page.items.map(ninja => {
+        const hp = ninjaHp(ninja);
+        return `
+          <button class="ninja-pick ${ninja.rarityKey}" data-ninja="${ninja.id}">
+            <img src="${ninja.img}" alt="">
+            <strong>${ninja.name}</strong>
+            <span>${ninja.rarity} Lv.${ninja.level}</span>
+            <small>HP ${yen(hp.current)}/${yen(hp.max)}</small>
+          </button>
+        `;
+      }).join("")}</div>
+      <div class="pager-row">
+        <button data-action="ninja-page-prev" ${page.page <= 0 ? "disabled" : ""}>?</button>
+        <span>${page.page + 1}/${page.maxPage + 1}</span>
+        <button data-action="ninja-page-next" ${page.page >= page.maxPage ? "disabled" : ""}>?</button>
+      </div>
     </div>
   `;
 }
 
 function renderNinjaRow(ninja, index) {
+  const hp = ninjaHp(ninja);
   return `
     <button class="row-card ninja-row ${ninja.rarityKey} ${index === 0 ? "featured-ninja" : ""}" data-ninja="${ninja.id}">
       <img src="${ninja.img}" alt="">
-      <div><strong>${ninja.rarity} ${ninja.name}${ninja.isNew ? " NEW" : ""}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>${ninja.skill}: ${ninja.skillText}</small></div>
+      <div><strong>${ninja.rarity} ${ninja.name}${ninja.isNew ? " NEW" : ""}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>HP ${yen(hp.current)} / ${yen(hp.max)}</small><div class="hpbar"><i style="width:${hp.rate * 100}%"></i></div></div>
       <em>詳細</em>
     </button>
   `;
@@ -961,50 +1024,58 @@ function renderFormation() {
   game.formation.ninjaIds = ids.filter(Boolean);
   selectedFormationSlot = Math.min(2, Math.max(0, selectedFormationSlot || 0));
   const selectedIds = new Set(game.formation.ninjaIds);
-  const maxMinions = Math.max(0, game.minions.available);
-  game.formation.minions = Math.min(game.formation.minions, maxMinions);
+  const page = ninjaPageItems(9);
   return `
-    <div class="panel-card hero-panel formation-hero">
+    <div class="panel-card hero-panel formation-hero compact-screen">
       <span class="scene-kicker">出撃編成</span>
       <h1>出撃編成</h1>
-      <p>枠をタップしてから忍者を選ぶと、その位置に配置されます。</p>
-      <div class="village-metrics">
+      <div class="village-metrics compact-metrics">
         <div><b>${yen(formationPower())}</b><span>編成戦力</span></div>
         <div><b>${game.formation.ninjaIds.length}/3</b><span>忍者</span></div>
-        <div><b>${game.formation.minions}</b><span>随伴忍び</span></div>
+        <div><b>${aliveFormationNinjas().length}</b><span>出撃可能</span></div>
       </div>
       <div class="formation-lineup formation-slot-grid">
         ${ids.map((id, index) => {
           const ninja = id ? getNinja(id) : null;
+          const hp = ninja ? ninjaHp(ninja) : null;
           return `
             <button class="formation-slot ${ninja?.rarityKey || "empty"} ${selectedFormationSlot === index ? "active" : ""}" data-formation-slot="${index}">
-              ${ninja ? `<img src="${ninja.img}" alt=""><strong>${ninja.rarity} ${ninja.name}</strong><span>Lv.${ninja.level} / ${yen(ninja.power + equippedPower(ninja.id))}</span>` : `<b>+</b><strong>空き枠</strong><span>枠を選択</span>`}
+              ${ninja ? `<img src="${ninja.img}" alt=""><strong>${ninja.rarity} ${ninja.name}</strong><span>Lv.${ninja.level} / HP ${yen(hp.current)}/${yen(hp.max)}</span><div class="hpbar"><i style="width:${hp.rate * 100}%"></i></div>` : `<b>+</b><strong>空き枠</strong><span>枠を選択</span>`}
             </button>
           `;
         }).join("")}
       </div>
-      <label class="range-row">随伴忍び <input id="formationMinions" type="range" min="0" max="${maxMinions}" value="${game.formation.minions}"><b>${game.formation.minions}</b></label>
       <div class="action-grid">
-        <button data-action="save-game">編成保存</button>
+        <button data-action="heal-party">療養</button>
         <button data-action="load-game">読込</button>
         <button data-tab="missions">任務へ</button>
       </div>
     </div>
-    <div class="panel-card">
+    <div class="panel-card compact-section">
       <h2>忍者を配置</h2>
-      <div class="list-stack">${game.ninjas.map(ninja => `
-        <button class="row-card ninja-row formation-card ${ninja.rarityKey} ${selectedIds.has(ninja.id) ? "selected" : ""}" data-formation-ninja="${ninja.id}">
-          <img src="${ninja.img}" alt="">
-          <div><strong>${selectedIds.has(ninja.id) ? "編成中 " : ""}${ninja.rarity} ${ninja.name}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>${ninja.skill}: ${ninja.skillText}</small></div>
-          <em>${selectedIds.has(ninja.id) ? "入替" : "配置"}</em>
-        </button>
-      `).join("")}</div>
+      <div class="ninja-pick-grid">${page.items.map(ninja => {
+        const hp = ninjaHp(ninja);
+        return `
+          <button class="ninja-pick ${ninja.rarityKey} ${selectedIds.has(ninja.id) ? "selected" : ""}" data-formation-ninja="${ninja.id}">
+            <img src="${ninja.img}" alt="">
+            <strong>${ninja.name}</strong>
+            <span>${ninja.rarity} Lv.${ninja.level}</span>
+            <small>HP ${yen(hp.current)}/${yen(hp.max)}</small>
+          </button>
+        `;
+      }).join("")}</div>
+      <div class="pager-row">
+        <button data-action="ninja-page-prev" ${page.page <= 0 ? "disabled" : ""}>?</button>
+        <span>${page.page + 1}/${page.maxPage + 1}</span>
+        <button data-action="ninja-page-next" ${page.page >= page.maxPage ? "disabled" : ""}>?</button>
+      </div>
     </div>
   `;
 }
 
 function renderNinjaDetail(id) {
   const ninja = getNinja(id);
+  const hp = ninjaHp(ninja);
   const trainCost = { money: 900 + ninja.level * 80, herbs: 40 + ninja.level * 4 };
   const equipped = game.equipment.filter(item => item.equippedBy === id);
   const availableBySlot = slot => game.equipment.filter(item => item.slot === slot);
@@ -1035,13 +1106,14 @@ function renderNinjaDetail(id) {
       <div class="stat-grid">
         <div><span>Lv</span><b>${ninja.level}</b></div>
         <div><span>戦力</span><b>${yen(ninja.power + equippedPower(id))}</b></div>
-        <div><span>HP</span><b>${yen(ninja.hp)}</b></div>
+        <div><span>HP</span><b>${yen(hp.current)}/${yen(hp.max)}</b></div>
         <div><span>ATK</span><b>${yen(ninja.attack)}</b></div>
         <div><span>DEF</span><b>${yen(ninja.defense)}</b></div>
         <div><span>SPD</span><b>${yen(ninja.speed)}</b></div>
       </div>
       <div class="action-grid">
         <button data-action="confirm-train" data-id="${id}" ${canPay(trainCost) ? "" : "disabled"}>レベル上げ</button>
+        <button data-action="heal-ninja" data-id="${id}">療養</button>
         <button data-action="clear-equips" data-id="${id}">装備解除</button>
       </div>
       <p>必要素材: ${resourceText(trainCost)}</p>
@@ -1080,10 +1152,9 @@ function renderMissions() {
     return;
   }
   panels.missions.innerHTML = `
-    <div class="panel-card">
-      <span class="scene-kicker">任務板</span>
-      <h1>任務板</h1>
-      <p>難易度、NPC、共闘相手を選び、確認画面を通して出発します。</p>
+    <div class="panel-card hero-panel compact-screen">
+      <span class="scene-kicker">???</span>
+      <h1>???</h1>
       <div class="mission-grid">
         ${Object.entries(missionCatalog).map(([kind, mission]) => `
           <button class="mission-tile" data-mission-kind="${kind}">
@@ -1094,17 +1165,19 @@ function renderMissions() {
         `).join("")}
       </div>
     </div>
-    <div class="panel-card">
-      <h2>進行中 / 帰還</h2>
-      <div class="list-stack">${renderActivities()}</div>
+    <div class="mission-summary-grid">
+      <div class="panel-card compact-section">
+        <h2>???</h2>
+        <div class="list-stack">${renderActivities()}</div>
+      </div>
+      <div class="panel-card compact-section">
+        <h2>???</h2>
+        <div class="list-stack">${game.raidEvents.slice(0, 3).map(renderRaidRow).join("")}</div>
+      </div>
     </div>
-    <div class="panel-card">
-      <h2>レイド進行</h2>
-      <div class="list-stack">${game.raidEvents.map(renderRaidRow).join("")}</div>
-    </div>
-    <div class="panel-card">
-      <h2>戦果ログ</h2>
-      <div class="list-stack">${game.reports.filter(item => item.type === "combat").slice(0, 8).map(renderReport).join("") || `<article class="row-card empty-row"><div><strong>戦闘ログなし</strong><span>任務やレイドで戦闘すると、与ダメージと被ダメージが表示されます。</span></div></article>`}</div>
+    <div class="panel-card compact-section">
+      <h2>????</h2>
+      <div class="list-stack compact-log">${game.reports.filter(item => item.type === "combat").slice(0, 3).map(renderReport).join("") || `<article class="row-card empty-row"><div><strong>??????</strong><span>????????????????????????????????</span></div></article>`}</div>
     </div>
   `;
 }
@@ -1115,7 +1188,7 @@ function renderMissionSelect(kind) {
   const difficulty = kind === "raid" ? getDifficulty(selectedRaid?.difficulty || "normal") : getDifficulty();
   const npc = npcVillages.find(item => item.id === selectedNpcId) || npcVillages[0];
   const rewards = scaleRewards(kind === "pvp" ? npc.loot : mission.baseRewards, difficulty.multiplier);
-  const required = difficulty.minions;
+  const canDeploy = aliveFormationNinjas().length > 0;
   return `
     <div class="panel-card hero-panel">
       <span class="scene-kicker">任務準備</span>
@@ -1124,7 +1197,7 @@ function renderMissionSelect(kind) {
       <div class="village-metrics">
         <div><b>${difficulty.name}</b><span>難易度</span></div>
         <div><b>${yen(Math.round(difficulty.enemy * difficulty.multiplier))}</b><span>予想敵戦力</span></div>
-        <div><b>${required}</b><span>必要忍び</span></div>
+        <div><b>${aliveFormationNinjas().length}/3</b><span>出撃可能</span></div>
       </div>
     </div>
     <div class="panel-card">
@@ -1142,11 +1215,11 @@ function renderMissionSelect(kind) {
         <div><span>予想報酬</span><b>${resourceText(rewards)}</b></div>
       </div>
       <div class="formation-mini">
-        ${formationNinjas().map(ninja => `<span>${ninja.rarity} ${ninja.name}</span>`).join("")}
+        ${formationNinjas().map(ninja => { const hp = ninjaHp(ninja); return `<span>${ninja.rarity} ${ninja.name} HP ${yen(hp.current)}/${yen(hp.max)}</span>`; }).join("")}
         <button data-tab="formation">編成変更</button>
       </div>
       <div class="action-grid">
-        <button data-action="confirm-mission" data-kind="${kind}" ${game.minions.available >= required ? "" : "disabled"}>${kind === "raid" ? "参加して攻撃" : "出発する"}</button>
+        <button data-action="confirm-mission" data-kind="${kind}" ${canDeploy ? "" : "disabled"}>${kind === "raid" ? "参加して攻撃" : "出発する"}</button>
         <button data-action="mission-board">戻る</button>
       </div>
     </div>
@@ -1232,7 +1305,7 @@ function renderRaidBattle(raidId) {
   const rate = Math.max(0, raid.hpLeft / raid.hp);
   const joined = raid.playerJoined || raid.playerSummoned;
   const defeated = raid.hpLeft <= 0;
-  const required = Math.max(1, Math.ceil(difficulty.minions * 0.35));
+  const canDeploy = aliveFormationNinjas().length > 0;
   const logs = [...(raid.logs || [])].sort((a, b) => b.at - a.at).slice(0, 12);
   const ranking = raidDamageRanking(raid);
   return `
@@ -1249,8 +1322,8 @@ function renderRaidBattle(raidId) {
         <span>${raid.difficultyName} / ${raid.caller}</span>
       </div>
       <div class="raid-action-row">
-        <button class="raid-attack-button" data-action="${joined ? "raid-attack" : "join-raid"}" ${defeated || game.minions.available < required ? "disabled" : ""}>${defeated ? "討伐成功" : joined ? "攻撃" : "参戦"}</button>
-        <div><strong>必要忍び ${required}</strong><span>基本報酬 ${resourceText(rewards)}</span></div>
+        <button class="raid-attack-button" data-action="${joined ? "raid-attack" : "join-raid"}" ${defeated || !canDeploy ? "disabled" : ""}>${defeated ? "討伐成功" : joined ? "攻撃" : "参戦"}</button>
+        <div><strong>出撃忍者 ${aliveFormationNinjas().length}/3</strong><span>基本報酬 ${resourceText(rewards)}</span></div>
       </div>
     </div>
     <div class="panel-card raid-log-panel">
@@ -1348,22 +1421,7 @@ function collectResources() {
 }
 
 function recruitMinions() {
-  const cost = { money: 1200, herbs: 80 };
-  showConfirm({
-    title: "忍びを招集しますか？",
-    body: "12名の忍びを里へ迎えます。",
-    details: [`必要素材: ${resourceText(cost)}`, `現在: ${game.minions.available}/${game.minions.total}`],
-    ok: "招集",
-    onOk: () => {
-      if (!canPay(cost)) return;
-      pay(cost);
-      game.minions.total += 12;
-      game.minions.available += 12;
-      game.reports.unshift(report("新たな忍び12名が里に加わりました。", ["市の流通で招集成功", "防衛と任務に投入可能"]));
-      saveGame(true);
-      render();
-    }
-  });
+  healParty();
 }
 
 function confirmUpgradeFacility(id) {
@@ -1400,10 +1458,10 @@ function confirmTrainNinja(id) {
       ninja.level += 1;
       ninja.power += 130;
       ninja.hp += 42;
+      ninja.hpCurrent = ninja.hp;
       ninja.attack += 18;
       ninja.defense += 14;
       ninja.speed += 5;
-      ninja.maxMinions += ninja.level % 5 === 0 ? 1 : 0;
       ninja.isNew = false;
       game.reports.unshift(report(`${ninja.name}がLv.${ninja.level}になりました。`, [`戦力 +130`, `${ninja.skill}の熟練度が上昇`]));
       saveGame(true);
@@ -1557,24 +1615,19 @@ function playerRaidAttack() {
   const raid = game.raidEvents.find(item => item.id === selectedNpcId);
   if (!raid || raid.hpLeft <= 0) return;
   const difficulty = getDifficulty(raid.difficulty);
-  const required = Math.max(1, Math.ceil(difficulty.minions * 0.35));
-  if (game.minions.available < required) {
-    screenSubtitle.textContent = "出撃可能な忍びが足りません";
+  if (!aliveFormationNinjas().length) {
+    screenSubtitle.textContent = "出撃可能な忍者がいません";
     return;
   }
   raid.playerJoined = true;
-  game.minions.available -= required;
   const damage = Math.min(raid.hpLeft, Math.round(teamPower() * (0.32 + difficulty.multiplier * 0.18) + Math.random() * 2600));
   const damageTaken = Math.round(difficulty.enemy * (0.16 + difficulty.multiplier * 0.12) + Math.random() * 1200);
-  const lost = Math.min(required, Math.max(1, Math.floor(damageTaken / 2400)));
+  const hpDetails = damageFormationNinjas(damageTaken);
   raid.hpLeft = Math.max(0, raid.hpLeft - damage);
   raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
-  game.minions.total = Math.max(0, game.minions.total - lost);
-  game.minions.available += Math.max(0, required - lost);
-  game.minions.injured += Math.max(0, Math.floor(lost * 0.7));
   pushRaidLog(raid, { actor: "影月の里", damage, taken: damageTaken, text: raid.hpLeft <= 0 ? "最後の一撃" : "攻撃", type: "player" });
   if (raid.hpLeft <= 0) {
-    game.reports.unshift(report(`${raid.name} 討伐成功`, [`与ダメージ: ${yen(damage)} / 被ダメージ: ${yen(damageTaken)}`, `失った忍び: ${lost}`, "報酬はリザルト確認時に付与"] , "combat"));
+    game.reports.unshift(report(`${raid.name} 討伐成功`, [`与ダメージ: ${yen(damage)} / 被ダメージ: ${yen(damageTaken)}`, ...(hpDetails.length ? hpDetails : ["HP損耗なし"]), "報酬はリザルト確認時に付与"] , "combat"));
     play("ssr");
   } else {
     play("place");
@@ -1609,22 +1662,21 @@ function confirmMission(kind) {
   showConfirm({
     title: `${mission.title}へ${kind === "raid" ? "即時攻撃" : "出発"}しますか？`,
     body: `${difficulty.name} / ${targetName}`,
-    details: [`味方戦力: ${yen(teamPower())}`, `予想敵戦力: ${yen(Math.round(difficulty.enemy * difficulty.multiplier))}`, `見込み報酬: ${resourceText(rewards)}`, `必要忍び: ${difficulty.minions}`],
+    details: [`味方戦力: ${yen(teamPower())}`, `予想敵戦力: ${yen(Math.round(difficulty.enemy * difficulty.multiplier))}`, `見込み報酬: ${resourceText(rewards)}`, `出撃忍者: ${aliveFormationNinjas().length}/3`],
     ok: kind === "raid" ? "攻撃" : "出発",
     onOk: () => kind === "raid" ? enterRaidBattle(targetRaid) : startMission(kind, rewards, difficulty, targetName)
   });
 }
 
 function startMission(kind, rewards, difficulty, targetName) {
-  if (game.minions.available < difficulty.minions) return;
-  game.minions.available -= difficulty.minions;
+  if (!aliveFormationNinjas().length) return;
   game.activities.unshift({
     id: `${kind}-${Date.now()}`,
     kind,
     title: missionCatalog[kind].title,
     difficulty: difficulty.name,
     rewards,
-    minions: difficulty.minions,
+    ninjaIds: formationNinjas().map(ninja => ninja.id),
     target: targetName,
     allies: [...selectedAllies],
     finishAt: Date.now() + difficulty.time,
@@ -1644,17 +1696,13 @@ function claimActivity(id) {
   const rewards = success ? activity.rewards : scaleRewards(activity.rewards, 0.34);
   const damageDealt = Math.round((success ? activity.enemyPower * 1.12 : activity.enemyPower * 0.46) + Math.random() * 1800);
   const damageTaken = Math.round((success ? activity.enemyPower * 0.28 : activity.enemyPower * 0.72) + Math.random() * 1200);
-  const lost = Math.min(activity.minions, Math.max(1, Math.floor(damageTaken / 1850)));
+  const hpDetails = damageFormationNinjas(damageTaken);
   addRewards(rewards);
-  game.minions.total = Math.max(0, game.minions.total - lost);
-  game.minions.available += Math.max(0, activity.minions - lost);
-  const injured = success ? Math.floor(activity.minions * 0.06) : Math.floor(activity.minions * 0.16);
-  game.minions.injured += injured;
   game.reports.unshift(report(`${activity.title} ${activity.difficulty}の戦果`, [
     success ? "結果: 勝利。敵主力を制圧。" : "結果: 撤退。目標の一部のみ確保。",
     `戦闘: 味方戦力 ${yen(ourPower)} / 敵戦力 ${yen(activity.enemyPower)} / 成功率 ${successRate}%`,
     `与ダメージ: ${yen(damageDealt)} / 被ダメージ: ${yen(damageTaken)}`,
-    `失った忍び: ${lost} / 負傷した忍び: ${injured}`,
+    ...(hpDetails.length ? hpDetails : ["HP損耗なし"]),
     `報酬: ${resourceText(rewards)}`,
   ], "combat"));
   game.activities = game.activities.filter(item => item.id !== id);
@@ -1662,21 +1710,32 @@ function claimActivity(id) {
   render();
 }
 
+function healParty(targetId = null) {
+  const cost = targetId ? { money: 520, herbs: 28 } : { money: 1200, herbs: 80 };
+  if (!canPay(cost)) {
+    screenSubtitle.textContent = "療養に必要な素材が足りません";
+    return;
+  }
+  pay(cost);
+  const targets = targetId ? [getNinja(targetId)].filter(Boolean) : game.ninjas;
+  targets.forEach(ninja => restoreNinjaHp(ninja, targetId ? null : Math.ceil(ninjaHp(ninja).max * 0.5)));
+  game.reports.unshift(report(targetId ? `${targets[0]?.name || "忍者"}を療養しました。` : "里の忍者を療養しました。", [`消費: ${resourceText(cost)}`]));
+  saveGame(true);
+  render();
+}
+
 function resolveRaid(raid, rewards, difficulty) {
-  if (game.minions.available < difficulty.minions) return;
-  game.minions.available -= difficulty.minions;
+  if (!aliveFormationNinjas().length) return;
   const damage = Math.min(raid.hpLeft, Math.round(teamPower() * (0.42 + difficulty.multiplier * 0.22)));
   const damageTaken = Math.round(difficulty.enemy * (0.18 + difficulty.multiplier * 0.16) + Math.random() * 900);
-  const lost = Math.min(difficulty.minions, Math.max(1, Math.floor(damageTaken / 2100)));
+  const hpDetails = damageFormationNinjas(damageTaken);
   raid.hpLeft = Math.max(0, raid.hpLeft - damage);
   raid.progress = Math.min(100, raid.progress + Math.round(damage / raid.hp * 100));
-  game.minions.total = Math.max(0, game.minions.total - lost);
-  game.minions.available += Math.max(0, difficulty.minions - lost);
   addRewards(rewards);
   game.reports.unshift(report(`${raid.name}へ即時攻撃`, [
     `${raid.caller}、NPC${raid.participants}勢力と共闘`,
     `与ダメージ: ${yen(damage)} / 被ダメージ: ${yen(damageTaken)}`,
-    `失った忍び: ${lost}`,
+    ...(hpDetails.length ? hpDetails : ["HP損耗なし"]),
     `残HP: ${yen(raid.hpLeft)} / ${yen(raid.hp)}`,
     `獲得: ${resourceText(rewards)}`
   ], "combat"));
@@ -2002,6 +2061,14 @@ document.addEventListener("click", event => {
     render();
     screenSubtitle.textContent = loaded ? "読み込みました" : "保存データがありません";
   }
+  if (action === "ninja-page-prev") {
+    ninjaPage = Math.max(0, ninjaPage - 1);
+    render();
+  }
+  if (action === "ninja-page-next") {
+    ninjaPage += 1;
+    render();
+  }
   if (action === "save-slot") {
     const ok = saveGameSlot(target.dataset.slot);
     render();
@@ -2039,6 +2106,8 @@ document.addEventListener("click", event => {
   }
   if (action === "confirm-upgrade") confirmUpgradeFacility(target.dataset.id);
   if (action === "confirm-train") confirmTrainNinja(target.dataset.id);
+  if (action === "heal-party") healParty();
+  if (action === "heal-ninja") healParty(target.dataset.id);
   if (action === "craft-equipment") craftEquipment(target.dataset.slot);
   if (action === "confirm-enhance-equip") confirmEnhanceEquip(target.dataset.id);
   if (target.dataset.equipSlot) {
@@ -2086,16 +2155,6 @@ document.addEventListener("change", event => {
     if (checkbox.checked) next.add(checkbox.dataset.defense);
     else next.delete(checkbox.dataset.defense);
     game.defense.ninjaIds = [...next].slice(0, 3);
-    saveGame(true);
-    render();
-  }
-  if (event.target.id === "defenseMinions") {
-    game.defense.minions = Number(event.target.value);
-    saveGame(true);
-    render();
-  }
-  if (event.target.id === "formationMinions") {
-    game.formation.minions = Number(event.target.value);
     saveGame(true);
     render();
   }
