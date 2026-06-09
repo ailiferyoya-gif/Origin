@@ -69,27 +69,27 @@ const rarityArt = {
 
 const pool = [
   { id: "ninja-ur-tsukuyomi", rarity: "ur", label: "UR", name: "月詠ノ紅蓮", role: "総大将", skill: "月輪神楽", skillText: "全任務の与ダメージ+18%。レイドでは追加追撃。", img: rarityArt.ur, shards: 200, basePower: 9200 },
-  { id: "ninja-ur-hakuro", rarity: "ur", label: "UR", name: "白露ノ天狐", role: "幻術", skill: "天狐幻灯", skillText: "被ダメージを軽減し、PvP奪取量+12%。", img: rarityArt.ur, shards: 200, basePower: 8950 },
+  { id: "ninja-ur-hakuro", rarity: "ur", label: "UR", name: "白露ノ天狐", role: "幻術", skill: "天狐幻灯", skillText: "被ダメージを軽減し、里襲撃の奪取量+12%。", img: rarityArt.ur, shards: 200, basePower: 8950 },
   { id: "ninja-ur-kagutsuchi", rarity: "ur", label: "UR", name: "迦具土ノ焔", role: "火遁", skill: "緋炎万象", skillText: "レイド与ダメージ+25%。火薬報酬を増やす。", img: rarityArt.ur, shards: 200, basePower: 8800 },
-  { id: "ninja-ssr-yashamaru", rarity: "ssr", label: "SSR", name: "夜叉丸", role: "強襲", skill: "月牙一閃", skillText: "先制で敵主力へ大ダメージ。PvPで奪取量+8%。", img: rarityArt.ssr, shards: 100, basePower: 6100 },
+  { id: "ninja-ssr-yashamaru", rarity: "ssr", label: "SSR", name: "夜叉丸", role: "強襲", skill: "月牙一閃", skillText: "先制で敵主力へ大ダメージ。里襲撃で奪取量+8%。", img: rarityArt.ssr, shards: 100, basePower: 6100 },
   { id: "ninja-ssr-oboromaru", rarity: "ssr", label: "SSR", name: "朧丸", role: "忍頭", skill: "朧月影縫い", skillText: "戦闘開始時に味方全体の戦力+12%。", img: rarityArt.ssr, shards: 100, basePower: 5900 },
   { id: "ninja-ssr-hotaru", rarity: "ssr", label: "SSR", name: "焔蛍", role: "爆破", skill: "火遁・蛍火乱舞", skillText: "レイドで追加ダメージ。工房の生産時間を短縮。", img: rarityArt.ssr, shards: 100, basePower: 5700 },
-  { id: "ninja-ssr-shigure", rarity: "ssr", label: "SSR", name: "時雨", role: "支援", skill: "雨隠れの陣", skillText: "PvEで負傷を抑え、薬草ドロップ+15%。", img: rarityArt.ssr, shards: 100, basePower: 5480 },
-  { id: "ninja-ssr-kurohane", rarity: "ssr", label: "SSR", name: "黒羽ノ鴉", role: "暗殺", skill: "闇羽落とし", skillText: "PvPで敵防衛を一時低下。", img: rarityArt.ssr, shards: 100, basePower: 5620 },
-  { id: "ninja-ssr-mizuchi", rarity: "ssr", label: "SSR", name: "水蛇ミヅチ", role: "水遁", skill: "水鏡返し", skillText: "被ダメージを反射し、PvE素材+10%。", img: rarityArt.ssr, shards: 100, basePower: 5520 },
+  { id: "ninja-ssr-shigure", rarity: "ssr", label: "SSR", name: "時雨", role: "支援", skill: "雨隠れの陣", skillText: "討伐で負傷を抑え、薬草ドロップ+15%。", img: rarityArt.ssr, shards: 100, basePower: 5480 },
+  { id: "ninja-ssr-kurohane", rarity: "ssr", label: "SSR", name: "黒羽ノ鴉", role: "暗殺", skill: "闇羽落とし", skillText: "里襲撃で敵防衛を一時低下。", img: rarityArt.ssr, shards: 100, basePower: 5620 },
+  { id: "ninja-ssr-mizuchi", rarity: "ssr", label: "SSR", name: "水蛇ミヅチ", role: "水遁", skill: "水鏡返し", skillText: "被ダメージを反射し、討伐素材+10%。", img: rarityArt.ssr, shards: 100, basePower: 5520 },
   { id: "ninja-ssr-raika", rarity: "ssr", label: "SSR", name: "雷火", role: "雷遁", skill: "雷鳴疾駆", skillText: "任務成功率と速度が上昇。", img: rarityArt.ssr, shards: 100, basePower: 5660 },
   { id: "ninja-sr-kirigakure", rarity: "sr", label: "SR", name: "霧隠れの紫苑", role: "攪乱", skill: "霧霞", skillText: "敵命中を下げ、探索報酬を増やす。", img: rarityArt.sr, shards: 30, basePower: 3180 },
   { id: "ninja-sr-hayate", rarity: "sr", label: "SR", name: "疾風の隼人", role: "斥候", skill: "風走り", skillText: "遠征時間を短縮し、先制率を上げる。", img: rarityArt.sr, shards: 30, basePower: 3050 },
   { id: "ninja-sr-amane", rarity: "sr", label: "SR", name: "符術師 天音", role: "術士", skill: "封印符", skillText: "レイドで敵行動を遅らせる。", img: rarityArt.sr, shards: 30, basePower: 2960 },
   { id: "ninja-sr-kogane", rarity: "sr", label: "SR", name: "黄金の小太刀", role: "商隊護衛", skill: "商路見切り", skillText: "遠征の銭報酬+18%。", img: rarityArt.sr, shards: 30, basePower: 2890 },
   { id: "ninja-sr-benizuru", rarity: "sr", label: "SR", name: "紅鶴", role: "回復", skill: "紅羽手当", skillText: "受けた被害による忍び損耗を軽減。", img: rarityArt.sr, shards: 30, basePower: 2860 },
-  { id: "ninja-sr-ibuki", rarity: "sr", label: "SR", name: "伊吹", role: "槍術", skill: "山嵐突き", skillText: "PvEの与ダメージ+10%。", img: rarityArt.sr, shards: 30, basePower: 3010 },
-  { id: "ninja-sr-ranmaru", rarity: "sr", label: "SR", name: "蘭丸", role: "潜入", skill: "忍び足", skillText: "PvP被ダメージを減らす。", img: rarityArt.sr, shards: 30, basePower: 2920 },
+  { id: "ninja-sr-ibuki", rarity: "sr", label: "SR", name: "伊吹", role: "槍術", skill: "山嵐突き", skillText: "討伐の与ダメージ+10%。", img: rarityArt.sr, shards: 30, basePower: 3010 },
+  { id: "ninja-sr-ranmaru", rarity: "sr", label: "SR", name: "蘭丸", role: "潜入", skill: "忍び足", skillText: "里襲撃の被ダメージを減らす。", img: rarityArt.sr, shards: 30, basePower: 2920 },
   { id: "ninja-sr-yukari", rarity: "sr", label: "SR", name: "結火里", role: "火薬", skill: "導火線", skillText: "火薬報酬とレイド攻撃力が上昇。", img: rarityArt.sr, shards: 30, basePower: 2990 },
   { id: "ninja-sr-sazanami", rarity: "sr", label: "SR", name: "細波", role: "水遁", skill: "水隠れ", skillText: "被ダメージ-6%。", img: rarityArt.sr, shards: 30, basePower: 2880 },
   { id: "ninja-sr-tobikage", rarity: "sr", label: "SR", name: "飛影", role: "奇襲", skill: "影飛び", skillText: "任務開始時に追加ダメージ。", img: rarityArt.sr, shards: 30, basePower: 3040 },
   { id: "ninja-r-kusano", rarity: "r", label: "R", name: "草野の聞き耳", role: "探索", skill: "聞き込み", skillText: "資源回収時に少量の追加素材。", img: rarityArt.r, shards: 10, basePower: 1380 },
-  { id: "ninja-r-azami", rarity: "r", label: "R", name: "毒花の薊", role: "毒術", skill: "痺れ毒", skillText: "PvEで敵を弱体化。", img: rarityArt.r, shards: 10, basePower: 1320 },
+  { id: "ninja-r-azami", rarity: "r", label: "R", name: "毒花の薊", role: "毒術", skill: "痺れ毒", skillText: "討伐で敵を弱体化。", img: rarityArt.r, shards: 10, basePower: 1320 },
   { id: "ninja-r-mokubei", rarity: "r", label: "R", name: "木走りの杢兵衛", role: "工作", skill: "木走り", skillText: "施設強化の木材消費を少し軽減。", img: rarityArt.r, shards: 10, basePower: 1250 },
   { id: "ninja-r-suzu", rarity: "r", label: "R", name: "鈴鳴りの鈴", role: "支援", skill: "鈴結界", skillText: "防衛時に忍びの負傷率を下げる。", img: rarityArt.r, shards: 10, basePower: 1180 },
   { id: "ninja-r-genji", rarity: "r", label: "R", name: "源次", role: "刀術", skill: "抜き胴", skillText: "小ダメージを追加。", img: rarityArt.r, shards: 10, basePower: 1290 },
@@ -107,7 +107,7 @@ pool.forEach(card => {
 const facilityCatalog = [
   { id: "dojo", name: "修練場", icon: "修", background: "ninjas", description: "忍者のレベル上げと基礎戦力を支える中核施設。", statName: "修練効率", baseStat: 12, bonus: "忍者Lv上限と訓練成功率が上昇", cost: { money: 2600, wood: 500 } },
   { id: "forge", name: "工房", icon: "工", background: "ninjas", description: "武器、防具、装飾品の強化と生産を行う施設。", statName: "生産品質", baseStat: 10, bonus: "装備生産のSR以上率が上昇", cost: { money: 2100, iron: 460, toolParts: 120 } },
-  { id: "storehouse", name: "蔵", icon: "蔵", background: "village", description: "奪われる資源を減らし、遠征報酬を保管する施設。", statName: "保管力", baseStat: 18, bonus: "PvP被害軽減と資源上限が上昇", cost: { money: 3200, wood: 720 } },
+  { id: "storehouse", name: "蔵", icon: "蔵", background: "village", description: "奪われる資源を減らし、遠征報酬を保管する施設。", statName: "保管力", baseStat: 18, bonus: "里襲撃の被害軽減と資源上限が上昇", cost: { money: 3200, wood: 720 } },
   { id: "watchtower", name: "見張り櫓", icon: "櫓", background: "village", description: "襲撃を察知し、防衛戦で先制行動を取る施設。", statName: "警戒度", baseStat: 16, bonus: "防衛戦力と反撃報酬が上昇", cost: { money: 1800, wood: 420, iron: 220 } },
   { id: "market", name: "市", icon: "市", background: "village", description: "銭と素材の流通を増やし、忍び招集を安定させる施設。", statName: "流通量", baseStat: 14, bonus: "産物回収量と招集効率が上昇", cost: { money: 2400, wood: 360, silk: 80 } }
 ];
@@ -121,9 +121,9 @@ const difficultyCatalog = [
 
 const missionCatalog = {
   expedition: { title: "遠征", text: "交易路や山道を調査し、里の銭を稼ぐ。", baseRewards: { money: 2600, wood: 260 }, icon: "遠" },
-  pve: { title: "PvE討伐", text: "妖忍や盗賊の根城を制圧し、素材と装備を狙う。", baseRewards: { money: 1700, iron: 220, herbs: 160, toolParts: 70 }, icon: "討" },
-  pvp: { title: "PvP襲撃", text: "NPC里を選んで資源を奪う。相手戦力と蔵の厚さを見極める。", baseRewards: { money: 2600, wood: 340, iron: 260 }, icon: "襲" },
-  raid: { title: "レイド召喚", text: "NPCが召喚した大妖へ即時攻撃。結果はその場で出る。", baseRewards: { money: 2200, toolParts: 140, gems: 160 }, icon: "裂" }
+  pve: { title: "対妖討伐", text: "妖忍や盗賊の根城を制圧し、素材と装備を狙う。", baseRewards: { money: 1700, iron: 220, herbs: 160, toolParts: 70 }, icon: "討" },
+  pvp: { title: "里襲撃", text: "他里を選んで資源を奪う。相手戦力と蔵の厚さを見極める。", baseRewards: { money: 2600, wood: 340, iron: 260 }, icon: "襲" },
+  raid: { title: "レイド召喚", text: "他里が召喚した大妖へ即時攻撃。結果はその場で出る。", baseRewards: { money: 2200, toolParts: 140, gems: 160 }, icon: "裂" }
 };
 
 const npcVillages = [
@@ -848,7 +848,7 @@ function renderVillage() {
   const injured = game.ninjas.filter(ninja => ninjaHp(ninja).current <= 0).length;
   panels.village.innerHTML = `
     <div class="panel-card hero-panel village-home compact-screen">
-      <span class="scene-kicker">NINJA VILLAGE</span>
+      <span class="scene-kicker">忍びの里</span>
       <h1>影月の里</h1>
       <div class="village-metrics compact-metrics">
         <div><b>${yen(totalPower())}</b><span>総戦力</span></div>
@@ -871,7 +871,7 @@ function renderVillage() {
       </div>
     </div>
     <div class="panel-card compact-section">
-      <span class="scene-kicker">FACILITIES</span>
+      <span class="scene-kicker">施設</span>
       <div class="facility-grid">
         ${facilityCatalog.map(base => {
           const facility = getFacility(base.id);
@@ -908,7 +908,7 @@ function renderFacilityDetail(id) {
   const stat = facility.baseStat + facility.level * 7;
   return `
     <div class="panel-card hero-panel">
-      <span class="scene-kicker">FACILITY DETAIL</span>
+      <span class="scene-kicker">施設詳細</span>
       <h1>${facility.name} Lv.${facility.level}</h1>
       <p>${facility.description}</p>
       <div class="village-metrics">
@@ -942,7 +942,7 @@ function renderFacilityStatus(facility) {
 
 function renderWorkshop() {
   return `
-    <div class="panel-card">
+    <div class="panel-card workshop-panel">
       <span class="scene-kicker">兵装工房</span>
       <h2>兵装工房</h2>
       <p>武器・体・頭・足・指輪・腕輪・宝石を生産できます。レア度はNからURまで抽選されます。</p>
@@ -952,7 +952,7 @@ function renderWorkshop() {
       <div class="equipment-gallery">
         ${renderEquipmentGallery()}
       </div>
-      <div class="action-grid">
+      <div class="action-grid craft-grid">
         ${equipmentSlots.map(slot => `<button data-action="craft-equipment" data-slot="${slot}">${slot}を生産</button>`).join("")}
         <button data-action="enhance-all">一括強化</button>
       </div>
@@ -960,7 +960,7 @@ function renderWorkshop() {
         ${equipmentRarityTable.map(item => `<span class="equip-rarity ${item.rarity.toLowerCase()}">${item.rarity}</span>`).join("")}
       </div>
     </div>
-    <div class="panel-card">
+    <div class="panel-card workshop-storage">
       <h2>装備倉庫</h2>
       <div class="list-stack">${game.equipment.map(renderEquipmentRow).join("")}</div>
     </div>
@@ -1011,7 +1011,7 @@ function renderNinjaRow(ninja, index) {
   return `
     <button class="row-card ninja-row ${ninja.rarityKey} ${index === 0 ? "featured-ninja" : ""}" data-ninja="${ninja.id}">
       <img src="${ninja.img}" alt="">
-      <div><strong>${ninja.rarity} ${ninja.name}${ninja.isNew ? " NEW" : ""}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>HP ${yen(hp.current)} / ${yen(hp.max)}</small><div class="hpbar"><i style="width:${hp.rate * 100}%"></i></div></div>
+      <div><strong>${ninja.rarity} ${ninja.name}${ninja.isNew ? " 新" : ""}</strong><span>${ninja.role} / Lv.${ninja.level} / 戦力 ${yen(ninja.power + equippedPower(ninja.id))}</span><small>HP ${yen(hp.current)} / ${yen(hp.max)}</small><div class="hpbar"><i style="width:${hp.rate * 100}%"></i></div></div>
       <em>詳細</em>
     </button>
   `;
@@ -1203,12 +1203,12 @@ function renderMissionSelect(kind) {
     <div class="panel-card">
       <h2>難易度</h2>
       <div class="chip-row">${difficultyCatalog.map(item => `<button class="${item.id === difficulty.id ? "selected" : ""}" data-difficulty="${item.id}" ${kind === "raid" ? "disabled" : ""}>${item.name}</button>`).join("")}</div>
-      ${kind === "raid" ? `<p>レイド難易度は召喚したNPCの戦闘力で固定されます。</p>` : ""}
+      ${kind === "raid" ? `<p>レイド難易度は召喚した勢力の戦闘力で固定されます。</p>` : ""}
     </div>
     ${kind === "pvp" ? renderPvpSelect(npc, rewards) : ""}
     ${kind === "pve" ? renderPveRecruit() : ""}
     ${kind === "raid" ? renderRaidSelect() : ""}
-    <div class="panel-card">
+    <div class="panel-card primary-action-card">
       <h2>出発確認</h2>
       <div class="stat-grid">
         <div><span>味方戦力</span><b>${yen(teamPower())}</b></div>
@@ -1229,7 +1229,7 @@ function renderMissionSelect(kind) {
 function renderPvpSelect(selected, rewards) {
   return `
     <div class="panel-card">
-      <h2>襲撃するNPC里</h2>
+      <h2>襲撃する他里</h2>
       <div class="list-stack">${npcVillages.map(npc => `
         <button class="row-card npc-row ${npc.id === selected.id ? "selected" : ""}" data-npc="${npc.id}">
           <div><strong>${npc.name}</strong><span>予想戦力 ${yen(npc.power)} / 防衛 ${yen(npc.defense)} / ${npc.mood}</span><small>奪取見込み: ${resourceText(npc.loot)}</small></div>
@@ -1243,9 +1243,9 @@ function renderPvpSelect(selected, rewards) {
 function renderPveRecruit() {
   return `
     <div class="panel-card">
-      <h2>募集するNPC共闘</h2>
+      <h2>募集する共闘勢力</h2>
       <div class="chip-row">${npcVillages.slice(0, 4).map(npc => `<button class="${selectedAllies.includes(npc.id) ? "selected" : ""}" data-ally="${npc.id}">${npc.name}</button>`).join("")}</div>
-      <p>共闘NPCは戦力を加算しますが、報酬を少し分配します。</p>
+      <p>共闘勢力は戦力を加算しますが、報酬を少し分配します。</p>
     </div>
   `;
 }
@@ -1253,10 +1253,10 @@ function renderPveRecruit() {
 function renderRaidSelect() {
   return `
     <div class="panel-card">
-      <h2>NPC召喚レイド</h2>
+      <h2>他里召喚レイド</h2>
       <div class="list-stack">${game.raidEvents.map(raid => `
         <button class="row-card npc-row ${raid.id === selectedNpcId ? "selected" : ""}" data-raid="${raid.id}">
-          <div><strong>${raid.name}</strong><span>${raid.caller}が召喚 / 参加NPC ${raid.participants}</span><small>HP ${yen(Math.max(0, raid.hpLeft))} / ${yen(raid.hp)}</small></div>
+          <div><strong>${raid.name}</strong><span>${raid.caller}が召喚 / 参加勢力 ${raid.participants}</span><small>HP ${yen(Math.max(0, raid.hpLeft))} / ${yen(raid.hp)}</small></div>
         </button>
       `).join("")}</div>
       <p>レイドのみ出発後すぐに結果が出ます。</p>
@@ -1264,7 +1264,7 @@ function renderRaidSelect() {
     <div class="panel-card">
       <h2>自分で召喚</h2>
       <div class="chip-row">${difficultyCatalog.map(item => `<button data-action="summon-player-raid" data-difficulty-id="${item.id}">${item.name}召喚</button>`).join("")}</div>
-      <p>プレイヤー召喚レイドはワールド3体制限とは別枠です。召喚するとNPC勢力が参加してきます。</p>
+      <p>自里召喚レイドは通常出現3体とは別枠です。召喚すると周辺勢力が参加してきます。</p>
     </div>
   `;
 }
@@ -1273,7 +1273,7 @@ function renderRaidRow(raid) {
   const rate = Math.max(0, raid.hpLeft / raid.hp);
   return `
     <button class="row-card raid-row" data-raid-progress="${raid.id}">
-      <div><strong>${raid.name}</strong><span>${raid.caller}召喚 / ${raid.difficultyName} / 参加NPC ${raid.participants}勢力</span><small>残HP ${yen(Math.max(0, raid.hpLeft))}</small><div class="hpbar"><i style="width:${rate * 100}%"></i></div></div>
+      <div><strong>${raid.name}</strong><span>${raid.caller}召喚 / ${raid.difficultyName} / 参加勢力 ${raid.participants}</span><small>残HP ${yen(Math.max(0, raid.hpLeft))}</small><div class="hpbar"><i style="width:${rate * 100}%"></i></div></div>
       <em>参加</em>
     </button>
   `;
@@ -1658,7 +1658,7 @@ function confirmMission(kind) {
   const targetRaid = game.raidEvents.find(item => item.id === selectedNpcId) || game.raidEvents[0];
   const difficulty = kind === "raid" ? getDifficulty(targetRaid?.difficulty || "normal") : getDifficulty();
   const rewards = scaleRewards(kind === "pvp" ? npc.loot : mission.baseRewards, difficulty.multiplier);
-  const targetName = kind === "pvp" ? npc.name : kind === "raid" ? targetRaid.name : selectedAllies.length ? `${selectedAllies.length}NPC共闘` : "単独任務";
+  const targetName = kind === "pvp" ? npc.name : kind === "raid" ? targetRaid.name : selectedAllies.length ? `${selectedAllies.length}勢力共闘` : "単独任務";
   showConfirm({
     title: `${mission.title}へ${kind === "raid" ? "即時攻撃" : "出発"}しますか？`,
     body: `${difficulty.name} / ${targetName}`,
@@ -1733,7 +1733,7 @@ function resolveRaid(raid, rewards, difficulty) {
   raid.progress = Math.min(100, raid.progress + Math.round(damage / raid.hp * 100));
   addRewards(rewards);
   game.reports.unshift(report(`${raid.name}へ即時攻撃`, [
-    `${raid.caller}、NPC${raid.participants}勢力と共闘`,
+    `${raid.caller}、${raid.participants}勢力と共闘`,
     `与ダメージ: ${yen(damage)} / 被ダメージ: ${yen(damageTaken)}`,
     ...(hpDetails.length ? hpDetails : ["HP損耗なし"]),
     `残HP: ${yen(raid.hpLeft)} / ${yen(raid.hp)}`,
@@ -1785,7 +1785,7 @@ function createCard(cardData) {
   card.innerHTML = `
     <img src="${cardData.img}" alt="">
     <b>${cardData.label}</b>
-    <i class="${cardData.duplicate ? "dupe" : "new"}">${cardData.duplicate ? `+${cardData.shards}` : "NEW"}</i>
+    <i class="${cardData.duplicate ? "dupe" : "new"}">${cardData.duplicate ? `+${cardData.shards}` : "新"}</i>
     <span>${cardData.name}</span>
   `;
   return card;
@@ -1842,7 +1842,7 @@ async function summon() {
   if (showSpotlight) {
     newGet.hidden = false;
     newGet.classList.add("show");
-    newGet.querySelector(".new-get-copy span").textContent = featured.duplicate ? "覚醒片" : "NEW";
+    newGet.querySelector(".new-get-copy span").textContent = featured.duplicate ? "覚醒片" : "新加入";
     newGet.querySelector(".new-get-copy strong").textContent = featured.name;
     newGet.querySelector(".new-get-copy em").textContent = featured.duplicate ? `${featured.label} 重複 +${featured.shards}` : `${featured.label} ${featured.skill}`;
     newGet.querySelector(".new-get-hero").src = featured.img;
