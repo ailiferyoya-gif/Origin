@@ -5,6 +5,10 @@ const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const requiredIds = [
   "setupScreen",
   "gameScreen",
+  "showGachaButton",
+  "showDeckButton",
+  "gachaPanel",
+  "deckPanel",
   "collectionText",
   "deckCountText",
   "characterList",
@@ -67,6 +71,14 @@ class Element {
         names.forEach((name) => current.delete(name));
         this.className = [...current].join(" ");
       },
+      toggle: (name, force) => {
+        const current = new Set(this.className.split(/\s+/).filter(Boolean));
+        const shouldAdd = force ?? !current.has(name);
+        if (shouldAdd) current.add(name);
+        else current.delete(name);
+        this.className = [...current].join(" ");
+        return shouldAdd;
+      },
     };
     this.type = "";
     this.src = "";
@@ -123,6 +135,14 @@ const context = vm.createContext({
 const code = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 vm.runInContext(code, context, { filename: "app.js" });
 
+elements.get("showDeckButton").click();
+if (!elements.get("gachaPanel").hidden || elements.get("deckPanel").hidden) {
+  throw new Error("Expected deck panel to be visible after tab switch");
+}
+elements.get("showGachaButton").click();
+if (elements.get("gachaPanel").hidden || !elements.get("deckPanel").hidden) {
+  throw new Error("Expected gacha panel to be visible after tab switch");
+}
 elements.get("pullTenButton").click();
 elements.get("autoDeckButton").click();
 if (elements.get("startRunButton").disabled) {

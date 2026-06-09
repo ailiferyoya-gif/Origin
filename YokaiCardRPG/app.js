@@ -299,11 +299,11 @@ const cardCatalog = [
 ];
 
 const characterCatalog = [
-  { id: "exorcist", name: "祓い師", art: "hero.png", hp: 42, bonus: "標準" },
-  { id: "miko", name: "神楽巫女", art: "char-miko.png", hp: 46, bonus: "回復重視" },
-  { id: "hunter", name: "狐面狩人", art: "char-hunter.png", hp: 40, bonus: "攻撃重視" },
-  { id: "onmyoji", name: "式神陰陽師", art: "char-onmyoji.png", hp: 44, bonus: "召喚重視" },
-  { id: "crystal", name: "晶刃くノ一", art: "char-crystal.png", hp: 38, bonus: "高速" },
+  { id: "exorcist", name: "祓い師", art: "hero.png", hp: 42, trait: "均衡", bonus: "初期結界+4。攻防の基準型。" },
+  { id: "miko", name: "神楽巫女", art: "char-miko.png", hp: 46, trait: "神楽", bonus: "回復札の回復量+4。呪火に強い。" },
+  { id: "hunter", name: "狐面狩人", art: "char-hunter.png", hp: 40, trait: "狩猟", bonus: "攻撃札のダメージ+15%。高火力型。" },
+  { id: "onmyoji", name: "式神陰陽師", art: "char-onmyoji.png", hp: 44, trait: "式占", bonus: "召喚/妨害札が追加で敵を削る。" },
+  { id: "crystal", name: "晶刃くノ一", art: "char-crystal.png", hp: 38, trait: "疾駆", bonus: "手札4枚。HPは低いが選択肢が多い。" },
 ];
 
 const enemyTemplates = [
@@ -324,6 +324,7 @@ const bossTemplates = [
 const player = normalizeSave(loadSave());
 
 const state = {
+  setupView: "gacha",
   floor: 1,
   maxFloor: 10,
   hp: 42,
@@ -344,6 +345,10 @@ const state = {
 const els = {
   setupScreen: document.querySelector("#setupScreen"),
   gameScreen: document.querySelector("#gameScreen"),
+  showGachaButton: document.querySelector("#showGachaButton"),
+  showDeckButton: document.querySelector("#showDeckButton"),
+  gachaPanel: document.querySelector("#gachaPanel"),
+  deckPanel: document.querySelector("#deckPanel"),
   collectionText: document.querySelector("#collectionText"),
   deckCountText: document.querySelector("#deckCountText"),
   characterList: document.querySelector("#characterList"),
@@ -553,7 +558,7 @@ function drawOne(preferAttack = false) {
 function drawHand() {
   state.discardPile.push(...state.hand.map((card) => card.id));
   state.hand = [];
-  for (let i = 0; i < 3; i += 1) {
+  for (let i = 0; i < handSize(); i += 1) {
     const card = drawOne(state.focus);
     if (card) state.hand.push(card);
   }
@@ -561,7 +566,8 @@ function drawHand() {
 }
 
 function damageEnemy(s, amount, message) {
-  s.enemy.hp = Math.max(0, s.enemy.hp - amount);
+  const finalAmount = Math.max(1, Math.round(amount * (s.damageMultiplier || 1)));
+  s.enemy.hp = Math.max(0, s.enemy.hp - finalAmount);
   s.log = message;
 }
 
@@ -591,7 +597,8 @@ function applyEnemyTurn() {
   }
 
   if (intent.type === "curse") {
-    state.burn += intent.value;
+    const curseValue = selectedCharacter().id === "miko" ? Math.max(1, intent.value - 1) : intent.value;
+    state.burn += curseValue;
     state.log += " 呪いの火がまとわりつく。";
   }
 
@@ -643,8 +650,13 @@ function rest() {
 function playCard(index) {
   if (state.waiting) return;
   const card = state.hand.splice(index, 1)[0];
+  const character = selectedCharacter();
+  const beforeHp = state.hp;
   state.discardPile.push(card.id);
+  state.damageMultiplier = character.id === "hunter" && card.type === "attack" ? 1.15 : 1;
   card.play(state);
+  state.damageMultiplier = 1;
+  applyCharacterCardTrait(character, card, beforeHp);
   applyEnemyTurn();
 }
 
@@ -662,10 +674,12 @@ function startRun() {
     drawPile: shuffle(player.deck),
     discardPile: [],
     hand: [],
+    damageMultiplier: 1,
     waiting: false,
     inRun: true,
     log: "鳥居の奥から妖気が流れ込む。妖札を選べ。",
   });
+  applyCharacterStartTrait(character);
   state.enemy = createEnemy();
   drawHand();
   els.setupScreen.hidden = true;
@@ -693,6 +707,7 @@ function endGame(won) {
 }
 
 function renderSetup() {
+  setSetupView(state.setupView);
   els.collectionText.textContent = `所持 ${collectionTotal()}`;
   els.deckCountText.textContent = `札組 ${player.deck.length}/${DECK_MIN}-${DECK_MAX}`;
   els.startRunButton.disabled = !canStartRun();
@@ -720,6 +735,14 @@ function renderSetup() {
     button.addEventListener("click", () => toggleDeckCard(card.id));
     els.deckList.appendChild(button);
   });
+}
+
+function setSetupView(view) {
+  state.setupView = view;
+  els.gachaPanel.hidden = view !== "gacha";
+  els.deckPanel.hidden = view !== "deck";
+  els.showGachaButton.classList.toggle("active", view === "gacha");
+  els.showDeckButton.classList.toggle("active", view === "deck");
 }
 
 function renderGame() {
@@ -768,6 +791,29 @@ function canStartRun() {
   return player.deck.length >= DECK_MIN && player.deck.length <= DECK_MAX;
 }
 
+function handSize() {
+  return selectedCharacter().id === "crystal" ? 4 : 3;
+}
+
+function applyCharacterStartTrait(character) {
+  if (character.id === "exorcist") {
+    state.block += 4;
+    state.log = "祓い師の均衡で結界を4張った。妖札を選べ。";
+  }
+}
+
+function applyCharacterCardTrait(character, card, beforeHp) {
+  if (character.id === "miko" && state.hp > beforeHp) {
+    state.hp = Math.min(state.maxHp, state.hp + 4);
+    state.log += " 神楽でさらに4回復。";
+  }
+
+  if (character.id === "onmyoji" && card.type === "spirit" && state.enemy.hp > 0) {
+    state.enemy.hp = Math.max(0, state.enemy.hp - 4);
+    state.log += " 式占の追撃が4削った。";
+  }
+}
+
 function renderCharacters() {
   els.characterList.innerHTML = "";
   characterCatalog.forEach((character) => {
@@ -777,6 +823,7 @@ function renderCharacters() {
     button.innerHTML = `
       <img src="./assets/img/${character.art}" alt="" />
       <strong>${character.name}</strong>
+      <em>${character.trait}</em>
       <span>HP ${character.hp} / ${character.bonus}</span>
     `;
     button.addEventListener("click", () => {
@@ -788,6 +835,8 @@ function renderCharacters() {
   });
 }
 
+els.showGachaButton.addEventListener("click", () => setSetupView("gacha"));
+els.showDeckButton.addEventListener("click", () => setSetupView("deck"));
 els.pullOneButton.addEventListener("click", () => pull(1));
 els.pullTenButton.addEventListener("click", () => pull(10));
 els.autoDeckButton.addEventListener("click", autoDeck);

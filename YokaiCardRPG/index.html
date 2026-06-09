@@ -28,7 +28,12 @@
           <div id="deckCountText" class="currency">札組 0/20</div>
         </header>
 
-        <section class="setup-panel gacha-panel">
+        <nav class="setup-tabs" aria-label="準備メニュー">
+          <button id="showGachaButton" class="active" type="button">召喚</button>
+          <button id="showDeckButton" type="button">編成</button>
+        </nav>
+
+        <section id="gachaPanel" class="setup-panel gacha-panel">
           <div class="setup-title">
             <div>
               <span class="label">LIMITED SUMMON</span>
@@ -50,7 +55,7 @@
           <div id="gachaResult" class="gacha-result">まずは十連召喚で妖札を集めよう。</div>
         </section>
 
-        <section class="setup-panel deck-panel">
+        <section id="deckPanel" class="setup-panel deck-panel" hidden>
           <div class="setup-title">
             <div>
               <span class="label">編成</span>
@@ -59,7 +64,7 @@
             <button id="autoDeckButton" type="button">自動編成</button>
           </div>
           <div id="characterList" class="character-list"></div>
-          <div id="deckHint" class="deck-hint">20枚ちょうどで出撃できます。カードを押すとデッキに出し入れできます。</div>
+          <div id="deckHint" class="deck-hint">20枚以上で出撃できます。カードを押すとデッキに出し入れできます。</div>
           <div id="deckList" class="deck-list"></div>
           <button id="startRunButton" class="start-run" type="button" disabled>このデッキで探索開始</button>
         </section>
@@ -128,6 +133,6 @@
         </div>
       </dialog>
     </main>
-    <script src="./app.js?v=flex-deck-more-art-20260610"></script>
+    <script src="./app.js?v=split-screen-traits-20260610"></script>
   </body>
 </html>
