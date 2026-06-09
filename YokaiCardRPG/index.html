@@ -13,34 +13,48 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="game-shell" aria-live="polite">
+    <main class="phone" data-screen="setup" aria-live="polite">
+      <img class="bg" src="./assets/img/bg-shrine.png" alt="" />
+      <div class="shade"></div>
+      <div class="particles" aria-hidden="true"></div>
       <section id="setupScreen" class="setup-screen">
-        <header class="setup-hero">
-          <span class="label">YOKAI DECK RPG</span>
-          <h1>妖札迷宮</h1>
-          <p>召喚で妖札を集め、20枚のデッキを組んで夜の迷宮へ挑む。</p>
+        <header class="topbar setup-topbar">
+          <span class="icon-button setup-mark" aria-hidden="true">札</span>
+          <div class="title">
+            <strong>妖札迷宮</strong>
+            <span>妖札召喚 開催中</span>
+          </div>
+          <div id="collectionText" class="currency">所持 0</div>
+          <div id="deckCountText" class="currency">札組 0/20</div>
         </header>
 
-        <section class="setup-panel">
+        <section class="setup-panel gacha-panel">
           <div class="setup-title">
             <div>
-              <span class="label">召喚</span>
-              <strong>札箱</strong>
+              <span class="label">LIMITED SUMMON</span>
+              <strong>百鬼妖札祭</strong>
             </div>
-            <span id="collectionText">所持 0</span>
+            <span class="rate-chip">SSR 4%</span>
+          </div>
+          <div class="portal" aria-hidden="true">
+            <div class="smoke smoke-a"></div>
+            <div class="smoke smoke-b"></div>
+            <div class="smoke-ring smoke-ring-a"></div>
+            <div class="smoke-ring smoke-ring-b"></div>
+            <div class="core">札</div>
           </div>
           <div class="gacha-actions">
             <button id="pullOneButton" type="button">一枚召喚</button>
-            <button id="pullTenButton" type="button">十連召喚</button>
+            <button id="pullTenButton" class="primary-summon" type="button">十連召喚</button>
           </div>
           <div id="gachaResult" class="gacha-result">まずは十連召喚で妖札を集めよう。</div>
         </section>
 
-        <section class="setup-panel">
+        <section class="setup-panel deck-panel">
           <div class="setup-title">
             <div>
               <span class="label">編成</span>
-              <strong id="deckCountText">デッキ 0 / 20</strong>
+              <strong>20枚デッキ</strong>
             </div>
             <button id="autoDeckButton" type="button">自動編成</button>
           </div>
@@ -113,6 +127,6 @@
         </div>
       </dialog>
     </main>
-    <script src="./app.js?v=deck-gacha-20260610"></script>
+    <script src="./app.js?v=wafu-cardsheet-20260610"></script>
   </body>
 </html>

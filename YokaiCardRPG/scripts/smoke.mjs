@@ -54,6 +54,18 @@ class Element {
     this.textContent = "";
     this.innerHTML = "";
     this.className = "";
+    this.classList = {
+      add: (...names) => {
+        const current = new Set(this.className.split(/\s+/).filter(Boolean));
+        names.forEach((name) => current.add(name));
+        this.className = [...current].join(" ");
+      },
+      remove: (...names) => {
+        const current = new Set(this.className.split(/\s+/).filter(Boolean));
+        names.forEach((name) => current.delete(name));
+        this.className = [...current].join(" ");
+      },
+    };
     this.type = "";
     this.src = "";
     this.hidden = false;

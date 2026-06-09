@@ -16,6 +16,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   min-height: 100%;
@@ -29,11 +33,9 @@ body {
 
 body {
   min-height: 100svh;
-  background-image:
-    linear-gradient(180deg, rgba(7, 8, 12, 0.15), rgba(7, 8, 12, 0.88)),
-    url("./assets/img/bg-shrine.png");
-  background-position: center;
-  background-size: cover;
+  display: grid;
+  place-items: center;
+  background: #0b0e14;
 }
 
 button {
@@ -50,14 +52,54 @@ button:disabled {
   opacity: 0.42;
 }
 
-.game-shell {
+.game-shell,
+.phone {
+  position: relative;
   width: min(100vw, 460px);
-  min-height: 100svh;
+  height: min(100dvh, 932px);
+  min-height: 680px;
   margin: 0 auto;
   padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   gap: 10px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #111;
+}
+
+.bg,
+.shade,
+.particles {
+  position: absolute;
+  inset: 0;
+}
+
+.bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -3;
+  filter: saturate(1.08) contrast(1.03);
+}
+
+.shade {
+  z-index: -2;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 226, 140, 0.12), transparent 35%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.1) 34%, rgba(0, 0, 0, 0.78));
+}
+
+.particles {
+  z-index: -1;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(255, 214, 88, 0.9) 0 1px, transparent 2px);
+  background-size: 43px 61px, 67px 89px;
+  animation: drift 8s linear infinite;
+  opacity: 0.48;
+  mix-blend-mode: screen;
 }
 
 .game-screen {
@@ -81,44 +123,70 @@ button:disabled {
 }
 
 .setup-screen {
+  min-height: 100%;
   display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
   gap: 10px;
-  align-content: start;
+  align-content: stretch;
 }
 
-.setup-hero {
-  min-height: 180px;
-  padding: 24px 16px;
+.setup-topbar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  grid-template-columns: none;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+}
+
+.title {
   display: grid;
-  align-content: end;
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(18, 15, 22, 0.12), rgba(18, 15, 22, 0.88)),
-    url("./assets/img/bg-shrine.png");
-  background-position: center;
-  background-size: cover;
-  border: 1px solid var(--line);
-  box-shadow: 0 18px 42px var(--shadow);
+  line-height: 1.05;
+  margin-right: auto;
 }
 
-.setup-hero h1 {
-  margin: 2px 0 6px;
+.title strong {
   font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-  font-size: 34px;
-  font-weight: 700;
+  font-size: 16px;
   letter-spacing: 0;
 }
 
-.setup-hero p {
-  max-width: 26em;
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
+.title span {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+}
+
+.currency,
+.rate-chip {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--ink);
+  padding: 0 9px;
+  font-size: 11px;
+  font-weight: 900;
+  backdrop-filter: blur(12px);
 }
 
 .setup-panel {
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
+  min-height: 0;
+}
+
+.gacha-panel {
+  display: grid;
+  grid-template-rows: auto 112px auto minmax(54px, auto);
+  gap: 8px;
+}
+
+.deck-panel {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
 }
 
 .setup-title {
@@ -126,11 +194,101 @@ button:disabled {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .setup-title strong {
-  font-size: 18px;
+  font-size: 17px;
+}
+
+.portal {
+  position: relative;
+  width: 128px;
+  height: 112px;
+  margin: -4px auto -2px;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 0 22px rgba(210, 220, 226, 0.36));
+}
+
+.portal::before,
+.portal::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse, rgba(232, 236, 238, 0.28), transparent 64%),
+    conic-gradient(from 0deg, transparent, rgba(226, 232, 235, 0.26), transparent, rgba(255, 212, 126, 0.16), transparent);
+  opacity: 0.86;
+  filter: blur(13px);
+  animation: smokeSpin 8s ease-in-out infinite;
+}
+
+.portal::after {
+  inset: 27px;
+  opacity: 0.6;
+  animation-duration: 5s;
+  animation-direction: reverse;
+}
+
+.smoke,
+.smoke-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.smoke {
+  width: 90px;
+  height: 44px;
+  background: radial-gradient(ellipse, rgba(232, 237, 239, 0.34), transparent 70%);
+  filter: blur(10px);
+  animation: smokePuff 2.8s ease-in-out infinite alternate;
+}
+
+.smoke-a {
+  transform: rotate(-12deg) translateX(-18px);
+}
+
+.smoke-b {
+  transform: rotate(18deg) translateX(20px);
+  animation-delay: -0.5s;
+}
+
+.smoke-ring {
+  border: 8px solid rgba(218, 226, 230, 0.12);
+  filter: blur(8px);
+  box-shadow: 0 0 34px rgba(230, 236, 238, 0.22);
+  animation: smokePulse 2.4s ease-in-out infinite alternate;
+}
+
+.smoke-ring-a {
+  width: 122px;
+  height: 62px;
+  transform: rotate(-10deg);
+}
+
+.smoke-ring-b {
+  width: 98px;
+  height: 74px;
+  transform: rotate(26deg);
+  animation-delay: -0.8s;
+}
+
+.core {
+  position: relative;
+  z-index: 2;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #24140f;
+  background: #ffd45e;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 24px;
+  font-weight: 900;
+  box-shadow: 0 0 28px rgba(255, 212, 94, 0.55);
 }
 
 .gacha-actions {
@@ -141,13 +299,16 @@ button:disabled {
 
 .gacha-actions button,
 .start-run {
-  background: linear-gradient(180deg, rgba(212, 168, 79, 0.36), rgba(116, 58, 38, 0.78));
+  border-color: rgba(255, 255, 255, 0.48);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ef575a, #ffb83d);
+  box-shadow: 0 12px 24px rgba(255, 138, 42, 0.32);
 }
 
 .gacha-result,
 .deck-hint {
-  min-height: 42px;
-  margin-top: 9px;
+  min-height: 38px;
+  margin-top: 0;
   padding: 9px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -157,41 +318,79 @@ button:disabled {
   line-height: 1.5;
 }
 
+.gacha-result {
+  display: block;
+}
+
+.gacha-result.result-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  align-items: stretch;
+}
+
+.result-card {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 4px 2px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.result-card strong {
+  max-width: 100%;
+  font-size: 9px;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .deck-list {
-  max-height: 330px;
+  max-height: none;
   margin: 10px 0;
   display: grid;
-  gap: 7px;
-  overflow: auto;
-  padding-right: 2px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  overflow: hidden;
+  padding-right: 0;
 }
 
 .deck-card {
-  min-height: 76px;
-  padding: 9px;
+  min-height: 70px;
+  padding: 7px;
   display: grid;
-  grid-template-columns: 44px 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 3px 8px;
+  grid-template-columns: 42px 1fr auto;
+  grid-template-rows: auto auto auto;
+  gap: 2px 6px;
   align-items: center;
   text-align: left;
   background: rgba(21, 16, 23, 0.9);
 }
 
 .deck-card strong {
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1.15;
 }
 
 .deck-card small {
   grid-column: 2 / 4;
   color: var(--muted);
-  font-size: 11px;
-  line-height: 1.3;
+  font-size: 10px;
+  line-height: 1.18;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .deck-card em {
+  grid-column: 2 / 4;
   color: var(--gold);
-  font-size: 11px;
+  font-size: 10px;
   font-style: normal;
 }
 
@@ -368,11 +567,28 @@ button:disabled {
   text-align: left;
 }
 
-.card img {
+.card-art,
+.deck-art {
+  display: block;
+  background-image: url("./assets/img/card-sheet.png");
+  background-size: 500% 200%;
+  background-position: calc(var(--sx) * 25%) calc(var(--sy) * 100%);
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.38));
+}
+
+.card-art {
   width: 44px;
   height: 44px;
   justify-self: center;
-  object-fit: contain;
+  border-radius: 8px;
+}
+
+.deck-art {
+  width: 38px;
+  height: 38px;
+  grid-row: 1 / 4;
+  border-radius: 8px;
 }
 
 .card strong {
@@ -513,5 +729,43 @@ dialog::backdrop {
 
   .card p {
     font-size: 10px;
+  }
+}
+
+@keyframes drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 43px 61px, -67px 89px;
+  }
+}
+
+@keyframes smokeSpin {
+  from {
+    transform: rotate(0deg) scale(0.98);
+  }
+  to {
+    transform: rotate(360deg) scale(1.04);
+  }
+}
+
+@keyframes smokePulse {
+  from {
+    opacity: 0.42;
+    transform: rotate(-10deg) scale(0.92);
+  }
+  to {
+    opacity: 0.86;
+    transform: rotate(20deg) scale(1.06);
+  }
+}
+
+@keyframes smokePuff {
+  from {
+    opacity: 0.36;
+  }
+  to {
+    opacity: 0.82;
   }
 }

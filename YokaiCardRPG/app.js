@@ -13,6 +13,7 @@ const cardCatalog = [
     cost: "攻撃",
     text: "敵に8ダメージ。",
     copies: 8,
+    sprite: 0,
     play: (s) => damageEnemy(s, 8, "斬札が妖気を裂いた。"),
   },
   {
@@ -23,6 +24,7 @@ const cardCatalog = [
     cost: "防御",
     text: "結界を10得る。",
     copies: 8,
+    sprite: 1,
     play: (s) => {
       s.block += 10;
       s.log = "護符が淡く光り、結界が張られた。";
@@ -36,6 +38,7 @@ const cardCatalog = [
     cost: "回復",
     text: "HPを7回復。呪火を鎮める。",
     copies: 8,
+    sprite: 2,
     play: (s) => {
       s.hp = Math.min(s.maxHp, s.hp + 7);
       s.burn = 0;
@@ -50,6 +53,7 @@ const cardCatalog = [
     cost: "継続",
     text: "敵に7ダメージ。火傷を3付与。",
     copies: 3,
+    sprite: 3,
     play: (s) => {
       damageEnemy(s, 7, "狐火が尾を引き、妖怪に燃え移った。");
       s.enemy.burn += 3;
@@ -63,6 +67,7 @@ const cardCatalog = [
     cost: "妨害",
     text: "敵に6ダメージ。次の攻撃を弱める。",
     copies: 3,
+    sprite: 4,
     play: (s) => {
       damageEnemy(s, 6, "封じ札が敵の影を地面へ縫い止めた。");
       s.enemy.weakened = true;
@@ -76,6 +81,7 @@ const cardCatalog = [
     cost: "先読み",
     text: "結界を7得る。攻撃札を引きやすくする。",
     copies: 3,
+    sprite: 5,
     play: (s) => {
       s.block += 7;
       s.focus = true;
@@ -90,6 +96,7 @@ const cardCatalog = [
     cost: "召喚",
     text: "敵に10ダメージ。魂灯を1得る。",
     copies: 2,
+    sprite: 6,
     play: (s) => {
       damageEnemy(s, 10, "小さな式神が敵の懐へ飛び込んだ。");
       s.souls += 1;
@@ -103,6 +110,7 @@ const cardCatalog = [
     cost: "危険",
     text: "HPを4失い、敵に20ダメージ。",
     copies: 2,
+    sprite: 7,
     play: (s) => {
       s.hp = Math.max(1, s.hp - 4);
       damageEnemy(s, 20, "血墨の札が赤く滲み、大きな傷を刻んだ。");
@@ -116,6 +124,7 @@ const cardCatalog = [
     cost: "奥義",
     text: "敵に26ダメージ。結界を8得る。",
     copies: 1,
+    sprite: 8,
     play: (s) => {
       damageEnemy(s, 26, "月光が札に宿り、夜そのものが敵を断った。");
       s.block += 8;
@@ -129,6 +138,7 @@ const cardCatalog = [
     cost: "反射",
     text: "結界を18得る。敵に8ダメージ。",
     copies: 1,
+    sprite: 9,
     play: (s) => {
       s.block += 18;
       damageEnemy(s, 8, "鏡面に妖気が跳ね返り、敵へ突き刺さった。");
@@ -227,6 +237,17 @@ function cardById(id) {
   return cardCatalog.find((card) => card.id === id);
 }
 
+function spriteStyle(card) {
+  const index = card.sprite || 0;
+  const x = index % 5;
+  const y = Math.floor(index / 5);
+  return `--sx:${x};--sy:${y}`;
+}
+
+function cardArt(card, className = "card-art") {
+  return `<span class="${className}" style="${spriteStyle(card)}"></span>`;
+}
+
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -263,9 +284,18 @@ function pullCard() {
 function pull(count) {
   const results = Array.from({ length: count }, pullCard);
   save();
+  els.gachaResult.classList.add("result-grid");
   els.gachaResult.innerHTML = results
-    .map((card) => `<span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>${card.name}`)
-    .join(" / ");
+    .map(
+      (card) => `
+        <article class="result-card ${card.rarity}">
+          ${cardArt(card)}
+          <span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>
+          <strong>${card.name}</strong>
+        </article>
+      `,
+    )
+    .join("");
   renderSetup();
 }
 
@@ -491,7 +521,7 @@ function endGame(won) {
 
 function renderSetup() {
   els.collectionText.textContent = `所持 ${collectionTotal()}`;
-  els.deckCountText.textContent = `デッキ ${player.deck.length} / ${DECK_SIZE}`;
+  els.deckCountText.textContent = `札組 ${player.deck.length}/${DECK_SIZE}`;
   els.startRunButton.disabled = player.deck.length !== DECK_SIZE;
   els.deckHint.textContent =
     player.deck.length === DECK_SIZE
@@ -507,6 +537,7 @@ function renderSetup() {
     button.disabled = owned === 0;
     button.className = `deck-card ${card.type} ${card.rarity}`;
     button.innerHTML = `
+      ${cardArt(card, "deck-art")}
       <span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>
       <strong>${card.name}</strong>
       <small>${card.text}</small>
@@ -541,7 +572,7 @@ function renderGame() {
     button.type = "button";
     button.disabled = state.waiting;
     button.innerHTML = `
-      <img src="./assets/img/card.png" alt="" />
+      ${cardArt(card)}
       <span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>
       <strong>${card.name}</strong>
       <p>${card.text}</p>
