@@ -190,6 +190,15 @@ const equipmentNames = {
 };
 
 const equipmentArt = Array.from({ length: 30 }, (_, index) => `assets/generated/equipment/items/equip-${String(index).padStart(2, "0")}.png`);
+const equipmentArtBySlot = {
+  "武器": [0, 1, 2, 3, 4, 5, 6, 26, 27, 29].map(index => equipmentArt[index]),
+  "体": [7, 8, 9].map(index => equipmentArt[index]),
+  "頭": [10, 11, 12, 13, 14].map(index => equipmentArt[index]),
+  "足": [15, 16].map(index => equipmentArt[index]),
+  "指輪": [17, 18, 19, 20].map(index => equipmentArt[index]),
+  "腕輪": [21, 28].map(index => equipmentArt[index]),
+  "宝石": [22, 23, 24, 25].map(index => equipmentArt[index])
+};
 const forgeArt = "assets/generated/equipment/forge-bg.png";
 const resourceArt = {
   money: "assets/generated/equipment/resources/money.png",
@@ -350,13 +359,18 @@ function equipment(id, slot, name, rarity, level, power, img = null) {
   return { id, slot, name, rarity, level, power, equippedBy: null, img: img || equipmentImageFor(slot, name) };
 }
 
+function equipmentImagesForSlot(slot) {
+  return equipmentArtBySlot[slot] || equipmentArt;
+}
+
 function equipmentImageFor(slot, name = "") {
-  const names = Object.values(equipmentNames).flat();
-  const nameIndex = names.indexOf(name);
-  if (nameIndex >= 0) return equipmentArt[nameIndex % equipmentArt.length];
+  const slotImages = equipmentImagesForSlot(slot);
+  const slotNames = equipmentNames[slot] || [];
+  const nameIndex = slotNames.indexOf(name);
+  if (nameIndex >= 0) return slotImages[nameIndex % slotImages.length];
   const slotIndex = Math.max(0, equipmentSlots.indexOf(slot));
   const seed = Array.from(String(name || slot)).reduce((sum, char) => sum + char.charCodeAt(0), slotIndex * 4);
-  return equipmentArt[seed % equipmentArt.length];
+  return slotImages[seed % slotImages.length];
 }
 
 function ninjaFromPool(card, level = 1, isNew = true) {
@@ -436,7 +450,7 @@ function normalizeGameState() {
     if (item.slot === "装飾品") item.slot = item.name?.includes("面") ? "頭" : "指輪";
     if (!equipmentSlots.includes(item.slot)) item.slot = "武器";
     if (!item.rarity) item.rarity = "N";
-    if (!item.img) item.img = equipmentImageFor(item.slot, item.name);
+    item.img = equipmentImageFor(item.slot, item.name);
   });
   game.defense = { ...fresh.defense, ...(game.defense || {}) };
   game.activities = Array.isArray(game.activities) ? game.activities : [];
@@ -889,7 +903,7 @@ function renderWorkshop() {
         <img src="${forgeArt}" alt="">
       </div>
       <div class="equipment-gallery">
-        ${equipmentArt.map((img, index) => `<img src="${img}" alt="装備${index + 1}">`).join("")}
+        ${renderEquipmentGallery()}
       </div>
       <div class="action-grid">
         ${equipmentSlots.map(slot => `<button data-action="craft-equipment" data-slot="${slot}">${slot}を生産</button>`).join("")}
@@ -904,6 +918,15 @@ function renderWorkshop() {
       <div class="list-stack">${game.equipment.map(renderEquipmentRow).join("")}</div>
     </div>
   `;
+}
+
+function renderEquipmentGallery() {
+  return equipmentSlots.map(slot => `
+    <div class="equipment-gallery-group">
+      <b>${slot}</b>
+      <div>${equipmentImagesForSlot(slot).map((img, index) => `<img src="${img}" alt="${slot}${index + 1}">`).join("")}</div>
+    </div>
+  `).join("");
 }
 
 function renderNinjas() {
