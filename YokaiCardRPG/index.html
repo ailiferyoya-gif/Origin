@@ -54,10 +54,11 @@
           <div class="setup-title">
             <div>
               <span class="label">編成</span>
-              <strong>20枚デッキ</strong>
+              <strong>20〜30枚デッキ</strong>
             </div>
             <button id="autoDeckButton" type="button">自動編成</button>
           </div>
+          <div id="characterList" class="character-list"></div>
           <div id="deckHint" class="deck-hint">20枚ちょうどで出撃できます。カードを押すとデッキに出し入れできます。</div>
           <div id="deckList" class="deck-list"></div>
           <button id="startRunButton" class="start-run" type="button" disabled>このデッキで探索開始</button>
@@ -93,7 +94,7 @@
           </div>
 
           <div class="hero-panel">
-            <img class="hero-art" src="./assets/img/hero.png" alt="祓い師" />
+            <img class="hero-art" id="heroArt" src="./assets/img/hero.png" alt="祓い師" />
             <div class="hero-stats">
               <div class="name-row">
                 <strong>祓い師</strong>
@@ -127,6 +128,6 @@
         </div>
       </dialog>
     </main>
-    <script src="./app.js?v=wafu-cardsheet-20260610"></script>
+    <script src="./app.js?v=flex-deck-more-art-20260610"></script>
   </body>
 </html>
