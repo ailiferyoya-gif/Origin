@@ -97,7 +97,27 @@ const pool = [
   { id: "ninja-r-tane", rarity: "r", label: "R", name: "種丸", role: "罠師", skill: "竹罠", skillText: "防衛で追加ダメージ。", img: rarityArt.r, shards: 10, basePower: 1240 },
   { id: "ninja-r-kohaku", rarity: "r", label: "R", name: "琥珀", role: "採集", skill: "鉱脈探し", skillText: "鉄報酬を少し増やす。", img: rarityArt.r, shards: 10, basePower: 1190 },
   { id: "ninja-r-mayu", rarity: "r", label: "R", name: "繭", role: "裁縫", skill: "絹結び", skillText: "絹報酬を少し増やす。", img: rarityArt.r, shards: 10, basePower: 1160 },
-  { id: "ninja-r-toraji", rarity: "r", label: "R", name: "虎次", role: "護衛", skill: "身代わり", skillText: "被ダメージを少し軽減。", img: rarityArt.r, shards: 10, basePower: 1270 }
+  { id: "ninja-r-toraji", rarity: "r", label: "R", name: "虎次", role: "護衛", skill: "身代わり", skillText: "被ダメージを少し軽減。", img: rarityArt.r, shards: 10, basePower: 1270 },
+  { id: "ninja-ur-hoshikage", rarity: "ur", label: "UR", name: "星影ノ銀狼", role: "星遁", skill: "星狼天翔", skillText: "レイドで味方追撃率+18%。", img: rarityArt.ur, shards: 200, basePower: 9100 },
+  { id: "ninja-ur-shiranui", rarity: "ur", label: "UR", name: "不知火ノ朱雀", role: "火鳥", skill: "朱雀炎舞", skillText: "火薬報酬と討伐与ダメージが大幅上昇。", img: rarityArt.ur, shards: 200, basePower: 9020 },
+  { id: "ninja-ur-murasame", rarity: "ur", label: "UR", name: "村雨ノ龍姫", role: "水龍", skill: "雨龍結界", skillText: "被ダメージを軽減し、療養効率+20%。", img: rarityArt.ur, shards: 200, basePower: 8870 },
+  { id: "ninja-ur-kokuyou", rarity: "ur", label: "UR", name: "黒曜ノ夜叉", role: "暗夜", skill: "黒曜断ち", skillText: "里襲撃で敵防衛を大きく削る。", img: rarityArt.ur, shards: 200, basePower: 9300 },
+  { id: "ninja-ssr-akatsuki", rarity: "ssr", label: "SSR", name: "暁ノ刃", role: "抜刀", skill: "暁一文字", skillText: "任務開始時に先制ダメージ。", img: rarityArt.ssr, shards: 100, basePower: 6020 },
+  { id: "ninja-ssr-komachi", rarity: "ssr", label: "SSR", name: "小町ノ舞", role: "舞忍", skill: "花霞の舞", skillText: "味方速度と素材報酬を上げる。", img: rarityArt.ssr, shards: 100, basePower: 5480 },
+  { id: "ninja-ssr-ginbei", rarity: "ssr", label: "SSR", name: "銀兵衛", role: "槍忍", skill: "銀槍流転", skillText: "討伐で敵防御を下げる。", img: rarityArt.ssr, shards: 100, basePower: 5650 },
+  { id: "ninja-ssr-uzume", rarity: "ssr", label: "SSR", name: "雨詠ウズメ", role: "雨乞", skill: "雨音結び", skillText: "負傷を抑え、薬草報酬+18%。", img: rarityArt.ssr, shards: 100, basePower: 5520 },
+  { id: "ninja-ssr-tetsumaru", rarity: "ssr", label: "SSR", name: "鉄丸", role: "重装", skill: "鉄壁身代わり", skillText: "被ダメージを肩代わりする。", img: rarityArt.ssr, shards: 100, basePower: 5750 },
+  { id: "ninja-ssr-rinka", rarity: "ssr", label: "SSR", name: "燐火", role: "妖火", skill: "燐火乱舞", skillText: "レイドで継続ダメージ。", img: rarityArt.ssr, shards: 100, basePower: 5680 },
+  { id: "ninja-sr-saburota", rarity: "sr", label: "SR", name: "三郎太", role: "棍術", skill: "破竹打ち", skillText: "討伐与ダメージ+8%。", img: rarityArt.sr, shards: 30, basePower: 3060 },
+  { id: "ninja-sr-nadeshiko", rarity: "sr", label: "SR", name: "撫子", role: "治癒", skill: "花手当", skillText: "任務後のHP回復量が増える。", img: rarityArt.sr, shards: 30, basePower: 2860 },
+  { id: "ninja-sr-kagerou", rarity: "sr", label: "SR", name: "陽炎", role: "幻影", skill: "陽炎歩き", skillText: "被ダメージを少し軽減。", img: rarityArt.sr, shards: 30, basePower: 2980 },
+  { id: "ninja-sr-kazehiko", rarity: "sr", label: "SR", name: "風彦", role: "風遁", skill: "風切り", skillText: "遠征時間を短縮。", img: rarityArt.sr, shards: 30, basePower: 3020 },
+  { id: "ninja-sr-haruka", rarity: "sr", label: "SR", name: "遥火", role: "火札", skill: "火札連ね", skillText: "火薬と銭報酬を増やす。", img: rarityArt.sr, shards: 30, basePower: 2940 },
+  { id: "ninja-r-mamezo", rarity: "r", label: "R", name: "豆蔵", role: "小道具", skill: "豆煙幕", skillText: "敵命中をわずかに下げる。", img: rarityArt.r, shards: 10, basePower: 1260 },
+  { id: "ninja-r-otoha", rarity: "r", label: "R", name: "音羽", role: "笛忍", skill: "笛合図", skillText: "共闘時の戦力を少し上げる。", img: rarityArt.r, shards: 10, basePower: 1220 },
+  { id: "ninja-r-kiriha", rarity: "r", label: "R", name: "霧葉", role: "採薬", skill: "薬草目利き", skillText: "薬草報酬を少し増やす。", img: rarityArt.r, shards: 10, basePower: 1180 },
+  { id: "ninja-r-shinpei", rarity: "r", label: "R", name: "新平", role: "見張", skill: "早鐘", skillText: "防衛で先制率を少し上げる。", img: rarityArt.r, shards: 10, basePower: 1240 },
+  { id: "ninja-r-tomoe", rarity: "r", label: "R", name: "巴", role: "短刀", skill: "回り込み", skillText: "小ダメージを追加。", img: rarityArt.r, shards: 10, basePower: 1280 }
 ];
 
 pool.forEach(card => {
@@ -932,9 +952,6 @@ function renderVillage() {
         <div><b>${injured}</b><span>戦闘不能</span></div>
       </div>
       <div class="resource-grid">${renderResourceTiles()}</div>
-      <div class="formation-mini formation-link-only">
-        <button data-tab="formation">編成</button>
-      </div>
       <div class="action-grid">
         <button data-action="collect">産物回収</button>
         <button data-action="heal-party">療養</button>
@@ -1053,7 +1070,7 @@ function renderNinjas() {
     panels.ninjas.innerHTML = renderNinjaDetail(selectedNinjaId);
     return;
   }
-  const page = ninjaPageItems(9);
+  const page = ninjaPageItems(18);
   panels.ninjas.innerHTML = `
     <div class="panel-card compact-screen">
       <span class="scene-kicker">忍者名鑑</span>
@@ -1119,8 +1136,6 @@ function renderFormation() {
       </div>
       <div class="action-grid">
         <button data-action="heal-party">療養</button>
-        <button data-action="load-game">読込</button>
-        <button data-tab="missions">任務へ</button>
       </div>
     </div>
     <div class="panel-card compact-section">
@@ -1255,6 +1270,10 @@ function renderMissions() {
       <h2>周辺勢力の動き</h2>
       <div class="npc-activity-list">${npcActivityItems().map(item => `<article class="npc-activity ${item.tone}"><b>${item.title}</b><span>${item.text}</span><small>${item.eta}</small></article>`).join("")}</div>
     </div>
+    <div class="panel-card compact-section raid-live-board">
+      <h2>最新レイド戦況</h2>
+      <div class="raid-log-list">${renderWorldRaidLogs()}</div>
+    </div>
     <div class="panel-card compact-section">
       <h2>戦果ログ</h2>
       <div class="list-stack compact-log">${game.reports.filter(item => item.type === "combat").slice(0, 3).map(renderReport).join("") || `<article class="row-card empty-row"><div><strong>戦闘ログなし</strong><span>任務やレイドで戦闘すると、与ダメージと被ダメージが表示されます。</span></div></article>`}</div>
@@ -1378,6 +1397,19 @@ function renderRaidRow(raid) {
       <em>参加</em>
     </button>
   `;
+}
+
+function renderWorldRaidLogs() {
+  const logs = game.raidEvents
+    .flatMap(raid => (raid.logs || []).slice(0, 3).map(log => ({ ...log, raidName: raid.name, hpLeft: raid.hpLeft, hp: raid.hp })))
+    .sort((a, b) => b.at - a.at)
+    .slice(0, 5);
+  return logs.map(log => `
+    <article class="raid-log-entry ${log.type}">
+      <b>${log.raidName}</b>
+      <span>${log.actor}: ${log.text} / 与 ${yen(log.damage || 0)} / 残HP ${yen(Math.max(0, log.hpLeft))}</span>
+    </article>
+  `).join("") || `<article class="raid-log-entry"><b>観測中</b><span>周辺勢力がレイドに参戦するとここへ流れます。</span></article>`;
 }
 
 function renderActivities() {
@@ -1739,12 +1771,14 @@ function playerRaidAttack() {
 }
 
 function tickRaidNpcCombat(raid, now = Date.now()) {
-  if (!raid || raid.hpLeft <= 0 || !(raid.playerJoined || raid.playerSummoned)) return false;
-  const interval = 1700 + Math.random() * 1400;
+  if (!raid || raid.hpLeft <= 0) return false;
+  const isPlayerRaid = raid.playerJoined || raid.playerSummoned;
+  const interval = isPlayerRaid ? 1700 + Math.random() * 1400 : 2600 + Math.random() * 2200;
   if (now - (raid.lastNpcStrikeAt || 0) < interval) return false;
   const member = randomFrom((raid.members || raidCompanions).filter(item => item.name !== "影月の里")) || randomFrom(raidCompanions);
   const difficulty = getDifficulty(raid.difficulty);
-  const damage = Math.min(raid.hpLeft, Math.round((member.power || 16000) * (0.08 + difficulty.multiplier * 0.035) + Math.random() * 1800));
+  const damageScale = isPlayerRaid ? 0.08 + difficulty.multiplier * 0.035 : 0.045 + difficulty.multiplier * 0.022;
+  const damage = Math.min(raid.hpLeft, Math.round((member.power || 16000) * damageScale + Math.random() * (isPlayerRaid ? 1800 : 900)));
   const taken = Math.round(400 + difficulty.enemy * 0.06 + Math.random() * 900);
   raid.hpLeft = Math.max(0, raid.hpLeft - damage);
   raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
