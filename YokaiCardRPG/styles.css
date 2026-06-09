@@ -1,0 +1,346 @@
+:root {
+  color-scheme: dark;
+  --bg: #120f16;
+  --ink: #f7efe1;
+  --muted: #c9bca8;
+  --red: #c8493f;
+  --gold: #d4a84f;
+  --aqua: #84d7d4;
+  --panel: rgba(20, 16, 23, 0.82);
+  --line: rgba(247, 239, 225, 0.18);
+  --shadow: rgba(0, 0, 0, 0.45);
+  font-family: "Yu Gothic UI", "Hiragino Sans", "Meiryo", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body {
+  min-height: 100svh;
+  background-image:
+    linear-gradient(180deg, rgba(7, 8, 12, 0.15), rgba(7, 8, 12, 0.88)),
+    url("./assets/img/bg-shrine.png");
+  background-position: center;
+  background-size: cover;
+}
+
+button {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(247, 239, 225, 0.1);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+}
+
+button:disabled {
+  opacity: 0.42;
+}
+
+.game-shell {
+  width: min(100vw, 460px);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.scene,
+.hand-zone,
+.hero-panel,
+.enemy-panel,
+.log,
+.dialog-body {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 18px 42px var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.scene {
+  position: relative;
+  min-height: 0;
+  border-radius: 8px;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: auto minmax(250px, 1fr) auto;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 48px;
+  gap: 8px;
+  align-items: center;
+}
+
+.topbar > div,
+.icon-button {
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.22);
+  padding: 6px 10px;
+}
+
+.label {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.combat-stage {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  justify-items: center;
+  min-height: 250px;
+}
+
+.enemy-art {
+  max-width: 86%;
+  max-height: 300px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.55));
+}
+
+.intent {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  max-width: calc(100% - 24px);
+  transform: translateX(-50%);
+  padding: 7px 10px;
+  border: 1px solid rgba(212, 168, 79, 0.45);
+  border-radius: 999px;
+  background: rgba(18, 15, 22, 0.86);
+  color: #ffe2a3;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  white-space: normal;
+}
+
+.enemy-panel,
+.hero-panel {
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.hero-panel {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.hero-art {
+  width: 78px;
+  height: 96px;
+  object-fit: contain;
+  align-self: end;
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.45));
+}
+
+.name-row,
+.status-row,
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.name-row span,
+.status-row span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bar {
+  width: 100%;
+  height: 9px;
+  margin-top: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.bar span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8f2727, #f26152);
+  transition: width 220ms ease;
+}
+
+.bar.hero span {
+  background: linear-gradient(90deg, #2c9c8d, #8af0c9);
+}
+
+.status-row {
+  margin-top: 8px;
+}
+
+.hand-zone {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.log {
+  min-height: 50px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 9px 10px;
+  color: #f8e8c8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.card {
+  position: relative;
+  min-height: 156px;
+  padding: 8px;
+  display: grid;
+  grid-template-rows: 48px auto 1fr auto;
+  gap: 5px;
+  align-items: center;
+  border: 1px solid rgba(247, 239, 225, 0.2);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(248, 232, 192, 0.16), rgba(34, 24, 31, 0.92)),
+    rgba(39, 28, 34, 0.95);
+  box-shadow: inset 0 0 0 1px rgba(212, 168, 79, 0.16);
+  text-align: left;
+}
+
+.card img {
+  width: 44px;
+  height: 44px;
+  justify-self: center;
+  object-fit: contain;
+}
+
+.card strong {
+  display: block;
+  min-height: 34px;
+  font-size: 14px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.card .cost {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  text-align: right;
+}
+
+.card.attack {
+  border-color: rgba(200, 73, 63, 0.58);
+}
+
+.card.defense {
+  border-color: rgba(132, 215, 212, 0.54);
+}
+
+.card.spirit {
+  border-color: rgba(212, 168, 79, 0.6);
+}
+
+.actions {
+  margin-top: 9px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+#advanceButton {
+  background: linear-gradient(180deg, rgba(212, 168, 79, 0.36), rgba(116, 58, 38, 0.78));
+}
+
+dialog {
+  width: min(92vw, 390px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.dialog-body {
+  border-radius: 8px;
+  padding: 18px;
+  text-align: center;
+}
+
+.dialog-body h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.dialog-body p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.dialog-body button {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(212, 168, 79, 0.36), rgba(116, 58, 38, 0.78));
+}
+
+@media (max-height: 720px) {
+  .scene {
+    grid-template-rows: auto minmax(210px, 1fr) auto;
+  }
+
+  .enemy-art {
+    max-height: 230px;
+  }
+
+  .card {
+    min-height: 136px;
+  }
+
+  .card p {
+    font-size: 10px;
+  }
+}

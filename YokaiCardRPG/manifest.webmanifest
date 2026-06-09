@@ -1,0 +1,17 @@
+{
+  "name": "妖札迷宮",
+  "short_name": "妖札迷宮",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#120f16",
+  "theme_color": "#120f16",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
