@@ -1385,6 +1385,11 @@ button.formation-slot {
   margin: 7px 0 2px;
 }
 
+.formation-mini.formation-link-only {
+  justify-content: flex-end;
+  margin: 8px 0 0;
+}
+
 .formation-mini span,
 .formation-mini button {
   min-height: 24px;
@@ -1400,6 +1405,11 @@ button.formation-slot {
 .formation-mini button {
   color: rgba(0,0,0,.86);
   background: #ffd45e;
+}
+
+.formation-link-only button {
+  min-width: 88px;
+  min-height: 34px;
 }
 
 .ninja-row.ssr {

@@ -856,11 +856,7 @@ function renderVillage() {
         <div><b>${injured}</b><span>戦闘不能</span></div>
       </div>
       <div class="resource-grid">${renderResourceTiles()}</div>
-      <div class="formation-mini">
-        ${formationNinjas().map(ninja => {
-          const hp = ninjaHp(ninja);
-          return `<span>${ninja.rarity} ${ninja.name} HP ${yen(hp.current)}/${yen(hp.max)}</span>`;
-        }).join("")}
+      <div class="formation-mini formation-link-only">
         <button data-tab="formation">編成</button>
       </div>
       <div class="action-grid">
@@ -1214,8 +1210,7 @@ function renderMissionSelect(kind) {
         <div><span>味方戦力</span><b>${yen(teamPower())}</b></div>
         <div><span>予想報酬</span><b>${resourceText(rewards)}</b></div>
       </div>
-      <div class="formation-mini">
-        ${formationNinjas().map(ninja => { const hp = ninjaHp(ninja); return `<span>${ninja.rarity} ${ninja.name} HP ${yen(hp.current)}/${yen(hp.max)}</span>`; }).join("")}
+      <div class="formation-mini formation-link-only">
         <button data-tab="formation">編成変更</button>
       </div>
       <div class="action-grid">
