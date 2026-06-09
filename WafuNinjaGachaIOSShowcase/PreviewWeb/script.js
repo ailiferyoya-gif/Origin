@@ -189,6 +189,18 @@ const equipmentNames = {
   "宝石": ["月光石", "緋毒の勾玉", "蒼蛇の宝珠"]
 };
 
+const equipmentArt = Array.from({ length: 30 }, (_, index) => `assets/generated/equipment/items/equip-${String(index).padStart(2, "0")}.png`);
+const forgeArt = "assets/generated/equipment/forge-bg.png";
+const resourceArt = {
+  money: "assets/generated/equipment/resources/money.png",
+  wood: "assets/generated/equipment/resources/wood.png",
+  iron: "assets/generated/equipment/resources/iron.png",
+  herbs: "assets/generated/equipment/resources/herbs.png",
+  toolParts: "assets/generated/equipment/resources/toolParts.png",
+  silk: "assets/generated/equipment/resources/silk.png",
+  gunpowder: "assets/generated/equipment/resources/gunpowder.png"
+};
+
 const storageKey = "kagezuki-ninja-village-preview-v3";
 const firebaseConfigStorageKey = `${storageKey}-firebase-config`;
 const saveSlotCount = 3;
@@ -334,8 +346,17 @@ function maintainWorldRaids() {
   }
 }
 
-function equipment(id, slot, name, rarity, level, power) {
-  return { id, slot, name, rarity, level, power, equippedBy: null };
+function equipment(id, slot, name, rarity, level, power, img = null) {
+  return { id, slot, name, rarity, level, power, equippedBy: null, img: img || equipmentImageFor(slot, name) };
+}
+
+function equipmentImageFor(slot, name = "") {
+  const names = Object.values(equipmentNames).flat();
+  const nameIndex = names.indexOf(name);
+  if (nameIndex >= 0) return equipmentArt[nameIndex % equipmentArt.length];
+  const slotIndex = Math.max(0, equipmentSlots.indexOf(slot));
+  const seed = Array.from(String(name || slot)).reduce((sum, char) => sum + char.charCodeAt(0), slotIndex * 4);
+  return equipmentArt[seed % equipmentArt.length];
 }
 
 function ninjaFromPool(card, level = 1, isNew = true) {
@@ -415,6 +436,7 @@ function normalizeGameState() {
     if (item.slot === "装飾品") item.slot = item.name?.includes("面") ? "頭" : "指輪";
     if (!equipmentSlots.includes(item.slot)) item.slot = "武器";
     if (!item.rarity) item.rarity = "N";
+    if (!item.img) item.img = equipmentImageFor(item.slot, item.name);
   });
   game.defense = { ...fresh.defense, ...(game.defense || {}) };
   game.activities = Array.isArray(game.activities) ? game.activities : [];
@@ -863,6 +885,12 @@ function renderWorkshop() {
       <span class="scene-kicker">兵装工房</span>
       <h2>兵装工房</h2>
       <p>武器・体・頭・足・指輪・腕輪・宝石を生産できます。レア度はNからURまで抽選されます。</p>
+      <div class="workshop-visual">
+        <img src="${forgeArt}" alt="">
+      </div>
+      <div class="equipment-gallery">
+        ${equipmentArt.map((img, index) => `<img src="${img}" alt="装備${index + 1}">`).join("")}
+      </div>
       <div class="action-grid">
         ${equipmentSlots.map(slot => `<button data-action="craft-equipment" data-slot="${slot}">${slot}を生産</button>`).join("")}
         <button data-action="enhance-all">一括強化</button>
@@ -957,7 +985,7 @@ function renderNinjaDetail(id) {
   const trainCost = { money: 900 + ninja.level * 80, herbs: 40 + ninja.level * 4 };
   const equipped = game.equipment.filter(item => item.equippedBy === id);
   const availableBySlot = slot => game.equipment.filter(item => item.slot === slot);
-  const activeSlot = equipmentSlots.includes(selectedEquipSlot) ? selectedEquipSlot : "??";
+  const activeSlot = equipmentSlots.includes(selectedEquipSlot) ? selectedEquipSlot : equipmentSlots[0];
   const current = slot => equipped.find(item => item.slot === slot);
   return `
     <div class="panel-card hero-panel ninja-detail ninja-loadout-detail">
@@ -966,7 +994,10 @@ function renderNinjaDetail(id) {
         <div class="loadout-ring">
           ${equipmentSlots.map((slot, index) => {
             const item = current(slot);
-            return `<button class="loadout-slot slot-${index} ${activeSlot === slot ? "active" : ""}" data-equip-slot="${slot}" data-ninja-id="${id}"><b>${slot}</b><span>${item ? `${item.rarity} ${item.name}` : "未装備"}</span></button>`;
+            return `<button class="loadout-slot slot-${index} ${activeSlot === slot ? "active" : ""}" data-equip-slot="${slot}" data-ninja-id="${id}">
+              ${item ? `<img src="${item.img}" alt="">` : `<i>${slot.slice(0, 1)}</i>`}
+              <b>${slot}</b><span>${item ? `${item.rarity} ${item.name}` : "未装備"}</span>
+            </button>`;
           }).join("")}
         </div>
       </div>
@@ -997,7 +1028,7 @@ function renderNinjaDetail(id) {
       <div class="list-stack equip-pick-list">
         ${availableBySlot(activeSlot).map(item => `
           <button class="row-card equipment-pick ${item.equippedBy === id ? "selected" : ""}" data-action="equip-item" data-ninja-id="${id}" data-equip-id="${item.id}">
-            <b class="row-emblem">${item.rarity}</b>
+            <img class="equipment-icon" src="${item.img}" alt="">
             <div><strong>${item.name}</strong><span>${item.slot} Lv.${item.level} / 戦力 +${yen(item.power)}</span><small>${item.equippedBy ? `${getNinja(item.equippedBy)?.name || "不明"}が装備中` : "装備可能"}</small></div>
           </button>
         `).join("") || `<article class="row-card empty-row"><div><strong>${activeSlot}の装備がありません</strong><span>兵装工房で生産できます。</span></div></article>`}
@@ -1009,7 +1040,7 @@ function renderNinjaDetail(id) {
 function renderEquipmentRow(item) {
   return `
     <article class="row-card equipment-row">
-      <b class="row-emblem">${item.slot.slice(0, 1)}</b>
+      <img class="equipment-icon" src="${item.img}" alt="">
       <div><strong>${item.rarity} ${item.name}</strong><span>${item.slot} Lv.${item.level} / 戦力 +${yen(item.power)}</span><small>${item.equippedBy ? `${getNinja(item.equippedBy)?.name || "不明"}が装備中` : "未装備"}</small></div>
       <button data-action="confirm-enhance-equip" data-id="${item.id}">強化</button>
     </article>
@@ -1219,7 +1250,10 @@ function renderReport(item) {
 
 function renderResourceTiles() {
   return Object.entries(game.resources).map(([key, value]) => `
-    <div class="resource-tile"><span>${resourceLabels[key] || key}</span><b>${yen(value)}</b></div>
+    <div class="resource-tile">
+      ${resourceArt[key] ? `<img class="resource-icon" src="${resourceArt[key]}" alt="">` : ""}
+      <span>${resourceLabels[key] || key}</span><b>${yen(value)}</b>
+    </div>
   `).join("");
 }
 
@@ -1356,13 +1390,14 @@ function confirmTrainNinja(id) {
 }
 
 function craftEquipment(slot) {
-  const normalizedSlot = equipmentSlots.includes(slot) ? slot : "??";
+  const normalizedSlot = equipmentSlots.includes(slot) ? slot : equipmentSlots[0];
+  const slotIndex = Math.max(0, equipmentSlots.indexOf(normalizedSlot));
   const cost = {
     money: 1800,
-    iron: ["??", "?", "?", "?"].includes(normalizedSlot) ? 420 : 220,
+    iron: slotIndex <= 3 ? 420 : 220,
     toolParts: 180
   };
-  if (["??", "??", "??"].includes(normalizedSlot)) cost.silk = 120;
+  if (slotIndex >= 4) cost.silk = 120;
   showConfirm({
     title: `${normalizedSlot}を生産しますか？`,
     body: "兵装工房で部位ごとの装備を生産します。レア度はNからURまで抽選されます。",
@@ -1373,7 +1408,8 @@ function craftEquipment(slot) {
       pay(cost);
       const rarityRoll = Math.random();
       const rarityData = equipmentRarityTable.find(item => rarityRoll < item.rate) || equipmentRarityTable[equipmentRarityTable.length - 1];
-      const item = equipment(`eq-${Date.now()}`, normalizedSlot, randomFrom(equipmentNames[normalizedSlot]), rarityData.rarity, 1, rarityData.power + Math.floor(Math.random() * 180));
+      const name = randomFrom(equipmentNames[normalizedSlot]);
+      const item = equipment(`eq-${Date.now()}`, normalizedSlot, name, rarityData.rarity, 1, rarityData.power + Math.floor(Math.random() * 180), equipmentImageFor(normalizedSlot, name));
       game.equipment.unshift(item);
       game.reports.unshift(report(`${item.rarity} ${item.name}を生産しました。`, [`部位: ${normalizedSlot}`, `戦力 +${yen(item.power)}`]));
       saveGame(true);
