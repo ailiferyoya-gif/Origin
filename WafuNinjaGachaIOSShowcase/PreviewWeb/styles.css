@@ -783,7 +783,8 @@ body {
   right: 0;
   top: 104px;
   bottom: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 8px 10px max(12px, env(safe-area-inset-bottom));
   scrollbar-width: none;
 }

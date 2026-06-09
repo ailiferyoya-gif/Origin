@@ -984,8 +984,8 @@ function renderNinjas() {
   const page = ninjaPageItems(9);
   panels.ninjas.innerHTML = `
     <div class="panel-card compact-screen">
-      <span class="scene-kicker">????</span>
-      <h1>????</h1>
+      <span class="scene-kicker">忍者名鑑</span>
+      <h1>所持忍者</h1>
       <div class="ninja-pick-grid roster-grid">${page.items.map(ninja => {
         const hp = ninjaHp(ninja);
         return `
@@ -998,9 +998,9 @@ function renderNinjas() {
         `;
       }).join("")}</div>
       <div class="pager-row">
-        <button data-action="ninja-page-prev" ${page.page <= 0 ? "disabled" : ""}>?</button>
+        <button data-action="ninja-page-prev" ${page.page <= 0 ? "disabled" : ""}>前</button>
         <span>${page.page + 1}/${page.maxPage + 1}</span>
-        <button data-action="ninja-page-next" ${page.page >= page.maxPage ? "disabled" : ""}>?</button>
+        <button data-action="ninja-page-next" ${page.page >= page.maxPage ? "disabled" : ""}>次</button>
       </div>
     </div>
   `;
@@ -1065,9 +1065,9 @@ function renderFormation() {
         `;
       }).join("")}</div>
       <div class="pager-row">
-        <button data-action="ninja-page-prev" ${page.page <= 0 ? "disabled" : ""}>?</button>
+        <button data-action="ninja-page-prev" ${page.page <= 0 ? "disabled" : ""}>前</button>
         <span>${page.page + 1}/${page.maxPage + 1}</span>
-        <button data-action="ninja-page-next" ${page.page >= page.maxPage ? "disabled" : ""}>?</button>
+        <button data-action="ninja-page-next" ${page.page >= page.maxPage ? "disabled" : ""}>次</button>
       </div>
     </div>
   `;
@@ -1153,8 +1153,8 @@ function renderMissions() {
   }
   panels.missions.innerHTML = `
     <div class="panel-card hero-panel compact-screen">
-      <span class="scene-kicker">???</span>
-      <h1>???</h1>
+      <span class="scene-kicker">任務板</span>
+      <h1>任務板</h1>
       <div class="mission-grid">
         ${Object.entries(missionCatalog).map(([kind, mission]) => `
           <button class="mission-tile" data-mission-kind="${kind}">
@@ -1167,17 +1167,17 @@ function renderMissions() {
     </div>
     <div class="mission-summary-grid">
       <div class="panel-card compact-section">
-        <h2>???</h2>
+        <h2>進行中</h2>
         <div class="list-stack">${renderActivities()}</div>
       </div>
       <div class="panel-card compact-section">
-        <h2>???</h2>
+        <h2>レイド</h2>
         <div class="list-stack">${game.raidEvents.slice(0, 3).map(renderRaidRow).join("")}</div>
       </div>
     </div>
     <div class="panel-card compact-section">
-      <h2>????</h2>
-      <div class="list-stack compact-log">${game.reports.filter(item => item.type === "combat").slice(0, 3).map(renderReport).join("") || `<article class="row-card empty-row"><div><strong>??????</strong><span>????????????????????????????????</span></div></article>`}</div>
+      <h2>戦果ログ</h2>
+      <div class="list-stack compact-log">${game.reports.filter(item => item.type === "combat").slice(0, 3).map(renderReport).join("") || `<article class="row-card empty-row"><div><strong>戦闘ログなし</strong><span>任務やレイドで戦闘すると、与ダメージと被ダメージが表示されます。</span></div></article>`}</div>
     </div>
   `;
 }
