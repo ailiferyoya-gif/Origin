@@ -191,13 +191,13 @@ const equipmentNames = {
 
 const equipmentArt = Array.from({ length: 30 }, (_, index) => `assets/generated/equipment/items/equip-${String(index).padStart(2, "0")}.png`);
 const equipmentArtBySlot = {
-  "武器": [0, 1, 2, 3, 4, 5, 6, 26, 27, 29].map(index => equipmentArt[index]),
+  "武器": [0, 1, 2, 3, 4, 5, 6].map(index => equipmentArt[index]),
   "体": [7, 8, 9].map(index => equipmentArt[index]),
   "頭": [10, 11, 12, 13, 14].map(index => equipmentArt[index]),
   "足": [15, 16].map(index => equipmentArt[index]),
   "指輪": [17, 18, 19, 20].map(index => equipmentArt[index]),
-  "腕輪": [21, 28].map(index => equipmentArt[index]),
-  "宝石": [22, 23, 24, 25].map(index => equipmentArt[index])
+  "腕輪": [21, 22].map(index => equipmentArt[index]),
+  "宝石": [23, 24, 25, 26, 27, 28, 29].map(index => equipmentArt[index])
 };
 const forgeArt = "assets/generated/equipment/forge-bg.png";
 const resourceArt = {
