@@ -1,31 +1,43 @@
-const cards = [
+const SAVE_KEY = "yokai-card-rpg-v2";
+const DECK_SIZE = 20;
+
+const rarityRank = { N: 1, R: 2, SR: 3, SSR: 4 };
+const rarityLabel = { N: "N", R: "R", SR: "SR", SSR: "SSR" };
+
+const cardCatalog = [
   {
     id: "slash",
     name: "斬札",
+    rarity: "N",
     type: "attack",
     cost: "攻撃",
-    text: "敵に10ダメージ。結界があるなら+4。",
-    play: (s) => damageEnemy(s, 10 + (s.block > 0 ? 4 : 0), "斬札が妖気を裂いた。"),
+    text: "敵に8ダメージ。",
+    copies: 8,
+    play: (s) => damageEnemy(s, 8, "斬札が妖気を裂いた。"),
   },
   {
     id: "ward",
     name: "護符結界",
+    rarity: "N",
     type: "defense",
     cost: "防御",
-    text: "結界を12得る。次の攻撃を受け止める。",
+    text: "結界を10得る。",
+    copies: 8,
     play: (s) => {
-      s.block += 12;
+      s.block += 10;
       s.log = "護符が淡く光り、結界が張られた。";
     },
   },
   {
     id: "bell",
     name: "祓い鈴",
+    rarity: "N",
     type: "spirit",
     cost: "回復",
-    text: "HPを8回復。火傷と呪いを鎮める。",
+    text: "HPを7回復。呪火を鎮める。",
+    copies: 8,
     play: (s) => {
-      s.hp = Math.min(s.maxHp, s.hp + 8);
+      s.hp = Math.min(s.maxHp, s.hp + 7);
       s.burn = 0;
       s.log = "鈴の音が響き、穢れが薄れていく。";
     },
@@ -33,57 +45,93 @@ const cards = [
   {
     id: "flame",
     name: "狐火",
+    rarity: "R",
     type: "attack",
     cost: "継続",
-    text: "敵に6ダメージ。火傷を3付与。",
+    text: "敵に7ダメージ。火傷を3付与。",
+    copies: 3,
     play: (s) => {
-      damageEnemy(s, 6, "狐火が尾を引き、妖怪に燃え移った。");
+      damageEnemy(s, 7, "狐火が尾を引き、妖怪に燃え移った。");
       s.enemy.burn += 3;
+    },
+  },
+  {
+    id: "seal",
+    name: "封じ札",
+    rarity: "R",
+    type: "spirit",
+    cost: "妨害",
+    text: "敵に6ダメージ。次の攻撃を弱める。",
+    copies: 3,
+    play: (s) => {
+      damageEnemy(s, 6, "封じ札が敵の影を地面へ縫い止めた。");
+      s.enemy.weakened = true;
+    },
+  },
+  {
+    id: "read",
+    name: "見鬼",
+    rarity: "R",
+    type: "defense",
+    cost: "先読み",
+    text: "結界を7得る。攻撃札を引きやすくする。",
+    copies: 3,
+    play: (s) => {
+      s.block += 7;
+      s.focus = true;
+      s.log = "敵の妖気の流れが読めた。";
     },
   },
   {
     id: "shikigami",
     name: "式神呼び",
+    rarity: "SR",
     type: "spirit",
     cost: "召喚",
-    text: "敵に4ダメージ。魂灯を1得る。",
+    text: "敵に10ダメージ。魂灯を1得る。",
+    copies: 2,
     play: (s) => {
-      damageEnemy(s, 4, "小さな式神が敵の懐へ飛び込んだ。");
+      damageEnemy(s, 10, "小さな式神が敵の懐へ飛び込んだ。");
       s.souls += 1;
     },
   },
   {
     id: "blood",
     name: "血墨の札",
+    rarity: "SR",
     type: "attack",
     cost: "危険",
-    text: "HPを4失い、敵に18ダメージ。",
+    text: "HPを4失い、敵に20ダメージ。",
+    copies: 2,
     play: (s) => {
       s.hp = Math.max(1, s.hp - 4);
-      damageEnemy(s, 18, "血墨の札が赤く滲み、大きな傷を刻んだ。");
+      damageEnemy(s, 20, "血墨の札が赤く滲み、大きな傷を刻んだ。");
     },
   },
   {
-    id: "read",
-    name: "見鬼",
+    id: "moon",
+    name: "月読の札",
+    rarity: "SSR",
+    type: "attack",
+    cost: "奥義",
+    text: "敵に26ダメージ。結界を8得る。",
+    copies: 1,
+    play: (s) => {
+      damageEnemy(s, 26, "月光が札に宿り、夜そのものが敵を断った。");
+      s.block += 8;
+    },
+  },
+  {
+    id: "mirror",
+    name: "八咫鏡",
+    rarity: "SSR",
     type: "defense",
-    cost: "先読み",
-    text: "結界を6得る。次の手札に攻撃札が出やすい。",
+    cost: "反射",
+    text: "結界を18得る。敵に8ダメージ。",
+    copies: 1,
     play: (s) => {
-      s.block += 6;
-      s.focus = true;
-      s.log = "敵の妖気の流れが読めた。";
-    },
-  },
-  {
-    id: "seal",
-    name: "封じ札",
-    type: "spirit",
-    cost: "妨害",
-    text: "敵に5ダメージ。敵の次の攻撃を弱める。",
-    play: (s) => {
-      damageEnemy(s, 5, "封じ札が敵の影を地面へ縫い止めた。");
-      s.enemy.weakened = true;
+      s.block += 18;
+      damageEnemy(s, 8, "鏡面に妖気が跳ね返り、敵へ突き刺さった。");
     },
   },
 ];
@@ -92,8 +140,10 @@ const enemyTemplates = [
   { name: "狐面の灯", hp: 32, art: "yokai", min: 6, max: 10 },
   { name: "濡れ行灯", hp: 38, art: "yokai", min: 5, max: 12 },
   { name: "煤かぶり天狗", hp: 44, art: "yokai", min: 8, max: 13 },
-  { name: "朽ち社の鬼", hp: 78, art: "boss", min: 11, max: 18, boss: true },
+  { name: "朽ち社の鬼", hp: 86, art: "boss", min: 12, max: 19, boss: true },
 ];
+
+const player = normalizeSave(loadSave());
 
 const state = {
   floor: 1,
@@ -104,13 +154,27 @@ const state = {
   burn: 0,
   souls: 0,
   focus: false,
+  drawPile: [],
+  discardPile: [],
   hand: [],
   enemy: null,
   waiting: false,
+  inRun: false,
   log: "",
 };
 
 const els = {
+  setupScreen: document.querySelector("#setupScreen"),
+  gameScreen: document.querySelector("#gameScreen"),
+  collectionText: document.querySelector("#collectionText"),
+  deckCountText: document.querySelector("#deckCountText"),
+  deckHint: document.querySelector("#deckHint"),
+  deckList: document.querySelector("#deckList"),
+  gachaResult: document.querySelector("#gachaResult"),
+  pullOneButton: document.querySelector("#pullOneButton"),
+  pullTenButton: document.querySelector("#pullTenButton"),
+  autoDeckButton: document.querySelector("#autoDeckButton"),
+  startRunButton: document.querySelector("#startRunButton"),
   floorText: document.querySelector("#floorText"),
   soulText: document.querySelector("#soulText"),
   enemyArt: document.querySelector("#enemyArt"),
@@ -134,12 +198,112 @@ const els = {
   dialogRestartButton: document.querySelector("#dialogRestartButton"),
 };
 
+function loadSave() {
+  try {
+    return JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function normalizeSave(raw) {
+  const fallback = {};
+  cardCatalog.forEach((card) => {
+    fallback[card.id] = card.rarity === "N" ? 6 : 0;
+  });
+  const collection = { ...fallback, ...(raw.collection || {}) };
+  const deck = Array.isArray(raw.deck) ? raw.deck.filter((id) => collection[id] > 0) : [];
+  return {
+    collection,
+    deck: deck.slice(0, DECK_SIZE),
+  };
+}
+
+function save() {
+  localStorage.setItem(SAVE_KEY, JSON.stringify(player));
+}
+
+function cardById(id) {
+  return cardCatalog.find((card) => card.id === id);
+}
+
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function sample(list) {
   return list[Math.floor(Math.random() * list.length)];
+}
+
+function shuffle(list) {
+  const copy = [...list];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function pullRarity() {
+  const roll = Math.random();
+  if (roll < 0.04) return "SSR";
+  if (roll < 0.18) return "SR";
+  if (roll < 0.55) return "R";
+  return "N";
+}
+
+function pullCard() {
+  const rarity = pullRarity();
+  const pool = cardCatalog.filter((card) => card.rarity === rarity);
+  const card = sample(pool);
+  player.collection[card.id] = (player.collection[card.id] || 0) + 1;
+  return card;
+}
+
+function pull(count) {
+  const results = Array.from({ length: count }, pullCard);
+  save();
+  els.gachaResult.innerHTML = results
+    .map((card) => `<span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>${card.name}`)
+    .join(" / ");
+  renderSetup();
+}
+
+function countInDeck(id) {
+  return player.deck.filter((cardId) => cardId === id).length;
+}
+
+function collectionTotal() {
+  return Object.values(player.collection).reduce((sum, count) => sum + count, 0);
+}
+
+function toggleDeckCard(id) {
+  const owned = player.collection[id] || 0;
+  const inDeck = countInDeck(id);
+  if (inDeck > 0 && (player.deck.length >= DECK_SIZE || inDeck === owned)) {
+    player.deck.splice(player.deck.indexOf(id), 1);
+  } else if (player.deck.length < DECK_SIZE && inDeck < owned) {
+    player.deck.push(id);
+  } else if (inDeck > 0) {
+    player.deck.splice(player.deck.indexOf(id), 1);
+  }
+  save();
+  renderSetup();
+}
+
+function autoDeck() {
+  const candidates = [];
+  cardCatalog
+    .slice()
+    .sort((a, b) => rarityRank[b.rarity] - rarityRank[a.rarity])
+    .forEach((card) => {
+      const owned = player.collection[card.id] || 0;
+      const maxCopies = Math.min(owned, card.copies);
+      for (let i = 0; i < maxCopies; i += 1) candidates.push(card.id);
+    });
+  player.deck = candidates.slice(0, DECK_SIZE);
+  save();
+  renderSetup();
 }
 
 function createEnemy() {
@@ -167,9 +331,30 @@ function nextIntent(enemy) {
   return { type: "attack", text: `${value}の攻撃を構える`, value };
 }
 
+function reshuffleIfNeeded() {
+  if (state.drawPile.length === 0) {
+    state.drawPile = shuffle(state.discardPile);
+    state.discardPile = [];
+  }
+}
+
+function drawOne(preferAttack = false) {
+  reshuffleIfNeeded();
+  if (state.drawPile.length === 0) return null;
+  if (preferAttack) {
+    const index = state.drawPile.findIndex((id) => cardById(id).type === "attack");
+    if (index >= 0) return cardById(state.drawPile.splice(index, 1)[0]);
+  }
+  return cardById(state.drawPile.shift());
+}
+
 function drawHand() {
-  const pool = state.focus ? cards.filter((card) => card.type === "attack").concat(cards) : cards;
-  state.hand = Array.from({ length: 3 }, () => sample(pool));
+  state.discardPile.push(...state.hand.map((card) => card.id));
+  state.hand = [];
+  for (let i = 0; i < 3; i += 1) {
+    const card = drawOne(state.focus);
+    if (card) state.hand.push(card);
+  }
   state.focus = false;
 }
 
@@ -205,7 +390,7 @@ function applyEnemyTurn() {
 
   if (intent.type === "curse") {
     state.burn += intent.value;
-    state.log += ` 呪いの火がまとわりつく。`;
+    state.log += " 呪いの火がまとわりつく。";
   }
 
   enemy.weakened = false;
@@ -220,7 +405,7 @@ function applyEnemyTurn() {
 
   enemy.intent = nextIntent(enemy);
   drawHand();
-  render();
+  renderGame();
 }
 
 function winBattle(message = "妖怪を祓った。") {
@@ -229,7 +414,7 @@ function winBattle(message = "妖怪を祓った。") {
   state.waiting = true;
   state.log = `${message} 魂灯を${reward}得た。`;
   els.advanceButton.disabled = false;
-  render();
+  renderGame();
 }
 
 function nextFloor() {
@@ -241,7 +426,7 @@ function nextFloor() {
   els.advanceButton.disabled = true;
   drawHand();
   state.log = state.floor === 10 ? "大鳥居の奥で、朽ち社の鬼が待つ。" : "次の夜へ踏み込んだ。";
-  render();
+  renderGame();
 }
 
 function rest() {
@@ -250,27 +435,19 @@ function rest() {
   state.hp = Math.min(state.maxHp, state.hp + 14);
   state.burn = 0;
   state.log = "茶屋の湯気で傷と呪いがほどけた。";
-  render();
+  renderGame();
 }
 
 function playCard(index) {
   if (state.waiting) return;
-  const card = state.hand[index];
+  const card = state.hand.splice(index, 1)[0];
+  state.discardPile.push(card.id);
   card.play(state);
   applyEnemyTurn();
 }
 
-function endGame(won) {
-  state.waiting = true;
-  render();
-  els.resultTitle.textContent = won ? "迷宮踏破" : "探索失敗";
-  els.resultText.textContent = won
-    ? `夜明けまで生き延び、魂灯を${state.souls}持ち帰った。次はさらに深い怪異へ挑める。`
-    : `妖気に呑まれた。魂灯${Math.floor(state.souls / 2)}だけが手元に残った。`;
-  if (!els.dialog.open) els.dialog.showModal();
-}
-
-function restart() {
+function startRun() {
+  if (player.deck.length !== DECK_SIZE) return;
   Object.assign(state, {
     floor: 1,
     hp: 42,
@@ -279,18 +456,68 @@ function restart() {
     burn: 0,
     souls: 0,
     focus: false,
+    drawPile: shuffle(player.deck),
+    discardPile: [],
     hand: [],
     waiting: false,
+    inRun: true,
     log: "鳥居の奥から妖気が流れ込む。妖札を選べ。",
   });
   state.enemy = createEnemy();
   drawHand();
+  els.setupScreen.hidden = true;
+  els.gameScreen.hidden = false;
   els.advanceButton.disabled = true;
-  if (els.dialog.open) els.dialog.close();
-  render();
+  renderGame();
 }
 
-function render() {
+function backToSetup() {
+  state.inRun = false;
+  els.gameScreen.hidden = true;
+  els.setupScreen.hidden = false;
+  if (els.dialog.open) els.dialog.close();
+  renderSetup();
+}
+
+function endGame(won) {
+  state.waiting = true;
+  renderGame();
+  els.resultTitle.textContent = won ? "迷宮踏破" : "探索失敗";
+  els.resultText.textContent = won
+    ? `夜明けまで生き延び、魂灯を${state.souls}持ち帰った。デッキを磨けばさらに深く潜れる。`
+    : `妖気に呑まれた。魂灯${Math.floor(state.souls / 2)}だけが手元に残った。`;
+  if (!els.dialog.open) els.dialog.showModal();
+}
+
+function renderSetup() {
+  els.collectionText.textContent = `所持 ${collectionTotal()}`;
+  els.deckCountText.textContent = `デッキ ${player.deck.length} / ${DECK_SIZE}`;
+  els.startRunButton.disabled = player.deck.length !== DECK_SIZE;
+  els.deckHint.textContent =
+    player.deck.length === DECK_SIZE
+      ? "出撃できます。高レア札ほど強力ですが、攻撃/防御/回復のバランスも大切です。"
+      : "20枚ちょうどで出撃できます。カードを押すとデッキに出し入れできます。";
+
+  els.deckList.innerHTML = "";
+  cardCatalog.forEach((card) => {
+    const owned = player.collection[card.id] || 0;
+    const inDeck = countInDeck(card.id);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.disabled = owned === 0;
+    button.className = `deck-card ${card.type} ${card.rarity}`;
+    button.innerHTML = `
+      <span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>
+      <strong>${card.name}</strong>
+      <small>${card.text}</small>
+      <em>所持 ${owned} / 編成 ${inDeck}</em>
+    `;
+    button.addEventListener("click", () => toggleDeckCard(card.id));
+    els.deckList.appendChild(button);
+  });
+}
+
+function renderGame() {
   const enemy = state.enemy;
   els.floorText.textContent = `${state.floor} / ${state.maxFloor}`;
   els.soulText.textContent = state.souls;
@@ -303,18 +530,19 @@ function render() {
   els.hpBar.style.width = `${Math.max(0, (state.hp / state.maxHp) * 100)}%`;
   els.blockText.textContent = `結界 ${state.block}`;
   els.burnText.textContent = `呪火 ${state.burn}`;
-  els.deckText.textContent = `手札 ${state.hand.length}`;
+  els.deckText.textContent = `山札 ${state.drawPile.length}`;
   els.logText.textContent = state.log;
   els.restButton.disabled = state.waiting || state.souls < 2 || state.hp >= state.maxHp;
 
   els.cards.innerHTML = "";
   state.hand.forEach((card, index) => {
     const button = document.createElement("button");
-    button.className = `card ${card.type}`;
+    button.className = `card ${card.type} ${card.rarity}`;
     button.type = "button";
     button.disabled = state.waiting;
     button.innerHTML = `
       <img src="./assets/img/card.png" alt="" />
+      <span class="rarity ${card.rarity}">${rarityLabel[card.rarity]}</span>
       <strong>${card.name}</strong>
       <p>${card.text}</p>
       <span class="cost">${card.cost}</span>
@@ -324,9 +552,14 @@ function render() {
   });
 }
 
+els.pullOneButton.addEventListener("click", () => pull(1));
+els.pullTenButton.addEventListener("click", () => pull(10));
+els.autoDeckButton.addEventListener("click", autoDeck);
+els.startRunButton.addEventListener("click", startRun);
 els.advanceButton.addEventListener("click", nextFloor);
 els.restButton.addEventListener("click", rest);
-els.restartButton.addEventListener("click", restart);
-els.dialogRestartButton.addEventListener("click", restart);
+els.restartButton.addEventListener("click", backToSetup);
+els.dialogRestartButton.addEventListener("click", backToSetup);
 
-restart();
+if (player.deck.length < DECK_SIZE) autoDeck();
+renderSetup();

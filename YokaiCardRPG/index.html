@@ -14,67 +14,105 @@
   </head>
   <body>
     <main class="game-shell" aria-live="polite">
-      <section class="scene" aria-label="探索画面">
-        <div class="topbar">
-          <div>
-            <span class="label">夜</span>
-            <strong id="floorText">1 / 10</strong>
-          </div>
-          <div>
-            <span class="label">魂灯</span>
-            <strong id="soulText">0</strong>
-          </div>
-          <button id="restartButton" class="icon-button" type="button" aria-label="最初から">
-            ↺
-          </button>
-        </div>
+      <section id="setupScreen" class="setup-screen">
+        <header class="setup-hero">
+          <span class="label">YOKAI DECK RPG</span>
+          <h1>妖札迷宮</h1>
+          <p>召喚で妖札を集め、20枚のデッキを組んで夜の迷宮へ挑む。</p>
+        </header>
 
-        <div class="combat-stage">
-          <img class="enemy-art" id="enemyArt" src="./assets/img/yokai.png" alt="妖怪" />
-          <div class="intent" id="intentText">様子をうかがっている</div>
-          <div class="enemy-panel">
-            <div class="name-row">
-              <strong id="enemyName">狐面の灯</strong>
-              <span id="enemyHpText">HP 34/34</span>
+        <section class="setup-panel">
+          <div class="setup-title">
+            <div>
+              <span class="label">召喚</span>
+              <strong>札箱</strong>
             </div>
-            <div class="bar"><span id="enemyHpBar"></span></div>
+            <span id="collectionText">所持 0</span>
           </div>
-        </div>
+          <div class="gacha-actions">
+            <button id="pullOneButton" type="button">一枚召喚</button>
+            <button id="pullTenButton" type="button">十連召喚</button>
+          </div>
+          <div id="gachaResult" class="gacha-result">まずは十連召喚で妖札を集めよう。</div>
+        </section>
 
-        <div class="hero-panel">
-          <img class="hero-art" src="./assets/img/hero.png" alt="祓い師" />
-          <div class="hero-stats">
-            <div class="name-row">
-              <strong>祓い師</strong>
-              <span id="hpText">HP 42/42</span>
+        <section class="setup-panel">
+          <div class="setup-title">
+            <div>
+              <span class="label">編成</span>
+              <strong id="deckCountText">デッキ 0 / 20</strong>
             </div>
-            <div class="bar hero"><span id="hpBar"></span></div>
-            <div class="status-row">
-              <span id="blockText">結界 0</span>
-              <span id="burnText">火傷 0</span>
-              <span id="deckText">山札 0</span>
-            </div>
+            <button id="autoDeckButton" type="button">自動編成</button>
           </div>
-        </div>
+          <div id="deckHint" class="deck-hint">20枚ちょうどで出撃できます。カードを押すとデッキに出し入れできます。</div>
+          <div id="deckList" class="deck-list"></div>
+          <button id="startRunButton" class="start-run" type="button" disabled>このデッキで探索開始</button>
+        </section>
       </section>
 
-      <section class="hand-zone" aria-label="妖札">
-        <div class="log" id="logText">鳥居の奥から妖気が流れ込む。妖札を選べ。</div>
-        <div class="cards" id="cards"></div>
-        <div class="actions">
-          <button id="restButton" type="button">茶屋で休む</button>
-          <button id="advanceButton" type="button" disabled>次の夜へ</button>
-        </div>
+      <section id="gameScreen" class="game-screen" hidden>
+        <section class="scene" aria-label="探索画面">
+          <div class="topbar">
+            <div>
+              <span class="label">夜</span>
+              <strong id="floorText">1 / 10</strong>
+            </div>
+            <div>
+              <span class="label">魂灯</span>
+              <strong id="soulText">0</strong>
+            </div>
+            <button id="restartButton" class="icon-button" type="button" aria-label="編成へ戻る">
+              ↺
+            </button>
+          </div>
+
+          <div class="combat-stage">
+            <img class="enemy-art" id="enemyArt" src="./assets/img/yokai.png" alt="妖怪" />
+            <div class="intent" id="intentText">様子をうかがっている</div>
+            <div class="enemy-panel">
+              <div class="name-row">
+                <strong id="enemyName">狐面の灯</strong>
+                <span id="enemyHpText">HP 34/34</span>
+              </div>
+              <div class="bar"><span id="enemyHpBar"></span></div>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <img class="hero-art" src="./assets/img/hero.png" alt="祓い師" />
+            <div class="hero-stats">
+              <div class="name-row">
+                <strong>祓い師</strong>
+                <span id="hpText">HP 42/42</span>
+              </div>
+              <div class="bar hero"><span id="hpBar"></span></div>
+              <div class="status-row">
+                <span id="blockText">結界 0</span>
+                <span id="burnText">呪火 0</span>
+                <span id="deckText">山札 0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="hand-zone" aria-label="妖札">
+          <div class="log" id="logText">鳥居の奥から妖気が流れ込む。妖札を選べ。</div>
+          <div class="cards" id="cards"></div>
+          <div class="actions">
+            <button id="restButton" type="button">茶屋で休む</button>
+            <button id="advanceButton" type="button" disabled>次の夜へ</button>
+          </div>
+        </section>
       </section>
 
       <dialog id="resultDialog">
         <div class="dialog-body">
           <h1 id="resultTitle">探索終了</h1>
           <p id="resultText"></p>
-          <button id="dialogRestartButton" type="button">もう一度潜る</button>
+          <button id="dialogRestartButton" type="button">編成へ戻る</button>
         </div>
       </dialog>
     </main>
-    <script src="./app.js"></script>
+    <script src="./app.js?v=deck-gacha-20260610"></script>
   </body>
 </html>

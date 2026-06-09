@@ -3,6 +3,17 @@ import vm from "node:vm";
 
 const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const requiredIds = [
+  "setupScreen",
+  "gameScreen",
+  "collectionText",
+  "deckCountText",
+  "deckHint",
+  "deckList",
+  "gachaResult",
+  "pullOneButton",
+  "pullTenButton",
+  "autoDeckButton",
+  "startRunButton",
   "floorText",
   "soulText",
   "enemyArt",
@@ -45,6 +56,7 @@ class Element {
     this.className = "";
     this.type = "";
     this.src = "";
+    this.hidden = false;
   }
 
   appendChild(child) {
@@ -81,6 +93,15 @@ const document = {
 
 const context = vm.createContext({
   document,
+  localStorage: {
+    store: new Map(),
+    getItem(key) {
+      return this.store.get(key) ?? null;
+    },
+    setItem(key, value) {
+      this.store.set(key, String(value));
+    },
+  },
   Math,
   console,
 });
@@ -88,6 +109,12 @@ const context = vm.createContext({
 const code = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 vm.runInContext(code, context, { filename: "app.js" });
 
+elements.get("pullTenButton").click();
+elements.get("autoDeckButton").click();
+if (elements.get("startRunButton").disabled) {
+  throw new Error("Expected start button to be enabled after auto deck");
+}
+elements.get("startRunButton").click();
 const cards = elements.get("cards");
 if (cards.children.length !== 3) throw new Error("Expected 3 cards after restart");
 cards.children[0].click();
