@@ -126,6 +126,24 @@ const missionCatalog = {
   raid: { title: "レイド召喚", text: "他里が召喚した大妖へ即時攻撃。結果はその場で出る。", baseRewards: { money: 2200, toolParts: 140, gems: 160 }, icon: "裂" }
 };
 
+const pveEnemies = [
+  { id: "kurotake-bandit", name: "黒竹の盗賊頭", type: "山賊", power: 7400, time: 12000, rewardMultiplier: 0.92, loot: { money: 1500, iron: 140, wood: 180 }, note: "低山の交易路を荒らす刀持ち。", img: "assets/generated/enemies/kurotake-bandit.png" },
+  { id: "karasu-tengu", name: "烏天狗の斥候", type: "風", power: 9200, time: 13000, rewardMultiplier: 1.02, loot: { money: 1700, silk: 70, toolParts: 80 }, note: "高所から里の動きを探る俊足の妖。", img: "assets/generated/enemies/karasu-tengu.png" },
+  { id: "dokukiri-spider", name: "毒霧土蜘蛛", type: "毒", power: 10800, time: 14000, rewardMultiplier: 1.08, loot: { money: 1800, herbs: 260, toolParts: 90 }, note: "毒糸で足止めする蜘蛛忍。", img: "assets/generated/enemies/dokukiri-spider.png" },
+  { id: "ashigaru-oni", name: "足軽鬼・鎧砕き", type: "鬼", power: 13200, time: 15000, rewardMultiplier: 1.16, loot: { money: 2200, iron: 300, gunpowder: 60 }, note: "古鎧をまとった怪力の鬼兵。", img: "assets/generated/enemies/ashigaru-oni.png" },
+  { id: "yuki-onna", name: "雪女の暗殺者", type: "氷", power: 11800, time: 14500, rewardMultiplier: 1.12, loot: { money: 1900, herbs: 180, silk: 130 }, note: "凍てつく短刀で忍を狙う。", img: "assets/generated/enemies/yuki-onna.png" },
+  { id: "kitsune-illusion", name: "狐火の幻術師", type: "幻", power: 14600, time: 16000, rewardMultiplier: 1.24, loot: { money: 2400, silk: 190, gems: 45 }, note: "狐火と札で隊列を乱す。", img: "assets/generated/enemies/kitsune-illusion.png" },
+  { id: "iron-kappa", name: "鉄甲河童", type: "水", power: 9800, time: 13500, rewardMultiplier: 1.04, loot: { money: 1700, iron: 190, wood: 160 }, note: "水路を守る甲羅武者。", img: "assets/generated/enemies/iron-kappa.png" },
+  { id: "bone-archer", name: "百鬼骨弓衆", type: "骸", power: 12400, time: 15000, rewardMultiplier: 1.15, loot: { money: 2000, toolParts: 120, herbs: 140 }, note: "骨弓で後衛を狙う夜行衆。", img: "assets/generated/enemies/bone-archer.png" },
+  { id: "fire-rat", name: "火鼠の爆ぜ役", type: "火薬", power: 8800, time: 12500, rewardMultiplier: 1, loot: { money: 1600, gunpowder: 170, toolParts: 80 }, note: "火薬袋を背負った攪乱役。", img: "assets/generated/enemies/fire-rat.png" },
+  { id: "shadow-ronin", name: "影浪人", type: "剣", power: 15800, time: 17000, rewardMultiplier: 1.32, loot: { money: 2700, iron: 240, gems: 60 }, note: "黒い野太刀を振るう亡霊剣士。", img: "assets/generated/enemies/shadow-ronin.png" },
+  { id: "tsuchigumo-caster", name: "土蜘蛛の呪僧", type: "土", power: 15200, time: 16500, rewardMultiplier: 1.28, loot: { money: 2500, wood: 260, herbs: 220 }, note: "土塊と呪符で足場を崩す。", img: "assets/generated/enemies/tsuchigumo-caster.png" },
+  { id: "lotus-parasite", name: "蓮根寄生僧", type: "妖根", power: 13600, time: 15500, rewardMultiplier: 1.18, loot: { money: 2100, herbs: 300, silk: 90 }, note: "泥の蓮根に憑かれた寺僧。", img: "assets/generated/enemies/lotus-parasite.png" },
+  { id: "nue-storm", name: "雷獣・鵺影", type: "雷", power: 18600, time: 19000, rewardMultiplier: 1.48, loot: { money: 3200, toolParts: 180, gems: 90 }, note: "雷札をまとった合成妖。", img: "assets/generated/enemies/nue-storm.png" },
+  { id: "mirror-mist", name: "鏡霧くノ一", type: "霧", power: 16800, time: 17500, rewardMultiplier: 1.38, loot: { money: 2800, silk: 220, toolParts: 120 }, note: "鏡片で分身する敵忍。", img: "assets/generated/enemies/mirror-mist.png" },
+  { id: "bamboo-goblin", name: "竹槍小鬼", type: "森", power: 6800, time: 11500, rewardMultiplier: 0.86, loot: { money: 1300, wood: 300, herbs: 90 }, note: "竹林に潜む待ち伏せ小鬼。", img: "assets/generated/enemies/bamboo-goblin.png" }
+];
+
 const npcVillages = [
   { id: "npc-akatsuki", name: "暁霞の里", power: 8600, defense: 7200, loot: { money: 1800, wood: 260, iron: 160 }, mood: "警戒薄い" },
   { id: "npc-kurogane", name: "黒鉄砦", power: 14200, defense: 16800, loot: { money: 3000, iron: 520, toolParts: 120 }, mood: "防衛堅牢" },
@@ -220,6 +238,7 @@ let selectedNinjaId = null;
 let selectedMissionKind = null;
 let selectedDifficultyId = "normal";
 let selectedNpcId = null;
+let selectedEnemyId = null;
 let selectedAllies = [];
 let selectedFormationSlot = 0;
 let selectedEquipSlot = "武器";
@@ -748,6 +767,63 @@ function getDifficulty(id = selectedDifficultyId) {
   return difficultyCatalog.find(item => item.id === id) || difficultyCatalog[1];
 }
 
+function selectedPveEnemy() {
+  return pveEnemies.find(item => item.id === selectedEnemyId) || pveEnemies[0];
+}
+
+function missionPlan(kind = selectedMissionKind) {
+  const mission = missionCatalog[kind] || missionCatalog.expedition;
+  const npc = npcVillages.find(item => item.id === selectedNpcId) || npcVillages[0];
+  const raid = game.raidEvents.find(item => item.id === selectedNpcId) || game.raidEvents[0];
+  const enemy = selectedPveEnemy();
+  const difficulty = kind === "raid" ? getDifficulty(raid?.difficulty || "normal") : kind === "pve" ? null : getDifficulty();
+  if (kind === "pve") {
+    const rewards = scaleRewards({ ...mission.baseRewards, ...enemy.loot }, enemy.rewardMultiplier);
+    return {
+      kind,
+      mission,
+      targetName: enemy.name,
+      targetLabel: enemy.type,
+      rewards,
+      enemyPower: enemy.power,
+      time: enemy.time,
+      difficultyName: "標的指定",
+      enemy
+    };
+  }
+  const rewards = scaleRewards(kind === "pvp" ? npc.loot : mission.baseRewards, difficulty.multiplier);
+  return {
+    kind,
+    mission,
+    npc,
+    raid,
+    difficulty,
+    targetName: kind === "pvp" ? npc.name : kind === "raid" ? raid?.name || "レイド" : selectedAllies.length ? `${selectedAllies.length}勢力共闘` : "単独任務",
+    targetLabel: difficulty.name,
+    rewards,
+    enemyPower: Math.round(difficulty.enemy * difficulty.multiplier),
+    time: difficulty.time,
+    difficultyName: difficulty.name
+  };
+}
+
+function npcActivityItems() {
+  const now = Date.now();
+  const tick = Math.floor(now / 28000);
+  const templates = [
+    npc => ({ title: `${npc.name}が偵察隊を派遣`, text: `戦力 ${yen(npc.power)} / ${npc.mood}`, tone: "scout" }),
+    npc => ({ title: `${npc.name}が交易路を封鎖`, text: `奪取見込み ${resourceText(npc.loot)}`, tone: "raid" }),
+    npc => ({ title: `${npc.name}が共闘を募集`, text: "討伐隊に参加すると報酬分配", tone: "ally" }),
+    npc => ({ title: `${npc.name}で資源市が活況`, text: "次の襲撃対象として動きあり", tone: "market" }),
+    npc => ({ title: `${npc.name}が結界を増強`, text: `防衛 ${yen(npc.defense)} まで上昇`, tone: "guard" })
+  ];
+  return Array.from({ length: 5 }, (_, index) => {
+    const npc = npcVillages[(tick + index) % npcVillages.length];
+    const item = templates[(tick + index * 2) % templates.length](npc);
+    return { ...item, eta: `${(index + 1) * 2 + (tick % 3)}分前` };
+  });
+}
+
 function totalPower() {
   const ninjaPower = game.ninjas.reduce((sum, ninja) => sum + ninja.power + equippedPower(ninja.id), 0);
   return Math.round(ninjaPower);
@@ -827,7 +903,7 @@ function renderHeader() {
     village: activeView.village === "facility" ? getFacility(selectedFacilityId).name : "影月の里",
     ninjas: activeView.ninjas === "detail" ? getNinja(selectedNinjaId).name : "忍者名簿",
     formation: "出撃編成",
-    missions: activeView.missions === "raid" ? "レイド戦場" : activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板"
+    missions: activeView.missions === "raid" ? "レイド戦場" : activeView.missions === "confirm" ? "出発確認" : activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板"
   };
   screenTitle.textContent = titles[activeTab];
   screenSubtitle.textContent = `里Lv.${game.villageLevel} / 防衛 ${yen(defensePower())}`;
@@ -1143,6 +1219,10 @@ function renderMissions() {
     panels.missions.innerHTML = renderRaidBattle(selectedNpcId);
     return;
   }
+  if (activeView.missions === "confirm") {
+    panels.missions.innerHTML = renderMissionConfirm(selectedMissionKind);
+    return;
+  }
   if (activeView.missions === "select") {
     panels.missions.innerHTML = renderMissionSelect(selectedMissionKind);
     return;
@@ -1171,6 +1251,10 @@ function renderMissions() {
         <div class="list-stack">${game.raidEvents.slice(0, 3).map(renderRaidRow).join("")}</div>
       </div>
     </div>
+    <div class="panel-card compact-section npc-activity-panel">
+      <h2>周辺勢力の動き</h2>
+      <div class="npc-activity-list">${npcActivityItems().map(item => `<article class="npc-activity ${item.tone}"><b>${item.title}</b><span>${item.text}</span><small>${item.eta}</small></article>`).join("")}</div>
+    </div>
     <div class="panel-card compact-section">
       <h2>戦果ログ</h2>
       <div class="list-stack compact-log">${game.reports.filter(item => item.type === "combat").slice(0, 3).map(renderReport).join("") || `<article class="row-card empty-row"><div><strong>戦闘ログなし</strong><span>任務やレイドで戦闘すると、与ダメージと被ダメージが表示されます。</span></div></article>`}</div>
@@ -1179,11 +1263,8 @@ function renderMissions() {
 }
 
 function renderMissionSelect(kind) {
-  const mission = missionCatalog[kind];
-  const selectedRaid = game.raidEvents.find(item => item.id === selectedNpcId) || game.raidEvents[0];
-  const difficulty = kind === "raid" ? getDifficulty(selectedRaid?.difficulty || "normal") : getDifficulty();
-  const npc = npcVillages.find(item => item.id === selectedNpcId) || npcVillages[0];
-  const rewards = scaleRewards(kind === "pvp" ? npc.loot : mission.baseRewards, difficulty.multiplier);
+  const plan = missionPlan(kind);
+  const { mission } = plan;
   const canDeploy = aliveFormationNinjas().length > 0;
   return `
     <div class="panel-card hero-panel">
@@ -1191,31 +1272,51 @@ function renderMissionSelect(kind) {
       <h1>${mission.title}</h1>
       <p>${mission.text}</p>
       <div class="village-metrics">
-        <div><b>${difficulty.name}</b><span>難易度</span></div>
-        <div><b>${yen(Math.round(difficulty.enemy * difficulty.multiplier))}</b><span>予想敵戦力</span></div>
+        <div><b>${plan.targetLabel}</b><span>${kind === "pve" ? "標的" : "難易度"}</span></div>
+        <div><b>${yen(plan.enemyPower)}</b><span>予想敵戦力</span></div>
         <div><b>${aliveFormationNinjas().length}/3</b><span>出撃可能</span></div>
       </div>
     </div>
-    <div class="panel-card">
+    ${kind !== "pve" ? `<div class="panel-card">
       <h2>難易度</h2>
-      <div class="chip-row">${difficultyCatalog.map(item => `<button class="${item.id === difficulty.id ? "selected" : ""}" data-difficulty="${item.id}" ${kind === "raid" ? "disabled" : ""}>${item.name}</button>`).join("")}</div>
+      <div class="chip-row">${difficultyCatalog.map(item => `<button class="${item.id === plan.difficulty?.id ? "selected" : ""}" data-difficulty="${item.id}" ${kind === "raid" ? "disabled" : ""}>${item.name}</button>`).join("")}</div>
       ${kind === "raid" ? `<p>レイド難易度は召喚した勢力の戦闘力で固定されます。</p>` : ""}
-    </div>
-    ${kind === "pvp" ? renderPvpSelect(npc, rewards) : ""}
-    ${kind === "pve" ? renderPveRecruit() : ""}
+    </div>` : ""}
+    ${kind === "pvp" ? renderPvpSelect(plan.npc, plan.rewards) : ""}
+    ${kind === "pve" ? renderPveEnemySelect() : ""}
     ${kind === "raid" ? renderRaidSelect() : ""}
-    <div class="panel-card primary-action-card">
-      <h2>出発確認</h2>
-      <div class="stat-grid">
-        <div><span>味方戦力</span><b>${yen(teamPower())}</b></div>
-        <div><span>予想報酬</span><b>${resourceText(rewards)}</b></div>
+    <div class="panel-card">
+      <div class="action-grid">
+        <button data-action="mission-confirm-screen" ${canDeploy ? "" : "disabled"}>${kind === "raid" ? "攻撃確認へ" : "出発確認へ"}</button>
+        <button data-action="mission-board">戻る</button>
       </div>
+    </div>
+  `;
+}
+
+function renderMissionConfirm(kind) {
+  const plan = missionPlan(kind);
+  const canDeploy = aliveFormationNinjas().length > 0;
+  return `
+    <div class="panel-card hero-panel mission-confirm-panel">
+      <span class="scene-kicker">出発確認</span>
+      <h1>${plan.mission.title}</h1>
+      ${plan.enemy ? `<div class="confirm-enemy-art"><img src="${plan.enemy.img}" alt="${plan.enemy.name}"></div>` : ""}
+      <div class="stat-grid">
+        <div><span>標的</span><b>${plan.targetName}</b></div>
+        <div><span>敵戦力</span><b>${yen(plan.enemyPower)}</b></div>
+        <div><span>所要</span><b>${Math.ceil(plan.time / 1000)}秒</b></div>
+        <div><span>味方戦力</span><b>${yen(teamPower())}</b></div>
+        <div><span>出撃</span><b>${aliveFormationNinjas().length}/3</b></div>
+        <div><span>報酬</span><b>${resourceText(plan.rewards)}</b></div>
+      </div>
+      ${plan.enemy ? `<p>${plan.enemy.note}</p>` : `<p>${plan.targetName}へ向かいます。編成と報酬を確認してください。</p>`}
       <div class="formation-mini formation-link-only">
         <button data-tab="formation">編成変更</button>
       </div>
       <div class="action-grid">
-        <button data-action="confirm-mission" data-kind="${kind}" ${canDeploy ? "" : "disabled"}>${kind === "raid" ? "参加して攻撃" : "出発する"}</button>
-        <button data-action="mission-board">戻る</button>
+        <button data-action="confirm-mission" data-kind="${kind}" ${canDeploy ? "" : "disabled"}>${kind === "raid" ? "攻撃" : "出発する"}</button>
+        <button data-action="mission-select">選び直す</button>
       </div>
     </div>
   `;
@@ -1235,12 +1336,17 @@ function renderPvpSelect(selected, rewards) {
   `;
 }
 
-function renderPveRecruit() {
+function renderPveEnemySelect() {
   return `
     <div class="panel-card">
-      <h2>募集する共闘勢力</h2>
-      <div class="chip-row">${npcVillages.slice(0, 4).map(npc => `<button class="${selectedAllies.includes(npc.id) ? "selected" : ""}" data-ally="${npc.id}">${npc.name}</button>`).join("")}</div>
-      <p>共闘勢力は戦力を加算しますが、報酬を少し分配します。</p>
+      <h2>討伐する敵</h2>
+      <div class="enemy-grid">${pveEnemies.map(enemy => `
+        <button class="enemy-tile ${enemy.id === selectedEnemyId ? "selected" : ""}" data-enemy="${enemy.id}">
+          <img src="${enemy.img}" alt="${enemy.name}">
+          <strong>${enemy.name}</strong>
+          <span>${enemy.type} / 戦力 ${yen(enemy.power)}</span>
+        </button>
+      `).join("")}</div>
     </div>
   `;
 }
@@ -1648,34 +1754,29 @@ function tickRaidNpcCombat(raid, now = Date.now()) {
 }
 
 function confirmMission(kind) {
-  const mission = missionCatalog[kind];
-  const npc = npcVillages.find(item => item.id === selectedNpcId) || npcVillages[0];
-  const targetRaid = game.raidEvents.find(item => item.id === selectedNpcId) || game.raidEvents[0];
-  const difficulty = kind === "raid" ? getDifficulty(targetRaid?.difficulty || "normal") : getDifficulty();
-  const rewards = scaleRewards(kind === "pvp" ? npc.loot : mission.baseRewards, difficulty.multiplier);
-  const targetName = kind === "pvp" ? npc.name : kind === "raid" ? targetRaid.name : selectedAllies.length ? `${selectedAllies.length}勢力共闘` : "単独任務";
-  showConfirm({
-    title: `${mission.title}へ${kind === "raid" ? "即時攻撃" : "出発"}しますか？`,
-    body: `${difficulty.name} / ${targetName}`,
-    details: [`味方戦力: ${yen(teamPower())}`, `予想敵戦力: ${yen(Math.round(difficulty.enemy * difficulty.multiplier))}`, `見込み報酬: ${resourceText(rewards)}`, `出撃忍者: ${aliveFormationNinjas().length}/3`],
-    ok: kind === "raid" ? "攻撃" : "出発",
-    onOk: () => kind === "raid" ? enterRaidBattle(targetRaid) : startMission(kind, rewards, difficulty, targetName)
-  });
+  const plan = missionPlan(kind);
+  if (kind === "raid") {
+    enterRaidBattle(plan.raid);
+    return;
+  }
+  startMission(plan);
 }
 
-function startMission(kind, rewards, difficulty, targetName) {
+function startMission(plan) {
   if (!aliveFormationNinjas().length) return;
   game.activities.unshift({
-    id: `${kind}-${Date.now()}`,
-    kind,
-    title: missionCatalog[kind].title,
-    difficulty: difficulty.name,
-    rewards,
+    id: `${plan.kind}-${Date.now()}`,
+    kind: plan.kind,
+    title: plan.mission.title,
+    difficulty: plan.difficultyName,
+    rewards: plan.rewards,
     ninjaIds: formationNinjas().map(ninja => ninja.id),
-    target: targetName,
+    target: plan.targetName,
+    targetId: plan.enemy?.id || plan.npc?.id || null,
+    enemyImg: plan.enemy?.img || null,
     allies: [...selectedAllies],
-    finishAt: Date.now() + difficulty.time,
-    enemyPower: Math.round(difficulty.enemy * difficulty.multiplier)
+    finishAt: Date.now() + plan.time,
+    enemyPower: plan.enemyPower
   });
   activeView.missions = "board";
   saveGame(true);
@@ -1890,6 +1991,7 @@ function showTab(tabName) {
 function goBack() {
   if (activeTab === "village" && activeView.village === "facility") activeView.village = "home";
   else if (activeTab === "ninjas" && activeView.ninjas === "detail") activeView.ninjas = "list";
+  else if (activeTab === "missions" && activeView.missions === "confirm") activeView.missions = "select";
   else if (activeTab === "missions" && (activeView.missions === "select" || activeView.missions === "raid")) activeView.missions = "board";
   else return;
   render();
@@ -2018,8 +2120,9 @@ document.addEventListener("click", event => {
   if (target.dataset.missionKind) {
     selectedMissionKind = target.dataset.missionKind;
     selectedNpcId = target.dataset.missionKind === "raid" ? game.raidEvents[0].id : npcVillages[0].id;
+    selectedEnemyId = target.dataset.missionKind === "pve" ? pveEnemies[0].id : selectedEnemyId;
     selectedAllies = [];
-    activeView.missions = target.dataset.missionKind === "raid" ? "select" : "select";
+    activeView.missions = "select";
     render();
   }
   if (target.dataset.difficulty) {
@@ -2028,6 +2131,10 @@ document.addEventListener("click", event => {
   }
   if (target.dataset.npc) {
     selectedNpcId = target.dataset.npc;
+    render();
+  }
+  if (target.dataset.enemy) {
+    selectedEnemyId = target.dataset.enemy;
     render();
   }
   if (target.dataset.raid) {
@@ -2116,6 +2223,14 @@ document.addEventListener("click", event => {
     render();
   }
   if (action === "confirm-mission") confirmMission(target.dataset.kind);
+  if (action === "mission-confirm-screen") {
+    activeView.missions = "confirm";
+    render();
+  }
+  if (action === "mission-select") {
+    activeView.missions = "select";
+    render();
+  }
   if (action === "join-raid") {
     const raid = game.raidEvents.find(item => item.id === selectedNpcId);
     enterRaidBattle(raid);
