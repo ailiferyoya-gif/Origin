@@ -297,6 +297,8 @@ function createInitialGame() {
     defense: { ninjaIds: ["ninja-ssr-oboromaru", "ninja-sr-hayate"] },
     activities: [],
     reports: [],
+    worldFeed: [],
+    lastWorldActivityAt: Date.now(),
     raidEvents: createInitialRaids(),
     savedAt: null
   };
@@ -391,7 +393,14 @@ function maintainWorldRaids() {
   game.raidEvents = game.raidEvents.filter(raid => raid.hpLeft > 0 || raid.playerSummoned || raid.playerJoined);
   const npcActive = game.raidEvents.filter(raid => !raid.playerSummoned && raid.hpLeft > 0).length;
   for (let index = npcActive; index < 3; index += 1) {
-    game.raidEvents.push(createWorldRaid(randomFrom(raidBosses), randomFrom(npcVillages)));
+    const raid = createWorldRaid(randomFrom(raidBosses), randomFrom(npcVillages));
+    game.raidEvents.push(raid);
+    pushWorldFeed({
+      title: `${raid.caller}が${raid.name}を召喚`,
+      text: `参加勢力 ${raid.participants} / 残HP ${yen(raid.hpLeft)}`,
+      tone: "raid",
+      raidId: raid.id
+    });
   }
 }
 
@@ -436,6 +445,20 @@ function ninjaFromPool(card, level = 1, isNew = true) {
 
 function report(text, details = [], type = "system") {
   return { id: `${Date.now()}-${Math.random()}`, text, details, type, at: Date.now() };
+}
+
+function pushWorldFeed(entry) {
+  if (!game || !Array.isArray(game.worldFeed)) return;
+  game.worldFeed = [
+    { id: `world-${Date.now()}-${Math.random()}`, at: Date.now(), tone: "scout", ...entry },
+    ...game.worldFeed
+  ].slice(0, 24);
+}
+
+function worldFeedAgeText(at) {
+  const seconds = Math.max(1, Math.floor((Date.now() - Number(at || Date.now())) / 1000));
+  if (seconds < 60) return `${seconds}秒前`;
+  return `${Math.floor(seconds / 60)}分前`;
 }
 
 function play(sound) {
@@ -500,6 +523,8 @@ function normalizeGameState() {
   game.defense = { ...fresh.defense, ...(game.defense || {}) };
   game.activities = Array.isArray(game.activities) ? game.activities : [];
   game.reports = Array.isArray(game.reports) ? game.reports : [];
+  game.worldFeed = Array.isArray(game.worldFeed) ? game.worldFeed.slice(0, 24) : [];
+  game.lastWorldActivityAt = Number(game.lastWorldActivityAt || Date.now());
   game.raidEvents = Array.isArray(game.raidEvents) ? game.raidEvents.map(normalizeRaidState) : createInitialRaids();
   game.settings = { ...fresh.settings, ...(game.settings || {}) };
   const ownedIds = new Set(game.ninjas.map(ninja => ninja.id));
@@ -829,6 +854,13 @@ function missionPlan(kind = selectedMissionKind) {
 
 function npcActivityItems() {
   const now = Date.now();
+  const liveItems = (game.worldFeed || []).slice(0, 5).map(item => ({
+    title: item.title,
+    text: item.text,
+    tone: `${item.tone || "scout"} live`,
+    eta: worldFeedAgeText(item.at)
+  }));
+  if (liveItems.length >= 5) return liveItems;
   const tick = Math.floor(now / 28000);
   const templates = [
     npc => ({ title: `${npc.name}が偵察隊を派遣`, text: `戦力 ${yen(npc.power)} / ${npc.mood}`, tone: "scout" }),
@@ -837,11 +869,12 @@ function npcActivityItems() {
     npc => ({ title: `${npc.name}で資源市が活況`, text: "次の襲撃対象として動きあり", tone: "market" }),
     npc => ({ title: `${npc.name}が結界を増強`, text: `防衛 ${yen(npc.defense)} まで上昇`, tone: "guard" })
   ];
-  return Array.from({ length: 5 }, (_, index) => {
+  const fallbackItems = Array.from({ length: 5 - liveItems.length }, (_, index) => {
     const npc = npcVillages[(tick + index) % npcVillages.length];
     const item = templates[(tick + index * 2) % templates.length](npc);
     return { ...item, eta: `${(index + 1) * 2 + (tick % 3)}分前` };
   });
+  return [...liveItems, ...fallbackItems];
 }
 
 function totalPower() {
@@ -1267,7 +1300,7 @@ function renderMissions() {
       </div>
     </div>
     <div class="panel-card compact-section npc-activity-panel">
-      <h2>周辺勢力の動き</h2>
+      <h2>周辺勢力タイムライン</h2>
       <div class="npc-activity-list">${npcActivityItems().map(item => `<article class="npc-activity ${item.tone}"><b>${item.title}</b><span>${item.text}</span><small>${item.eta}</small></article>`).join("")}</div>
     </div>
     <div class="panel-card compact-section raid-live-board">
@@ -1391,9 +1424,10 @@ function renderRaidSelect() {
 
 function renderRaidRow(raid) {
   const rate = Math.max(0, raid.hpLeft / raid.hp);
+  const latestNpc = (raid.logs || []).find(log => log.type === "npc" && log.damage > 0);
   return `
     <button class="row-card raid-row" data-raid-progress="${raid.id}">
-      <div><strong>${raid.name}</strong><span>${raid.caller}召喚 / ${raid.difficultyName} / 参加勢力 ${raid.participants}</span><small>残HP ${yen(Math.max(0, raid.hpLeft))}</small><div class="hpbar"><i style="width:${rate * 100}%"></i></div></div>
+      <div><strong>${raid.name}</strong><span>${raid.caller}召喚 / ${raid.difficultyName} / 参加勢力 ${raid.participants}</span><small>残HP ${yen(Math.max(0, raid.hpLeft))}</small><div class="hpbar"><i style="width:${rate * 100}%"></i></div>${latestNpc ? `<em class="raid-damage-pop">${latestNpc.actor} -${yen(latestNpc.damage)}</em>` : ""}</div>
       <em>参加</em>
     </button>
   `;
@@ -1783,7 +1817,30 @@ function tickRaidNpcCombat(raid, now = Date.now()) {
   raid.hpLeft = Math.max(0, raid.hpLeft - damage);
   raid.progress = Math.min(100, Math.round((1 - raid.hpLeft / raid.hp) * 100));
   raid.lastNpcStrikeAt = now;
-  pushRaidLog(raid, { actor: member.name, damage, taken, text: raid.hpLeft <= 0 ? "最後の一撃" : randomFrom(["忍具連撃", "背面奇襲", "術式援護", "追撃"]), type: "npc" });
+  const text = raid.hpLeft <= 0 ? "最後の一撃" : randomFrom(["忍具連撃", "背面奇襲", "術式援護", "追撃"]);
+  pushRaidLog(raid, { actor: member.name, damage, taken, text, type: "npc" });
+  pushWorldFeed({
+    title: `${member.name}が${raid.name}へ${text}`,
+    text: `与 ${yen(damage)} / 残HP ${yen(Math.max(0, raid.hpLeft))}`,
+    tone: "raid",
+    raidId: raid.id,
+    damage
+  });
+  return true;
+}
+
+function tickNpcWorldActivity(now = Date.now()) {
+  if (now - (game.lastWorldActivityAt || 0) < 5200 + Math.random() * 3600) return false;
+  const npc = randomFrom(npcVillages);
+  const actions = [
+    () => ({ title: `${npc.name}が遠征隊を出発`, text: `交易路を調査中 / 戦力 ${yen(npc.power)}`, tone: "scout" }),
+    () => ({ title: `${npc.name}が防衛を増強`, text: `防衛 ${yen(npc.defense)} / 襲撃警戒`, tone: "guard" }),
+    () => ({ title: `${npc.name}が資材市を開放`, text: `流通: ${resourceText(npc.loot)}`, tone: "market" }),
+    () => ({ title: `${npc.name}が共闘要請`, text: "近隣の討伐隊へ参加者を募集", tone: "ally" }),
+    () => ({ title: `${npc.name}が襲撃準備`, text: `奪取見込み ${resourceText(npc.loot)}`, tone: "raid" })
+  ];
+  pushWorldFeed(randomFrom(actions)());
+  game.lastWorldActivityAt = now;
   return true;
 }
 
@@ -2324,6 +2381,7 @@ setInterval(() => {
   game.raidEvents.forEach(raid => {
     changed = tickRaidNpcCombat(raid, now) || changed;
   });
+  changed = tickNpcWorldActivity(now) || changed;
   maintainWorldRaids();
   if (changed) saveGame(true);
   if (activeTab === "missions") render();

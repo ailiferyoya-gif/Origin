@@ -1684,12 +1684,39 @@ button.formation-slot {
   background: rgba(0,0,0,.25);
 }
 
+.npc-activity.live {
+  position: relative;
+  background:
+    linear-gradient(90deg, rgba(255,212,94,.1), rgba(255,255,255,.03)),
+    rgba(255,255,255,.05);
+}
+
+.npc-activity.live::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 999px;
+  background: #ffd45e;
+  box-shadow: 0 0 10px rgba(255,212,94,.72);
+}
+
 .npc-activity.raid {
   border-left-color: rgba(239,87,90,.72);
 }
 
 .npc-activity.ally {
   border-left-color: rgba(112,213,255,.68);
+}
+
+.npc-activity.guard {
+  border-left-color: rgba(135,172,255,.7);
+}
+
+.npc-activity.market {
+  border-left-color: rgba(116,220,150,.7);
 }
 
 .npc-activity b {
@@ -1927,6 +1954,39 @@ button.formation-slot {
 
 .raid-row {
   grid-template-columns: 1fr;
+}
+
+.raid-row > div {
+  min-width: 0;
+}
+
+.raid-damage-pop {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 6px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: #ffd45e;
+  background: rgba(239,87,90,.18);
+  border: 1px solid rgba(255,212,94,.24);
+  font-size: 10px;
+  font-weight: 900;
+  font-style: normal;
+  animation: raidPop 1.25s ease both;
+}
+
+@keyframes raidPop {
+  0% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+  22% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    opacity: .82;
+  }
 }
 
 .raid-battle-panel {
