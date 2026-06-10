@@ -595,13 +595,15 @@ function toFullWidthNumber(value) {
 let state = loadState();
 let selectedSkill = state.selectedSkill || "cipher";
 let currentQuestion = 0;
+let activeScreen = "skills";
 
 const skillMap = document.querySelector("#skillMap");
 const answerForm = document.querySelector("#answerForm");
 const answerInput = document.querySelector("#answerInput");
 const feedback = document.querySelector("#feedback");
 const explanation = document.querySelector("#explanation");
-const recordsPanel = document.querySelector("#recordsPanel");
+const screenEls = [...document.querySelectorAll(".screen")];
+const tabButtons = [...document.querySelectorAll(".bottom-nav button[data-target-screen]")];
 
 function loadState() {
   try {
@@ -658,7 +660,8 @@ function renderSkills() {
       state.hints = Math.max(1, state.hints);
       hideResult();
       render();
-      answerInput.focus();
+      showScreen("drill");
+      requestAnimationFrame(() => answerInput.focus());
     });
     skillMap.append(row);
   });
@@ -722,6 +725,7 @@ function render() {
   renderSkills();
   renderQuestion();
   renderStats();
+  updateScreenVisibility();
   if (window.lucide) lucide.createIcons();
   saveState();
 }
@@ -802,42 +806,54 @@ function nextQuestion() {
   render();
 }
 
-function showTemporaryMessage(message) {
-  recordsPanel.hidden = false;
-  setFeedback(message, "");
-  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+function showScreen(screenName) {
+  activeScreen = screenName;
+  updateScreenVisibility();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (window.lucide) lucide.createIcons();
+}
+
+function updateScreenVisibility() {
+  screenEls.forEach((screen) => {
+    screen.hidden = screen.dataset.screen !== activeScreen;
+  });
+  tabButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.targetScreen === activeScreen);
+  });
 }
 
 answerForm.addEventListener("submit", checkAnswer);
 document.querySelector("#hintButton").addEventListener("click", showHint);
 document.querySelector("#showAnswerButton").addEventListener("click", showAnswer);
 document.querySelector("#nextButton").addEventListener("click", nextQuestion);
-document.querySelector("#recordsButton").addEventListener("click", () => {
-  recordsPanel.hidden = !recordsPanel.hidden;
-  if (!recordsPanel.hidden) recordsPanel.scrollIntoView({ behavior: "smooth", block: "center" });
-});
-document.querySelector("#closeRecords").addEventListener("click", () => {
-  recordsPanel.hidden = true;
-});
-document.querySelector("#resetButton").addEventListener("click", () => {
+document.querySelector("#recordsButton").addEventListener("click", () => showScreen("records"));
+
+function resetLearningData() {
   if (!confirm("学習データをリセットしますか？")) return;
   localStorage.removeItem(STORAGE_KEY);
   state = loadState();
   selectedSkill = "cipher";
   currentQuestion = 0;
+  activeScreen = "skills";
   hideResult();
   render();
+}
+
+document.querySelector("#resetButton").addEventListener("click", resetLearningData);
+document.querySelector("#profileResetButton").addEventListener("click", resetLearningData);
+document.querySelector("#startDailyButton").addEventListener("click", () => {
+  selectedSkill = skills.find((skill) => skill.unlocked && (skill.mastery + (state.masteryBoost[skill.id] || 0)) < 100)?.id || "cipher";
+  currentQuestion = findNextQuestionIndex();
+  hideResult();
+  render();
+  showScreen("drill");
 });
 
-document.querySelector("#drillTab").addEventListener("click", () => {
-  document.querySelector(".challenge").scrollIntoView({ behavior: "smooth", block: "start" });
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    showScreen(button.dataset.targetScreen);
+  });
 });
-document.querySelector("#dailyTab").addEventListener("click", () => showTemporaryMessage("今日のおすすめは、未達成の分野を1問ずつ解くことです。"));
-document.querySelector("#rankingTab").addEventListener("click", () => {
-  recordsPanel.hidden = false;
-  recordsPanel.scrollIntoView({ behavior: "smooth", block: "center" });
-});
-document.querySelector("#profileTab").addEventListener("click", () => showTemporaryMessage("マイページでは、正答率と弱点タグを見ながら復習できます。"));
 
 currentQuestion = findNextQuestionIndex();
 render();

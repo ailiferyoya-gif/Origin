@@ -25,80 +25,94 @@
       </div>
     </header>
 
-    <section class="summary" aria-label="学習サマリー">
-      <div class="badge" aria-label="現在レベル">
-        <div class="badge-star"><i data-lucide="star"></i></div>
-        <span>Lv. <strong id="badgeLevel">1</strong></span>
-      </div>
+    <section class="screen" id="skillScreen" data-screen="skills">
+      <section class="summary" aria-label="学習サマリー">
+        <div class="badge" aria-label="現在レベル">
+          <div class="badge-star"><i data-lucide="star"></i></div>
+          <span>Lv. <strong id="badgeLevel">1</strong></span>
+        </div>
 
-      <div class="level-block">
-        <p>学習レベル</p>
-        <strong id="levelNumber">1</strong>
-      </div>
+        <div class="level-block">
+          <p>学習レベル</p>
+          <strong id="levelNumber">1</strong>
+        </div>
 
-      <dl class="stats">
-        <div>
-          <dt><i data-lucide="book-open"></i>総解答数</dt>
-          <dd><span id="totalAnswers">0</span>問</dd>
+        <dl class="stats">
+          <div>
+            <dt><i data-lucide="book-open"></i>総解答数</dt>
+            <dd><span id="totalAnswers">0</span>問</dd>
+          </div>
+          <div>
+            <dt><i data-lucide="flame"></i>連続学習日数</dt>
+            <dd><span id="streakDays">1</span>日</dd>
+          </div>
+          <div>
+            <dt><i data-lucide="crown"></i>到達スキル</dt>
+            <dd><span id="unlockedSkills">5</span>/6</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="skill-section" aria-labelledby="skillHeading">
+        <div class="section-heading">
+          <i data-lucide="flag"></i>
+          <h2 id="skillHeading">スキル一覧</h2>
+          <p>鍛えたい力を選んでドリルに挑戦</p>
         </div>
-        <div>
-          <dt><i data-lucide="flame"></i>連続学習日数</dt>
-          <dd><span id="streakDays">1</span>日</dd>
-        </div>
-        <div>
-          <dt><i data-lucide="crown"></i>到達スキル</dt>
-          <dd><span id="unlockedSkills">5</span>/6</dd>
-        </div>
-      </dl>
+        <div class="skill-map" id="skillMap" role="list"></div>
+      </section>
     </section>
 
-    <section class="skill-section" aria-labelledby="skillHeading">
-      <div class="section-heading">
-        <i data-lucide="flag"></i>
-        <h2 id="skillHeading">スキル一覧</h2>
-        <p>鍛えたい力を選んでドリルに挑戦</p>
-      </div>
-      <div class="skill-map" id="skillMap" role="list"></div>
-    </section>
-
-    <section class="challenge" aria-labelledby="challengeHeading">
-      <div class="challenge-head">
-        <div>
-          <p class="eyebrow"><i data-lucide="target"></i>現在の挑戦</p>
-          <h2 id="challengeHeading">おすすめドリル</h2>
+    <section class="screen" id="drillScreen" data-screen="drill" hidden>
+      <section class="challenge" aria-labelledby="challengeHeading">
+        <div class="challenge-head">
+          <div>
+            <p class="eyebrow"><i data-lucide="target"></i>現在の挑戦</p>
+            <h2 id="challengeHeading">おすすめドリル</h2>
+          </div>
+          <div class="hint-count">ヒント <i data-lucide="lightbulb"></i> × <span id="hintCount">3</span></div>
         </div>
-        <div class="hint-count">ヒント <i data-lucide="lightbulb"></i> × <span id="hintCount">3</span></div>
-      </div>
 
-      <div class="question-meta">
-        <span id="categoryPill">暗号 Lv.3</span>
-        <span id="questionIndex">1 / 30</span>
-      </div>
-      <p class="question" id="questionText"></p>
+        <div class="question-meta">
+          <span id="categoryPill">暗号 Lv.3</span>
+          <span id="questionIndex">1 / 30</span>
+        </div>
+        <p class="question" id="questionText"></p>
 
-      <form class="answer-row" id="answerForm">
-        <label class="sr-only" for="answerInput">答え</label>
-        <input id="answerInput" type="text" autocomplete="off" placeholder="ここに答えを入力">
-        <button type="submit">答える</button>
-      </form>
+        <form class="answer-row" id="answerForm">
+          <label class="sr-only" for="answerInput">答え</label>
+          <input id="answerInput" type="text" autocomplete="off" placeholder="ここに答えを入力">
+          <button type="submit">答える</button>
+        </form>
 
-      <div class="challenge-actions">
-        <button class="secondary" id="hintButton" type="button"><i data-lucide="lightbulb"></i>ヒントを見る</button>
-        <button class="secondary" id="showAnswerButton" type="button"><i data-lucide="eye"></i>答えを見る</button>
-        <button class="secondary" id="nextButton" type="button"><i data-lucide="arrow-right"></i>次の問題</button>
-      </div>
+        <div class="challenge-actions">
+          <button class="secondary" id="hintButton" type="button"><i data-lucide="lightbulb"></i>ヒントを見る</button>
+          <button class="secondary" id="showAnswerButton" type="button"><i data-lucide="eye"></i>答えを見る</button>
+          <button class="secondary" id="nextButton" type="button"><i data-lucide="arrow-right"></i>次の問題</button>
+        </div>
 
-      <div class="feedback" id="feedback" aria-live="polite"></div>
-      <div class="explanation" id="explanation" hidden>
-        <h3>解説</h3>
-        <p id="explanationText"></p>
-      </div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+        <div class="explanation" id="explanation" hidden>
+          <h3>解説</h3>
+          <p id="explanationText"></p>
+        </div>
+      </section>
     </section>
 
-    <section class="panel" id="recordsPanel" hidden>
+    <section class="screen" id="dailyScreen" data-screen="daily" hidden>
+      <section class="panel">
+        <div class="panel-head">
+          <h2>デイリー</h2>
+        </div>
+        <p class="screen-copy">今日のおすすめは、未達成の分野を1問ずつ解くことです。</p>
+        <button class="primary-wide" id="startDailyButton" type="button">今日の練習を始める</button>
+      </section>
+    </section>
+
+    <section class="screen" id="recordScreen" data-screen="records" hidden>
+      <section class="panel" id="recordsPanel">
       <div class="panel-head">
         <h2>学習記録</h2>
-        <button class="text-button" id="closeRecords" type="button">閉じる</button>
       </div>
       <div class="record-grid">
         <div><span id="accuracyRate">0%</span><p>正答率</p></div>
@@ -107,14 +121,25 @@
       </div>
       <h3>弱点タグ</h3>
       <div class="weak-tags" id="weakTags"></div>
+      </section>
+    </section>
+
+    <section class="screen" id="profileScreen" data-screen="profile" hidden>
+      <section class="panel">
+        <div class="panel-head">
+          <h2>マイページ</h2>
+        </div>
+        <p class="screen-copy">学習状況を保存しながら、正答率と弱点タグを見て復習できます。</p>
+        <button class="primary-wide danger" id="profileResetButton" type="button">学習データをリセット</button>
+      </section>
     </section>
 
     <nav class="bottom-nav" aria-label="主要ナビゲーション">
-      <button class="active" type="button"><i data-lucide="map"></i><span>スキル</span></button>
-      <button type="button" id="drillTab"><i data-lucide="pencil"></i><span>ドリル</span></button>
-      <button type="button" id="dailyTab"><i data-lucide="calendar-days"></i><span>デイリー</span></button>
-      <button type="button" id="rankingTab"><i data-lucide="trophy"></i><span>記録</span></button>
-      <button type="button" id="profileTab"><i data-lucide="user"></i><span>マイページ</span></button>
+      <button class="active" id="skillTab" type="button" data-target-screen="skills"><i data-lucide="map"></i><span>スキル</span></button>
+      <button type="button" id="drillTab" data-target-screen="drill"><i data-lucide="pencil"></i><span>ドリル</span></button>
+      <button type="button" id="dailyTab" data-target-screen="daily"><i data-lucide="calendar-days"></i><span>デイリー</span></button>
+      <button type="button" id="rankingTab" data-target-screen="records"><i data-lucide="trophy"></i><span>記録</span></button>
+      <button type="button" id="profileTab" data-target-screen="profile"><i data-lucide="user"></i><span>マイページ</span></button>
     </nav>
   </main>
 
