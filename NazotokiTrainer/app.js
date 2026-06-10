@@ -247,7 +247,11 @@ const questions = [
 ];
 
 questions.length = 0;
-questions.push(...buildVariedQuestionBank());
+try {
+  questions.push(...buildVariedQuestionBank());
+} catch (error) {
+  questions.push(...buildSafeFallbackQuestionBank());
+}
 
 function buildVariedQuestionBank() {
   const curated = buildCuratedQuestionSet();
@@ -259,10 +263,11 @@ function buildVariedQuestionBank() {
     ...buildObserveQuestions(),
   ];
 
-  const merged = skills.flatMap((skill) => {
+  const merged = [];
+  skills.forEach((skill) => {
     if (!skill.unlocked) return [];
     const seen = new Set();
-    return [...curated, ...generated]
+    const selected = [...curated, ...generated]
       .filter((question) => question.skill === skill.id)
       .filter((question) => {
         if (seen.has(question.text)) return false;
@@ -270,9 +275,60 @@ function buildVariedQuestionBank() {
         return true;
       })
       .slice(0, 100);
+    merged.push(...selected);
   });
 
   return interleaveByType(merged);
+}
+
+function buildSafeFallbackQuestionBank() {
+  return [
+    {
+      skill: "cipher",
+      level: 4,
+      text: "A=1, B=2, C=3。K-A-G-I を数字に直すと最初の数字は？",
+      answers: ["11", "１１"],
+      hint: "Kがアルファベットの何番目かを見ます。",
+      explanation: "Kは11番目です。暗号の対応表を落ち着いて確認する練習です。",
+      tags: ["対応表", "英字変換"],
+    },
+    {
+      skill: "pattern",
+      level: 4,
+      text: "2, 5, 10, 17, 26, ?。増え方は+3,+5,+7,+9。次は？",
+      answers: ["37", "３７"],
+      hint: "次の増分は+11です。",
+      explanation: "26+11=37です。増分に注目すると解けます。",
+      tags: ["階差", "数列"],
+    },
+    {
+      skill: "word",
+      level: 4,
+      text: "「入口」の反対として自然な言葉は？",
+      answers: ["出口", "でぐち"],
+      hint: "漢字の形ではなく意味の対を考えます。",
+      explanation: "入口の反対は出口です。意味関係を読む問題です。",
+      tags: ["反対語", "意味"],
+    },
+    {
+      skill: "number",
+      level: 4,
+      text: "赤=2点、青=3点、黄=5点。赤青黄の合計は？",
+      answers: ["10", "１０"],
+      hint: "色を点数に置き換えて足します。",
+      explanation: "2+3+5=10です。",
+      tags: ["対応表", "合計"],
+    },
+    {
+      skill: "observe",
+      level: 4,
+      text: "1: NORTH / 2: N0RTH / 3: NORTH。数字の0が混ざっているのは何番目？",
+      answers: ["2", "２", "2番目"],
+      hint: "Oと0の形の違いを見ます。",
+      explanation: "2番目だけOではなく数字の0です。",
+      tags: ["Oと0", "細部"],
+    },
+  ];
 }
 
 function buildCuratedQuestionSet() {
@@ -534,7 +590,6 @@ function curatedObserveQuestions() {
     },
   ];
 }
-}
 
 function interleaveByType(bank) {
   const groupedBySkill = new Map();
@@ -543,7 +598,8 @@ function interleaveByType(bank) {
     groupedBySkill.get(question.skill).push(question);
   });
 
-  return [...groupedBySkill.values()].flatMap((skillQuestions) => {
+  const mixedBank = [];
+  groupedBySkill.forEach((skillQuestions) => {
     const typeBuckets = new Map();
     skillQuestions.forEach((question) => {
       const key = question.tags[0] || "misc";
@@ -558,8 +614,9 @@ function interleaveByType(bank) {
         if (bucket.length) mixed.push(bucket.shift());
       });
     }
-    return mixed;
+    mixedBank.push(...mixed);
   });
+  return mixedBank;
 }
 
 function buildQuestionBank() {
