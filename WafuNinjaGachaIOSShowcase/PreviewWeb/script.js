@@ -955,7 +955,7 @@ function renderVillage() {
       <div class="action-grid">
         <button data-action="collect">産物回収</button>
         <button data-action="heal-party">療養</button>
-        <button data-action="save-game">保存</button>
+        <button data-action="save-game">セーブ</button>
         <button data-action="load-game">読込</button>
       </div>
     </div>
