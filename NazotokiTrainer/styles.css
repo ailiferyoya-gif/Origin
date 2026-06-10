@@ -449,6 +449,50 @@ button {
   object-fit: contain;
 }
 
+.question-graphic {
+  padding: 14px;
+  color: var(--ink);
+}
+
+.question-graphic:empty {
+  display: none;
+}
+
+.puzzle-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.puzzle-board {
+  display: grid;
+  gap: 10px;
+}
+
+.puzzle-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+}
+
+.puzzle-chip {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: #fffaf0;
+  font-size: 20px;
+}
+
+.puzzle-arrow {
+  color: var(--teal);
+  font-size: 18px;
+  font-weight: 900;
+}
+
 .answer-row {
   display: grid;
   grid-template-columns: 1fr 92px;

@@ -333,12 +333,216 @@ function buildSafeFallbackQuestionBank() {
 
 function buildCuratedQuestionSet() {
   return [
+    ...buildNazokenStyleQuestionSet(),
     ...buildPracticalQuestionSet(),
     ...curatedCipherQuestions(),
     ...curatedPatternQuestions(),
     ...curatedWordQuestions(),
     ...curatedNumberQuestions(),
     ...curatedObserveQuestions(),
+  ];
+}
+
+function buildNazokenStyleQuestionSet() {
+  return [
+    {
+      skill: "observe",
+      level: 5,
+      text: "左右で1文字だけ違う。\n右側の違う文字を上から読むと、動物の名前になる。",
+      answers: ["ねこ", "猫"],
+      hint: "1段目は「あめ」と「あね」を比べます。",
+      explanation: "右側の違う文字は、上から「ね」「こ」。つなげると「ねこ」です。",
+      tags: ["差分抽出", "文字観察"],
+      visualHtml: `
+        <div class="puzzle-board" aria-label="左右の言葉を比べる問題">
+          <div class="puzzle-row"><div class="puzzle-chip">あめ</div><div class="puzzle-arrow">→</div><div class="puzzle-chip">あね</div></div>
+          <div class="puzzle-row"><div class="puzzle-chip">いし</div><div class="puzzle-arrow">→</div><div class="puzzle-chip">いこ</div></div>
+        </div>
+      `,
+    },
+    {
+      skill: "cipher",
+      level: 5,
+      text: "白いマスだけを、左上から右下へ斜めに読め。",
+      answers: ["かぎ", "鍵"],
+      hint: "読むのは2つの白いマスだけです。",
+      explanation: "白いマスを左上、中央、右下の順に読むと「か」「ぎ」。答えは「かぎ」です。",
+      tags: ["配置読み", "抽出"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 220" role="img" aria-label="3かける3の文字マス">
+          <rect width="360" height="220" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="34" font-weight="800" text-anchor="middle" dominant-baseline="middle">
+            <rect x="62" y="30" width="62" height="50" rx="8" fill="#ffffff" stroke="#111827" stroke-width="3"/><text x="93" y="56">か</text>
+            <rect x="149" y="30" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="180" y="56">み</text>
+            <rect x="236" y="30" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="267" y="56">た</text>
+            <rect x="62" y="86" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="93" y="112">そ</text>
+            <rect x="149" y="86" width="62" height="50" rx="8" fill="#ffffff" stroke="#111827" stroke-width="3"/><text x="180" y="112">ぎ</text>
+            <rect x="236" y="86" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="267" y="112">ぬ</text>
+            <rect x="62" y="142" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="93" y="168">へ</text>
+            <rect x="149" y="142" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="180" y="168">ら</text>
+            <rect x="236" y="142" width="62" height="50" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="267" y="168">ゆ</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "pattern",
+      level: 5,
+      text: "矢印は同じルールで進む。\n赤の矢印が「かぎ」なら、青の矢印は何？",
+      answers: ["とびら", "扉"],
+      hint: "矢印の通ったマスを順に読みます。",
+      explanation: "赤は「か→ぎ」。青は「と→び→ら」を通るので「とびら」です。",
+      tags: ["経路読み", "図形"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 240" role="img" aria-label="文字マスと矢印">
+          <rect width="360" height="240" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="28" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <g stroke="#111827" stroke-width="3" fill="#fff">
+              <rect x="70" y="38" width="58" height="48" rx="7"/><rect x="151" y="38" width="58" height="48" rx="7"/><rect x="232" y="38" width="58" height="48" rx="7"/>
+              <rect x="70" y="104" width="58" height="48" rx="7"/><rect x="151" y="104" width="58" height="48" rx="7"/><rect x="232" y="104" width="58" height="48" rx="7"/>
+              <rect x="70" y="170" width="58" height="48" rx="7"/><rect x="151" y="170" width="58" height="48" rx="7"/><rect x="232" y="170" width="58" height="48" rx="7"/>
+            </g>
+            <text x="99" y="62">か</text><text x="180" y="62">と</text><text x="261" y="62">ら</text>
+            <text x="99" y="128">み</text><text x="180" y="128">び</text><text x="261" y="128">ぎ</text>
+            <text x="99" y="194">そ</text><text x="180" y="194">ぬ</text><text x="261" y="194">け</text>
+          </g>
+          <path d="M100 62 L260 128" fill="none" stroke="#d92727" stroke-width="7" stroke-linecap="round"/>
+          <path d="M180 62 L180 128 L260 62" fill="none" stroke="#0097a7" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+      `,
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "同じ形の中だけを読む。\n丸の中の文字を上から読むと？",
+      answers: ["みち", "道"],
+      hint: "四角や三角は読まず、丸だけを拾います。",
+      explanation: "丸の中にある文字は上から「み」「ち」。答えは「みち」です。",
+      tags: ["形抽出", "文字"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 220" role="img" aria-label="形の中に文字がある問題">
+          <rect width="360" height="220" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="32" font-weight="900" text-anchor="middle" dominant-baseline="middle" stroke="#111827" stroke-width="3">
+            <circle cx="100" cy="62" r="34" fill="#fff"/><text x="100" y="62" stroke="none" fill="#111827">み</text>
+            <rect x="224" y="28" width="68" height="68" rx="8" fill="#fff"/><text x="258" y="62" stroke="none" fill="#111827">か</text>
+            <path d="M80 168 L120 104 L160 168 Z" fill="#fff"/><text x="120" y="148" stroke="none" fill="#111827">や</text>
+            <circle cx="246" cy="142" r="34" fill="#fff"/><text x="246" y="142" stroke="none" fill="#111827">ち</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "同じ記号は同じ数を表す。\n星＋星＝8、星＋月＝11。月はいくつ？",
+      answers: ["7", "７"],
+      hint: "まず星の値を求めます。",
+      explanation: "星＋星=8なので星=4。星＋月=11だから、月=7です。",
+      tags: ["記号計算", "連立"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 220" role="img" aria-label="記号計算">
+          <rect width="360" height="220" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="34" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="92" y="78" fill="#d49a00">★</text><text x="142" y="78">＋</text><text x="192" y="78" fill="#d49a00">★</text><text x="242" y="78">＝</text><text x="292" y="78">8</text>
+            <text x="92" y="148" fill="#d49a00">★</text><text x="142" y="148">＋</text><text x="192" y="148" fill="#00838f">☾</text><text x="242" y="148">＝</text><text x="292" y="148">11</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "observe",
+      level: 5,
+      text: "1つだけ向きが違う矢印がある。\nその矢印の色は？",
+      answers: ["青", "あお", "ブルー"],
+      hint: "ほとんどは右上を向いています。",
+      explanation: "青い矢印だけ左上を向いています。細かい向きの差を見る問題です。",
+      tags: ["向き違い", "図形観察"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 210" role="img" aria-label="複数の矢印">
+          <rect width="360" height="210" rx="16" fill="#fffaf0"/>
+          <g font-size="48" font-family="sans-serif" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="82" y="65" fill="#d92727">↗</text><text x="180" y="65" fill="#d49a00">↗</text><text x="278" y="65" fill="#2ca24d">↗</text>
+            <text x="82" y="145" fill="#6b3bbd">↗</text><text x="180" y="145" fill="#00838f">↖</text><text x="278" y="145" fill="#111827">↗</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "cipher",
+      level: 5,
+      text: "下の式は「前の文字に戻す」という意味。\n表示された文字を1つずつ戻すと？",
+      answers: ["MAP", "map", "地図", "ちず"],
+      hint: "N→M、B→A、Q→Pです。",
+      explanation: "NBQを1文字ずつ戻すとMAP。日本語では地図です。",
+      tags: ["変換指示", "英字"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 190" role="img" aria-label="英字変換問題">
+          <rect width="360" height="190" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-weight="900" text-anchor="middle">
+            <text x="180" y="62" font-size="28" fill="#00838f">1つ前へ</text>
+            <text x="180" y="132" font-size="54" fill="#111827">N B Q</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "pattern",
+      level: 5,
+      text: "上から順に、黒いマスの数が1つずつ増えている。\n? の段に入る黒いマスはいくつ？",
+      answers: ["4", "４"],
+      hint: "1段目は1個、2段目は2個、3段目は3個です。",
+      explanation: "黒いマスの数が1,2,3と増えているので、次は4個です。",
+      tags: ["増加規則", "マス"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 230" role="img" aria-label="黒マスの増加">
+          <rect width="360" height="230" rx="16" fill="#fffaf0"/>
+          <g stroke="#111827" stroke-width="2">
+            <rect x="80" y="30" width="42" height="32" fill="#111827"/><rect x="122" y="30" width="42" height="32" fill="#fff"/><rect x="164" y="30" width="42" height="32" fill="#fff"/><rect x="206" y="30" width="42" height="32" fill="#fff"/>
+            <rect x="80" y="76" width="42" height="32" fill="#111827"/><rect x="122" y="76" width="42" height="32" fill="#111827"/><rect x="164" y="76" width="42" height="32" fill="#fff"/><rect x="206" y="76" width="42" height="32" fill="#fff"/>
+            <rect x="80" y="122" width="42" height="32" fill="#111827"/><rect x="122" y="122" width="42" height="32" fill="#111827"/><rect x="164" y="122" width="42" height="32" fill="#111827"/><rect x="206" y="122" width="42" height="32" fill="#fff"/>
+          </g>
+          <text x="180" y="198" font-family="sans-serif" font-size="42" font-weight="900" text-anchor="middle" fill="#111827">?</text>
+        </svg>
+      `,
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "外側の文字だけを時計回りに読むと、場所の名前になる。",
+      answers: ["へや", "部屋"],
+      hint: "中央の文字は読みません。",
+      explanation: "外側を指定された順で読むと「へ」「や」。答えは「へや」です。",
+      tags: ["外周読み", "配置"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 210" role="img" aria-label="外側の文字を読む問題">
+          <rect width="360" height="210" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="34" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <rect x="102" y="42" width="58" height="48" rx="8" fill="#fff" stroke="#111827" stroke-width="3"/><text x="131" y="66">へ</text>
+            <rect x="200" y="42" width="58" height="48" rx="8" fill="#fff" stroke="#111827" stroke-width="3"/><text x="229" y="66">や</text>
+            <rect x="151" y="112" width="58" height="48" rx="8" fill="#e7e2d7" stroke="#111827" stroke-width="3"/><text x="180" y="136">そ</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "左から順に、丸の数だけ文字を進める。\nAから始めると最後の文字は？",
+      answers: ["F", "f"],
+      hint: "Aから+2、さらに+3進みます。",
+      explanation: "Aから丸2個でC、次に丸3個でFです。",
+      tags: ["移動量", "英字"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 190" role="img" aria-label="丸の数で進む問題">
+          <rect width="360" height="190" rx="16" fill="#fffaf0"/>
+          <g fill="#00838f"><circle cx="118" cy="72" r="12"/><circle cx="150" cy="72" r="12"/><circle cx="210" cy="72" r="12"/><circle cx="242" cy="72" r="12"/><circle cx="274" cy="72" r="12"/></g>
+          <g font-family="sans-serif" font-weight="900" text-anchor="middle" fill="#111827">
+            <text x="80" y="84" font-size="34">A</text>
+            <text x="180" y="138" font-size="28">左から順に進む</text>
+          </g>
+        </svg>
+      `,
+    },
   ];
 }
 
@@ -1290,16 +1494,25 @@ function renderQuestion() {
   const skill = skills.find((item) => item.id === question.skill);
   const visual = document.querySelector("#questionVisual");
   const image = document.querySelector("#questionImage");
+  const graphic = document.querySelector("#questionGraphic");
   document.querySelector("#categoryPill").textContent = `${skill.name} Lv.${question.level}`;
   document.querySelector("#questionIndex").textContent = questionPosition(question);
   document.querySelector("#questionText").textContent = question.text;
-  if (question.image) {
+  graphic.innerHTML = question.visualHtml || "";
+  if (question.visualHtml) {
+    image.removeAttribute("src");
+    image.alt = "";
+    image.hidden = true;
+    visual.hidden = false;
+  } else if (question.image) {
     image.src = question.image;
     image.alt = question.imageAlt || "謎解き問題の画像";
+    image.hidden = false;
     visual.hidden = false;
   } else {
     image.removeAttribute("src");
     image.alt = "";
+    image.hidden = true;
     visual.hidden = true;
   }
   document.querySelector("#hintCount").textContent = state.hints;
