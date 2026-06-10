@@ -1,4 +1,4 @@
-const STORAGE_KEY = "nazotoki-trainer-v1";
+const STORAGE_KEY = "nazotoki-trainer-v2";
 
 const skills = [
   {
@@ -8,7 +8,7 @@ const skills = [
     color: "var(--teal)",
     desc: "暗号や置き換えの法則を見抜く力",
     drill: "シーザー暗号 Lv.3",
-    mastery: 78,
+    mastery: 0,
     unlocked: true,
   },
   {
@@ -18,7 +18,7 @@ const skills = [
     color: "var(--teal)",
     desc: "数列やパターンから法則を見つける力",
     drill: "数列の規則性 Lv.4",
-    mastery: 65,
+    mastery: 0,
     unlocked: true,
   },
   {
@@ -28,7 +28,7 @@ const skills = [
     color: "var(--amber)",
     desc: "言葉の意味や構造をひらめく力",
     drill: "ダジャレの謎 Lv.2",
-    mastery: 52,
+    mastery: 0,
     unlocked: true,
   },
   {
@@ -38,7 +38,7 @@ const skills = [
     color: "var(--teal)",
     desc: "数字の関係から答えを導く力",
     drill: "魔方陣 Lv.3",
-    mastery: 40,
+    mastery: 0,
     unlocked: true,
   },
   {
@@ -48,7 +48,7 @@ const skills = [
     color: "var(--gray)",
     desc: "図や文章から違いを見つける力",
     drill: "間違い探し Lv.2",
-    mastery: 28,
+    mastery: 0,
     unlocked: true,
   },
   {
@@ -246,6 +246,352 @@ const questions = [
   },
 ];
 
+questions.length = 0;
+questions.push(...buildQuestionBank());
+
+function buildQuestionBank() {
+  return [
+    ...buildCipherQuestions(),
+    ...buildPatternQuestions(),
+    ...buildWordQuestions(),
+    ...buildNumberQuestions(),
+    ...buildObserveQuestions(),
+  ];
+}
+
+function buildCipherQuestions() {
+  const words = [
+    ["CAT", "ねこ"], ["DOG", "いぬ"], ["SUN", "たいよう"], ["MOON", "つき"], ["STAR", "ほし"],
+    ["BOOK", "ほん"], ["FISH", "さかな"], ["BIRD", "とり"], ["TREE", "き"], ["RAIN", "あめ"],
+    ["FIRE", "ひ"], ["WIND", "かぜ"], ["ROCK", "いし"], ["KEY", "かぎ"], ["DOOR", "とびら"],
+    ["MAP", "ちず"], ["TIME", "じかん"], ["WATER", "みず"], ["LIGHT", "ひかり"], ["NIGHT", "よる"],
+  ];
+  const kanaWords = ["いろは", "なぞ", "ひらめき", "こたえ", "しかく", "すうじ", "ことば", "ちず", "かぎ", "とけい"];
+  const kana = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
+  const out = [];
+
+  words.forEach(([plain, jp], index) => {
+    const shift = (index % 9) + 1;
+    const encoded = caesar(plain, shift);
+    out.push({
+      skill: "cipher",
+      level: 1 + (index % 5),
+      text: `英字を${shift}文字戻す暗号です。「${encoded}」が表す日本語は？`,
+      answers: [jp, plain],
+      hint: `Aの${shift}文字前は${caesar("A", -shift)}として、各文字を戻します。`,
+      explanation: `${encoded}を${shift}文字戻すと${plain}です。対応する日本語は「${jp}」です。`,
+      tags: ["シーザー暗号", "英字変換"],
+    });
+  });
+
+  words.forEach(([plain, jp], index) => {
+    const code = plain.split("").map((char) => char.charCodeAt(0) - 64).join("-");
+    out.push({
+      skill: "cipher",
+      level: 1 + (index % 5),
+      text: `A=1, B=2, C=3 の暗号で「${code}」は何を表す？`,
+      answers: [plain, jp],
+      hint: "数字をアルファベットの順番に戻します。",
+      explanation: `${code}をアルファベット順に戻すと${plain}です。日本語なら「${jp}」です。`,
+      tags: ["対応表", "英字変換"],
+    });
+  });
+
+  words.forEach(([plain, jp], index) => {
+    const reversed = plain.split("").reverse().join("");
+    out.push({
+      skill: "cipher",
+      level: 1 + (index % 5),
+      text: `文字が逆順になっています。「${reversed}」を正しく読むと？`,
+      answers: [plain, jp],
+      hint: "右から左へ読んでみます。",
+      explanation: `${reversed}を逆から読むと${plain}です。日本語なら「${jp}」です。`,
+      tags: ["逆読み", "文字順"],
+    });
+  });
+
+  kanaWords.forEach((word, index) => {
+    const shift = (index % 4) + 1;
+    const encoded = shiftKana(word, shift, kana);
+    out.push({
+      skill: "cipher",
+      level: 2 + (index % 4),
+      text: `かなを${shift}文字戻す暗号です。「${encoded}」の元の言葉は？`,
+      answers: [word],
+      hint: "かな表の中で、各文字を同じ数だけ前に戻します。",
+      explanation: `${encoded}の各文字を${shift}文字戻すと「${word}」になります。`,
+      tags: ["かな暗号", "逆算"],
+    });
+  });
+
+  for (let i = 0; out.length < 100; i += 1) {
+    const [plain, jp] = words[i % words.length];
+    const encoded = plain.replace(/[A-Z]/g, (char) => String.fromCharCode(155 - char.charCodeAt(0)));
+    out.push({
+      skill: "cipher",
+      level: 3 + (i % 3),
+      text: `AとZ、BとYのように反対側へ置き換える暗号です。「${encoded}」は何？`,
+      answers: [plain, jp],
+      hint: "アルファベットを前後反転した対応表で戻します。",
+      explanation: `反転対応で${encoded}を戻すと${plain}です。日本語なら「${jp}」です。`,
+      tags: ["反転暗号", "対応表"],
+    });
+  }
+
+  return out.slice(0, 100);
+}
+
+function buildPatternQuestions() {
+  const out = [];
+  for (let i = 1; i <= 34; i += 1) {
+    const start = (i % 7) + 1;
+    const step = (i % 6) + 2;
+    const seq = [start, start + step, start + step * 2, start + step * 3, start + step * 4];
+    const answer = start + step * 5;
+    out.push({
+      skill: "pattern",
+      level: 1 + (i % 5),
+      text: `${seq.join(", ")}, ? に入る数字は？`,
+      answers: [String(answer), toFullWidthNumber(answer)],
+      hint: `毎回${step}ずつ増えています。`,
+      explanation: `${start}から${step}ずつ増える等差数列です。次は${answer}です。`,
+      tags: ["数列", "等差"],
+    });
+  }
+
+  for (let i = 1; i <= 33; i += 1) {
+    const start = (i % 5) + 1;
+    const ratio = (i % 3) + 2;
+    const seq = [start, start * ratio, start * ratio ** 2, start * ratio ** 3];
+    const answer = start * ratio ** 4;
+    out.push({
+      skill: "pattern",
+      level: 2 + (i % 4),
+      text: `${seq.join(", ")}, ? に入る数字は？`,
+      answers: [String(answer), toFullWidthNumber(answer)],
+      hint: `前の数字に${ratio}をかけます。`,
+      explanation: `毎回${ratio}倍になる等比数列です。次は${answer}です。`,
+      tags: ["数列", "等比"],
+    });
+  }
+
+  const cycles = [
+    ["赤", "青"], ["上", "右", "下", "左"], ["月", "火", "水", "木", "金", "土", "日"],
+    ["春", "夏", "秋", "冬"], ["朝", "昼", "夕", "夜"],
+  ];
+  for (let i = 0; out.length < 100; i += 1) {
+    const cycle = cycles[i % cycles.length];
+    const start = i % cycle.length;
+    const seq = Array.from({ length: 6 }, (_, offset) => cycle[(start + offset) % cycle.length]);
+    const answer = cycle[(start + 6) % cycle.length];
+    out.push({
+      skill: "pattern",
+      level: 1 + (i % 5),
+      text: `${seq.join(", ")}, ? に入る言葉は？`,
+      answers: [answer],
+      hint: "同じ並びがくり返されています。",
+      explanation: `${cycle.join("→")}の周期で並んでいます。次は「${answer}」です。`,
+      tags: ["周期", "順序"],
+    });
+  }
+
+  return out.slice(0, 100);
+}
+
+function buildWordQuestions() {
+  const removeWords = [
+    "たぬき", "かきくけこ", "すなば", "なぞとき", "ひらめき", "ことばあそび", "からくり", "まちがい", "しりとり", "あんごう",
+    "こたえあわせ", "れんそう", "きりかえ", "よみとり", "なぞなぞ", "はんてい", "ぶんせき", "そうぞう", "きろく", "ふくしゅう",
+  ];
+  const out = [];
+
+  removeWords.forEach((word, index) => {
+    const target = word[Math.min(word.length - 1, index % word.length)];
+    const answer = word.replace(target, "");
+    out.push({
+      skill: "word",
+      level: 1 + (index % 5),
+      text: `「${word}」から「${target}」を1つ抜くと？`,
+      answers: [answer],
+      hint: "指定された文字を1文字だけ消します。",
+      explanation: `「${word}」から「${target}」を抜くと「${answer}」です。`,
+      tags: ["文字操作", "指示読み"],
+    });
+  });
+
+  const starts = [
+    ["朝", "雨", "足", "読みが「あ」で始まる", "あ"],
+    ["猫", "ねじ", "ネオン", "読みが「ね」で始まる", "ね"],
+    ["空", "そば", "掃除", "読みが「そ」で始まる", "そ"],
+    ["鍵", "風", "紙", "読みが「か」で始まる", "か"],
+    ["水", "道", "緑", "読みが「み」で始まる", "み"],
+  ];
+  for (let i = 0; i < 30; i += 1) {
+    const set = starts[i % starts.length];
+    out.push({
+      skill: "word",
+      level: 2 + (i % 4),
+      text: `「${set[0]}」「${set[1]}」「${set[2]}」に共通する読みの条件は？`,
+      answers: [set[3], `${set[4]}で始まる`, `読みが${set[4]}から始まる`],
+      hint: "漢字の意味ではなく読み方の先頭に注目します。",
+      explanation: `どれも読みが「${set[4]}」から始まります。`,
+      tags: ["読み", "共通点"],
+    });
+  }
+
+  const compounds = [
+    ["温度計", "温度"], ["雨量計", "雨量"], ["速度計", "速度"], ["体温計", "体温"], ["歩数計", "歩数"],
+    ["方位磁針", "方位"], ["地図帳", "地図"], ["暗号表", "暗号"], ["問題集", "問題"], ["解答欄", "解答"],
+  ];
+  compounds.forEach(([word, answer], index) => {
+    out.push({
+      skill: "word",
+      level: 2 + (index % 4),
+      text: `「${word}」は主に何に関係する言葉？`,
+      answers: [answer],
+      hint: "言葉を前半と後半に分けて考えます。",
+      explanation: `「${word}」は「${answer}」に関係する言葉です。複合語を分解すると見えやすくなります。`,
+      tags: ["複合語", "意味分解"],
+    });
+  });
+
+  const shiritori = ["りんご", "ごりら", "らっぱ", "ぱんだ", "だるま", "まくら", "らくだ", "だいす", "すいか", "かめら"];
+  for (let i = 0; out.length < 100; i += 1) {
+    const word = shiritori[i % shiritori.length];
+    const answer = word[word.length - 1];
+    out.push({
+      skill: "word",
+      level: 1 + (i % 5),
+      text: `しりとりで「${word}」の次の言葉は、何の音から始める？`,
+      answers: [answer],
+      hint: "最後の文字を見ます。",
+      explanation: `「${word}」の最後は「${answer}」なので、次は「${answer}」から始めます。`,
+      tags: ["しりとり", "末尾"],
+    });
+  }
+
+  return out.slice(0, 100);
+}
+
+function buildNumberQuestions() {
+  const out = [];
+  for (let i = 1; i <= 40; i += 1) {
+    const a = (i % 9) + 2;
+    const b = (i % 7) + 3;
+    const answer = a * b + i;
+    out.push({
+      skill: "number",
+      level: 1 + (i % 5),
+      text: `${a} × ${b} + ${i} = ?`,
+      answers: [String(answer), toFullWidthNumber(answer)],
+      hint: "先に掛け算をしてから足します。",
+      explanation: `${a}×${b}=${a * b}、そこに${i}を足して${answer}です。`,
+      tags: ["四則演算", "順序"],
+    });
+  }
+
+  for (let i = 1; i <= 30; i += 1) {
+    const answer = (i % 12) + 4;
+    const add = (i % 6) + 1;
+    const total = answer + add;
+    out.push({
+      skill: "number",
+      level: 2 + (i % 4),
+      text: `□ + ${add} = ${total}。□に入る数字は？`,
+      answers: [String(answer), toFullWidthNumber(answer)],
+      hint: `${total}から${add}を引きます。`,
+      explanation: `${total}-${add}=${answer}なので、□は${answer}です。`,
+      tags: ["方程式", "逆算"],
+    });
+  }
+
+  for (let i = 1; out.length < 100; i += 1) {
+    const base = (i % 18) + 2;
+    const answer = base * 4;
+    out.push({
+      skill: "number",
+      level: 1 + (i % 5),
+      text: `${base}を2倍して、さらに2倍すると？`,
+      answers: [String(answer), toFullWidthNumber(answer)],
+      hint: "2倍を2回するので、全体では4倍です。",
+      explanation: `${base}×2×2=${answer}です。段階を分けて処理します。`,
+      tags: ["倍率", "段階処理"],
+    });
+  }
+
+  return out.slice(0, 100);
+}
+
+function buildObserveQuestions() {
+  const out = [];
+  const pairs = [
+    ["ナゾトキ", "ナゾドキ", "3文字目の濁点"],
+    ["ABCDE", "ABCDF", "最後の文字"],
+    ["未", "末", "横線の長さ"],
+    ["土", "士", "上と下の横線"],
+    ["シ", "ツ", "点の向き"],
+    ["ソ", "ン", "はらいの向き"],
+    ["日", "目", "中の横線"],
+    ["口", "□", "角の形"],
+    ["問", "間", "中の部品"],
+    ["右", "石", "上の線"],
+  ];
+
+  for (let i = 0; i < 50; i += 1) {
+    const [normal, different, reason] = pairs[i % pairs.length];
+    const position = (i % 3) + 1;
+    const items = [normal, normal, normal];
+    items[position - 1] = different;
+    out.push({
+      skill: "observe",
+      level: 1 + (i % 5),
+      text: `「${items[0]}」「${items[1]}」「${items[2]}」違っているものは何番目？`,
+      answers: [String(position), toFullWidthNumber(position), `${position}番目`],
+      hint: reason,
+      explanation: `${position}番目だけ「${different}」です。違いは${reason}にあります。`,
+      tags: ["違い探し", "細部比較"],
+    });
+  }
+
+  const countTargets = [
+    ["目", "横線", "2"], ["田", "四角", "4"], ["森", "木", "3"], ["晶", "日", "3"], ["品", "口", "3"],
+    ["川", "縦線", "3"], ["州", "点", "3"], ["問", "口", "1"], ["間", "日", "1"], ["明", "部品", "2"],
+  ];
+  for (let i = 0; out.length < 100; i += 1) {
+    const [char, target, answer] = countTargets[i % countTargets.length];
+    out.push({
+      skill: "observe",
+      level: 1 + (i % 5),
+      text: `漢字「${char}」の中に、${target}はいくつ見える？`,
+      answers: [answer, toFullWidthNumber(Number(answer))],
+      hint: "形を部品に分けて数えます。",
+      explanation: `「${char}」の中で${target}として見える部分は${answer}つです。`,
+      tags: ["漢字観察", "部品分解"],
+    });
+  }
+
+  return out.slice(0, 100);
+}
+
+function caesar(text, shift) {
+  return text.replace(/[A-Z]/g, (char) => {
+    const code = char.charCodeAt(0) - 65;
+    return String.fromCharCode(((code + shift + 26) % 26) + 65);
+  });
+}
+
+function shiftKana(text, shift, kana) {
+  return [...text].map((char) => {
+    const index = kana.indexOf(char);
+    if (index < 0) return char;
+    return kana[(index + shift) % kana.length];
+  }).join("");
+}
+
+function toFullWidthNumber(value) {
+  return String(value).replace(/[0-9]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) + 0xfee0));
+}
+
 let state = loadState();
 let selectedSkill = state.selectedSkill || "cipher";
 let currentQuestion = 0;
@@ -349,7 +695,7 @@ function renderQuestion() {
 }
 
 function renderStats() {
-  const level = 23 + Math.floor(state.correct / 5);
+  const level = 1 + Math.floor(state.correct / 25);
   document.querySelector("#levelNumber").textContent = level;
   document.querySelector("#badgeLevel").textContent = level;
   document.querySelector("#totalAnswers").textContent = state.total;
