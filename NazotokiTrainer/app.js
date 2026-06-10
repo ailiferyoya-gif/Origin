@@ -333,6 +333,7 @@ function buildSafeFallbackQuestionBank() {
 
 function buildCuratedQuestionSet() {
   return [
+    ...buildExpertInsightQuestionSet(),
     ...buildInsightHardQuestionSet(),
     ...buildNazokenStyleQuestionSet(),
     ...buildPracticalQuestionSet(),
@@ -341,6 +342,284 @@ function buildCuratedQuestionSet() {
     ...curatedWordQuestions(),
     ...curatedNumberQuestions(),
     ...curatedObserveQuestions(),
+  ];
+}
+
+function buildExpertInsightQuestionSet() {
+  return [
+    {
+      skill: "cipher",
+      level: 7,
+      text: "「矢印の先を読むな」。\n矢印の始まりだけを上から読むと？",
+      answers: ["かぎ", "鍵"],
+      hint: "矢印が向かう先ではなく、矢印が出ている場所を見ます。",
+      explanation: "矢印の始まりにある文字は上から「か」「ぎ」。答えは「かぎ」です。指示が否定している対象を外すのがポイントです。",
+      tags: ["否定指示", "始点読み"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 240" role="img" aria-label="矢印の始まりを読む問題">
+          <rect width="360" height="240" rx="16" fill="#fffaf0"/>
+          <defs><marker id="expertArrowA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#00838f"/></marker></defs>
+          <g font-family="sans-serif" font-size="36" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="86" y="76">か</text><text x="274" y="76">そ</text>
+            <text x="86" y="164">ぎ</text><text x="274" y="164">ま</text>
+          </g>
+          <path d="M112 76 L238 76" stroke="#00838f" stroke-width="8" marker-end="url(#expertArrowA)" fill="none"/>
+          <path d="M112 164 L238 164" stroke="#00838f" stroke-width="8" marker-end="url(#expertArrowA)" fill="none"/>
+        </svg>
+      `,
+    },
+    {
+      skill: "cipher",
+      level: 7,
+      text: "「読めないところを読め」。\n文字が欠けている場所を、左から読むと？",
+      answers: ["みち", "道"],
+      hint: "黒く塗られた文字ではなく、空いている白い穴の位置を見ます。",
+      explanation: "欠けている白い部分に置かれた小さな文字を左から読むと「み」「ち」。見えている主役ではなく、抜けている部分を見る謎です。",
+      tags: ["空白読み", "反転"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 220" role="img" aria-label="欠けた部分を読む問題">
+          <rect width="360" height="220" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <rect x="70" y="62" width="78" height="92" rx="8" fill="#111827"/>
+            <rect x="212" y="62" width="78" height="92" rx="8" fill="#111827"/>
+            <circle cx="110" cy="108" r="24" fill="#fffaf0"/><text x="110" y="108" font-size="24" fill="#111827">み</text>
+            <circle cx="250" cy="108" r="24" fill="#fffaf0"/><text x="250" y="108" font-size="24" fill="#111827">ち</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "cipher",
+      level: 7,
+      text: "「同じものには意味がない」。\n2つの列で違う文字だけを、左から読め。",
+      answers: ["こたえ", "答え"],
+      hint: "上下で同じ位置にある文字を比べ、違う場所だけ拾います。",
+      explanation: "違う位置の下段文字を左から拾うと「こ」「た」「え」。同じものを消す差分読みです。",
+      tags: ["差分暗号", "比較"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 210" role="img" aria-label="上下の文字列を比べる問題">
+          <rect width="360" height="210" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="32" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="80" y="76">あ</text><text x="140" y="76">い</text><text x="200" y="76">う</text><text x="260" y="76">え</text><text x="320" y="76">お</text>
+            <text x="80" y="138">あ</text><text x="140" y="138">こ</text><text x="200" y="138">た</text><text x="260" y="138">え</text><text x="320" y="138">お</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "pattern",
+      level: 7,
+      text: "数字の大きさではなく、形の変化を見る。\n次に来る形は何角形？",
+      answers: ["5", "５", "五角形", "5角形"],
+      hint: "辺の数が1つずつ増えています。",
+      explanation: "三角形、四角形と来ているので、次は五角形です。数字や色ではなく、形の構造を見る問題です。",
+      tags: ["視点変更", "図形推移"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 210" role="img" aria-label="形の推移">
+          <rect width="360" height="210" rx="16" fill="#fffaf0"/>
+          <g fill="#fff" stroke="#111827" stroke-width="4">
+            <path d="M72 142 L112 72 L152 142 Z"/>
+            <rect x="166" y="78" width="72" height="72" rx="4"/>
+          </g>
+          <text x="288" y="124" font-family="sans-serif" font-size="46" font-weight="900" text-anchor="middle" fill="#111827">?</text>
+        </svg>
+      `,
+    },
+    {
+      skill: "pattern",
+      level: 7,
+      text: "「増えているもの」ではなく「減っているもの」を見ろ。\n次の白いマスはいくつ？",
+      answers: ["1", "１"],
+      hint: "黒いマスではなく、白いマスの数を追います。",
+      explanation: "白いマスは4、3、2と減っています。次は1です。見やすい黒ではなく、残った白を見るのがポイントです。",
+      tags: ["反転観察", "減少"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 230" role="img" aria-label="白マスが減る問題">
+          <rect width="360" height="230" rx="16" fill="#fffaf0"/>
+          <g stroke="#111827" stroke-width="2">
+            <rect x="82" y="36" width="36" height="30" fill="#111827"/><rect x="118" y="36" width="36" height="30" fill="#fff"/><rect x="154" y="36" width="36" height="30" fill="#fff"/><rect x="190" y="36" width="36" height="30" fill="#fff"/><rect x="226" y="36" width="36" height="30" fill="#fff"/>
+            <rect x="82" y="88" width="36" height="30" fill="#111827"/><rect x="118" y="88" width="36" height="30" fill="#111827"/><rect x="154" y="88" width="36" height="30" fill="#fff"/><rect x="190" y="88" width="36" height="30" fill="#fff"/><rect x="226" y="88" width="36" height="30" fill="#fff"/>
+            <rect x="82" y="140" width="36" height="30" fill="#111827"/><rect x="118" y="140" width="36" height="30" fill="#111827"/><rect x="154" y="140" width="36" height="30" fill="#111827"/><rect x="190" y="140" width="36" height="30" fill="#fff"/><rect x="226" y="140" width="36" height="30" fill="#fff"/>
+          </g>
+          <text x="180" y="210" font-family="sans-serif" font-size="34" font-weight="900" text-anchor="middle">?</text>
+        </svg>
+      `,
+    },
+    {
+      skill: "pattern",
+      level: 7,
+      text: "線は迷路ではない。\n曲がった回数だけを見ると、次はいくつ？",
+      answers: ["4", "４"],
+      hint: "道の長さではなく、角を曲がった回数を数えます。",
+      explanation: "上から順に曲がる回数が1回、2回、3回。次は4回です。対象を道そのものから曲がり方へ変える問題です。",
+      tags: ["抽象化", "数列"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 250" role="img" aria-label="折れ線の曲がり回数">
+          <rect width="360" height="250" rx="16" fill="#fffaf0"/>
+          <g fill="none" stroke="#00838f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M74 48 H150 V80"/>
+            <path d="M74 106 H130 V138 H190"/>
+            <path d="M74 170 H118 V198 H172 V218"/>
+          </g>
+          <text x="285" y="145" font-family="sans-serif" font-size="44" font-weight="900" text-anchor="middle">?</text>
+        </svg>
+      `,
+    },
+    {
+      skill: "word",
+      level: 7,
+      text: "「あいだ」を読め。\n両端ではなく、間にある文字だけを読むと？",
+      answers: ["ひみつ", "秘密"],
+      hint: "左端と右端を捨てます。",
+      explanation: "両端の「か」と「ぎ」を読まず、間の文字だけを読むと「ひみつ」です。言葉の指示を位置へ置き換える謎です。",
+      tags: ["間読み", "位置"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 180" role="img" aria-label="間の文字を読む問題">
+          <rect width="360" height="180" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="38" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="58" y="92" fill="#9a8d76">か</text><text x="110" y="92">ひ</text><text x="162" y="92">み</text><text x="214" y="92">つ</text><text x="266" y="92" fill="#9a8d76">ぎ</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "word",
+      level: 7,
+      text: "「ない」を消すのではない。\n「ない」の前だけ読むと？",
+      answers: ["ほし", "星"],
+      hint: "ない、の直前にある1文字を拾います。",
+      explanation: "ほない・しない の直前は「ほ」「し」。つなげると「ほし」です。消す処理ではなく、目印として使う問題です。",
+      tags: ["直前抽出", "言葉"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 180" role="img" aria-label="ないの前を読む問題">
+          <rect width="360" height="180" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="36" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="122" y="92">ほない</text>
+            <text x="248" y="92">しない</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "word",
+      level: 7,
+      text: "「右」を読むな。\n左にある文字だけ読むと？",
+      answers: ["でぐち", "出口"],
+      hint: "右側の文字は全部捨てます。",
+      explanation: "左側の列だけを上から読むと「で」「ぐ」「ち」。答えは「でぐち」です。問題文の指示を画面配置へ変換します。",
+      tags: ["片側抽出", "指示"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 230" role="img" aria-label="左右の文字列">
+          <rect width="360" height="230" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="34" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="116" y="62">で</text><text x="244" y="62" fill="#9a8d76">か</text>
+            <text x="116" y="116">ぐ</text><text x="244" y="116" fill="#9a8d76">そ</text>
+            <text x="116" y="170">ち</text><text x="244" y="170" fill="#9a8d76">ま</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "number",
+      level: 7,
+      text: "数字として計算しない。\n下の3つで、穴の数の合計はいくつ？",
+      answers: ["4", "４"],
+      hint: "6には穴が1つ、8には穴が2つ、9には穴が1つあります。",
+      explanation: "6の穴1つ、8の穴2つ、9の穴1つで合計4です。値ではなく形を数えます。",
+      tags: ["穴数え", "視点変更"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 190" role="img" aria-label="数字の穴を数える問題">
+          <rect width="360" height="190" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="72" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111827">
+            <text x="100" y="104">6</text><text x="180" y="104">8</text><text x="260" y="104">9</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "number",
+      level: 7,
+      text: "足し算ではない。\n「2 + 3 = 23」なら「4 + 1」は？",
+      answers: ["41", "４１"],
+      hint: "記号の意味を普通の足し算だと思わないで見ます。",
+      explanation: "ここでの + は、数字を横につなげる記号として使われています。4 + 1 は41です。",
+      tags: ["記号再定義", "ひらめき"],
+    },
+    {
+      skill: "number",
+      level: 7,
+      text: "一番大きい数字ではなく、一番長い名前の数字を答えよ。\n1, 2, 4, 9",
+      answers: ["9", "９"],
+      hint: "読み仮名の長さを比べます。",
+      explanation: "1=いち、2=に、4=よん、9=きゅう。読み仮名の文字数が一番長いのは「きゅう」の9です。大きさから読み方へ視点を変えます。",
+      tags: ["読み長さ", "視点変更"],
+    },
+    {
+      skill: "observe",
+      level: 7,
+      text: "同じ色ではなく、同じ形だけを読め。\n丸の中の文字を左から読むと？",
+      answers: ["こたえ", "答え"],
+      hint: "色は無視して、形だけで拾います。",
+      explanation: "丸の中の文字を左から読むと「こ」「た」「え」。色に惑わされず、指定された属性だけを見る問題です。",
+      tags: ["属性抽出", "図形"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 230" role="img" aria-label="形だけで文字を拾う問題">
+          <rect width="360" height="230" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="32" font-weight="900" text-anchor="middle" dominant-baseline="middle" stroke="#111827" stroke-width="3">
+            <circle cx="84" cy="78" r="32" fill="#d92727"/><text x="84" y="78" stroke="none" fill="#fff">こ</text>
+            <rect x="142" y="46" width="64" height="64" rx="8" fill="#d92727"/><text x="174" y="78" stroke="none" fill="#fff">そ</text>
+            <circle cx="264" cy="78" r="32" fill="#00838f"/><text x="264" y="78" stroke="none" fill="#fff">た</text>
+            <path d="M70 174 L104 120 L138 174 Z" fill="#00838f"/><text x="104" y="154" stroke="none" fill="#fff">み</text>
+            <circle cx="232" cy="154" r="32" fill="#d49a00"/><text x="232" y="154" stroke="none" fill="#111827">え</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "observe",
+      level: 7,
+      text: "ないものを答えよ。\n鍵・地図・時計・封筒 がある。扉を開けたあとに探す場所は？",
+      answers: ["部屋", "へや"],
+      hint: "並んでいる物ではなく、まだ出ていないものを考えます。",
+      explanation: "鍵で扉を開けたあとに探す場所は部屋です。見えているものの中から探すのではなく、不在の要素を補う問題です。",
+      tags: ["不在推理", "流れ"],
+    },
+    {
+      skill: "observe",
+      level: 7,
+      text: "一番少ない文字ではなく、1回だけ向きが逆の文字を答えよ。",
+      answers: ["左", "ひだり"],
+      hint: "右が多い中で、左だけ逆向きです。",
+      explanation: "右・右・左・右の中で、方向が逆なのは左です。数ではなく向きの意味を見ます。",
+      tags: ["意味観察", "方向"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 180" role="img" aria-label="方向の漢字">
+          <rect width="360" height="180" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="42" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="84" y="94">右</text><text x="148" y="94">右</text><text x="212" y="94" fill="#00838f">左</text><text x="276" y="94">右</text>
+          </g>
+        </svg>
+      `,
+    },
+    {
+      skill: "cipher",
+      level: 7,
+      text: "「最後から読む」とある。\n最後の文字だけを、上から読むと？",
+      answers: ["とけい", "時計"],
+      hint: "各行の最後の文字だけを見ます。",
+      explanation: "各行の最後の文字を上から読むと「と」「け」「い」。答えは時計です。最後から全部逆読みするのではなく、最後だけを拾います。",
+      tags: ["末尾抽出", "指示"],
+      visualHtml: `
+        <svg class="puzzle-svg" viewBox="0 0 360 220" role="img" aria-label="各行の最後を読む問題">
+          <rect width="360" height="220" rx="16" fill="#fffaf0"/>
+          <g font-family="sans-serif" font-size="34" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+            <text x="180" y="58">あ　ま　と</text>
+            <text x="180" y="114">そ　ら　け</text>
+            <text x="180" y="170">ぬ　り　い</text>
+          </g>
+        </svg>
+      `,
+    },
   ];
 }
 
