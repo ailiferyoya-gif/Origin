@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>影月忍里 Web Preview</title>
-  <link rel="stylesheet" href="styles.css?v=npc-live-20260610">
+  <link rel="stylesheet" href="styles.css?v=local-save-20260610">
 </head>
 <body>
   <main class="phone" data-screen="village">
@@ -30,12 +30,14 @@
       <button class="tab" data-tab="formation">編成</button>
       <button class="tab" data-tab="missions">任務</button>
       <button class="tab" data-tab="gacha">ガチャ</button>
+      <button class="tab" data-tab="save">保存</button>
     </nav>
 
     <section id="villagePanel" class="game-panel"></section>
     <section id="ninjasPanel" class="game-panel" hidden></section>
     <section id="formationPanel" class="game-panel" hidden></section>
     <section id="missionsPanel" class="game-panel" hidden></section>
+    <section id="savePanel" class="game-panel" hidden></section>
 
     <section id="stage" class="stage" hidden>
       <div class="portal" aria-hidden="true">
@@ -113,6 +115,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js?v=firebase-setup-ui-20260608"></script>
-  <script src="script.js?v=npc-live-20260610"></script>
+  <script src="script.js?v=local-save-20260610"></script>
 </body>
 </html>

@@ -23,7 +23,8 @@ const panels = {
   village: document.querySelector("#villagePanel"),
   ninjas: document.querySelector("#ninjasPanel"),
   formation: document.querySelector("#formationPanel"),
-  missions: document.querySelector("#missionsPanel")
+  missions: document.querySelector("#missionsPanel"),
+  save: document.querySelector("#savePanel")
 };
 
 const modal = document.querySelector("#confirmModal");
@@ -47,7 +48,8 @@ const backgrounds = {
   ninjas: "assets/generated/dojo-bg.png",
   formation: "assets/generated/dojo-bg.png",
   missions: "assets/generated/mission-bg.png",
-  gacha: "../Sources/GachaIOSShowcase/Resources/summon_background.png"
+  gacha: "../Sources/GachaIOSShowcase/Resources/summon_background.png",
+  save: "assets/generated/village-bg.png"
 };
 
 const resourceLabels = {
@@ -956,7 +958,8 @@ function renderHeader() {
     village: activeView.village === "facility" ? getFacility(selectedFacilityId).name : "影月の里",
     ninjas: activeView.ninjas === "detail" ? getNinja(selectedNinjaId).name : "忍者名簿",
     formation: "出撃編成",
-    missions: activeView.missions === "raid" ? "レイド戦場" : activeView.missions === "confirm" ? "出発確認" : activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板"
+    missions: activeView.missions === "raid" ? "レイド戦場" : activeView.missions === "confirm" ? "出発確認" : activeView.missions === "select" ? missionCatalog[selectedMissionKind].title : "任務板",
+    save: "ローカル保存"
   };
   screenTitle.textContent = titles[activeTab];
   screenSubtitle.textContent = `里Lv.${game.villageLevel} / 防衛 ${yen(defensePower())}`;
@@ -967,6 +970,7 @@ function renderCurrentPanel() {
   if (activeTab === "ninjas") renderNinjas();
   if (activeTab === "formation") panels.formation.innerHTML = renderFormation();
   if (activeTab === "missions") renderMissions();
+  if (activeTab === "save") panels.save.innerHTML = renderSavePanel();
 }
 
 function renderVillage() {
@@ -988,7 +992,7 @@ function renderVillage() {
       <div class="action-grid">
         <button data-action="collect">産物回収</button>
         <button data-action="heal-party">療養</button>
-        <button data-action="save-game">セーブ</button>
+        <button data-action="save-game">ローカル保存</button>
         <button data-action="load-game">読込</button>
       </div>
     </div>
@@ -1424,10 +1428,12 @@ function renderRaidSelect() {
 
 function renderRaidRow(raid) {
   const rate = Math.max(0, raid.hpLeft / raid.hp);
-  const latestNpc = (raid.logs || []).find(log => log.type === "npc" && log.damage > 0);
+  const latestNpc = (raid.logs || []).find(log => log.type === "npc" && log.damage > 0 && Date.now() - log.at < 3500);
+  const showDamagePop = latestNpc && raid.lastDamagePopId !== latestNpc.id;
+  if (showDamagePop) raid.lastDamagePopId = latestNpc.id;
   return `
     <button class="row-card raid-row" data-raid-progress="${raid.id}">
-      <div><strong>${raid.name}</strong><span>${raid.caller}召喚 / ${raid.difficultyName} / 参加勢力 ${raid.participants}</span><small>残HP ${yen(Math.max(0, raid.hpLeft))}</small><div class="hpbar"><i style="width:${rate * 100}%"></i></div>${latestNpc ? `<em class="raid-damage-pop">${latestNpc.actor} -${yen(latestNpc.damage)}</em>` : ""}</div>
+      <div><strong>${raid.name}</strong><span>${raid.caller}召喚 / ${raid.difficultyName} / 参加勢力 ${raid.participants}</span><small>残HP ${yen(Math.max(0, raid.hpLeft))}</small><div class="hpbar"><i style="width:${rate * 100}%"></i></div>${showDamagePop ? `<em class="raid-damage-pop">${latestNpc.actor} -${yen(latestNpc.damage)}</em>` : ""}</div>
       <em>参加</em>
     </button>
   `;
@@ -1524,8 +1530,8 @@ function renderSavePanel() {
   return `
     <div class="panel-card save-panel">
       <span class="scene-kicker">保存データ</span>
-      <h2>セーブ管理</h2>
-      <p>端末内に保存します。別端末へ移す場合はセーブコードを使ってください。</p>
+      <h2>ローカルセーブ</h2>
+      <p>この端末のブラウザ内に保存します。別端末へ移す場合はセーブコードを使ってください。</p>
       <div class="cloud-auth-card">
         <div>
           <strong>Googleアカウント</strong>
@@ -1546,6 +1552,7 @@ function renderSavePanel() {
         ${Array.from({ length: saveSlotCount }, (_, index) => renderSaveSlot(index + 1)).join("")}
       </div>
       <div class="action-grid">
+        <button data-action="save-game">今すぐローカル保存</button>
         <button data-action="export-save">セーブコード出力</button>
         <button data-action="import-save">セーブコード入力</button>
       </div>
@@ -1562,7 +1569,7 @@ function renderSaveSlot(slot) {
         <strong>スロット${slot}</strong>
         <span>${label}</span>
       </div>
-      <button data-action="save-slot" data-slot="${slot}">保存</button>
+      <button data-action="save-slot" data-slot="${slot}">ローカル保存</button>
       <button data-action="load-slot" data-slot="${slot}" ${meta && !meta.broken ? "" : "disabled"}>読込</button>
     </article>
   `;
@@ -2093,7 +2100,7 @@ function saveGame(silent = false) {
     const payload = makeSavePayload();
     localStorage.setItem(storageKey, payload);
     if (!silent) {
-      screenSubtitle.textContent = "保存しました";
+      screenSubtitle.textContent = "この端末にローカル保存しました";
       window.setTimeout(renderHeader, 900);
     }
     return true;
@@ -2128,7 +2135,7 @@ function loadGame(silent = true, slot = null) {
     applyLoadedGame(JSON.parse(raw));
     localStorage.setItem(storageKey, JSON.stringify(game));
     if (!silent) {
-      screenSubtitle.textContent = "読み込みました";
+      screenSubtitle.textContent = "ローカル保存を読み込みました";
     }
     return true;
   } catch {
@@ -2252,7 +2259,7 @@ document.addEventListener("click", event => {
   if (action === "load-game") {
     const loaded = loadGame(true);
     render();
-    screenSubtitle.textContent = loaded ? "読み込みました" : "保存データがありません";
+    screenSubtitle.textContent = loaded ? "ローカル保存を読み込みました" : "保存データがありません";
   }
   if (action === "ninja-page-prev") {
     ninjaPage = Math.max(0, ninjaPage - 1);
@@ -2265,7 +2272,7 @@ document.addEventListener("click", event => {
   if (action === "save-slot") {
     const ok = saveGameSlot(target.dataset.slot);
     render();
-    screenSubtitle.textContent = ok ? `スロット${target.dataset.slot}に保存しました` : "保存に失敗しました";
+    screenSubtitle.textContent = ok ? `スロット${target.dataset.slot}にローカル保存しました` : "保存に失敗しました";
   }
   if (action === "load-slot") {
     const loaded = loadGame(true, target.dataset.slot);
