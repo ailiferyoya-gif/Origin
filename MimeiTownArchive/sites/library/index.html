@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>未明町立図書館 OPAC</title>
+  <link rel="stylesheet" href="../../assets/ui/library.css">
+  <meta name="theme-color" content="#22352c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="../../assets/ui/iphone.css">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#22352c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+  <header class="lib-header">
+    <div>
+      <p>Mimei Town Library</p>
+      <h1>未明町立図書館</h1>
+    </div>
+    <nav>
+      <a href="#search">蔵書検索</a>
+      <a href="#local">郷土資料</a>
+      <a href="record-k29.html">K-29</a>
+      <a href="reference-2006.html">レファレンス</a>
+      <a href="../../notebook/index.html">調査ノート</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="lib-hero">
+      <img src="../../assets/generated/library-local-history-shelf.png" alt="未明町立図書館の郷土資料棚">
+      <div>
+        <p class="status">保存ページ / 2011年版</p>
+        <h2>郷土資料・地域史レファレンス</h2>
+        <p>未明町および未明湾岸地域の刊行物、行政資料、学校史、新聞縮刷版を検索できます。</p>
+      </div>
+    </section>
+
+    <section id="search" class="opac-panel">
+      <h2>蔵書検索</h2>
+      <div class="fake-form">
+        <label>キーワード</label>
+        <input value="未明港 灯台 計画" readonly>
+        <button type="button">検索</button>
+      </div>
+      <table>
+        <tr><th>請求記号</th><th>資料名</th><th>著者・編者</th><th>状態</th></tr>
+        <tr><td>K-12</td><td>未明町史 通史編</td><td>未明町史編さん委員会</td><td>館内閲覧可</td></tr>
+        <tr><td>K-18</td><td>未明湾の漁と暮らし</td><td>未明町漁協</td><td>貸出可</td></tr>
+        <tr><td>K-29</td><td><a href="record-k29.html">未明港と消えた灯台計画</a></td><td>県立未明高校 地域史研究部</td><td>所在確認中</td></tr>
+        <tr><td>K-31</td><td>港湾整備記念式典記録集</td><td>未明町建設課</td><td>館内閲覧可</td></tr>
+        <tr><td>N-2006-09</td><td>未明日報 縮刷版 2006年9月</td><td>未明日報社</td><td>マイクロ閲覧</td></tr>
+      </table>
+    </section>
+
+    <section id="local" class="local-grid">
+      <article>
+        <h2>レファレンス事例</h2>
+        <p><strong>2006-142</strong> 未明港に灯台建設計画があったか。回答: 町史編さん資料に関連記述あり。</p>
+        <p><strong><a href="reference-2006.html">2006-151</a></strong> 旧資料館第三展示室の展示目録を見たい。回答: 教育委員会へ照会。</p>
+        <p><strong>2006-167</strong> 港湾整備式典当日の新聞記事を探したい。回答: 未明日報縮刷版を案内。</p>
+      </article>
+      <aside>
+        <h2>利用案内</h2>
+        <p>郷土資料は館内閲覧のみです。複写には申請書と職員確認が必要です。</p>
+        <p>閉架資料の出納は16時30分まで。所在確認中の資料は予約できません。</p>
+      </aside>
+    </section>
+  </main>
+  <script src="../../assets/ui/iphone.js"></script>
+</body>
+</html>
+
+
+
+

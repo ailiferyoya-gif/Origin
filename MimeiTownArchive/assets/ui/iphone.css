@@ -1,0 +1,143 @@
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --app-height: 100dvh;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: var(--app-height);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: rgba(47, 93, 102, .18);
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+a,
+button,
+summary,
+input {
+  touch-action: manipulation;
+}
+
+button,
+.doc-actions a,
+.file-card,
+.chat-actions a,
+.civic-header a,
+.paper-masthead a,
+.school-nav a,
+.lib-header a,
+.museum-header a {
+  min-height: 44px;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@supports (padding: max(0px)) {
+  .shell,
+  .paper-body,
+  .notebook,
+  .phone-shell,
+  .civic-header,
+  .paper-masthead,
+  .school-top,
+  .lib-header,
+  .museum-header {
+    padding-left: max(var(--safe-left), 14px);
+    padding-right: max(var(--safe-right), 14px);
+  }
+
+  .phone-shell {
+    padding-bottom: max(var(--safe-bottom), 0px);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    line-height: 1.68;
+  }
+
+  .usb-header,
+  .letter-page,
+  .note-page,
+  .civic-panel,
+  .civic-grid article,
+  .civic-grid aside,
+  .article-page,
+  .school-card,
+  .club-log,
+  .archive-box,
+  .opac-panel,
+  .local-grid article,
+  .local-grid aside,
+  .museum-intro,
+  .exhibit-list article,
+  .catalog {
+    padding: 18px;
+  }
+
+  .file-grid,
+  .service-grid,
+  .front-grid,
+  .notice-board,
+  .exhibit-list,
+  .classifieds div {
+    gap: 10px;
+  }
+
+  .file-card {
+    min-height: 128px;
+  }
+
+  .paper-masthead h1 {
+    font-size: clamp(2.4rem, 18vw, 4.8rem);
+  }
+
+  .article-page h2,
+  .museum-header h1,
+  .school-top h1,
+  .lib-header h1,
+  .civic-header h1 {
+    overflow-wrap: anywhere;
+  }
+
+  .chat-header {
+    padding-top: max(var(--safe-top), 12px);
+  }
+}
+
+@media (display-mode: standalone) {
+  body {
+    user-select: none;
+  }
+
+  input,
+  textarea {
+    user-select: text;
+  }
+}
+

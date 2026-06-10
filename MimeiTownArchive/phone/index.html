@@ -1,0 +1,64 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>old_phone_log</title>
+  <link rel="stylesheet" href="../assets/ui/messages.css">
+  <meta name="theme-color" content="#22352c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="../assets/ui/iphone.css">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#22352c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+  <main class="phone-shell dialer">
+    <header class="chat-header">
+      <a href="../messages/index.html">メッセージ</a>
+      <div>
+        <p>復元された電話メモ</p>
+        <h1>灯台波 留守番電話</h1>
+      </div>
+      <a href="../notebook/index.html">ノート</a>
+    </header>
+
+    <section class="memo-card">
+      <h2>伊都のメモ</h2>
+      <p>澪さんの書き残し: 「23時、灯台波、末尾0918」。資料カードM-071にも同じ末尾。</p>
+      <p>古い市外局番は保存時に欠落している。番組の内部メモでは、時刻と末尾を続けて管理番号にしていたらしい。</p>
+    </section>
+
+    <section class="dial-screen">
+      <label for="dial-input">番号 / 管理番号</label>
+      <input id="dial-input" inputmode="numeric" autocomplete="off" placeholder="数字を入力">
+      <div class="keypad" aria-label="電話番号入力">
+        <button type="button">1</button><button type="button">2</button><button type="button">3</button>
+        <button type="button">4</button><button type="button">5</button><button type="button">6</button>
+        <button type="button">7</button><button type="button">8</button><button type="button">9</button>
+        <button type="button" data-action="clear">消</button><button type="button">0</button><button type="button" data-action="call">発信</button>
+      </div>
+      <p id="call-result" class="call-result" aria-live="polite"></p>
+    </section>
+
+    <section id="voicemail" class="voicemail" hidden>
+      <h2>留守番電話 2006/09/17 23:00</h2>
+      <p class="transcript">
+        「こちら灯台波、保存メッセージです。港湾広場の灯りは式典用ではありません。
+        倉庫裏の階段、三番目の踊り場。そこに旧測量図の赤印があります。
+        合言葉は、<strong>明けない灯</strong>」
+      </p>
+      <a href="../notebook/index.html">調査ノートへ戻る</a>
+    </section>
+  </main>
+  <script src="../assets/ui/phone.js"></script>
+  <script src="../assets/ui/iphone.js"></script>
+</body>
+</html>
+
+
+
+
+

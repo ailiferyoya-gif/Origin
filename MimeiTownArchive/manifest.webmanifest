@@ -1,0 +1,11 @@
+{
+  "name": "未明町アーカイブ",
+  "short_name": "未明町",
+  "start_url": "./start.html",
+  "display": "standalone",
+  "background_color": "#e8e3d5",
+  "theme_color": "#22352c",
+  "orientation": "portrait-primary",
+  "lang": "ja"
+}
+

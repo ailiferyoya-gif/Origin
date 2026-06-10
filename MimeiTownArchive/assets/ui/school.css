@@ -1,0 +1,232 @@
+:root {
+  --green: #25483d;
+  --gold: #b99b5f;
+  --paper: #f7f5ee;
+  --ink: #202824;
+  --line: #d6d0bf;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, #edf2ef, #f7f5ee 360px),
+    var(--paper);
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  line-height: 1.72;
+}
+
+a { color: var(--green); }
+
+.school-top {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: min(1080px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.school-nav {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.school-nav a {
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.crest {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  aspect-ratio: 1;
+  color: var(--green);
+  border: 3px solid var(--green);
+  border-radius: 50%;
+  font-family: "Yu Mincho", serif;
+  font-size: 2rem;
+}
+
+.school-top p,
+.school-top h1 {
+  margin: 0;
+}
+
+.school-top p {
+  color: #627068;
+}
+
+.school-top h1 {
+  font-size: clamp(2rem, 6vw, 4.2rem);
+  letter-spacing: 0;
+}
+
+main {
+  width: min(1080px, calc(100% - 28px));
+  margin: 22px auto 46px;
+}
+
+.school-hero {
+  display: grid;
+  grid-template-columns: 1.4fr .6fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.school-hero img {
+  width: 100%;
+  height: 390px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.school-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px;
+  color: white;
+  background: var(--green);
+}
+
+.term {
+  color: #d9c99b;
+  font-size: .9rem;
+}
+
+.school-card h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.12;
+}
+
+.notice-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.pin {
+  padding: 18px;
+  background: white;
+  border: 1px solid var(--line);
+  border-top: 5px solid #8ca395;
+}
+
+.pin.important {
+  border-top-color: #9a3d35;
+}
+
+.pin time {
+  color: #6d796f;
+  font-size: .88rem;
+}
+
+.pin h3 {
+  margin: 8px 0;
+  font-size: 1.25rem;
+}
+
+.club-log {
+  margin-top: 18px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--gold);
+}
+
+.club-log h2 {
+  margin-top: 0;
+}
+
+.alumni-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
+}
+
+.school-data {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.school-data div {
+  padding: 10px 12px;
+  background: #f4f1e4;
+  border: 1px solid var(--line);
+}
+
+.school-data dt {
+  font-weight: 700;
+}
+
+.school-data dd {
+  margin: 0;
+}
+
+.side-notices,
+.archive-box {
+  margin-top: 18px;
+  padding: 22px;
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.side-notices h2,
+.archive-box h2 {
+  margin-top: 0;
+}
+
+.side-notices time {
+  display: inline-block;
+  min-width: 80px;
+  color: #6d796f;
+}
+
+.archive-table {
+  display: grid;
+  gap: 8px;
+}
+
+.archive-table p {
+  margin: 0;
+  padding: 10px 12px;
+  background: #f7f5ee;
+  border-left: 4px solid #8ca395;
+}
+
+.archive-table span {
+  display: inline-block;
+  min-width: 116px;
+  font-weight: 700;
+}
+
+@media (max-width: 820px) {
+  .school-hero,
+  .notice-board,
+  .alumni-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .school-top {
+    align-items: flex-start;
+  }
+
+  .school-nav {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .school-hero img {
+    height: 250px;
+  }
+}

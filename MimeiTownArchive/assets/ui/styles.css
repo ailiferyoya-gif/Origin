@@ -1,0 +1,165 @@
+:root {
+  color-scheme: light;
+  --ink: #222426;
+  --muted: #676a67;
+  --line: #d8d3c5;
+  --paper: #f7f3e8;
+  --cream: #fbf8ef;
+  --accent: #2f5d66;
+  --accent-2: #8f6a3f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: #e8e3d5;
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  line-height: 1.75;
+}
+
+a {
+  color: inherit;
+}
+
+.shell {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(34, 36, 38, .78), rgba(34, 36, 38, .62)),
+    repeating-linear-gradient(90deg, #3d3b35 0 2px, #34322e 2px 8px);
+  padding: 32px 18px;
+}
+
+.usb-desktop {
+  max-width: 1080px;
+  margin: 0 auto;
+  color: #f7f3e8;
+}
+
+.usb-header {
+  border: 1px solid rgba(247, 243, 232, .25);
+  padding: 28px;
+  background: rgba(18, 20, 20, .55);
+}
+
+.usb-header h1 {
+  margin: 0 0 10px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: clamp(2rem, 7vw, 5rem);
+  letter-spacing: 0;
+}
+
+.system-line {
+  margin: 0 0 12px;
+  color: #bcc5b3;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: .86rem;
+}
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.file-card {
+  display: grid;
+  gap: 10px;
+  min-height: 150px;
+  padding: 18px;
+  text-decoration: none;
+  border: 1px solid rgba(247, 243, 232, .22);
+  background: rgba(247, 243, 232, .09);
+}
+
+.file-card:hover,
+.file-card:focus-visible {
+  outline: 2px solid #d6c37c;
+  background: rgba(247, 243, 232, .15);
+}
+
+.file-card.primary {
+  background: rgba(214, 195, 124, .18);
+}
+
+.file-type {
+  width: max-content;
+  padding: 2px 8px;
+  border: 1px solid rgba(247, 243, 232, .3);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: .78rem;
+}
+
+.file-card strong {
+  font-size: 1.1rem;
+}
+
+.file-card small {
+  color: #d9d4c5;
+}
+
+.paper-body {
+  min-height: 100vh;
+  padding: 28px 16px;
+  background:
+    radial-gradient(circle at top left, rgba(130, 110, 70, .16), transparent 34%),
+    #eee6d5;
+}
+
+.letter-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px);
+  background: var(--cream);
+  border: 1px solid #d8d0ba;
+  box-shadow: 0 18px 50px rgba(42, 35, 22, .15);
+}
+
+.letter-page h1 {
+  margin: 0 0 24px;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 500;
+}
+
+.paper-kicker {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: .85rem;
+  letter-spacing: .08em;
+}
+
+.handwritten p {
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 1.05rem;
+}
+
+.signature {
+  text-align: right;
+}
+
+.doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.doc-actions a {
+  padding: 8px 12px;
+  text-decoration: none;
+  border: 1px solid #b8ad90;
+  background: #fffdf6;
+}
+
+.doc-actions a:hover,
+.doc-actions a:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
