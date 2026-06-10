@@ -431,6 +431,22 @@ button {
   font-size: 17px;
   line-height: 1.55;
   font-weight: 800;
+  white-space: pre-line;
+}
+
+.question-visual {
+  margin: 12px 0 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f3efe6;
+}
+
+.question-visual img {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
 }
 
 .answer-row {

@@ -333,11 +333,217 @@ function buildSafeFallbackQuestionBank() {
 
 function buildCuratedQuestionSet() {
   return [
+    ...buildPracticalQuestionSet(),
     ...curatedCipherQuestions(),
     ...curatedPatternQuestions(),
     ...curatedWordQuestions(),
     ...curatedNumberQuestions(),
     ...curatedObserveQuestions(),
+  ];
+}
+
+function buildPracticalQuestionSet() {
+  const clueImage = "assets/clue-tabletop.png";
+  const imageAlt = "木の机に、封蝋つき封筒、鍵、方位磁針、時計、星印のある地図が置かれている。";
+  return [
+    {
+      skill: "cipher",
+      level: 5,
+      text: "封筒の裏に「1つ前へ戻せ」とある。\n暗号文：IJOU\nアルファベットを1文字ずつ戻すと出る英単語は？",
+      answers: ["HINT", "hint", "ヒント"],
+      hint: "I→H、J→I のように戻します。",
+      explanation: "IJOUを1文字ずつ戻すとHINTです。謎解きでは、指示文を暗号処理のルールとして読むことがよくあります。",
+      tags: ["指示暗号", "シーザー"],
+    },
+    {
+      skill: "cipher",
+      level: 5,
+      text: "メモ「奇数だけ先、偶数だけ後」。\n文字列：K A G I\n奇数番目→偶数番目の順に読むと？",
+      answers: ["KGAI", "kgai"],
+      hint: "1,3番目を先に読み、次に2,4番目を読みます。",
+      explanation: "奇数番目はK,G。偶数番目はA,I。合わせてKGAIです。位置指定に従うタイプの実戦的な並べ替え問題です。",
+      tags: ["位置並替", "偶奇"],
+    },
+    {
+      skill: "cipher",
+      level: 5,
+      text: "画像の机上の手がかりを、英語の頭文字で読む。\n鍵・封筒・地図・時計の順に並べると、頭文字は？",
+      answers: ["KEMC", "kemc"],
+      hint: "鍵=Key、封筒=Envelope、地図=Map、時計=Clockです。",
+      explanation: "Key, Envelope, Map, Clock の頭文字を取るとKEMCです。現場アイテムを英語化して頭文字を拾う練習です。",
+      tags: ["頭文字", "画像変換"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "cipher",
+      level: 4,
+      text: "A1Z26で、11-5-25 は何を表す？",
+      answers: ["KEY", "key", "かぎ", "鍵"],
+      hint: "A=1, B=2 ... Z=26 に戻します。",
+      explanation: "11=K、5=E、25=YなのでKEY。日本語なら鍵です。",
+      tags: ["A1Z26", "対応表"],
+    },
+    {
+      skill: "pattern",
+      level: 5,
+      text: "展示室の床に 1, 3, 6, 10, 15, ? と刻まれている。\n増え方を読むと次は？",
+      answers: ["21", "２１"],
+      hint: "差は+2,+3,+4,+5です。",
+      explanation: "次の差は+6なので15+6=21です。階段状に増える三角数の定番です。",
+      tags: ["階差", "三角数"],
+    },
+    {
+      skill: "pattern",
+      level: 5,
+      text: "赤い印は「封蝋→地図の星→封蝋→地図の星」と交互に示している。\n次に見るべきものは？",
+      answers: ["封蝋", "ふうろう", "封ろう"],
+      hint: "2つの赤い手がかりが交互に出ています。",
+      explanation: "封蝋、星、封蝋、星の次は封蝋です。見た目の共通点を系列として扱う問題です。",
+      tags: ["交互", "画像観察"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "pattern",
+      level: 5,
+      text: "N, E, S, W, N, E, ?。\n方角が時計回りに並んでいる。次は？",
+      answers: ["S", "s", "南", "みなみ"],
+      hint: "北→東→南→西の周期です。",
+      explanation: "N,E,S,Wの4周期なので、N,Eの次はSです。",
+      tags: ["周期", "方角"],
+    },
+    {
+      skill: "pattern",
+      level: 4,
+      text: "KEY, MAP, CLOCK, KEY, MAP, ?。\n3つの手がかりが繰り返される。次は？",
+      answers: ["CLOCK", "clock", "時計", "とけい"],
+      hint: "3語のまとまりを探します。",
+      explanation: "KEY→MAP→CLOCK の繰り返しなので、次はCLOCKです。",
+      tags: ["周期", "語列"],
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "謎解き現場で「かぎ」は物、「鍵」は漢字、「KEY」は英語。\nこの3つに共通する意味は？",
+      answers: ["鍵", "かぎ", "キー", "key"],
+      hint: "表記は違っても同じものを指します。",
+      explanation: "かな、漢字、英語の表記違いを同じ意味へ統合する問題です。実戦では表記ゆれがヒントになります。",
+      tags: ["表記変換", "意味"],
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "「封筒」「封印」「封鎖」。共通する漢字「封」が表すニュアンスに近いものは？",
+      answers: ["閉じる", "とじる", "閉じ込める", "ふさぐ"],
+      hint: "どれも何かを閉じたり塞いだりします。",
+      explanation: "封は閉じる、ふさぐ、開けられないようにする意味を持ちます。漢字の意味を横断して読む問題です。",
+      tags: ["漢字意味", "語彙"],
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "「地図に星、封筒に赤、鍵に穴」。\nこの文で、場所を示している語は？",
+      answers: ["地図", "ちず"],
+      hint: "物の名前ではなく、探索先を探すための道具です。",
+      explanation: "地図は場所を示すための手がかりです。文章中の役割を読む練習です。",
+      tags: ["役割分類", "文章読解"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "word",
+      level: 4,
+      text: "「開けるもの」は鍵。「示すもの」は地図。\nでは「時を示すもの」は？",
+      answers: ["時計", "とけい"],
+      hint: "役割の対応をそろえます。",
+      explanation: "鍵は開ける、地図は場所を示す、時計は時を示します。対応関係を読む問題です。",
+      tags: ["関係類推", "道具"],
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "A=1, Z=26。KEY の合計値は？",
+      answers: ["41", "４１"],
+      hint: "K=11, E=5, Y=25です。",
+      explanation: "11+5+25=41です。文字を数字へ変換して集計する実戦的な処理です。",
+      tags: ["A1Z26", "合計"],
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "画像の机上で、赤い手がかりは封蝋と地図の星の2つ。\n青い手がかりは方位磁針1つ。赤の数から青の数を引くと？",
+      answers: ["1", "１"],
+      hint: "赤は2、青は1です。",
+      explanation: "赤い封蝋と赤い星で2。青い方位磁針で1。2-1=1です。",
+      tags: ["色カウント", "画像"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "KEYをA1Z26で数値化し、最大の文字値から最小の文字値を引く。\n答えは？",
+      answers: ["20", "２０"],
+      hint: "K=11, E=5, Y=25です。",
+      explanation: "最大はY=25、最小はE=5。25-5=20です。",
+      tags: ["最大最小", "英字数値化"],
+    },
+    {
+      skill: "number",
+      level: 4,
+      text: "鍵=1、封筒=2、方位磁針=3、時計=4、地図=5。\n地図から鍵を引くと？",
+      answers: ["4", "４"],
+      hint: "指定された対応表だけを使います。",
+      explanation: "地図=5、鍵=1なので5-1=4です。対応表を読み間違えない練習です。",
+      tags: ["対応表", "演算"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "observe",
+      level: 5,
+      text: "画像を見て、机の上で一番右上にある手がかりは？",
+      answers: ["鍵", "かぎ", "キー", "key"],
+      hint: "右上の金色の物を見ます。",
+      explanation: "右上には金色の鍵があります。謎解きでは、位置の指定がそのまま抽出順になることがあります。",
+      tags: ["位置観察", "画像"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "observe",
+      level: 5,
+      text: "画像を見て、赤い星が描かれている手がかりは？",
+      answers: ["地図", "ちず", "マップ", "map"],
+      hint: "右側の紙を見ます。",
+      explanation: "赤い星は地図の上にあります。色と対象を結びつける観察問題です。",
+      tags: ["色観察", "画像"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "observe",
+      level: 4,
+      text: "画像を見て、丸い形の手がかりを2つ挙げるなら、方位磁針と何？",
+      answers: ["時計", "とけい"],
+      hint: "緑色の丸い道具を探します。",
+      explanation: "方位磁針のほかに、丸い時計があります。形で分類する観察問題です。",
+      tags: ["形分類", "画像"],
+      image: clueImage,
+      imageAlt,
+    },
+    {
+      skill: "observe",
+      level: 5,
+      text: "画像を見て、封筒の上に重なっている赤いものは？",
+      answers: ["封蝋", "ふうろう", "封ろう", "シール"],
+      hint: "封筒の中央付近にあります。",
+      explanation: "封筒の上には赤い封蝋があります。重なりと位置を読む問題です。",
+      tags: ["重なり", "画像"],
+      image: clueImage,
+      imageAlt,
+    },
   ];
 }
 
@@ -1082,9 +1288,20 @@ function questionPosition(question) {
 function renderQuestion() {
   const question = current();
   const skill = skills.find((item) => item.id === question.skill);
+  const visual = document.querySelector("#questionVisual");
+  const image = document.querySelector("#questionImage");
   document.querySelector("#categoryPill").textContent = `${skill.name} Lv.${question.level}`;
   document.querySelector("#questionIndex").textContent = questionPosition(question);
   document.querySelector("#questionText").textContent = question.text;
+  if (question.image) {
+    image.src = question.image;
+    image.alt = question.imageAlt || "謎解き問題の画像";
+    visual.hidden = false;
+  } else {
+    image.removeAttribute("src");
+    image.alt = "";
+    visual.hidden = true;
+  }
   document.querySelector("#hintCount").textContent = state.hints;
   document.querySelector("#challengeHeading").textContent = skill.drill;
 }
