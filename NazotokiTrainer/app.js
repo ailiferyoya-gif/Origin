@@ -247,7 +247,320 @@ const questions = [
 ];
 
 questions.length = 0;
-questions.push(...buildQuestionBank());
+questions.push(...buildVariedQuestionBank());
+
+function buildVariedQuestionBank() {
+  const curated = buildCuratedQuestionSet();
+  const generated = [
+    ...buildCipherQuestions(),
+    ...buildPatternQuestions(),
+    ...buildWordQuestions(),
+    ...buildNumberQuestions(),
+    ...buildObserveQuestions(),
+  ];
+
+  const merged = skills.flatMap((skill) => {
+    if (!skill.unlocked) return [];
+    const seen = new Set();
+    return [...curated, ...generated]
+      .filter((question) => question.skill === skill.id)
+      .filter((question) => {
+        if (seen.has(question.text)) return false;
+        seen.add(question.text);
+        return true;
+      })
+      .slice(0, 100);
+  });
+
+  return interleaveByType(merged);
+}
+
+function buildCuratedQuestionSet() {
+  return [
+    ...curatedCipherQuestions(),
+    ...curatedPatternQuestions(),
+    ...curatedWordQuestions(),
+    ...curatedNumberQuestions(),
+    ...curatedObserveQuestions(),
+  ];
+}
+
+function curatedCipherQuestions() {
+  return [
+    {
+      skill: "cipher",
+      level: 4,
+      text: "メモには「上だけ読め」とある。\nA K N / S A G / T E I\n上段だけを左から読むと出る言葉は？",
+      answers: ["AKN", "あかね"],
+      hint: "3行ではなく、上にある文字だけを拾います。",
+      explanation: "上段は A K N。母音を補うと「あかね」と読ませるタイプの抽出問題です。",
+      tags: ["段抽出", "配置"],
+    },
+    {
+      skill: "cipher",
+      level: 5,
+      text: "「3-1-20」はCATではなく、さらに1文字戻して読めとある。答えの英単語は？",
+      answers: ["BZS"],
+      hint: "A=1でCATに戻したあと、各文字を1つ戻します。",
+      explanation: "3-1-20はCAT。C→B、A→Z、T→SなのでBZSです。",
+      tags: ["二段変換", "対応表"],
+    },
+    {
+      skill: "cipher",
+      level: 4,
+      text: "矢印メモ「右・右・左・右」。Aから始め、右=次の文字、左=前の文字として動く。最後の文字は？",
+      answers: ["C", "c"],
+      hint: "A→B→C→B→C と1手ずつ動きます。",
+      explanation: "Aから右でB、右でC、左でB、右でC。答えはCです。",
+      tags: ["手順暗号", "移動"],
+    },
+    {
+      skill: "cipher",
+      level: 5,
+      text: "「K O A T E」を、偶数番目→奇数番目の順に並べ替える。できる英字列は？",
+      answers: ["OTKAE"],
+      hint: "2,4番目を先に読み、その後1,3,5番目を読みます。",
+      explanation: "偶数番目はO,T。奇数番目はK,A,E。合わせてOTKAEです。",
+      tags: ["位置並替", "偶奇"],
+    },
+    {
+      skill: "cipher",
+      level: 4,
+      text: "「N=北, E=東, S=南, W=西」。NEESW を方角の日本語に直すと、最初に出る方角は？",
+      answers: ["北", "きた"],
+      hint: "1文字ずつ方角に置き換えます。",
+      explanation: "Nは北です。先頭の方角だけを問う問題です。",
+      tags: ["記号変換", "方角"],
+    },
+  ];
+}
+
+function curatedPatternQuestions() {
+  return [
+    {
+      skill: "pattern",
+      level: 5,
+      text: "1, 2, 4, 7, 11, 16, ?。増え方そのものが1ずつ増える。次は？",
+      answers: ["22", "２２"],
+      hint: "+1,+2,+3,+4,+5 と増えています。",
+      explanation: "16の次は+6なので22です。",
+      tags: ["階差", "数列"],
+    },
+    {
+      skill: "pattern",
+      level: 4,
+      text: "A, C, F, J, O, ?。アルファベット位置の増え方を見る。次は？",
+      answers: ["U", "u"],
+      hint: "増分は+2,+3,+4,+5です。",
+      explanation: "Oから+6進むとUです。",
+      tags: ["英字階差", "数列"],
+    },
+    {
+      skill: "pattern",
+      level: 4,
+      text: "黒白白 / 黒黒白 / 黒黒黒。次に白が0個になるなら、直前の段の白はいくつ？",
+      answers: ["1", "１"],
+      hint: "白の数が2,1,0と減る流れを見ます。",
+      explanation: "0個になる直前は白が1個です。",
+      tags: ["図形推移", "減少"],
+    },
+    {
+      skill: "pattern",
+      level: 5,
+      text: "月→水→土→水→?。曜日を+2,+3,+4,+5日ずつ進める。次は？",
+      answers: ["月"],
+      hint: "土から+4で水。次は水から+5です。",
+      explanation: "水から5日進むと月です。",
+      tags: ["周期変化", "曜日"],
+    },
+    {
+      skill: "pattern",
+      level: 4,
+      text: "「北東南西」を1つ飛ばしで読むと「北南」。次に開始位置を1つずらして読むと？",
+      answers: ["東西"],
+      hint: "2文字目から1つ飛ばしで読みます。",
+      explanation: "東から始めて1つ飛ばしで読むと東、西です。",
+      tags: ["飛ばし読み", "方角"],
+    },
+  ];
+}
+
+function curatedWordQuestions() {
+  return [
+    {
+      skill: "word",
+      level: 4,
+      text: "「かぎ」「とびら」「へや」「でぐち」。この4語を謎解きの流れに並べると、最初に必要なものは？",
+      answers: ["かぎ"],
+      hint: "扉を開ける前に必要なものを考えます。",
+      explanation: "流れは、かぎ→とびら→へや→でぐち。最初はかぎです。",
+      tags: ["手順語", "並べ替え"],
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "「あかいかさ」から、同じ文字を2回目以降消すと残る文字列は？",
+      answers: ["あかいさ"],
+      hint: "最初に出た文字だけを残します。",
+      explanation: "あ、か、い、か、さ の2回目の「か」を消し、あかいさです。",
+      tags: ["重複削除", "文字操作"],
+    },
+    {
+      skill: "word",
+      level: 4,
+      text: "「問い」は「答え」に変わる。「暗号」は何に変わる？",
+      answers: ["解読", "かいどく"],
+      hint: "問題を解いた後の状態にします。",
+      explanation: "問いを解くと答え。暗号を解くと解読です。",
+      tags: ["関係類推", "語彙"],
+    },
+    {
+      skill: "word",
+      level: 5,
+      text: "「ひみつのちず」の2,5,6文字目を読むと？",
+      answers: ["みのち"],
+      hint: "小さい単位で1文字ずつ数えます。",
+      explanation: "2文字目=み、5文字目=の、6文字目=ち。答えはみのちです。",
+      tags: ["位置抽出", "文字"],
+    },
+    {
+      skill: "word",
+      level: 4,
+      text: "「上」を消すと「下」が残る言葉ではない。反対語の組として自然なのは「入口」と何？",
+      answers: ["出口", "でぐち"],
+      hint: "漢字の操作ではなく意味の対を考えます。",
+      explanation: "入口の反対は出口です。",
+      tags: ["反対語", "意味"],
+    },
+  ];
+}
+
+function curatedNumberQuestions() {
+  return [
+    {
+      skill: "number",
+      level: 5,
+      text: "A=1, B=2。CAB の数字合計は？",
+      answers: ["6", "６"],
+      hint: "C=3, A=1, B=2です。",
+      explanation: "3+1+2=6です。",
+      tags: ["英字数値化", "合計"],
+    },
+    {
+      skill: "number",
+      level: 4,
+      text: "3つの箱がある。左は右より2大きく、中央は左より1小さい。右が5なら中央は？",
+      answers: ["6", "６"],
+      hint: "右→左→中央の順に求めます。",
+      explanation: "右5、左7、中央6です。",
+      tags: ["条件整理", "順序"],
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "時計で9時から右回りに5時間、左回りに2時間進む。何時？",
+      answers: ["12", "１２", "12時"],
+      hint: "9→14時相当、そこから2戻ります。",
+      explanation: "9+5-2=12。答えは12時です。",
+      tags: ["時計算", "移動"],
+    },
+    {
+      skill: "number",
+      level: 4,
+      text: "カード 2, 4, 7 を一度ずつ使って、2桁+1桁の最大値を作る。答えは？",
+      answers: ["76", "７６"],
+      hint: "十の位を最大にします。",
+      explanation: "74+2=76が最大です。",
+      tags: ["最大化", "桁"],
+    },
+    {
+      skill: "number",
+      level: 5,
+      text: "赤=2点、青=3点、黄=5点。赤青黄青の合計点は？",
+      answers: ["13", "１３"],
+      hint: "色を点数へ置き換えて足します。",
+      explanation: "2+3+5+3=13です。",
+      tags: ["対応表", "合計"],
+    },
+  ];
+}
+
+function curatedObserveQuestions() {
+  return [
+    {
+      skill: "observe",
+      level: 4,
+      text: "次の中で1つだけ数字の0が混ざっているものは何番目？\n1: NORTH / 2: N0RTH / 3: NORTH",
+      answers: ["2", "２", "2番目"],
+      hint: "Oと0の形の違いを見ます。",
+      explanation: "2番目だけOではなく数字の0です。",
+      tags: ["Oと0", "細部"],
+    },
+    {
+      skill: "observe",
+      level: 5,
+      text: "「未」「末」「未」。違うものは何番目？",
+      answers: ["2", "２", "2番目"],
+      hint: "上の横線の長さを見ます。",
+      explanation: "2番目だけ「末」です。",
+      tags: ["似漢字", "横線"],
+    },
+    {
+      skill: "observe",
+      level: 4,
+      text: "メモ「赤青赤黄赤」。赤は何個？",
+      answers: ["3", "３"],
+      hint: "同じ文字だけを数えます。",
+      explanation: "赤は1,3,5文字目にあり、3個です。",
+      tags: ["色数え", "抽出"],
+    },
+    {
+      skill: "observe",
+      level: 5,
+      text: "「問 間 問」。中に日が入っているものは何番目？",
+      answers: ["2", "２", "2番目"],
+      hint: "門の中にある部品を見ます。",
+      explanation: "間の中は日です。2番目です。",
+      tags: ["部品観察", "漢字"],
+    },
+    {
+      skill: "observe",
+      level: 4,
+      text: "「右 左 右 石 右」。仲間外れは何番目？",
+      answers: ["4", "４", "4番目"],
+      hint: "方向を表す文字ではないものを探します。",
+      explanation: "石だけ方角・方向ではありません。4番目です。",
+      tags: ["分類観察", "仲間外れ"],
+    },
+  ];
+}
+}
+
+function interleaveByType(bank) {
+  const groupedBySkill = new Map();
+  bank.forEach((question) => {
+    if (!groupedBySkill.has(question.skill)) groupedBySkill.set(question.skill, []);
+    groupedBySkill.get(question.skill).push(question);
+  });
+
+  return [...groupedBySkill.values()].flatMap((skillQuestions) => {
+    const typeBuckets = new Map();
+    skillQuestions.forEach((question) => {
+      const key = question.tags[0] || "misc";
+      if (!typeBuckets.has(key)) typeBuckets.set(key, []);
+      typeBuckets.get(key).push(question);
+    });
+
+    const buckets = [...typeBuckets.values()];
+    const mixed = [];
+    while (mixed.length < skillQuestions.length) {
+      buckets.forEach((bucket) => {
+        if (bucket.length) mixed.push(bucket.shift());
+      });
+    }
+    return mixed;
+  });
+}
 
 function buildQuestionBank() {
   return [
