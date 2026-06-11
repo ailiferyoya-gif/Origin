@@ -29,6 +29,16 @@
         <article><h3>資料係</h3><p>旧町史資料、公文書目録、閉館施設の保存資料。閲覧には申請書が必要です。</p></article>
       </div>
     </section>
+    <section class="civic-panel">
+      <h2>資料閲覧申請</h2>
+      <form id="town-request-form" class="request-form">
+        <label>申請者名<input name="name" maxlength="32" placeholder="氏名"></label>
+        <label>資料種別<select name="type"><option>公文書目録</option><option selected>港湾関連資料</option><option>旧資料館収蔵資料</option><option>町史編さん資料</option></select></label>
+        <label>閲覧目的<textarea name="purpose" rows="3" maxlength="180" placeholder="閲覧目的"></textarea></label>
+        <button type="submit">控えを作成</button>
+      </form>
+      <p id="town-request-result" class="official-note">資料係の閲覧申請は、受付番号と対象資料名を控えて窓口へ提出してください。</p>
+    </section>
     <section class="civic-grid">
       <article>
         <h3>よくある問い合わせ</h3>
@@ -41,6 +51,7 @@
       <aside><h3>資料係メモ</h3><p>平成18年9月分の港湾関連資料は、移行時に一部欠番が確認されています。</p></aside>
     </section>
   </main>
+  <script src="../../assets/ui/site-tools.js"></script>
   <script src="../../assets/ui/iphone.js"></script>
 </body>
 </html>

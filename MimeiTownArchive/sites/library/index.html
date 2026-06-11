@@ -41,18 +41,19 @@
 
     <section id="search" class="opac-panel">
       <h2>蔵書検索</h2>
-      <div class="fake-form">
+      <div id="opac-form" class="fake-form">
         <label>キーワード</label>
-        <input value="未明港 灯台 計画" readonly>
+        <input id="opac-query" value="未明港 灯台 計画">
         <button type="button">検索</button>
       </div>
+      <p id="opac-count">5件の資料が見つかりました。</p>
       <table>
         <tr><th>請求記号</th><th>資料名</th><th>著者・編者</th><th>状態</th></tr>
-        <tr><td>K-12</td><td>未明町史 通史編</td><td>未明町史編さん委員会</td><td>館内閲覧可</td></tr>
-        <tr><td>K-18</td><td>未明湾の漁と暮らし</td><td>未明町漁協</td><td>貸出可</td></tr>
-        <tr><td>K-29</td><td><a href="record-k29.html">未明港と消えた灯台計画</a></td><td>県立未明高校 地域史研究部</td><td>所在確認中</td></tr>
-        <tr><td>K-31</td><td>港湾整備記念式典記録集</td><td>未明町建設課</td><td>館内閲覧可</td></tr>
-        <tr><td>N-2006-09</td><td>未明日報 縮刷版 2006年9月</td><td>未明日報社</td><td>マイクロ閲覧</td></tr>
+        <tr data-opac="K-12 未明町史 通史編 未明町史編さん委員会"><td>K-12</td><td>未明町史 通史編</td><td>未明町史編さん委員会</td><td>館内閲覧可</td></tr>
+        <tr data-opac="K-18 未明湾の漁と暮らし 未明町漁協"><td>K-18</td><td>未明湾の漁と暮らし</td><td>未明町漁協</td><td>貸出可</td></tr>
+        <tr data-opac="K-29 未明港 消えた灯台計画 県立未明高校 地域史研究部"><td>K-29</td><td><a href="record-k29.html">未明港と消えた灯台計画</a></td><td>県立未明高校 地域史研究部</td><td>所在確認中</td></tr>
+        <tr data-opac="K-31 港湾整備記念式典記録集 未明町建設課"><td>K-31</td><td>港湾整備記念式典記録集</td><td>未明町建設課</td><td>館内閲覧可</td></tr>
+        <tr data-opac="N-2006-09 未明日報 縮刷版 2006年9月 雨宮澪"><td>N-2006-09</td><td>未明日報 縮刷版 2006年9月</td><td>未明日報社</td><td>マイクロ閲覧</td></tr>
       </table>
     </section>
 
@@ -70,6 +71,7 @@
       </aside>
     </section>
   </main>
+  <script src="../../assets/ui/site-tools.js"></script>
   <script src="../../assets/ui/iphone.js"></script>
 </body>
 </html>

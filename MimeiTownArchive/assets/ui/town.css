@@ -131,6 +131,36 @@ main {
   border: 1px solid var(--line);
 }
 
+.request-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.request-form label {
+  display: grid;
+  gap: 4px;
+}
+
+.request-form label:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.request-form input,
+.request-form select,
+.request-form textarea,
+.request-form button {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  font: inherit;
+}
+
+.request-form button {
+  justify-self: start;
+  color: white;
+  background: var(--deep);
+}
+
 .service-grid h3,
 .compact-list p {
   margin: 0;
@@ -196,6 +226,7 @@ footer {
   .civic-hero,
   .civic-grid,
   .service-grid,
+  .request-form,
   .notice-list a {
     grid-template-columns: 1fr;
   }

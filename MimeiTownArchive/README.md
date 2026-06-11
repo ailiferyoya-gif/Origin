@@ -54,6 +54,9 @@ Implemented:
 - 30 additional internal pages across radio, weather, bus, tourism, blog, and forum sites
 - cross-site search portal with keyword result filtering
 - evidence photo ledger with thirteen dedicated casefile pages
+- higher-fidelity site interactions: blog comments, BBS replies, OPAC filtering,
+  newspaper article search, bus route lookup, weather log filters, radio letters,
+  and town hall request receipts
 - current HTML count: 74 pages
 
 Current phone gimmick answer:

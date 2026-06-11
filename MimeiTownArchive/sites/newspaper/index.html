@@ -39,40 +39,40 @@
 
     <section id="archive" class="search-box">
       <label for="dummy-search">記事検索</label>
-      <div class="search-row">
-        <input id="dummy-search" value="雨宮 澪 2006 9月" readonly>
+      <div id="paper-search" class="search-row">
+        <input id="paper-query" value="雨宮 澪 2006 9月">
         <button type="button">検索</button>
       </div>
-      <p>1件の記事が見つかりました。</p>
+      <p id="paper-count">6件の記事が見つかりました。</p>
     </section>
 
     <section class="front-grid">
-      <article>
+      <article data-paper="交通安全 港湾地区 出発式 式典">
         <p class="article-meta">2006年9月17日 社会</p>
         <h3><a href="article-traffic-20060917.html">秋の交通安全運動、港湾地区で出発式</a></h3>
         <p>未明警察署と町内会は十七日、秋の交通安全運動を前に啓発用品を配布した。</p>
       </article>
-      <article>
+      <article data-paper="中央商店街 夜市 人出 港の奥">
         <p class="article-meta">2006年9月17日 くらし</p>
         <h3><a href="article-night-market.html">中央商店街で夜市、昨年を上回る人出</a></h3>
         <p>中央商店街振興会による夜市が開かれ、金魚すくいと地元野菜の販売が人気を集めた。</p>
       </article>
-      <article>
+      <article data-paper="未明高校 文化祭 地域史研究部 雨宮澪">
         <p class="article-meta">2006年9月17日 教育</p>
         <h3><a href="../school/culture-festival-2006.html">未明高校、文化祭準備進む</a></h3>
         <p>展示部門では地域史研究部が港の近代化を扱う発表を予定している。</p>
       </article>
-      <article>
+      <article data-paper="郷土資料館 第三展示室 閉室 M-071">
         <p class="article-meta">2006年9月16日 地域</p>
         <h3><a href="../museum/exhibit-third.html">郷土資料館、第三展示室を一時閉室</a></h3>
         <p>資料整理のため、町教育委員会は展示室の閉室を発表した。再開時期は未定。</p>
       </article>
-      <article>
+      <article data-paper="沿岸部 霧 見通し 悪化">
         <p class="article-meta">2006年9月15日 天気</p>
         <h3><a href="weather-fog-20060915.html">週末は沿岸部で霧、見通し悪化に注意</a></h3>
         <p>未明湾では夕方以降、海霧が発生しやすい状態が続く見込み。</p>
       </article>
-      <article>
+      <article data-paper="町職員異動 資料館担当 兼務">
         <p class="article-meta">2006年9月14日 人事</p>
         <h3><a href="personnel-20060914.html">町職員異動、資料館担当に兼務辞令</a></h3>
         <p>教育委員会は十四日付で、資料館管理担当者の兼務を発表した。</p>
@@ -113,6 +113,7 @@
       </div>
     </section>
   </main>
+  <script src="../../assets/ui/site-tools.js"></script>
   <script src="../../assets/ui/iphone.js"></script>
 </body>
 </html>

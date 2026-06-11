@@ -24,6 +24,9 @@ The latest expansion grew the prototype to 74 HTML pages. It adds a cross-site
 search portal, an evidence photo ledger, and thirteen dedicated casefile pages that
 turn generated images into playable clues. Site top pages now use the new images
 as in-world archive material instead of simple decoration.
+The realism pass added static-site interactions with browser-local persistence:
+blog comments, BBS replies, OPAC filtering, newspaper article search, bus route
+lookup, weather log filters, radio letters, and town hall request receipts.
 
 ## Created Documents
 
@@ -130,6 +133,9 @@ as in-world archive material instead of simple decoration.
 - `assets/ui/app.js`
 - `assets/ui/phone.js`
 - `assets/ui/search.js`
+- `assets/ui/blog-comments.js`
+- `assets/ui/forum-reply.js`
+- `assets/ui/site-tools.js`
 - `assets/ui/iphone.js`
 - `manifest.webmanifest`
 - `assets/generated/mimei-town-hall.png`
