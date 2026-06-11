@@ -261,15 +261,18 @@ meter {
 }
 
 .character-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 6px;
   margin-bottom: 10px;
+  overflow-x: auto;
+  padding-bottom: 3px;
 }
 
 .character-tabs .tab {
+  flex: 0 0 auto;
   min-width: 0;
   min-height: 36px;
+  padding-inline: 16px;
   background: #ffffff;
   font-size: 0.78rem;
 }
