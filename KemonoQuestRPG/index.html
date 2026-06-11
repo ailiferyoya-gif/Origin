@@ -41,7 +41,10 @@
         </div>
         <button data-move="0,1">▼</button>
       </div>
-      <button id="battleStart" class="secondary">たたかう</button>
+      <div class="side-actions">
+        <button id="characterList" class="secondary">キャラ</button>
+        <button id="battleStart" class="secondary">たたかう</button>
+      </div>
     </section>
 
     <section id="log" class="log" aria-live="polite"></section>
@@ -62,6 +65,47 @@
       <button id="guard">ぼうぎょ</button>
     </div>
     <div id="battleLog" class="log compact"></div>
+  </dialog>
+
+  <dialog id="characters" class="modal character-modal">
+    <div class="modal-head">
+      <div>
+        <h2>キャラ一覧</h2>
+        <p>生成した候補をゲーム内で確認できます。</p>
+      </div>
+      <button id="charactersClose" class="icon-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="character-tabs" role="tablist" aria-label="キャラカテゴリ">
+      <button class="tab active" data-filter="all">全員</button>
+      <button class="tab" data-filter="hero">主人公</button>
+      <button class="tab" data-filter="party">仲間</button>
+    </div>
+    <div class="character-grid" id="characterGrid">
+      <article class="character-card" data-kind="hero">
+        <img src="candidates/a-body-red-eyes-1-cool.png" alt="赤目の狐面剣士候補1">
+        <div><strong>Cool Red Eyes</strong><span>主人公候補 / バランス型</span></div>
+      </article>
+      <article class="character-card" data-kind="hero">
+        <img src="candidates/a-body-red-eyes-2-intense.png" alt="赤目の狐面剣士候補2">
+        <div><strong>Intense Gaze</strong><span>主人公候補 / 目力強め</span></div>
+      </article>
+      <article class="character-card" data-kind="hero">
+        <img src="candidates/a-body-red-eyes-3-clean.png" alt="赤目の狐面剣士候補3">
+        <div><strong>Clean Hero</strong><span>主人公候補 / 画面向き</span></div>
+      </article>
+      <article class="character-card" data-kind="party">
+        <img src="candidates/party-red-eye-guardian.png" alt="盾役の仲間候補">
+        <div><strong>Guardian</strong><span>仲間候補 / 盾役</span></div>
+      </article>
+      <article class="character-card" data-kind="party">
+        <img src="candidates/party-red-eye-spellcaster.png" alt="術師の仲間候補">
+        <div><strong>Spellcaster</strong><span>仲間候補 / 術師</span></div>
+      </article>
+      <article class="character-card" data-kind="party">
+        <img src="candidates/party-red-eye-rogue.png" alt="斥候の仲間候補">
+        <div><strong>Rogue</strong><span>仲間候補 / 弓短剣</span></div>
+      </article>
+    </div>
   </dialog>
 
   <script src="app.js"></script>

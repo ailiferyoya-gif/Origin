@@ -34,6 +34,7 @@ const log = document.querySelector("#log");
 const battleLog = document.querySelector("#battleLog");
 const battle = document.querySelector("#battle");
 const dialogue = document.querySelector("#dialogue");
+const characters = document.querySelector("#characters");
 
 function push(message) {
   state.log.push(message);
@@ -188,6 +189,19 @@ document.querySelectorAll("[data-move]").forEach((button) => {
 document.querySelector("#inspect").addEventListener("click", inspect);
 document.querySelector("#battleStart").addEventListener("click", startBattle);
 document.querySelector("#dialogueClose").addEventListener("click", () => dialogue.close());
+document.querySelector("#characterList").addEventListener("click", () => characters.showModal());
+document.querySelector("#charactersClose").addEventListener("click", () => characters.close());
+document.querySelectorAll(".character-tabs .tab").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".character-tabs .tab").forEach((tab) => {
+      tab.classList.toggle("active", tab === button);
+    });
+    const filter = button.dataset.filter;
+    document.querySelectorAll(".character-card").forEach((card) => {
+      card.hidden = filter !== "all" && card.dataset.kind !== filter;
+    });
+  });
+});
 document.querySelector("#attack").addEventListener("click", attack);
 document.querySelector("#spark").addEventListener("click", spark);
 document.querySelector("#guard").addEventListener("click", guardAction);

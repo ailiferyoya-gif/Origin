@@ -179,6 +179,11 @@ meter {
   gap: 6px;
 }
 
+.side-actions {
+  display: grid;
+  gap: 10px;
+}
+
 .secondary {
   background: #ffffff;
 }
@@ -224,6 +229,96 @@ meter {
 
 .battle {
   text-align: center;
+}
+
+.character-modal {
+  width: min(calc(100vw - 20px), 420px);
+  max-height: min(86svh, 780px);
+  overflow: auto;
+  padding: 12px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.modal-head p {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.icon-close {
+  min-width: 38px;
+  min-height: 36px;
+  padding: 0;
+  background: #111827;
+  color: #fff8da;
+}
+
+.character-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.character-tabs .tab {
+  min-width: 0;
+  min-height: 36px;
+  background: #ffffff;
+  font-size: 0.82rem;
+}
+
+.character-tabs .tab.active {
+  background: #f6d85e;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.character-card {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px;
+  border: 2px solid #202938;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, #eef6ff);
+}
+
+.character-card[hidden] {
+  display: none;
+}
+
+.character-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 0 rgba(0, 0, 0, 0.16));
+}
+
+.character-card strong,
+.character-card span {
+  display: block;
+  line-height: 1.25;
+}
+
+.character-card strong {
+  font-size: 0.86rem;
+}
+
+.character-card span {
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
 @media (min-width: 760px) {
