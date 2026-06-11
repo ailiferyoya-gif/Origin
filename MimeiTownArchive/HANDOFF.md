@@ -20,6 +20,8 @@ and a phone/voicemail gimmick. The phone answer is `2300918`, derived from
 23:00 and the repeated 0918 suffix.
 An iPhone support pass added safe-area handling, stabilized viewport height,
 larger tap targets, table overflow handling, and a web manifest.
+The latest expansion doubled the page count from 29 to 59 HTML pages by adding
+six more site families: radio, weather, bus, tourism, blog, and forum logs.
 
 ## Created Documents
 
@@ -62,6 +64,36 @@ larger tap targets, table overflow handling, and a web manifest.
 - `sites/museum/collection-m071.html`
 - `messages/index.html`
 - `phone/index.html`
+- `sites/radio/index.html`
+- `sites/radio/program-20060917.html`
+- `sites/radio/voicemail-policy.html`
+- `sites/radio/letters.html`
+- `sites/radio/timetable.html`
+- `sites/weather/index.html`
+- `sites/weather/log-20060917.html`
+- `sites/weather/fog-advisory.html`
+- `sites/weather/tide-table.html`
+- `sites/weather/observatory-notes.html`
+- `sites/bus/index.html`
+- `sites/bus/route-harbor.html`
+- `sites/bus/timetable-20060917.html`
+- `sites/bus/stop-library.html`
+- `sites/bus/notice-detour.html`
+- `sites/tourism/index.html`
+- `sites/tourism/harbor-walk.html`
+- `sites/tourism/festival.html`
+- `sites/tourism/old-map.html`
+- `sites/tourism/faq.html`
+- `sites/blog/index.html`
+- `sites/blog/post-20060910.html`
+- `sites/blog/post-20060917.html`
+- `sites/blog/comments-archive.html`
+- `sites/blog/profile.html`
+- `sites/forum/index.html`
+- `sites/forum/thread-124.html`
+- `sites/forum/thread-131.html`
+- `sites/forum/user-mio.html`
+- `sites/forum/rules.html`
 - `assets/ui/styles.css`
 - `assets/ui/notebook.css`
 - `assets/ui/town.css`
@@ -71,6 +103,12 @@ larger tap targets, table overflow handling, and a web manifest.
 - `assets/ui/museum.css`
 - `assets/ui/messages.css`
 - `assets/ui/iphone.css`
+- `assets/ui/radio.css`
+- `assets/ui/weather.css`
+- `assets/ui/bus.css`
+- `assets/ui/tourism.css`
+- `assets/ui/blog.css`
+- `assets/ui/forum.css`
 - `assets/ui/app.js`
 - `assets/ui/phone.js`
 - `assets/ui/iphone.js`

@@ -51,6 +51,8 @@ Implemented:
 - restored LINE-like message log
 - voicemail-style phone number gimmick
 - generated image assets for the first five sites
+- 30 additional internal pages across radio, weather, bus, tourism, blog, and forum sites
+- current HTML count: 59 pages
 
 Current phone gimmick answer:
 
