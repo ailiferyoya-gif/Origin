@@ -262,7 +262,7 @@ meter {
 
 .character-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   margin-bottom: 10px;
 }
@@ -271,7 +271,7 @@ meter {
   min-width: 0;
   min-height: 36px;
   background: #ffffff;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .character-tabs .tab.active {
