@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>未明検索ポータル</title>
+  <link rel="stylesheet" href="../assets/ui/search.css">
+  <link rel="stylesheet" href="../assets/ui/iphone.css">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#22352c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+  <main class="search-wrap">
+    <header class="search-head">
+      <p>MIMEI CROSS ARCHIVE / local cached search</p>
+      <h1>未明検索ポータル</h1>
+      <p>伊都のUSBに残っていた横断検索ページ。町役場、新聞、学校、図書館、資料館、ラジオ、気象、交通、ブログ、BBSの保存コピーをまとめて引けます。</p>
+      <nav><a href="../start.html">archive_index</a> <a href="../notebook/index.html">調査ノート</a> <a href="../casefiles/index.html">証拠写真台帳</a> <a href="../phone/index.html">電話メモ</a></nav>
+    </header>
+    <img class="site-photo" src="../assets/generated/search-portal-desk.png" alt="未明検索ポータルを開いた調査机">
+
+    <section class="search-box">
+      <h2>キーワード照合</h2>
+      <p>検索例: 明けない灯 / K-29 / M-071 / 図書館前 / 港の奥 / 19:12 / 7826</p>
+      <form id="search-form" class="search-row">
+        <input id="query" name="query" autocomplete="off" placeholder="調べたい語句を入力">
+        <button type="submit">検索</button>
+      </form>
+      <p id="summary" aria-live="polite">検索語を入力してください。</p>
+    </section>
+
+    <section id="results">
+      <article class="result-card" data-keys="明けない灯 灯台波 ラジオ 7826 留守電">
+        <h2>灯台波ラジオ: 未整理留守電</h2>
+        <p>番組表と留守電管理番号が一致します。「明けない灯」は9月17日放送の読み上げ原稿にだけ残る表現です。</p>
+        <a href="../sites/radio/program-20060917.html">2006/09/17放送を開く</a>
+        <a href="../phone/index.html">電話メモで 7826 を試す</a>
+      </article>
+      <article class="result-card" data-keys="K-29 図書館 郷土資料 灯台計画">
+        <h2>図書館OPAC: K-29</h2>
+        <p>郷土資料の請求記号。未成の灯台計画と、港湾整備式典の名前が同じカードに載っています。</p>
+        <a href="../sites/library/record-k29.html">K-29の書誌カード</a>
+        <a href="../casefiles/library-shelf.html">証拠写真を見る</a>
+      </article>
+      <article class="result-card" data-keys="M-071 資料館 第三展示室 地名札">
+        <h2>郷土資料館: M-071</h2>
+        <p>第三展示室の地名札。閉館直前の収蔵メモに「海からではなく坂から見える灯」と注記されています。</p>
+        <a href="../sites/museum/collection-m071.html">収蔵品 M-071</a>
+        <a href="../sites/museum/exhibit-third.html">第三展示室</a>
+      </article>
+      <article class="result-card" data-keys="図書館前 バス 19:03 旧資料館坂">
+        <h2>未明交通: 図書館前</h2>
+        <p>9月17日の港湾線時刻表にだけ、図書館前から旧資料館坂へ向かった不自然な乗降記録があります。</p>
+        <a href="../sites/bus/timetable-20060917.html">9/17時刻表</a>
+        <a href="../sites/bus/stop-library.html">図書館前停留所</a>
+      </article>
+      <article class="result-card" data-keys="港の奥 ブログ BBS 霧 気象">
+        <h2>個人ブログ + BBS + 気象ログ</h2>
+        <p>「港の奥だけ明るい」という目撃証言は、ブログ、BBS、視程ログの三か所に別々の言葉で残っています。</p>
+        <a href="../sites/blog/post-20060917.html">ブログ記事</a>
+        <a href="../sites/forum/thread-124.html">BBSスレッド124</a>
+        <a href="../sites/weather/log-20060917.html">気象ログ</a>
+      </article>
+    </section>
+  </main>
+  <script src="../assets/ui/search.js"></script>
+  <script src="../assets/ui/iphone.js"></script>
+</body>
+</html>

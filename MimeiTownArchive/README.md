@@ -50,9 +50,11 @@ Implemented:
 - multi-page internal links for each first-chapter site
 - restored LINE-like message log
 - voicemail-style phone number gimmick
-- generated image assets for the first five sites
+- generated image assets for thirteen site and evidence pages
 - 30 additional internal pages across radio, weather, bus, tourism, blog, and forum sites
-- current HTML count: 59 pages
+- cross-site search portal with keyword result filtering
+- evidence photo ledger with thirteen dedicated casefile pages
+- current HTML count: 74 pages
 
 Current phone gimmick answer:
 

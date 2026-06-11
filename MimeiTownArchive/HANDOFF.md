@@ -20,8 +20,10 @@ and a phone/voicemail gimmick. The phone answer is `2300918`, derived from
 23:00 and the repeated 0918 suffix.
 An iPhone support pass added safe-area handling, stabilized viewport height,
 larger tap targets, table overflow handling, and a web manifest.
-The latest expansion doubled the page count from 29 to 59 HTML pages by adding
-six more site families: radio, weather, bus, tourism, blog, and forum logs.
+The latest expansion grew the prototype to 74 HTML pages. It adds a cross-site
+search portal, an evidence photo ledger, and thirteen dedicated casefile pages that
+turn generated images into playable clues. Site top pages now use the new images
+as in-world archive material instead of simple decoration.
 
 ## Created Documents
 
@@ -64,6 +66,21 @@ six more site families: radio, weather, bus, tourism, blog, and forum logs.
 - `sites/museum/collection-m071.html`
 - `messages/index.html`
 - `phone/index.html`
+- `search/index.html`
+- `casefiles/index.html`
+- `casefiles/town-hall.html`
+- `casefiles/school-gate.html`
+- `casefiles/library-shelf.html`
+- `casefiles/museum-room.html`
+- `casefiles/radio-studio.html`
+- `casefiles/foggy-harbor.html`
+- `casefiles/bus-stop.html`
+- `casefiles/old-map.html`
+- `casefiles/newspaper-desk.html`
+- `casefiles/tourism-pamphlet.html`
+- `casefiles/blog-light.html`
+- `casefiles/bbs-terminal.html`
+- `casefiles/search-desk.html`
 - `sites/radio/index.html`
 - `sites/radio/program-20060917.html`
 - `sites/radio/voicemail-policy.html`
@@ -109,8 +126,10 @@ six more site families: radio, weather, bus, tourism, blog, and forum logs.
 - `assets/ui/tourism.css`
 - `assets/ui/blog.css`
 - `assets/ui/forum.css`
+- `assets/ui/search.css`
 - `assets/ui/app.js`
 - `assets/ui/phone.js`
+- `assets/ui/search.js`
 - `assets/ui/iphone.js`
 - `manifest.webmanifest`
 - `assets/generated/mimei-town-hall.png`
@@ -118,6 +137,14 @@ six more site families: radio, weather, bus, tourism, blog, and forum logs.
 - `assets/generated/mimei-high-school-gate.png`
 - `assets/generated/library-local-history-shelf.png`
 - `assets/generated/museum-exhibit-room.png`
+- `assets/generated/radio-studio-night.png`
+- `assets/generated/foggy-harbor-weather.png`
+- `assets/generated/library-bus-stop.png`
+- `assets/generated/tourism-pamphlet-desk.png`
+- `assets/generated/old-map-table.png`
+- `assets/generated/blog-harbor-light.png`
+- `assets/generated/bbs-terminal.png`
+- `assets/generated/search-portal-desk.png`
 
 ## Important Constraints
 
@@ -129,12 +156,11 @@ six more site families: radio, weather, bus, tourism, blog, and forum logs.
 
 ## Next Work
 
-1. Add the search-like page that discovers later sites from keywords.
-2. Add a radio site for `灯台波` and connect it to the voicemail reveal.
-3. Add weather and bus timetable sites for the disappearance timeline.
-4. Expand Chapter 2 answer checks around K-29, M-071, and `明けない灯`.
-5. Build staged hints as separate buyer-support pages.
-6. Verify offline opening and mobile readability in browser.
+1. Expand Chapter 2 answer checks around K-29, M-071, and `明けない灯`.
+2. Add more late-game sites after the search portal, such as a clinic archive,
+   construction ledger, and private diary export.
+3. Build staged hints as separate buyer-support pages.
+4. Verify offline opening and mobile readability in browser after each large pass.
 
 ## Open Design Decisions
 
