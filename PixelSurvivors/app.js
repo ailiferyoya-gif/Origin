@@ -296,6 +296,14 @@
         const enemy = state.enemies[j];
         if (Math.hypot(enemy.x - bolt.x, enemy.y - bolt.y) < 28) {
           enemy.hp -= state.damage;
+          state.pops.push({
+            x: enemy.x,
+            y: enemy.y - enemy.size * 0.62,
+            text: formatDamage(state.damage),
+            life: 0.62,
+            color: "#ffef73",
+            size: 14,
+          });
           state.bolts.splice(i, 1);
           if (enemy.hp <= 0) {
             state.gems.push({ x: enemy.x, y: enemy.y, pulse: Math.random() * 6 });
@@ -391,15 +399,22 @@
     drawAura(state.w / 2, state.h / 2, 35 * pulse, character().tint);
     drawSpriteFrame(assets.playerSheet || assets.player, state.w / 2, state.h / 2, 54 * pulse, playerFrame);
 
-    ctx.font = "bold 12px Menlo, monospace";
     ctx.textAlign = "center";
     for (const pop of state.pops) {
       const p = screen(pop);
-      ctx.globalAlpha = Math.max(0, pop.life / 0.5);
-      ctx.fillStyle = pop.text === "KO" ? "#ffe75c" : "#82f3ff";
+      ctx.globalAlpha = Math.max(0, Math.min(1, pop.life / 0.5));
+      ctx.font = `bold ${pop.size || 12}px Menlo, monospace`;
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#10131a";
+      ctx.fillStyle = pop.color || (pop.text === "KO" ? "#ffe75c" : "#82f3ff");
+      ctx.strokeText(pop.text, p.x, p.y);
       ctx.fillText(pop.text, p.x, p.y);
       ctx.globalAlpha = 1;
     }
+  }
+
+  function formatDamage(value) {
+    return Number.isInteger(value) ? `${value}` : value.toFixed(1);
   }
 
   function drawSprite(img, x, y, size) {
