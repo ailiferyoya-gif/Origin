@@ -75,6 +75,7 @@
   const upgrades = [
     ["Rapid Fire", "\u653b\u6483\u9593\u9694\u304c\u77ed\u304f\u306a\u308b", () => state.fireCooldown = Math.max(0.16, state.fireCooldown * 0.84)],
     ["Sharp Bolts", "\u5f3e\u306e\u30c0\u30e1\u30fc\u30b8\u304c\u4e0a\u304c\u308b", () => state.damage += 0.65],
+    ["Split Shot", "\u5f3e\u304c1\u3064\u5897\u3048\u308b", () => state.projectiles = Math.min(6, state.projectiles + 1)],
     ["Fleet Boots", "\u79fb\u52d5\u901f\u5ea6\u304c\u4e0a\u304c\u308b", () => state.speed += 24],
     ["Soul Magnet", "\u30b8\u30a7\u30e0\u5438\u5f15\u7bc4\u56f2\u304c\u5e83\u304c\u308b", () => state.magnet += 34],
     ["Max Heart", "\u6700\u5927HP\u304c\u5897\u3048\u3066\u5168\u56de\u5fa9", () => { state.maxHp += 1; state.hp = state.maxHp; }],
@@ -99,6 +100,7 @@
     maxHp: 6,
     kills: 0,
     damage: 1,
+    projectiles: 1,
     speed: 190,
     fireCooldown: 0.55,
     magnet: 86,
@@ -153,6 +155,11 @@
   function playBgm() {
     if (!audio.unlocked) return;
     audio.bgm.play().catch(() => {});
+  }
+
+  function stopBgm() {
+    audio.bgm.pause();
+    audio.bgm.currentTime = 0;
   }
 
   function changeBgm() {
@@ -227,14 +234,20 @@
       }
     }
     const n = norm(target.x - state.player.x, target.y - state.player.y);
-    state.bolts.push({
-      x: state.player.x,
-      y: state.player.y,
-      vx: n.x * 430,
-      vy: n.y * 430,
-      life: 1.15,
-      angle: Math.atan2(n.y, n.x),
-    });
+    const baseAngle = Math.atan2(n.y, n.x);
+    const count = state.projectiles;
+    for (let i = 0; i < count; i++) {
+      const spread = (i - (count - 1) / 2) * 0.18;
+      const angle = baseAngle + spread;
+      state.bolts.push({
+        x: state.player.x + Math.cos(angle) * 10,
+        y: state.player.y + Math.sin(angle) * 10,
+        vx: Math.cos(angle) * 430,
+        vy: Math.sin(angle) * 430,
+        life: 1.15,
+        angle,
+      });
+    }
     state.fire = state.fireCooldown;
   }
 
@@ -282,6 +295,7 @@
       xp: 0,
       xpNeed: 8,
       kills: 0,
+      projectiles: 1,
       enemies: [],
       bolts: [],
       gems: [],
@@ -307,6 +321,7 @@
   }
 
   function endRun() {
+    stopBgm();
     save.coins += 35 + Math.min(165, state.kills * 3);
     persist();
     state.mode = "prep";
@@ -342,7 +357,10 @@
         state.enemies.splice(i, 1);
         state.hp -= 1;
         state.player.hit = 0.18;
-        if (state.hp <= 0) endRun();
+        if (state.hp <= 0) {
+          endRun();
+          return;
+        }
       }
     }
 
@@ -424,17 +442,17 @@
 
   function draw() {
     ctx.clearRect(0, 0, state.w, state.h);
-    ctx.fillStyle = "#080b13";
+    ctx.fillStyle = "#07080d";
     ctx.fillRect(0, 0, state.w, state.h);
 
-    const grid = 32;
+    const grid = 24;
     const ox = ((-state.player.x % grid) + grid) % grid;
     const oy = ((-state.player.y % grid) + grid) % grid;
     for (let x = ox - grid; x < state.w + grid; x += grid) {
       for (let y = oy - grid; y < state.h + grid; y += grid) {
-        const shade = ((Math.floor((x - ox + state.player.x) / grid) + Math.floor((y - oy + state.player.y) / grid)) & 1) ? "#101d22" : "#0c161b";
+        const shade = ((Math.floor((x - ox + state.player.x) / grid) + Math.floor((y - oy + state.player.y) / grid)) & 1) ? "#10161c" : "#0b1016";
         ctx.fillStyle = shade;
-        ctx.fillRect(Math.floor(x), Math.floor(y), grid - 1, grid - 1);
+        ctx.fillRect(Math.floor(x), Math.floor(y), grid - 2, grid - 2);
         if ((((x + y) / grid) & 3) === 0) {
           ctx.fillStyle = "rgba(255, 255, 255, .025)";
           ctx.fillRect(Math.floor(x + 4), Math.floor(y + 4), 4, 4);
@@ -460,7 +478,9 @@
       ctx.translate(p.x, p.y);
       ctx.rotate(bolt.angle);
       ctx.fillStyle = "#ffe75c";
-      ctx.fillRect(-10, -4, 20, 8);
+      ctx.fillRect(-13, -5, 26, 10);
+      ctx.fillStyle = "#8a5a12";
+      ctx.fillRect(-13, 5, 26, 3);
       ctx.restore();
     }
 
@@ -483,8 +503,8 @@
     const pulse = state.player.hit > 0 ? 1 + Math.sin(state.player.hit * 60) * 0.06 : 1;
     const moving = Math.hypot(state.move.x, state.move.y) > 0.05;
     const playerFrame = moving ? Math.floor(state.animTime * 10) % 4 : Math.floor(state.animTime * 3) % 4;
-    drawAura(state.w / 2, state.h / 2, 35 * pulse, character().tint);
-    drawSpriteFrame(assets.playerSheet || assets.player, state.w / 2, state.h / 2, 54 * pulse, playerFrame);
+    drawAura(state.w / 2, state.h / 2, 42 * pulse, character().tint);
+    drawSpriteFrame(assets.playerSheet || assets.player, state.w / 2, state.h / 2, 68 * pulse, playerFrame);
 
     ctx.textAlign = "center";
     for (const pop of state.pops) {
@@ -524,7 +544,10 @@
 
   function drawSprite(img, x, y, size) {
     if (!img) return;
-    ctx.drawImage(img, Math.round(x - size / 2), Math.round(y - size / 2), Math.round(size), Math.round(size));
+    const drawSize = Math.max(8, snap(size, 4));
+    const dx = snap(x - drawSize / 2, 4);
+    const dy = snap(y - drawSize / 2, 4);
+    drawOutlinedSource(img, 0, 0, img.width, img.height, dx, dy, drawSize, drawSize);
   }
 
   function drawSpriteFrame(img, x, y, size, frame) {
@@ -536,9 +559,26 @@
     const frameCount = 4;
     const frameWidth = Math.floor(img.width / frameCount);
     const sourceX = (frame % frameCount) * frameWidth;
-    const dx = Math.round(x - size / 2);
-    const dy = Math.round(y - size / 2);
-    ctx.drawImage(img, sourceX, 0, frameWidth, img.height, dx, dy, Math.round(size), Math.round(size));
+    const drawSize = Math.max(8, snap(size, 4));
+    const dx = snap(x - drawSize / 2, 4);
+    const dy = snap(y - drawSize / 2, 4);
+    drawOutlinedSource(img, sourceX, 0, frameWidth, img.height, dx, dy, drawSize, drawSize);
+  }
+
+  function drawOutlinedSource(img, sx, sy, sw, sh, dx, dy, dw, dh) {
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    ctx.filter = "brightness(0) saturate(100%)";
+    for (const [ox, oy] of [[-4, 0], [4, 0], [0, -4], [0, 4], [-4, -4], [4, -4], [-4, 4], [4, 4]]) {
+      ctx.drawImage(img, sx, sy, sw, sh, dx + ox, dy + oy, dw, dh);
+    }
+    ctx.filter = "none";
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+    ctx.restore();
+  }
+
+  function snap(value, unit = 4) {
+    return Math.round(value / unit) * unit;
   }
 
   function drawAura(x, y, radius, tint) {
@@ -590,7 +630,7 @@
     const owned = type === "character" ? save.characters.includes(item.id) : save.equipment.includes(item.id);
     const selected = type === "character" ? save.selectedCharacter === item.id : save.selectedEquipment === item.id;
     const visual = type === "character"
-      ? `<img class="portrait" src="./assets/player-sheet.png?v=20260613-anim" alt="">`
+      ? `<img class="portrait" src="./assets/player.png?v=20260613-publish" alt="">`
       : `<span class="icon">${item.icon}</span>`;
     return `<button class="pick ${owned ? "" : "locked"} ${selected ? "selected" : ""}" data-type="${type}" data-id="${item.id}" type="button">${visual}<b>${item.name}</b><small>${owned ? item.note : "LOCKED"}</small></button>`;
   }
@@ -599,7 +639,7 @@
     unlockAudio();
     if (save.coins < 100) {
       playSound("click", 0.22);
-      renderPrep("COIN不足");
+      renderPrep("COIN\u4e0d\u8db3");
       return;
     }
     playSound("gacha", 0.45, 0.2);
@@ -667,7 +707,7 @@
     unlockAudio();
     if (!save.characters.includes(id)) {
       playSound("click", 0.22);
-      renderPrep("ガチャで解放");
+      renderPrep("\u30ac\u30c1\u30e3\u3067\u89e3\u653e");
       return;
     }
     playSound("click", 0.32);
@@ -683,7 +723,7 @@
     unlockAudio();
     if (!save.equipment.includes(id)) {
       playSound("click", 0.22);
-      renderPrep("ガチャで解放");
+      renderPrep("\u30ac\u30c1\u30e3\u3067\u89e3\u653e");
       return;
     }
     playSound("click", 0.32);
