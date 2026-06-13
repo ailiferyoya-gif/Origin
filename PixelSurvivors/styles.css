@@ -30,11 +30,24 @@ body.prep-open .stick {
   background: #080b13;
 }
 
+.shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, .12) 0 1px, transparent 1px 6px);
+  mix-blend-mode: soft-light;
+}
+
 canvas {
   display: block;
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 .hud {
@@ -44,7 +57,7 @@ canvas {
   right: 14px;
   display: grid;
   gap: 7px;
-  z-index: 2;
+  z-index: 5;
   pointer-events: none;
   text-shadow: 0 2px 0 #000;
 }
@@ -82,7 +95,7 @@ canvas {
   border: 2px solid rgba(213, 237, 255, .28);
   border-radius: 50%;
   background: rgba(235, 247, 255, .08);
-  z-index: 3;
+  z-index: 5;
   opacity: .18;
   pointer-events: none;
   transition: opacity .12s ease;
@@ -107,7 +120,7 @@ canvas {
 .upgrade {
   position: fixed;
   inset: 0;
-  z-index: 5;
+  z-index: 7;
   display: grid;
   align-content: center;
   gap: 12px;
@@ -156,7 +169,7 @@ canvas {
 .prep {
   position: fixed;
   inset: 0;
-  z-index: 6;
+  z-index: 8;
   display: grid;
   grid-template-rows: auto auto auto auto auto;
   gap: 10px;

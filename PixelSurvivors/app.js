@@ -120,7 +120,7 @@
   }
 
   function resize() {
-    state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    state.dpr = 1;
     state.w = Math.floor(window.innerWidth);
     state.h = Math.floor(window.innerHeight);
     canvas.width = Math.floor(state.w * state.dpr);
@@ -353,14 +353,18 @@
     ctx.fillStyle = "#080b13";
     ctx.fillRect(0, 0, state.w, state.h);
 
-    const grid = 48;
+    const grid = 32;
     const ox = ((-state.player.x % grid) + grid) % grid;
     const oy = ((-state.player.y % grid) + grid) % grid;
     for (let x = ox - grid; x < state.w + grid; x += grid) {
       for (let y = oy - grid; y < state.h + grid; y += grid) {
         const shade = ((Math.floor((x - ox + state.player.x) / grid) + Math.floor((y - oy + state.player.y) / grid)) & 1) ? "#101d22" : "#0c161b";
         ctx.fillStyle = shade;
-        ctx.fillRect(Math.floor(x), Math.floor(y), grid - 2, grid - 2);
+        ctx.fillRect(Math.floor(x), Math.floor(y), grid - 1, grid - 1);
+        if ((((x + y) / grid) & 3) === 0) {
+          ctx.fillStyle = "rgba(255, 255, 255, .025)";
+          ctx.fillRect(Math.floor(x + 4), Math.floor(y + 4), 4, 4);
+        }
       }
     }
 
@@ -370,10 +374,10 @@
       ctx.fillStyle = "#2ce8ff";
       ctx.strokeStyle = "#f7ffff";
       ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.rect(p.x - r, p.y - r, r * 2, r * 2);
-      ctx.fill();
-      ctx.stroke();
+      const px = Math.round(p.x / 2) * 2;
+      const py = Math.round(p.y / 2) * 2;
+      ctx.fillRect(px - r, py - r, r * 2, r * 2);
+      ctx.strokeRect(px - r, py - r, r * 2, r * 2);
     }
 
     for (const bolt of state.bolts) {
@@ -382,7 +386,7 @@
       ctx.translate(p.x, p.y);
       ctx.rotate(bolt.angle);
       ctx.fillStyle = "#ffe75c";
-      ctx.fillRect(-9, -3, 18, 6);
+      ctx.fillRect(-10, -4, 20, 8);
       ctx.restore();
     }
 
