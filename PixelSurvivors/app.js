@@ -34,29 +34,45 @@
     img.src = src;
   });
 
+  const audio = {
+    unlocked: false,
+    bgm: new Audio("./assets/audio/bgm.ogg?v=20260613-audiofx"),
+    sounds: {
+      click: "./assets/audio/ui-click.ogg?v=20260613-audiofx",
+      confirm: "./assets/audio/ui-confirm.ogg?v=20260613-audiofx",
+      gacha: "./assets/audio/ui-gacha.ogg?v=20260613-audiofx",
+      hit: "./assets/audio/hit.ogg?v=20260613-audiofx",
+      ko: "./assets/audio/ko.ogg?v=20260613-audiofx",
+      xp: "./assets/audio/xp.ogg?v=20260613-audiofx",
+      level: "./assets/audio/level.ogg?v=20260613-audiofx",
+    },
+    last: {},
+  };
+  audio.bgm.loop = true;
+  audio.bgm.volume = 0.22;
+
   const characters = [
-    { id: "hunter", name: "Hunter", note: "標準型", tint: null, stats: { hp: 0, speed: 0, damage: 0, cooldown: 1, magnet: 0 } },
-    { id: "runner", name: "Runner", note: "移動が速い", tint: "#65e7ff", stats: { hp: -1, speed: 34, damage: 0, cooldown: .98, magnet: 8 } },
-    { id: "warden", name: "Warden", note: "HPと吸引が強い", tint: "#c7ff7c", stats: { hp: 2, speed: -12, damage: .2, cooldown: 1.04, magnet: 28 } },
-    { id: "witch", name: "Witch", note: "火力重視", tint: "#ff8df2", stats: { hp: -1, speed: 4, damage: .75, cooldown: .92, magnet: 0 } },
+    { id: "hunter", name: "Hunter", note: "\u6a19\u6e96\u578b", tint: null, stats: { hp: 0, speed: 0, damage: 0, cooldown: 1, magnet: 0 } },
+    { id: "runner", name: "Runner", note: "\u79fb\u52d5\u304c\u901f\u3044", tint: "#65e7ff", stats: { hp: -1, speed: 34, damage: 0, cooldown: .98, magnet: 8 } },
+    { id: "warden", name: "Warden", note: "HP\u3068\u5438\u5f15\u304c\u5f37\u3044", tint: "#c7ff7c", stats: { hp: 2, speed: -12, damage: .2, cooldown: 1.04, magnet: 28 } },
+    { id: "witch", name: "Witch", note: "\u706b\u529b\u91cd\u8996", tint: "#ff8df2", stats: { hp: -1, speed: 4, damage: .75, cooldown: .92, magnet: 0 } },
   ];
 
   const equipment = [
-    { id: "crossbow", name: "Crossbow", icon: ">>", note: "弾の威力 +1", stats: { damage: 1, cooldown: 1, speed: 0, magnet: 0, hp: 0 } },
-    { id: "boots", name: "Boots", icon: "[]", note: "移動速度 +38", stats: { damage: 0, cooldown: 1, speed: 38, magnet: 0, hp: 0 } },
-    { id: "magnet", name: "Magnet", icon: "U", note: "吸引範囲 +70", stats: { damage: 0, cooldown: 1, speed: 0, magnet: 70, hp: 0 } },
-    { id: "charm", name: "Charm", icon: "+", note: "HP +2 / 連射少し低下", stats: { damage: 0, cooldown: 1.08, speed: 0, magnet: 0, hp: 2 } },
-    { id: "clock", name: "Clock", icon: "*", note: "攻撃間隔 -18%", stats: { damage: 0, cooldown: .82, speed: 0, magnet: 0, hp: 0 } },
+    { id: "crossbow", name: "Crossbow", icon: ">>", note: "\u5f3e\u306e\u5a01\u529b +1", stats: { damage: 1, cooldown: 1, speed: 0, magnet: 0, hp: 0 } },
+    { id: "boots", name: "Boots", icon: "[]", note: "\u79fb\u52d5\u901f\u5ea6 +38", stats: { damage: 0, cooldown: 1, speed: 38, magnet: 0, hp: 0 } },
+    { id: "magnet", name: "Magnet", icon: "U", note: "\u5438\u5f15\u7bc4\u56f2 +70", stats: { damage: 0, cooldown: 1, speed: 0, magnet: 70, hp: 0 } },
+    { id: "charm", name: "Charm", icon: "+", note: "HP +2 / \u9023\u5c04\u5c11\u3057\u4f4e\u4e0b", stats: { damage: 0, cooldown: 1.08, speed: 0, magnet: 0, hp: 2 } },
+    { id: "clock", name: "Clock", icon: "*", note: "\u653b\u6483\u9593\u9694 -18%", stats: { damage: 0, cooldown: .82, speed: 0, magnet: 0, hp: 0 } },
   ];
 
   const upgrades = [
-    ["Rapid Fire", "攻撃間隔が短くなる", () => state.fireCooldown = Math.max(0.16, state.fireCooldown * 0.84)],
-    ["Sharp Bolts", "弾のダメージが上がる", () => state.damage += 0.65],
-    ["Fleet Boots", "移動速度が上がる", () => state.speed += 24],
-    ["Soul Magnet", "ジェム吸引範囲が広がる", () => state.magnet += 34],
-    ["Max Heart", "最大HPが増えて全回復", () => { state.maxHp += 1; state.hp = state.maxHp; }],
+    ["Rapid Fire", "\u653b\u6483\u9593\u9694\u304c\u77ed\u304f\u306a\u308b", () => state.fireCooldown = Math.max(0.16, state.fireCooldown * 0.84)],
+    ["Sharp Bolts", "\u5f3e\u306e\u30c0\u30e1\u30fc\u30b8\u304c\u4e0a\u304c\u308b", () => state.damage += 0.65],
+    ["Fleet Boots", "\u79fb\u52d5\u901f\u5ea6\u304c\u4e0a\u304c\u308b", () => state.speed += 24],
+    ["Soul Magnet", "\u30b8\u30a7\u30e0\u5438\u5f15\u7bc4\u56f2\u304c\u5e83\u304c\u308b", () => state.magnet += 34],
+    ["Max Heart", "\u6700\u5927HP\u304c\u5897\u3048\u3066\u5168\u56de\u5fa9", () => { state.maxHp += 1; state.hp = state.maxHp; }],
   ];
-
   const saveKey = "pixel-survivors-loadout-v1";
   const save = loadSave();
 
@@ -86,6 +102,7 @@
     bolts: [],
     gems: [],
     pops: [],
+    effects: [],
     touchId: null,
     stickBase: { x: 0, y: 0 },
     animTime: 0,
@@ -109,6 +126,27 @@
 
   function persist() {
     localStorage.setItem(saveKey, JSON.stringify(save));
+  }
+
+  function unlockAudio() {
+    audio.unlocked = true;
+  }
+
+  function playSound(name, volume = 0.45, throttle = 0.035) {
+    if (!audio.unlocked) return;
+    const now = performance.now() / 1000;
+    if (audio.last[name] && now - audio.last[name] < throttle) return;
+    audio.last[name] = now;
+    const src = audio.sounds[name];
+    if (!src) return;
+    const sound = new Audio(src);
+    sound.volume = volume;
+    sound.play().catch(() => {});
+  }
+
+  function playBgm() {
+    if (!audio.unlocked) return;
+    audio.bgm.play().catch(() => {});
   }
 
   function character() {
@@ -190,6 +228,8 @@
     state.gems.splice(state.gems.indexOf(gem), 1);
     state.xp += 1;
     state.pops.push({ x: gem.x, y: gem.y, text: "+XP", life: 0.5 });
+    playSound("xp", 0.25, 0.04);
+    spawnHitEffect(gem.x, gem.y, "#2ce8ff", 5);
     if (state.xp >= state.xpNeed) {
       state.xp -= state.xpNeed;
       state.xpNeed += 5;
@@ -200,12 +240,15 @@
 
   function showUpgrade() {
     state.paused = true;
+    playSound("level", 0.42, 0.4);
     const picks = upgrades.slice().sort(() => Math.random() - 0.5).slice(0, 3);
     ui.upgrade.innerHTML = "<h2>LEVEL UP</h2>";
     for (const pick of picks) {
       const button = document.createElement("button");
       button.innerHTML = `<strong>${pick[0]}</strong><small>${pick[1]}</small>`;
       button.addEventListener("pointerup", () => {
+        unlockAudio();
+        playSound("confirm", 0.38);
         pick[2]();
         state.paused = false;
         ui.upgrade.classList.add("hidden");
@@ -229,6 +272,7 @@
       bolts: [],
       gems: [],
       pops: [],
+      effects: [],
     });
     state.player.x = 0;
     state.player.y = 0;
@@ -238,6 +282,9 @@
   }
 
   function startRun() {
+    unlockAudio();
+    playSound("confirm", 0.42);
+    playBgm();
     state.mode = "run";
     ui.prep.classList.add("hidden");
     document.body.classList.remove("prep-open");
@@ -297,6 +344,8 @@
         const enemy = state.enemies[j];
         if (Math.hypot(enemy.x - bolt.x, enemy.y - bolt.y) < 28) {
           enemy.hp -= state.damage;
+          playSound("hit", 0.28, 0.025);
+          spawnHitEffect(enemy.x, enemy.y - enemy.size * 0.35, "#ffef73");
           state.pops.push({
             x: enemy.x,
             y: enemy.y - enemy.size * 0.62,
@@ -307,6 +356,8 @@
           });
           state.bolts.splice(i, 1);
           if (enemy.hp <= 0) {
+            spawnHitEffect(enemy.x, enemy.y, "#ff5c8a", 12);
+            playSound("ko", 0.38, 0.08);
             state.gems.push({ x: enemy.x, y: enemy.y, pulse: Math.random() * 6 });
             state.pops.push({ x: enemy.x, y: enemy.y, text: "KO", life: 0.45 });
             state.enemies.splice(j, 1);
@@ -338,6 +389,14 @@
       state.pops[i].y -= 28 * dt;
       state.pops[i].life -= dt;
       if (state.pops[i].life <= 0) state.pops.splice(i, 1);
+    }
+
+    for (let i = state.effects.length - 1; i >= 0; i--) {
+      const fx = state.effects[i];
+      fx.x += fx.vx * dt;
+      fx.y += fx.vy * dt;
+      fx.life -= dt;
+      if (fx.life <= 0) state.effects.splice(i, 1);
     }
   }
 
@@ -390,6 +449,14 @@
       ctx.restore();
     }
 
+    for (const fx of state.effects) {
+      const p = screen(fx);
+      ctx.globalAlpha = Math.max(0, fx.life / fx.maxLife);
+      ctx.fillStyle = fx.color;
+      ctx.fillRect(Math.round(p.x), Math.round(p.y), fx.size, fx.size);
+      ctx.globalAlpha = 1;
+    }
+
     for (const enemy of state.enemies) {
       const p = screen(enemy);
       const bob = Math.sin(enemy.wobble) * 4;
@@ -415,6 +482,24 @@
       ctx.strokeText(pop.text, p.x, p.y);
       ctx.fillText(pop.text, p.x, p.y);
       ctx.globalAlpha = 1;
+    }
+  }
+
+  function spawnHitEffect(x, y, color, count = 7) {
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 34 + Math.random() * 86;
+      const life = 0.22 + Math.random() * 0.18;
+      state.effects.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        color,
+        size: 3 + Math.floor(Math.random() * 4),
+        life,
+        maxLife: life,
+      });
     }
   }
 
@@ -496,10 +581,13 @@
   }
 
   function runGacha() {
+    unlockAudio();
     if (save.coins < 100) {
+      playSound("click", 0.22);
       renderPrep("COIN不足");
       return;
     }
+    playSound("gacha", 0.45, 0.2);
     save.coins -= 100;
     const pool = [
       ...characters.slice(1).map((item) => ({ ...item, type: "character" })),
@@ -561,10 +649,13 @@
     const button = event.target.closest(".pick");
     if (!button) return;
     const id = button.dataset.id;
+    unlockAudio();
     if (!save.characters.includes(id)) {
+      playSound("click", 0.22);
       renderPrep("ガチャで解放");
       return;
     }
+    playSound("click", 0.32);
     save.selectedCharacter = id;
     persist();
     renderPrep("SELECTED");
@@ -574,10 +665,13 @@
     const button = event.target.closest(".pick");
     if (!button) return;
     const id = button.dataset.id;
+    unlockAudio();
     if (!save.equipment.includes(id)) {
+      playSound("click", 0.22);
       renderPrep("ガチャで解放");
       return;
     }
+    playSound("click", 0.32);
     save.selectedEquipment = id;
     persist();
     renderPrep("SELECTED");

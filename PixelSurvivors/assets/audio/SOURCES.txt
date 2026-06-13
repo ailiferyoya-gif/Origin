@@ -1,0 +1,15 @@
+﻿Audio sources: Kenney.nl CC0 assets.
+
+- ui-click.ogg: Interface Sounds / click_001.ogg
+- ui-confirm.ogg: Interface Sounds / confirmation_001.ogg
+- ui-gacha.ogg: Interface Sounds / maximize_003.ogg
+- hit.ogg: Impact Sounds / impactGeneric_light_000.ogg
+- ko.ogg: Impact Sounds / impactMetal_medium_000.ogg
+- xp.ogg: Interface Sounds / pluck_001.ogg
+- level.ogg: Music Jingles / 8-Bit jingles / jingles_NES03.ogg
+- bgm.ogg: Music Jingles / 8-Bit jingles / jingles_NES00.ogg
+
+License: Creative Commons CC0, as listed on the source pages:
+- https://kenney.nl/assets/interface-sounds
+- https://kenney.nl/assets/impact-sounds
+- https://kenney.nl/assets/music-jingles
