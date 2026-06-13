@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#080b13">
   <title>Pixel Survivors</title>
-  <link rel="stylesheet" href="./styles.css?v=20260613-publish">
+  <link rel="stylesheet" href="./styles.css?v=20260613-loadout">
 </head>
 <body>
   <main class="shell">
@@ -22,8 +22,31 @@
       <div class="xp"><span id="xp"></span></div>
     </section>
     <section id="upgrade" class="upgrade hidden" aria-live="polite"></section>
+    <section id="prep" class="prep" aria-label="loadout">
+      <div class="prep-head">
+        <p>PIXEL SURVIVORS</p>
+        <h1>出撃準備</h1>
+        <div class="wallet"><span id="coins">COIN 0</span><span id="owned">0/0</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><span>CHARACTER</span><strong id="selectedCharacter">Hunter</strong></div>
+        <div id="characters" class="pick-grid"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><span>EQUIPMENT</span><strong id="selectedEquipment">Crossbow</strong></div>
+        <div id="equipment" class="pick-grid"></div>
+      </div>
+      <div class="panel gacha">
+        <div>
+          <span>GACHA</span>
+          <strong id="gachaResult">100 COIN</strong>
+        </div>
+        <button id="gachaBtn" type="button">回す</button>
+      </div>
+      <button id="startBtn" class="start" type="button">START</button>
+    </section>
     <div id="stick" class="stick" aria-hidden="true"><span></span></div>
   </main>
-  <script src="./app.js?v=20260613-anim"></script>
+  <script src="./app.js?v=20260613-loadout"></script>
 </body>
 </html>

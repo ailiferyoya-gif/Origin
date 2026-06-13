@@ -10,6 +10,16 @@
     kills: document.getElementById("kills"),
     xp: document.getElementById("xp"),
     upgrade: document.getElementById("upgrade"),
+    prep: document.getElementById("prep"),
+    coins: document.getElementById("coins"),
+    owned: document.getElementById("owned"),
+    characters: document.getElementById("characters"),
+    equipment: document.getElementById("equipment"),
+    selectedCharacter: document.getElementById("selectedCharacter"),
+    selectedEquipment: document.getElementById("selectedEquipment"),
+    gachaBtn: document.getElementById("gachaBtn"),
+    gachaResult: document.getElementById("gachaResult"),
+    startBtn: document.getElementById("startBtn"),
     stick: document.getElementById("stick"),
     knob: document.querySelector("#stick span"),
   };
@@ -24,6 +34,21 @@
     img.src = src;
   });
 
+  const characters = [
+    { id: "hunter", name: "Hunter", note: "標準型", tint: null, stats: { hp: 0, speed: 0, damage: 0, cooldown: 1, magnet: 0 } },
+    { id: "runner", name: "Runner", note: "移動が速い", tint: "#65e7ff", stats: { hp: -1, speed: 34, damage: 0, cooldown: .98, magnet: 8 } },
+    { id: "warden", name: "Warden", note: "HPと吸引が強い", tint: "#c7ff7c", stats: { hp: 2, speed: -12, damage: .2, cooldown: 1.04, magnet: 28 } },
+    { id: "witch", name: "Witch", note: "火力重視", tint: "#ff8df2", stats: { hp: -1, speed: 4, damage: .75, cooldown: .92, magnet: 0 } },
+  ];
+
+  const equipment = [
+    { id: "crossbow", name: "Crossbow", icon: ">>", note: "弾の威力 +1", stats: { damage: 1, cooldown: 1, speed: 0, magnet: 0, hp: 0 } },
+    { id: "boots", name: "Boots", icon: "[]", note: "移動速度 +38", stats: { damage: 0, cooldown: 1, speed: 38, magnet: 0, hp: 0 } },
+    { id: "magnet", name: "Magnet", icon: "U", note: "吸引範囲 +70", stats: { damage: 0, cooldown: 1, speed: 0, magnet: 70, hp: 0 } },
+    { id: "charm", name: "Charm", icon: "+", note: "HP +2 / 連射少し低下", stats: { damage: 0, cooldown: 1.08, speed: 0, magnet: 0, hp: 2 } },
+    { id: "clock", name: "Clock", icon: "*", note: "攻撃間隔 -18%", stats: { damage: 0, cooldown: .82, speed: 0, magnet: 0, hp: 0 } },
+  ];
+
   const upgrades = [
     ["Rapid Fire", "攻撃間隔が短くなる", () => state.fireCooldown = Math.max(0.16, state.fireCooldown * 0.84)],
     ["Sharp Bolts", "弾のダメージが上がる", () => state.damage += 0.65],
@@ -31,6 +56,9 @@
     ["Soul Magnet", "ジェム吸引範囲が広がる", () => state.magnet += 34],
     ["Max Heart", "最大HPが増えて全回復", () => { state.maxHp += 1; state.hp = state.maxHp; }],
   ];
+
+  const saveKey = "pixel-survivors-loadout-v1";
+  const save = loadSave();
 
   const state = {
     w: 0,
@@ -41,6 +69,7 @@
     spawn: 0,
     fire: 0,
     paused: false,
+    mode: "prep",
     level: 1,
     xp: 0,
     xpNeed: 8,
@@ -61,6 +90,34 @@
     animTime: 0,
   };
 
+  function loadSave() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(saveKey) || "null");
+      if (stored) return stored;
+    } catch {
+      localStorage.removeItem(saveKey);
+    }
+    return {
+      coins: 300,
+      characters: ["hunter"],
+      equipment: ["crossbow"],
+      selectedCharacter: "hunter",
+      selectedEquipment: "crossbow",
+    };
+  }
+
+  function persist() {
+    localStorage.setItem(saveKey, JSON.stringify(save));
+  }
+
+  function character() {
+    return characters.find((item) => item.id === save.selectedCharacter) || characters[0];
+  }
+
+  function equip() {
+    return equipment.find((item) => item.id === save.selectedEquipment) || equipment[0];
+  }
+
   function resize() {
     state.dpr = Math.min(window.devicePixelRatio || 1, 2);
     state.w = Math.floor(window.innerWidth);
@@ -78,6 +135,17 @@
   function norm(x, y) {
     const len = Math.hypot(x, y) || 1;
     return { x: x / len, y: y / len };
+  }
+
+  function applyLoadoutStats() {
+    const charStats = character().stats;
+    const equipStats = equip().stats;
+    state.maxHp = Math.max(3, 6 + charStats.hp + equipStats.hp);
+    state.hp = state.maxHp;
+    state.damage = 1 + charStats.damage + equipStats.damage;
+    state.speed = 190 + charStats.speed + equipStats.speed;
+    state.fireCooldown = Math.max(0.2, 0.55 * charStats.cooldown * equipStats.cooldown);
+    state.magnet = 86 + charStats.magnet + equipStats.magnet;
   }
 
   function spawnEnemy() {
@@ -155,13 +223,7 @@
       level: 1,
       xp: 0,
       xpNeed: 8,
-      hp: 6,
-      maxHp: 6,
       kills: 0,
-      damage: 1,
-      speed: 190,
-      fireCooldown: 0.55,
-      magnet: 86,
       enemies: [],
       bolts: [],
       gems: [],
@@ -169,12 +231,31 @@
     });
     state.player.x = 0;
     state.player.y = 0;
+    state.move.x = 0;
+    state.move.y = 0;
+    applyLoadoutStats();
+  }
+
+  function startRun() {
+    state.mode = "run";
+    ui.prep.classList.add("hidden");
+    document.body.classList.remove("prep-open");
+    resetRun();
+  }
+
+  function endRun() {
+    save.coins += 35 + Math.min(165, state.kills * 3);
+    persist();
+    state.mode = "prep";
+    ui.prep.classList.remove("hidden");
+    document.body.classList.add("prep-open");
+    renderPrep(`RUN REWARD +${35 + Math.min(165, state.kills * 3)} COIN`);
   }
 
   function update(dt) {
-    if (state.paused) return;
-    state.time += dt;
     state.animTime += dt;
+    if (state.mode !== "run" || state.paused) return;
+    state.time += dt;
     state.spawn -= dt;
     state.fire -= dt;
     state.player.x += state.move.x * state.speed * dt;
@@ -198,7 +279,7 @@
         state.enemies.splice(i, 1);
         state.hp -= 1;
         state.player.hit = 0.18;
-        if (state.hp <= 0) resetRun();
+        if (state.hp <= 0) endRun();
       }
     }
 
@@ -221,6 +302,10 @@
             state.pops.push({ x: enemy.x, y: enemy.y, text: "KO", life: 0.45 });
             state.enemies.splice(j, 1);
             state.kills += 1;
+            if (state.kills % 10 === 0) {
+              save.coins += 10;
+              persist();
+            }
           }
           break;
         }
@@ -303,6 +388,7 @@
     const pulse = state.player.hit > 0 ? 1 + Math.sin(state.player.hit * 60) * 0.06 : 1;
     const moving = Math.hypot(state.move.x, state.move.y) > 0.05;
     const playerFrame = moving ? Math.floor(state.animTime * 10) % 4 : Math.floor(state.animTime * 3) % 4;
+    drawAura(state.w / 2, state.h / 2, 35 * pulse, character().tint);
     drawSpriteFrame(assets.playerSheet || assets.player, state.w / 2, state.h / 2, 54 * pulse, playerFrame);
 
     ctx.font = "bold 12px Menlo, monospace";
@@ -330,17 +416,21 @@
     const frameCount = 4;
     const frameWidth = Math.floor(img.width / frameCount);
     const sourceX = (frame % frameCount) * frameWidth;
-    ctx.drawImage(
-      img,
-      sourceX,
-      0,
-      frameWidth,
-      img.height,
-      Math.round(x - size / 2),
-      Math.round(y - size / 2),
-      Math.round(size),
-      Math.round(size)
-    );
+    const dx = Math.round(x - size / 2);
+    const dy = Math.round(y - size / 2);
+    ctx.drawImage(img, sourceX, 0, frameWidth, img.height, dx, dy, Math.round(size), Math.round(size));
+  }
+
+  function drawAura(x, y, radius, tint) {
+    if (tint) {
+      ctx.save();
+      ctx.globalAlpha = .32 + Math.sin(state.animTime * 7) * .08;
+      ctx.fillStyle = tint;
+      ctx.beginPath();
+      ctx.arc(x, y + 15, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
   }
 
   function updateHud() {
@@ -363,7 +453,56 @@
     requestAnimationFrame(loop);
   }
 
+  function renderPrep(message = "100 COIN") {
+    const ownedCount = save.characters.length + save.equipment.length;
+    const totalCount = characters.length + equipment.length;
+    ui.coins.textContent = `COIN ${save.coins}`;
+    ui.owned.textContent = `${ownedCount}/${totalCount}`;
+    ui.selectedCharacter.textContent = character().name;
+    ui.selectedEquipment.textContent = equip().name;
+    ui.gachaResult.textContent = message;
+    ui.gachaBtn.disabled = save.coins < 100;
+    ui.characters.innerHTML = characters.map((item) => pickCard(item, "character")).join("");
+    ui.equipment.innerHTML = equipment.map((item) => pickCard(item, "equipment")).join("");
+  }
+
+  function pickCard(item, type) {
+    const owned = type === "character" ? save.characters.includes(item.id) : save.equipment.includes(item.id);
+    const selected = type === "character" ? save.selectedCharacter === item.id : save.selectedEquipment === item.id;
+    const visual = type === "character"
+      ? `<img class="portrait" src="./assets/player-sheet.png?v=20260613-anim" alt="">`
+      : `<span class="icon">${item.icon}</span>`;
+    return `<button class="pick ${owned ? "" : "locked"} ${selected ? "selected" : ""}" data-type="${type}" data-id="${item.id}" type="button">${visual}<b>${item.name}</b><small>${owned ? item.note : "LOCKED"}</small></button>`;
+  }
+
+  function runGacha() {
+    if (save.coins < 100) {
+      renderPrep("COIN不足");
+      return;
+    }
+    save.coins -= 100;
+    const pool = [
+      ...characters.slice(1).map((item) => ({ ...item, type: "character" })),
+      ...equipment.slice(1).map((item) => ({ ...item, type: "equipment" })),
+    ];
+    const prize = pool[Math.floor(Math.random() * pool.length)];
+    const ownedList = prize.type === "character" ? save.characters : save.equipment;
+    let message;
+    if (ownedList.includes(prize.id)) {
+      save.coins += 35;
+      message = `DUP ${prize.name} +35`;
+    } else {
+      ownedList.push(prize.id);
+      if (prize.type === "character") save.selectedCharacter = prize.id;
+      if (prize.type === "equipment") save.selectedEquipment = prize.id;
+      message = `GET ${prize.name}`;
+    }
+    persist();
+    renderPrep(message);
+  }
+
   function setStick(clientX, clientY) {
+    if (state.mode !== "run") return;
     const rect = ui.stick.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -383,6 +522,35 @@
     ui.knob.style.transform = "";
   }
 
+  ui.characters.addEventListener("pointerup", (event) => {
+    const button = event.target.closest(".pick");
+    if (!button) return;
+    const id = button.dataset.id;
+    if (!save.characters.includes(id)) {
+      renderPrep("ガチャで解放");
+      return;
+    }
+    save.selectedCharacter = id;
+    persist();
+    renderPrep("SELECTED");
+  });
+
+  ui.equipment.addEventListener("pointerup", (event) => {
+    const button = event.target.closest(".pick");
+    if (!button) return;
+    const id = button.dataset.id;
+    if (!save.equipment.includes(id)) {
+      renderPrep("ガチャで解放");
+      return;
+    }
+    save.selectedEquipment = id;
+    persist();
+    renderPrep("SELECTED");
+  });
+
+  ui.gachaBtn.addEventListener("pointerup", runGacha);
+  ui.startBtn.addEventListener("pointerup", startRun);
+
   ui.stick.addEventListener("pointerdown", (event) => {
     ui.stick.setPointerCapture(event.pointerId);
     state.touchId = event.pointerId;
@@ -396,6 +564,9 @@
 
   window.addEventListener("resize", resize);
   document.addEventListener("gesturestart", (event) => event.preventDefault());
+  document.body.classList.add("prep-open");
+  renderPrep();
+
   Promise.all([
     loadImage("player", "./assets/player.png?v=20260613-publish"),
     loadImage("bat", "./assets/bat.png?v=20260613-publish"),
