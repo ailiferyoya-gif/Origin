@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#080b13">
+  <title>Pixel Survivors</title>
+  <link rel="stylesheet" href="./styles.css?v=20260613-publish">
+</head>
+<body>
+  <main class="shell">
+    <canvas id="game" aria-label="Pixel Survivors game field"></canvas>
+    <section class="hud" aria-label="status">
+      <div class="row">
+        <span id="hp">HP 6/6</span>
+        <span id="time">00:00</span>
+      </div>
+      <div class="row">
+        <span id="level">LV 1</span>
+        <span id="kills">KILLS 0</span>
+      </div>
+      <div class="xp"><span id="xp"></span></div>
+    </section>
+    <section id="upgrade" class="upgrade hidden" aria-live="polite"></section>
+    <div id="stick" class="stick" aria-hidden="true"><span></span></div>
+  </main>
+  <script src="./app.js?v=20260613-publish"></script>
+</body>
+</html>
