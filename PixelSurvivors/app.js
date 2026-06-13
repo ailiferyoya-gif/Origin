@@ -58,6 +58,7 @@
     gems: [],
     pops: [],
     touchId: null,
+    animTime: 0,
   };
 
   function resize() {
@@ -173,6 +174,7 @@
   function update(dt) {
     if (state.paused) return;
     state.time += dt;
+    state.animTime += dt;
     state.spawn -= dt;
     state.fire -= dt;
     state.player.x += state.move.x * state.speed * dt;
@@ -293,11 +295,15 @@
     for (const enemy of state.enemies) {
       const p = screen(enemy);
       const bob = Math.sin(enemy.wobble) * 4;
-      drawSprite(assets[enemy.kind], p.x, p.y + bob, enemy.size);
+      const rate = enemy.kind === "bat" ? 12 : 7;
+      const frame = Math.floor((state.animTime + enemy.wobble * 0.08) * rate) % 4;
+      drawSpriteFrame(assets[`${enemy.kind}Sheet`] || assets[enemy.kind], p.x, p.y + bob, enemy.size, frame);
     }
 
     const pulse = state.player.hit > 0 ? 1 + Math.sin(state.player.hit * 60) * 0.06 : 1;
-    drawSprite(assets.player, state.w / 2, state.h / 2, 54 * pulse);
+    const moving = Math.hypot(state.move.x, state.move.y) > 0.05;
+    const playerFrame = moving ? Math.floor(state.animTime * 10) % 4 : Math.floor(state.animTime * 3) % 4;
+    drawSpriteFrame(assets.playerSheet || assets.player, state.w / 2, state.h / 2, 54 * pulse, playerFrame);
 
     ctx.font = "bold 12px Menlo, monospace";
     ctx.textAlign = "center";
@@ -313,6 +319,28 @@
   function drawSprite(img, x, y, size) {
     if (!img) return;
     ctx.drawImage(img, Math.round(x - size / 2), Math.round(y - size / 2), Math.round(size), Math.round(size));
+  }
+
+  function drawSpriteFrame(img, x, y, size, frame) {
+    if (!img) return;
+    if (img.width <= img.height * 1.5) {
+      drawSprite(img, x, y, size);
+      return;
+    }
+    const frameCount = 4;
+    const frameWidth = Math.floor(img.width / frameCount);
+    const sourceX = (frame % frameCount) * frameWidth;
+    ctx.drawImage(
+      img,
+      sourceX,
+      0,
+      frameWidth,
+      img.height,
+      Math.round(x - size / 2),
+      Math.round(y - size / 2),
+      Math.round(size),
+      Math.round(size)
+    );
   }
 
   function updateHud() {
@@ -372,6 +400,9 @@
     loadImage("player", "./assets/player.png?v=20260613-publish"),
     loadImage("bat", "./assets/bat.png?v=20260613-publish"),
     loadImage("slime", "./assets/slime.png?v=20260613-publish"),
+    loadImage("playerSheet", "./assets/player-sheet.png?v=20260613-anim"),
+    loadImage("batSheet", "./assets/bat-sheet.png?v=20260613-anim"),
+    loadImage("slimeSheet", "./assets/slime-sheet.png?v=20260613-anim"),
   ]).then(() => {
     resize();
     requestAnimationFrame(loop);
