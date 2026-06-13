@@ -36,7 +36,13 @@
 
   const audio = {
     unlocked: false,
-    bgm: new Audio("./assets/audio/bgm.ogg?v=20260613-audiofx"),
+    bgmIndex: 0,
+    bgmTracks: [
+      "./assets/audio/bgm-action-1.ogg?v=20260613-bgm2",
+      "./assets/audio/bgm-action-2.ogg?v=20260613-bgm2",
+      "./assets/audio/bgm-action-3.ogg?v=20260613-bgm2",
+    ],
+    bgm: new Audio("./assets/audio/bgm-action-1.ogg?v=20260613-bgm2"),
     sounds: {
       click: "./assets/audio/ui-click.ogg?v=20260613-audiofx",
       confirm: "./assets/audio/ui-confirm.ogg?v=20260613-audiofx",
@@ -49,7 +55,7 @@
     last: {},
   };
   audio.bgm.loop = true;
-  audio.bgm.volume = 0.22;
+  audio.bgm.volume = 0.18;
 
   const characters = [
     { id: "hunter", name: "Hunter", note: "\u6a19\u6e96\u578b", tint: null, stats: { hp: 0, speed: 0, damage: 0, cooldown: 1, magnet: 0 } },
@@ -147,6 +153,14 @@
   function playBgm() {
     if (!audio.unlocked) return;
     audio.bgm.play().catch(() => {});
+  }
+
+  function changeBgm() {
+    audio.bgmIndex = Math.floor(Math.random() * audio.bgmTracks.length);
+    audio.bgm.pause();
+    audio.bgm = new Audio(audio.bgmTracks[audio.bgmIndex]);
+    audio.bgm.loop = true;
+    audio.bgm.volume = 0.18;
   }
 
   function character() {
@@ -283,6 +297,7 @@
 
   function startRun() {
     unlockAudio();
+    changeBgm();
     playSound("confirm", 0.42);
     playBgm();
     state.mode = "run";
