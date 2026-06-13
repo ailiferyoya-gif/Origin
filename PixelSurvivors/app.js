@@ -87,6 +87,7 @@
     gems: [],
     pops: [],
     touchId: null,
+    stickBase: { x: 0, y: 0 },
     animTime: 0,
   };
 
@@ -518,9 +519,8 @@
 
   function setStick(clientX, clientY) {
     if (state.mode !== "run") return;
-    const rect = ui.stick.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
+    const cx = state.stickBase.x;
+    const cy = state.stickBase.y;
     const dx = clientX - cx;
     const dy = clientY - cy;
     const len = Math.min(48, Math.hypot(dx, dy));
@@ -530,11 +530,27 @@
     ui.knob.style.transform = `translate(${n.x * len}px, ${n.y * len}px)`;
   }
 
+  function beginStick(event) {
+    if (state.mode !== "run" || state.paused || event.button > 0) return;
+    if (event.target.closest("#prep, #upgrade, button")) return;
+    state.touchId = event.pointerId;
+    state.stickBase.x = event.clientX;
+    state.stickBase.y = event.clientY;
+    ui.stick.classList.add("active");
+    ui.stick.style.left = `${event.clientX - 58}px`;
+    ui.stick.style.top = `${event.clientY - 58}px`;
+    ui.stick.style.right = "auto";
+    ui.stick.style.bottom = "auto";
+    setStick(event.clientX, event.clientY);
+  }
+
   function releaseStick() {
     state.touchId = null;
     state.move.x = 0;
     state.move.y = 0;
     ui.knob.style.transform = "";
+    ui.stick.classList.remove("active");
+    ui.stick.removeAttribute("style");
   }
 
   ui.characters.addEventListener("pointerup", (event) => {
@@ -566,16 +582,16 @@
   ui.gachaBtn.addEventListener("pointerup", runGacha);
   ui.startBtn.addEventListener("pointerup", startRun);
 
-  ui.stick.addEventListener("pointerdown", (event) => {
-    ui.stick.setPointerCapture(event.pointerId);
-    state.touchId = event.pointerId;
-    setStick(event.clientX, event.clientY);
-  });
-  ui.stick.addEventListener("pointermove", (event) => {
+  document.addEventListener("pointerdown", beginStick);
+  document.addEventListener("pointermove", (event) => {
     if (state.touchId === event.pointerId) setStick(event.clientX, event.clientY);
   });
-  ui.stick.addEventListener("pointerup", releaseStick);
-  ui.stick.addEventListener("pointercancel", releaseStick);
+  document.addEventListener("pointerup", (event) => {
+    if (state.touchId === event.pointerId) releaseStick();
+  });
+  document.addEventListener("pointercancel", (event) => {
+    if (state.touchId === event.pointerId) releaseStick();
+  });
 
   window.addEventListener("resize", resize);
   document.addEventListener("gesturestart", (event) => event.preventDefault());
