@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#080b13">
   <title>Pixel Survivors</title>
-  <link rel="stylesheet" href="./styles.css?v=20260614-perf">
+  <link rel="stylesheet" href="./styles.css?v=20260614-roster">
 </head>
 <body>
   <main class="shell">
@@ -28,25 +28,37 @@
         <h1>&#20986;&#25731;&#28310;&#20633;</h1>
         <div class="wallet"><span id="coins">COIN 0</span><span id="owned">0/0</span></div>
       </div>
-      <div class="panel">
-        <div class="panel-title"><span>CHARACTER</span><strong id="selectedCharacter">Hunter</strong></div>
-        <div id="characters" class="pick-grid"></div>
+      <div class="prep-tabs" role="tablist" aria-label="prep mode">
+        <button id="tabLoadout" class="active" type="button">LOADOUT</button>
+        <button id="tabGacha" type="button">GACHA</button>
       </div>
-      <div class="panel">
-        <div class="panel-title"><span>EQUIPMENT</span><strong id="selectedEquipment">Crossbow</strong></div>
-        <div id="equipment" class="pick-grid"></div>
-      </div>
-      <div class="panel gacha">
-        <div>
-          <span>GACHA</span>
-          <strong id="gachaResult">100 COIN</strong>
+      <section id="loadoutView" class="prep-view">
+        <div class="panel">
+          <div class="panel-title"><span>CHARACTER</span><strong id="selectedCharacter">Hunter</strong></div>
+          <div id="characters" class="pick-grid roster"></div>
         </div>
-        <button id="gachaBtn" type="button">&#22238;&#12377;</button>
-      </div>
+        <div class="panel">
+          <div class="panel-title"><span>WEAPON</span><strong id="selectedEquipment">Crossbow</strong></div>
+          <div id="equipment" class="pick-grid roster"></div>
+        </div>
+      </section>
+      <section id="gachaView" class="prep-view" hidden>
+        <div class="panel gacha">
+          <div>
+            <span>GACHA</span>
+            <strong id="gachaResult">100 COIN</strong>
+          </div>
+          <button id="gachaBtn" type="button">&#22238;&#12377;</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title"><span>PRIZE POOL</span><strong>10 + 20</strong></div>
+          <div id="gachaPool" class="prize-grid"></div>
+        </div>
+      </section>
       <button id="startBtn" class="start" type="button">START</button>
     </section>
     <div id="stick" class="stick" aria-hidden="true"><span></span></div>
   </main>
-  <script src="./app.js?v=20260614-perf"></script>
+  <script src="./app.js?v=20260614-roster"></script>
 </body>
 </html>

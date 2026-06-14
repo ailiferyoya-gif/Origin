@@ -19,6 +19,11 @@
     selectedEquipment: document.getElementById("selectedEquipment"),
     gachaBtn: document.getElementById("gachaBtn"),
     gachaResult: document.getElementById("gachaResult"),
+    gachaPool: document.getElementById("gachaPool"),
+    loadoutView: document.getElementById("loadoutView"),
+    gachaView: document.getElementById("gachaView"),
+    tabLoadout: document.getElementById("tabLoadout"),
+    tabGacha: document.getElementById("tabGacha"),
     startBtn: document.getElementById("startBtn"),
     stick: document.getElementById("stick"),
     knob: document.querySelector("#stick span"),
@@ -34,6 +39,58 @@
     };
     img.src = src;
   });
+
+  const rarity = {
+    common: { label: "C", color: "#9aa9b5", weight: 54, cost: 45, power: 1 },
+    rare: { label: "R", color: "#4bd8ff", weight: 28, cost: 70, power: 1.16 },
+    epic: { label: "SR", color: "#c783ff", weight: 14, cost: 105, power: 1.34 },
+    legend: { label: "SSR", color: "#ffe879", weight: 4, cost: 155, power: 1.58 },
+  };
+
+  const characters = [
+    { id: "hunter", name: "Hunter", rarity: "common", cell: 0, note: "\u6a19\u6e96\u578b", stats: { hp: 0, speed: 0, damage: 0, cooldown: 1, magnet: 0 } },
+    { id: "pyromancer", name: "Pyromancer", rarity: "rare", cell: 1, note: "\u706b\u529b\u91cd\u8996", stats: { hp: -1, speed: 2, damage: .55, cooldown: .96, magnet: 0 } },
+    { id: "paladin", name: "Paladin", rarity: "epic", cell: 2, note: "HP\u3068\u5b88\u308a", stats: { hp: 3, speed: -12, damage: .25, cooldown: 1.03, magnet: 16 } },
+    { id: "shinobi", name: "Shinobi", rarity: "rare", cell: 3, note: "\u9ad8\u901f\u56de\u907f", stats: { hp: -1, speed: 38, damage: .1, cooldown: .92, magnet: 8 } },
+    { id: "ranger", name: "Ranger", rarity: "common", cell: 4, note: "\u5438\u5f15\u3068\u901f\u5ea6", stats: { hp: 0, speed: 18, damage: 0, cooldown: .98, magnet: 30 } },
+    { id: "cleric", name: "Cleric", rarity: "rare", cell: 5, note: "HP\u304c\u9ad8\u3044", stats: { hp: 2, speed: -4, damage: .1, cooldown: 1, magnet: 24 } },
+    { id: "gunner", name: "Gunner", rarity: "epic", cell: 6, note: "\u9023\u5c04\u306b\u5f37\u3044", stats: { hp: 0, speed: 6, damage: .25, cooldown: .84, magnet: 0 } },
+    { id: "lancer", name: "Lancer", rarity: "rare", cell: 7, note: "\u30d0\u30e9\u30f3\u30b9", stats: { hp: 1, speed: 10, damage: .2, cooldown: .96, magnet: 12 } },
+    { id: "alchemist", name: "Alchemist", rarity: "epic", cell: 8, note: "\u7d4c\u9a13\u5024\u56de\u53ce", stats: { hp: 0, speed: 0, damage: .4, cooldown: .98, magnet: 54 } },
+    { id: "reaper", name: "Reaper", rarity: "legend", cell: 9, note: "\u6700\u9ad8\u706b\u529b", stats: { hp: -1, speed: 14, damage: .95, cooldown: .9, magnet: 22 } },
+  ];
+
+  const weapons = [
+    { id: "crossbow", name: "Crossbow", rarity: "common", cell: 0, note: "\u76f4\u7dda\u5f3e", stats: { damage: 1, cooldown: 1, projectiles: 1, speed: 0, magnet: 0, hp: 0 }, shot: { color: "#ffe75c", size: 10, speed: 430, life: 1.15 } },
+    { id: "firewand", name: "Fire Wand", rarity: "rare", cell: 1, note: "\u708e\u5f3e", stats: { damage: 1.3, cooldown: 1.04, projectiles: 1, speed: 0, magnet: 0, hp: 0 }, shot: { color: "#ff6a25", size: 14, speed: 405, life: 1.1 } },
+    { id: "steelsword", name: "Steel Sword", rarity: "common", cell: 2, note: "\u91cd\u3044\u5f3e", stats: { damage: 1.55, cooldown: 1.12, projectiles: 1, speed: 0, magnet: 0, hp: 1 }, shot: { color: "#dfe9ff", size: 13, speed: 390, life: 1 } },
+    { id: "daggers", name: "Twin Daggers", rarity: "rare", cell: 3, note: "2\u9023\u5c04", stats: { damage: .65, cooldown: .78, projectiles: 2, speed: 18, magnet: 0, hp: 0 }, shot: { color: "#c9d2e6", size: 8, speed: 500, life: .9 } },
+    { id: "longbow", name: "Longbow", rarity: "common", cell: 4, note: "\u9ad8\u901f\u5f3e", stats: { damage: .95, cooldown: .96, projectiles: 1, speed: 12, magnet: 0, hp: 0 }, shot: { color: "#b4ff75", size: 9, speed: 545, life: 1.05 } },
+    { id: "holystaff", name: "Holy Staff", rarity: "epic", cell: 5, note: "\u5438\u5f15\u5f37\u5316", stats: { damage: 1.2, cooldown: 1, projectiles: 1, speed: 0, magnet: 62, hp: 1 }, shot: { color: "#fff7ac", size: 14, speed: 420, life: 1.2 } },
+    { id: "handcannon", name: "Hand Cannon", rarity: "rare", cell: 6, note: "\u5927\u706b\u529b", stats: { damage: 2.15, cooldown: 1.38, projectiles: 1, speed: -4, magnet: 0, hp: 0 }, shot: { color: "#ffb357", size: 18, speed: 360, life: 1.15 } },
+    { id: "spear", name: "Spear", rarity: "common", cell: 7, note: "\u5b89\u5b9a\u578b", stats: { damage: 1.05, cooldown: .95, projectiles: 1, speed: 10, magnet: 8, hp: 0 }, shot: { color: "#a7d7ff", size: 11, speed: 455, life: 1.12 } },
+    { id: "flask", name: "Toxic Flask", rarity: "rare", cell: 8, note: "\u6bd2\u8272\u306e\u5f3e", stats: { damage: 1.25, cooldown: 1.02, projectiles: 1, speed: 0, magnet: 22, hp: 0 }, shot: { color: "#7dff4f", size: 16, speed: 380, life: 1.25 } },
+    { id: "scythe", name: "Scythe", rarity: "epic", cell: 9, note: "\u5927\u304d\u3044\u5f3e", stats: { damage: 1.85, cooldown: 1.18, projectiles: 1, speed: 0, magnet: 18, hp: 0 }, shot: { color: "#c7b7ff", size: 20, speed: 365, life: 1.3 } },
+    { id: "hammer", name: "Storm Hammer", rarity: "epic", cell: 10, note: "\u96f7\u6483", stats: { damage: 2.35, cooldown: 1.42, projectiles: 1, speed: -8, magnet: 0, hp: 1 }, shot: { color: "#63e8ff", size: 19, speed: 345, life: 1.2 } },
+    { id: "icetome", name: "Ice Tome", rarity: "rare", cell: 11, note: "\u9023\u5c04\u5f37\u5316", stats: { damage: .85, cooldown: .78, projectiles: 1, speed: 0, magnet: 18, hp: 0 }, shot: { color: "#8ee8ff", size: 13, speed: 420, life: 1.3 } },
+    { id: "needle", name: "Venom Needle", rarity: "common", cell: 12, note: "\u5c0f\u3055\u304f\u901f\u3044", stats: { damage: .72, cooldown: .74, projectiles: 1, speed: 14, magnet: 0, hp: 0 }, shot: { color: "#70ff70", size: 7, speed: 575, life: .8 } },
+    { id: "boomerang", name: "Boomerang", rarity: "rare", cell: 13, note: "\u5e83\u3044\u62e1\u6563", stats: { damage: .95, cooldown: .94, projectiles: 2, speed: 8, magnet: 0, hp: 0 }, shot: { color: "#ffc36b", size: 12, speed: 410, life: 1.35 } },
+    { id: "orb", name: "Magic Orb", rarity: "epic", cell: 14, note: "\u9b54\u529b\u5f3e", stats: { damage: 1.45, cooldown: .98, projectiles: 2, speed: 0, magnet: 32, hp: 0 }, shot: { color: "#d35cff", size: 15, speed: 395, life: 1.18 } },
+    { id: "chakram", name: "Chakram", rarity: "rare", cell: 15, note: "3\u65b9\u5411", stats: { damage: .72, cooldown: 1.08, projectiles: 3, speed: 0, magnet: 0, hp: 0 }, shot: { color: "#dbe5ff", size: 10, speed: 430, life: 1 } },
+    { id: "axe", name: "Battle Axe", rarity: "common", cell: 16, note: "\u706b\u529b\u578b", stats: { damage: 1.65, cooldown: 1.22, projectiles: 1, speed: -6, magnet: 0, hp: 1 }, shot: { color: "#f0f2ff", size: 16, speed: 370, life: 1.1 } },
+    { id: "rifle", name: "Crystal Rifle", rarity: "legend", cell: 17, note: "\u6700\u9ad8\u9023\u5c04", stats: { damage: 1.5, cooldown: .68, projectiles: 2, speed: 18, magnet: 18, hp: 0 }, shot: { color: "#49dfff", size: 12, speed: 610, life: 1 } },
+    { id: "sunblade", name: "Sun Blade", rarity: "legend", cell: 18, note: "\u6700\u9ad8\u706b\u529b", stats: { damage: 2.25, cooldown: .92, projectiles: 2, speed: 10, magnet: 20, hp: 1 }, shot: { color: "#ffe879", size: 18, speed: 470, life: 1.2 } },
+    { id: "moonsickle", name: "Moon Sickle", rarity: "epic", cell: 19, note: "\u5e83\u57df\u5f3e", stats: { damage: 1.25, cooldown: 1.04, projectiles: 3, speed: 4, magnet: 24, hp: 0 }, shot: { color: "#a6c7ff", size: 14, speed: 400, life: 1.25 } },
+  ];
+
+  const upgrades = [
+    ["Rapid Fire", "\u653b\u6483\u9593\u9694\u304c\u77ed\u304f\u306a\u308b", () => state.fireCooldown = Math.max(0.14, state.fireCooldown * 0.84)],
+    ["Sharp Bolts", "\u5f3e\u306e\u30c0\u30e1\u30fc\u30b8\u304c\u4e0a\u304c\u308b", () => state.damage += 0.65],
+    ["Split Shot", "\u5f3e\u304c1\u3064\u5897\u3048\u308b", () => state.projectiles = Math.min(8, state.projectiles + 1)],
+    ["Fleet Boots", "\u79fb\u52d5\u901f\u5ea6\u304c\u4e0a\u304c\u308b", () => state.speed += 24],
+    ["Soul Magnet", "\u30b8\u30a7\u30e0\u5438\u5f15\u7bc4\u56f2\u304c\u5e83\u304c\u308b", () => state.magnet += 34],
+    ["Max Heart", "\u6700\u5927HP\u304c\u5897\u3048\u3066\u5168\u56de\u5fa9", () => { state.maxHp += 1; state.hp = state.maxHp; }],
+  ];
 
   const audio = {
     unlocked: false,
@@ -58,30 +115,7 @@
   audio.bgm.loop = true;
   audio.bgm.volume = 0.18;
 
-  const characters = [
-    { id: "hunter", name: "Hunter", note: "\u6a19\u6e96\u578b", tint: null, stats: { hp: 0, speed: 0, damage: 0, cooldown: 1, magnet: 0 } },
-    { id: "runner", name: "Runner", note: "\u79fb\u52d5\u304c\u901f\u3044", tint: "#65e7ff", stats: { hp: -1, speed: 34, damage: 0, cooldown: .98, magnet: 8 } },
-    { id: "warden", name: "Warden", note: "HP\u3068\u5438\u5f15\u304c\u5f37\u3044", tint: "#c7ff7c", stats: { hp: 2, speed: -12, damage: .2, cooldown: 1.04, magnet: 28 } },
-    { id: "witch", name: "Witch", note: "\u706b\u529b\u91cd\u8996", tint: "#ff8df2", stats: { hp: -1, speed: 4, damage: .75, cooldown: .92, magnet: 0 } },
-  ];
-
-  const equipment = [
-    { id: "crossbow", name: "Crossbow", icon: ">>", note: "\u5f3e\u306e\u5a01\u529b +1", stats: { damage: 1, cooldown: 1, speed: 0, magnet: 0, hp: 0 } },
-    { id: "boots", name: "Boots", icon: "[]", note: "\u79fb\u52d5\u901f\u5ea6 +38", stats: { damage: 0, cooldown: 1, speed: 38, magnet: 0, hp: 0 } },
-    { id: "magnet", name: "Magnet", icon: "U", note: "\u5438\u5f15\u7bc4\u56f2 +70", stats: { damage: 0, cooldown: 1, speed: 0, magnet: 70, hp: 0 } },
-    { id: "charm", name: "Charm", icon: "+", note: "HP +2 / \u9023\u5c04\u5c11\u3057\u4f4e\u4e0b", stats: { damage: 0, cooldown: 1.08, speed: 0, magnet: 0, hp: 2 } },
-    { id: "clock", name: "Clock", icon: "*", note: "\u653b\u6483\u9593\u9694 -18%", stats: { damage: 0, cooldown: .82, speed: 0, magnet: 0, hp: 0 } },
-  ];
-
-  const upgrades = [
-    ["Rapid Fire", "\u653b\u6483\u9593\u9694\u304c\u77ed\u304f\u306a\u308b", () => state.fireCooldown = Math.max(0.16, state.fireCooldown * 0.84)],
-    ["Sharp Bolts", "\u5f3e\u306e\u30c0\u30e1\u30fc\u30b8\u304c\u4e0a\u304c\u308b", () => state.damage += 0.65],
-    ["Split Shot", "\u5f3e\u304c1\u3064\u5897\u3048\u308b", () => state.projectiles = Math.min(6, state.projectiles + 1)],
-    ["Fleet Boots", "\u79fb\u52d5\u901f\u5ea6\u304c\u4e0a\u304c\u308b", () => state.speed += 24],
-    ["Soul Magnet", "\u30b8\u30a7\u30e0\u5438\u5f15\u7bc4\u56f2\u304c\u5e83\u304c\u308b", () => state.magnet += 34],
-    ["Max Heart", "\u6700\u5927HP\u304c\u5897\u3048\u3066\u5168\u56de\u5fa9", () => { state.maxHp += 1; state.hp = state.maxHp; }],
-  ];
-  const saveKey = "pixel-survivors-loadout-v1";
+  const saveKey = "pixel-survivors-roster-v2";
   const save = loadSave();
 
   const state = {
@@ -94,6 +128,7 @@
     fire: 0,
     paused: false,
     mode: "prep",
+    prepTab: "loadout",
     level: 1,
     xp: 0,
     xpNeed: 8,
@@ -102,6 +137,7 @@
     kills: 0,
     damage: 1,
     projectiles: 1,
+    shot: weapons[0].shot,
     speed: 190,
     fireCooldown: 0.55,
     magnet: 86,
@@ -118,23 +154,71 @@
   };
 
   function loadSave() {
+    const base = {
+      coins: 900,
+      characters: { hunter: { level: 1 } },
+      weapons: { crossbow: { level: 1 } },
+      selectedCharacter: "hunter",
+      selectedWeapon: "crossbow",
+    };
     try {
       const stored = JSON.parse(localStorage.getItem(saveKey) || "null");
-      if (stored) return stored;
+      if (stored) return normalizeSave(stored);
+      const old = JSON.parse(localStorage.getItem("pixel-survivors-loadout-v1") || "null");
+      if (old) {
+        for (const id of old.characters || []) base.characters[id] = { level: 1 };
+        for (const id of old.equipment || []) base.weapons[id] = { level: 1 };
+        base.selectedCharacter = old.selectedCharacter || "hunter";
+        base.selectedWeapon = old.selectedEquipment || "crossbow";
+        base.coins = Math.max(base.coins, old.coins || 0);
+      }
     } catch {
       localStorage.removeItem(saveKey);
     }
-    return {
-      coins: 300,
-      characters: ["hunter"],
-      equipment: ["crossbow"],
-      selectedCharacter: "hunter",
-      selectedEquipment: "crossbow",
-    };
+    return normalizeSave(base);
+  }
+
+  function normalizeSave(data) {
+    data.characters = data.characters && !Array.isArray(data.characters) ? data.characters : { hunter: { level: 1 } };
+    data.weapons = data.weapons && !Array.isArray(data.weapons) ? data.weapons : { crossbow: { level: 1 } };
+    data.characters.hunter ||= { level: 1 };
+    data.weapons.crossbow ||= { level: 1 };
+    data.selectedCharacter = characters.some((item) => item.id === data.selectedCharacter && data.characters[item.id]) ? data.selectedCharacter : "hunter";
+    data.selectedWeapon = weapons.some((item) => item.id === data.selectedWeapon && data.weapons[item.id]) ? data.selectedWeapon : "crossbow";
+    data.coins = Number.isFinite(data.coins) ? data.coins : 900;
+    for (const item of [...characters, ...weapons]) {
+      const bucket = characters.includes(item) ? data.characters : data.weapons;
+      if (bucket[item.id]) bucket[item.id].level = clamp(Math.floor(bucket[item.id].level || 1), 1, 12);
+    }
+    return data;
   }
 
   function persist() {
     localStorage.setItem(saveKey, JSON.stringify(save));
+  }
+
+  function character() {
+    return characters.find((item) => item.id === save.selectedCharacter) || characters[0];
+  }
+
+  function weapon() {
+    return weapons.find((item) => item.id === save.selectedWeapon) || weapons[0];
+  }
+
+  function charLevel(id = save.selectedCharacter) {
+    return save.characters[id]?.level || 1;
+  }
+
+  function weaponLevel(id = save.selectedWeapon) {
+    return save.weapons[id]?.level || 1;
+  }
+
+  function itemPower(item, level) {
+    return rarity[item.rarity].power * (1 + (level - 1) * 0.095);
+  }
+
+  function upgradeCost(item, level) {
+    return Math.floor(rarity[item.rarity].cost * Math.pow(1.42, level - 1));
   }
 
   function unlockAudio() {
@@ -171,14 +255,6 @@
     audio.bgm.volume = 0.18;
   }
 
-  function character() {
-    return characters.find((item) => item.id === save.selectedCharacter) || characters[0];
-  }
-
-  function equip() {
-    return equipment.find((item) => item.id === save.selectedEquipment) || equipment[0];
-  }
-
   function resize() {
     state.dpr = 1;
     state.w = Math.floor(window.innerWidth);
@@ -199,14 +275,18 @@
   }
 
   function applyLoadoutStats() {
-    const charStats = character().stats;
-    const equipStats = equip().stats;
-    state.maxHp = Math.max(3, 6 + charStats.hp + equipStats.hp);
+    const char = character();
+    const wep = weapon();
+    const cp = itemPower(char, charLevel());
+    const wp = itemPower(wep, weaponLevel());
+    state.maxHp = Math.max(3, Math.round(6 + char.stats.hp * cp + wep.stats.hp * wp));
     state.hp = state.maxHp;
-    state.damage = 1 + charStats.damage + equipStats.damage;
-    state.speed = 190 + charStats.speed + equipStats.speed;
-    state.fireCooldown = Math.max(0.2, 0.55 * charStats.cooldown * equipStats.cooldown);
-    state.magnet = 86 + charStats.magnet + equipStats.magnet;
+    state.damage = Math.max(.4, 1 + char.stats.damage * cp + wep.stats.damage * wp);
+    state.projectiles = clamp(wep.stats.projectiles + Math.floor((weaponLevel() - 1) / 4), 1, 8);
+    state.speed = Math.max(100, 190 + char.stats.speed * cp + wep.stats.speed * wp);
+    state.fireCooldown = Math.max(0.13, 0.55 * char.stats.cooldown / Math.sqrt(cp) * wep.stats.cooldown / Math.sqrt(wp));
+    state.magnet = 86 + char.stats.magnet * cp + wep.stats.magnet * wp;
+    state.shot = wep.shot;
   }
 
   function spawnEnemy() {
@@ -216,7 +296,7 @@
     state.enemies.push({
       x: state.player.x + Math.cos(angle) * radius,
       y: state.player.y + Math.sin(angle) * radius,
-      hp: bat ? 2 : 3,
+      hp: bat ? 2 + state.time / 80 : 3 + state.time / 70,
       kind: bat ? "bat" : "slime",
       size: bat ? 42 : 48,
       wobble: Math.random() * 10,
@@ -236,17 +316,18 @@
     }
     const n = norm(target.x - state.player.x, target.y - state.player.y);
     const baseAngle = Math.atan2(n.y, n.x);
-    const count = state.projectiles;
-    for (let i = 0; i < count; i++) {
-      const spread = (i - (count - 1) / 2) * 0.18;
+    for (let i = 0; i < state.projectiles; i++) {
+      const spread = (i - (state.projectiles - 1) / 2) * 0.18;
       const angle = baseAngle + spread;
       state.bolts.push({
         x: state.player.x + Math.cos(angle) * 10,
         y: state.player.y + Math.sin(angle) * 10,
-        vx: Math.cos(angle) * 430,
-        vy: Math.sin(angle) * 430,
-        life: 1.15,
+        vx: Math.cos(angle) * state.shot.speed,
+        vy: Math.sin(angle) * state.shot.speed,
+        life: state.shot.life,
         angle,
+        size: state.shot.size,
+        color: state.shot.color,
       });
     }
     state.fire = state.fireCooldown;
@@ -296,7 +377,6 @@
       xp: 0,
       xpNeed: 8,
       kills: 0,
-      projectiles: 1,
       enemies: [],
       bolts: [],
       gems: [],
@@ -379,13 +459,13 @@
         if (Math.hypot(enemy.x - bolt.x, enemy.y - bolt.y) < 28) {
           enemy.hp -= state.damage;
           playSound("hit", 0.28, 0.025);
-          spawnHitEffect(enemy.x, enemy.y - enemy.size * 0.35, "#ffef73");
+          spawnHitEffect(enemy.x, enemy.y - enemy.size * 0.35, bolt.color);
           state.pops.push({
             x: enemy.x,
             y: enemy.y - enemy.size * 0.62,
             text: formatDamage(state.damage),
             life: 0.62,
-            color: "#ffef73",
+            color: bolt.color,
             size: 14,
           });
           state.bolts.splice(i, 1);
@@ -478,10 +558,10 @@
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(bolt.angle);
-      ctx.fillStyle = "#ffe75c";
-      ctx.fillRect(-13, -5, 26, 10);
-      ctx.fillStyle = "#8a5a12";
-      ctx.fillRect(-13, 5, 26, 3);
+      ctx.fillStyle = bolt.color;
+      ctx.fillRect(-bolt.size, -Math.max(4, bolt.size / 2), bolt.size * 2, bolt.size);
+      ctx.fillStyle = "#171015";
+      ctx.fillRect(-bolt.size, Math.max(4, bolt.size / 2), bolt.size * 2, 3);
       ctx.restore();
     }
 
@@ -502,10 +582,8 @@
     }
 
     const pulse = state.player.hit > 0 ? 1.06 : 1;
-    const moving = Math.hypot(state.move.x, state.move.y) > 0.05;
-    const playerFrame = moving ? Math.floor(state.animTime * 10) % 4 : Math.floor(state.animTime * 3) % 4;
-    drawAura(state.w / 2, state.h / 2, 42 * pulse, character().tint);
-    drawSpriteFrame(assets.playerSheet || assets.player, state.w / 2, state.h / 2, 68 * pulse, playerFrame);
+    drawAura(state.w / 2, state.h / 2, 42 * pulse, rarity[character().rarity].color);
+    drawSprite(assets[`char-${character().cell}`], state.w / 2, state.h / 2, 82 * pulse);
 
     ctx.textAlign = "center";
     for (const pop of state.pops) {
@@ -539,10 +617,6 @@
     }
   }
 
-  function formatDamage(value) {
-    return Number.isInteger(value) ? `${value}` : value.toFixed(1);
-  }
-
   function drawSprite(img, x, y, size) {
     if (!img) return;
     const drawSize = Math.max(8, snap(size, 4));
@@ -566,8 +640,20 @@
     drawOutlinedSource(img, sourceX, 0, frameWidth, img.height, dx, dy, drawSize, drawSize);
   }
 
-  function drawOutlinedSource(img, sx, sy, sw, sh, dx, dy, dw, dh) {
-    const key = `${img.src}|${sx}|${sy}|${sw}|${sh}|${dw}|${dh}`;
+  function drawSheetSprite(img, cell, cols, rows, x, y, size, type = "sheet") {
+    if (!img) return;
+    const sw = Math.floor(img.width / cols);
+    const sh = Math.floor(img.height / rows);
+    const sx = (cell % cols) * sw;
+    const sy = Math.floor(cell / cols) * sh;
+    const drawSize = Math.max(8, snap(size, 4));
+    const dx = snap(x - drawSize / 2, 4);
+    const dy = snap(y - drawSize / 2, 4);
+    drawOutlinedSource(img, sx, sy, sw, sh, dx, dy, drawSize, drawSize, type);
+  }
+
+  function drawOutlinedSource(img, sx, sy, sw, sh, dx, dy, dw, dh, type = "sprite") {
+    const key = `${type}|${img.src}|${sx}|${sy}|${sw}|${sh}|${dw}|${dh}`;
     let cached = outlineCache.get(key);
     if (!cached) {
       const pad = 4;
@@ -587,17 +673,13 @@
     ctx.drawImage(cached, dx - 4, dy - 4);
   }
 
-  function snap(value, unit = 4) {
-    return Math.round(value / unit) * unit;
-  }
-
   function drawAura(x, y, radius, tint) {
     if (tint) {
       ctx.save();
-      ctx.globalAlpha = .32 + Math.sin(state.animTime * 7) * .08;
+      ctx.globalAlpha = .24 + Math.sin(state.animTime * 7) * .06;
       ctx.fillStyle = tint;
       ctx.beginPath();
-      ctx.arc(x, y + 15, radius, 0, Math.PI * 2);
+      ctx.arc(x, y + 18, radius, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
@@ -623,55 +705,140 @@
     requestAnimationFrame(loop);
   }
 
-  function renderPrep(message = "100 COIN") {
-    const ownedCount = save.characters.length + save.equipment.length;
-    const totalCount = characters.length + equipment.length;
-    ui.coins.textContent = `COIN ${save.coins}`;
-    ui.owned.textContent = `${ownedCount}/${totalCount}`;
-    ui.selectedCharacter.textContent = character().name;
-    ui.selectedEquipment.textContent = equip().name;
-    ui.gachaResult.textContent = message;
-    ui.gachaBtn.disabled = save.coins < 100;
-    ui.characters.innerHTML = characters.map((item) => pickCard(item, "character")).join("");
-    ui.equipment.innerHTML = equipment.map((item) => pickCard(item, "equipment")).join("");
+  function setPrepTab(tab) {
+    state.prepTab = tab;
+    ui.loadoutView.hidden = tab !== "loadout";
+    ui.gachaView.hidden = tab !== "gacha";
+    ui.tabLoadout.classList.toggle("active", tab === "loadout");
+    ui.tabGacha.classList.toggle("active", tab === "gacha");
+    renderPrep();
   }
 
-  function pickCard(item, type) {
-    const owned = type === "character" ? save.characters.includes(item.id) : save.equipment.includes(item.id);
-    const selected = type === "character" ? save.selectedCharacter === item.id : save.selectedEquipment === item.id;
-    const visual = type === "character"
-      ? `<img class="portrait" src="./assets/player.png?v=20260613-publish" alt="">`
-      : `<span class="icon">${item.icon}</span>`;
-    return `<button class="pick ${owned ? "" : "locked"} ${selected ? "selected" : ""}" data-type="${type}" data-id="${item.id}" type="button">${visual}<b>${item.name}</b><small>${owned ? item.note : "LOCKED"}</small></button>`;
+  function renderPrep(message = "100 COIN") {
+    const ownedCount = Object.keys(save.characters).length + Object.keys(save.weapons).length;
+    const totalCount = characters.length + weapons.length;
+    ui.coins.textContent = `COIN ${save.coins}`;
+    ui.owned.textContent = `${ownedCount}/${totalCount}`;
+    ui.selectedCharacter.textContent = `${character().name} LV ${charLevel()}`;
+    ui.selectedEquipment.textContent = `${weapon().name} LV ${weaponLevel()}`;
+    ui.gachaResult.textContent = message;
+    ui.gachaBtn.disabled = save.coins < 100 || ownedCount >= totalCount;
+    ui.characters.innerHTML = characters.map((item) => itemCard(item, "character")).join("");
+    ui.equipment.innerHTML = weapons.map((item) => itemCard(item, "weapon")).join("");
+    ui.gachaPool.innerHTML = [...characters, ...weapons].map((item) => prizeCard(item, characters.includes(item) ? "character" : "weapon")).join("");
+  }
+
+  function itemCard(item, type) {
+    const bucket = type === "character" ? save.characters : save.weapons;
+    const owned = Boolean(bucket[item.id]);
+    const selected = type === "character" ? save.selectedCharacter === item.id : save.selectedWeapon === item.id;
+    const level = owned ? bucket[item.id].level : 0;
+    const cost = owned ? upgradeCost(item, level) : 0;
+    const disabled = !owned || save.coins < cost || level >= 12;
+    return `<article class="pick ${owned ? "" : "locked"} ${selected ? "selected" : ""}" style="--rarity:${rarity[item.rarity].color}">
+      <button class="pick-main" data-action="select" data-type="${type}" data-id="${item.id}" type="button">
+        ${sheetIcon(item, type)}
+        <span class="rarity">${rarity[item.rarity].label}</span>
+        <b>${item.name}</b>
+        <small>${owned ? `${item.note} / LV ${level}` : "LOCKED"}</small>
+      </button>
+      <button class="upgrade-mini" data-action="upgrade" data-type="${type}" data-id="${item.id}" type="button" ${disabled ? "disabled" : ""}>${owned && level < 12 ? `UP ${cost}` : owned ? "MAX" : "GET"}</button>
+    </article>`;
+  }
+
+  function prizeCard(item, type) {
+    const owned = type === "character" ? save.characters[item.id] : save.weapons[item.id];
+    return `<div class="prize ${owned ? "owned" : ""}" style="--rarity:${rarity[item.rarity].color}">
+      ${sheetIcon(item, type)}
+      <b>${item.name}</b>
+      <small>${rarity[item.rarity].label}${owned ? " OWNED" : ""}</small>
+    </div>`;
+  }
+
+  function sheetIcon(item, type) {
+    const prefix = type === "character" ? "char" : "weapon";
+    return `<img class="sheet-icon ${type}" src="./assets/roster/${prefix}-${item.cell.toString().padStart(2, "0")}.png?v=20260614-roster" alt="">`;
   }
 
   function runGacha() {
     unlockAudio();
+    const locked = [
+      ...characters.filter((item) => !save.characters[item.id]).map((item) => ({ ...item, type: "character" })),
+      ...weapons.filter((item) => !save.weapons[item.id]).map((item) => ({ ...item, type: "weapon" })),
+    ];
     if (save.coins < 100) {
       playSound("click", 0.22);
       renderPrep("COIN\u4e0d\u8db3");
       return;
     }
+    if (!locked.length) {
+      playSound("click", 0.22);
+      renderPrep("ALL OWNED");
+      return;
+    }
     playSound("gacha", 0.45, 0.2);
     save.coins -= 100;
-    const pool = [
-      ...characters.slice(1).map((item) => ({ ...item, type: "character" })),
-      ...equipment.slice(1).map((item) => ({ ...item, type: "equipment" })),
-    ];
-    const prize = pool[Math.floor(Math.random() * pool.length)];
-    const ownedList = prize.type === "character" ? save.characters : save.equipment;
-    let message;
-    if (ownedList.includes(prize.id)) {
-      save.coins += 35;
-      message = `DUP ${prize.name} +35`;
+    const prize = weightedPick(locked);
+    if (prize.type === "character") {
+      save.characters[prize.id] = { level: 1 };
+      save.selectedCharacter = prize.id;
     } else {
-      ownedList.push(prize.id);
-      if (prize.type === "character") save.selectedCharacter = prize.id;
-      if (prize.type === "equipment") save.selectedEquipment = prize.id;
-      message = `GET ${prize.name}`;
+      save.weapons[prize.id] = { level: 1 };
+      save.selectedWeapon = prize.id;
     }
     persist();
-    renderPrep(message);
+    renderPrep(`GET ${rarity[prize.rarity].label} ${prize.name}`);
+  }
+
+  function weightedPick(pool) {
+    const total = pool.reduce((sum, item) => sum + rarity[item.rarity].weight, 0);
+    let roll = Math.random() * total;
+    for (const item of pool) {
+      roll -= rarity[item.rarity].weight;
+      if (roll <= 0) return item;
+    }
+    return pool[pool.length - 1];
+  }
+
+  function handleCollectionClick(event) {
+    const button = event.target.closest("[data-action]");
+    if (!button) return;
+    unlockAudio();
+    const { action, type, id } = button.dataset;
+    const list = type === "character" ? characters : weapons;
+    const bucket = type === "character" ? save.characters : save.weapons;
+    const item = list.find((entry) => entry.id === id);
+    if (!item) return;
+    if (!bucket[id]) {
+      playSound("click", 0.22);
+      setPrepTab("gacha");
+      renderPrep("\u30ac\u30c1\u30e3\u3067\u89e3\u653e");
+      return;
+    }
+    if (action === "select") {
+      playSound("click", 0.32);
+      if (type === "character") save.selectedCharacter = id;
+      if (type === "weapon") save.selectedWeapon = id;
+      persist();
+      renderPrep("SELECTED");
+      return;
+    }
+    if (action === "upgrade") {
+      const level = bucket[id].level;
+      const cost = upgradeCost(item, level);
+      if (level >= 12) {
+        renderPrep("MAX LEVEL");
+      } else if (save.coins < cost) {
+        playSound("click", 0.22);
+        renderPrep("COIN\u4e0d\u8db3");
+      } else {
+        playSound("confirm", 0.38);
+        save.coins -= cost;
+        bucket[id].level += 1;
+        persist();
+        renderPrep(`UP ${item.name} LV ${bucket[id].level}`);
+      }
+    }
   }
 
   function setStick(clientX, clientY) {
@@ -710,40 +877,24 @@
     ui.stick.removeAttribute("style");
   }
 
-  ui.characters.addEventListener("pointerup", (event) => {
-    const button = event.target.closest(".pick");
-    if (!button) return;
-    const id = button.dataset.id;
-    unlockAudio();
-    if (!save.characters.includes(id)) {
-      playSound("click", 0.22);
-      renderPrep("\u30ac\u30c1\u30e3\u3067\u89e3\u653e");
-      return;
-    }
-    playSound("click", 0.32);
-    save.selectedCharacter = id;
-    persist();
-    renderPrep("SELECTED");
-  });
+  function formatDamage(value) {
+    return Number.isInteger(value) ? `${value}` : value.toFixed(1);
+  }
 
-  ui.equipment.addEventListener("pointerup", (event) => {
-    const button = event.target.closest(".pick");
-    if (!button) return;
-    const id = button.dataset.id;
-    unlockAudio();
-    if (!save.equipment.includes(id)) {
-      playSound("click", 0.22);
-      renderPrep("\u30ac\u30c1\u30e3\u3067\u89e3\u653e");
-      return;
-    }
-    playSound("click", 0.32);
-    save.selectedEquipment = id;
-    persist();
-    renderPrep("SELECTED");
-  });
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
 
+  function snap(value, unit = 4) {
+    return Math.round(value / unit) * unit;
+  }
+
+  ui.characters.addEventListener("pointerup", handleCollectionClick);
+  ui.equipment.addEventListener("pointerup", handleCollectionClick);
   ui.gachaBtn.addEventListener("pointerup", runGacha);
   ui.startBtn.addEventListener("pointerup", startRun);
+  ui.tabLoadout.addEventListener("pointerup", () => setPrepTab("loadout"));
+  ui.tabGacha.addEventListener("pointerup", () => setPrepTab("gacha"));
 
   document.addEventListener("pointerdown", beginStick);
   document.addEventListener("pointermove", (event) => {
@@ -762,10 +913,9 @@
   renderPrep();
 
   Promise.all([
-    loadImage("player", "./assets/player.png?v=20260613-publish"),
+    ...characters.map((item) => loadImage(`char-${item.cell}`, `./assets/roster/char-${item.cell.toString().padStart(2, "0")}.png?v=20260614-roster`)),
     loadImage("bat", "./assets/bat.png?v=20260613-publish"),
     loadImage("slime", "./assets/slime.png?v=20260613-publish"),
-    loadImage("playerSheet", "./assets/player-sheet.png?v=20260613-anim"),
     loadImage("batSheet", "./assets/bat-sheet.png?v=20260613-anim"),
     loadImage("slimeSheet", "./assets/slime-sheet.png?v=20260613-anim"),
   ]).then(() => {
