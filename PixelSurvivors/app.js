@@ -25,6 +25,7 @@
   };
 
   const assets = {};
+  const outlineCache = new Map();
   const loadImage = (name, src) => new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
@@ -500,7 +501,7 @@
       drawSpriteFrame(assets[`${enemy.kind}Sheet`] || assets[enemy.kind], p.x, p.y + bob, enemy.size, frame);
     }
 
-    const pulse = state.player.hit > 0 ? 1 + Math.sin(state.player.hit * 60) * 0.06 : 1;
+    const pulse = state.player.hit > 0 ? 1.06 : 1;
     const moving = Math.hypot(state.move.x, state.move.y) > 0.05;
     const playerFrame = moving ? Math.floor(state.animTime * 10) % 4 : Math.floor(state.animTime * 3) % 4;
     drawAura(state.w / 2, state.h / 2, 42 * pulse, character().tint);
@@ -566,15 +567,24 @@
   }
 
   function drawOutlinedSource(img, sx, sy, sw, sh, dx, dy, dw, dh) {
-    ctx.save();
-    ctx.imageSmoothingEnabled = false;
-    ctx.filter = "brightness(0) saturate(100%)";
-    for (const [ox, oy] of [[-4, 0], [4, 0], [0, -4], [0, 4], [-4, -4], [4, -4], [-4, 4], [4, 4]]) {
-      ctx.drawImage(img, sx, sy, sw, sh, dx + ox, dy + oy, dw, dh);
+    const key = `${img.src}|${sx}|${sy}|${sw}|${sh}|${dw}|${dh}`;
+    let cached = outlineCache.get(key);
+    if (!cached) {
+      const pad = 4;
+      cached = document.createElement("canvas");
+      cached.width = dw + pad * 2;
+      cached.height = dh + pad * 2;
+      const c = cached.getContext("2d");
+      c.imageSmoothingEnabled = false;
+      c.filter = "brightness(0) saturate(100%)";
+      for (const [ox, oy] of [[-4, 0], [4, 0], [0, -4], [0, 4], [-4, -4], [4, -4], [-4, 4], [4, 4]]) {
+        c.drawImage(img, sx, sy, sw, sh, pad + ox, pad + oy, dw, dh);
+      }
+      c.filter = "none";
+      c.drawImage(img, sx, sy, sw, sh, pad, pad, dw, dh);
+      outlineCache.set(key, cached);
     }
-    ctx.filter = "none";
-    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
-    ctx.restore();
+    ctx.drawImage(cached, dx - 4, dy - 4);
   }
 
   function snap(value, unit = 4) {
