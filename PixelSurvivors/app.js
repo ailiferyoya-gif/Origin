@@ -31,6 +31,18 @@
 
   const assets = {};
   const outlineCache = new Map();
+  const lowPowerDevice = matchMedia("(pointer: coarse)").matches || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const perf = {
+    maxEnemies: lowPowerDevice ? 64 : 110,
+    maxBolts: lowPowerDevice ? 44 : 90,
+    maxEffects: lowPowerDevice ? 90 : 190,
+    maxPops: lowPowerDevice ? 34 : 70,
+    maxGems: lowPowerDevice ? 90 : 150,
+    trailChance: lowPowerDevice ? 0.18 : 0.42,
+    hitFxScale: lowPowerDevice ? 0.48 : 0.82,
+    showAura: !lowPowerDevice,
+    enemyFrameStride: lowPowerDevice ? 2 : 1,
+  };
   const loadImage = (name, src) => new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
@@ -314,6 +326,7 @@
   }
 
   function spawnEnemy() {
+    if (state.enemies.length >= perf.maxEnemies) return;
     const angle = Math.random() * Math.PI * 2;
     const radius = Math.max(state.w, state.h) * 0.66;
     const bat = Math.random() > 0.46;
@@ -341,6 +354,7 @@
     const n = norm(target.x - state.player.x, target.y - state.player.y);
     const baseAngle = Math.atan2(n.y, n.x);
     for (let i = 0; i < state.projectiles; i++) {
+      if (state.bolts.length >= perf.maxBolts) break;
       const spread = (i - (state.projectiles - 1) / 2) * (state.shot.spread ?? 0.18);
       const angle = baseAngle + spread;
       state.bolts.push({
@@ -455,9 +469,10 @@
     state.player.hit = Math.max(0, state.player.hit - dt);
 
     if (state.spawn <= 0) {
-      const count = Math.min(3 + Math.floor(state.time / 24), 16);
+      const spawnCap = lowPowerDevice ? 9 : 16;
+      const count = Math.min(3 + Math.floor(state.time / 24), spawnCap, perf.maxEnemies - state.enemies.length);
       for (let i = 0; i < count; i++) spawnEnemy();
-      state.spawn = Math.max(0.35, 1.14 - state.time / 180);
+      state.spawn = Math.max(lowPowerDevice ? 0.55 : 0.35, 1.14 - state.time / 180);
     }
     if (state.fire <= 0) fire();
 
@@ -485,7 +500,7 @@
       bolt.x += (bolt.vx + Math.cos(bolt.angle + Math.PI / 2) * side) * dt;
       bolt.y += (bolt.vy + Math.sin(bolt.angle + Math.PI / 2) * side) * dt;
       bolt.life -= dt;
-      if (Math.random() < 0.7) spawnTrailEffect(bolt.x, bolt.y, bolt.trail, bolt.shape);
+      if (state.effects.length < perf.maxEffects && Math.random() < perf.trailChance) spawnTrailEffect(bolt.x, bolt.y, bolt.trail, bolt.shape);
       if (bolt.life <= 0) {
         state.bolts.splice(i, 1);
         continue;
@@ -573,6 +588,14 @@
       fx.life -= dt;
       if (fx.life <= 0) state.effects.splice(i, 1);
     }
+    trimTransientLists();
+  }
+
+  function trimTransientLists() {
+    if (state.effects.length > perf.maxEffects) state.effects.splice(0, state.effects.length - perf.maxEffects);
+    if (state.pops.length > perf.maxPops) state.pops.splice(0, state.pops.length - perf.maxPops);
+    if (state.gems.length > perf.maxGems) state.gems.splice(0, state.gems.length - perf.maxGems);
+    if (state.bolts.length > perf.maxBolts) state.bolts.splice(0, state.bolts.length - perf.maxBolts);
   }
 
   function screen(point) {
@@ -632,12 +655,12 @@
       const bob = Math.sin(enemy.wobble) * 4;
       const rate = enemy.kind === "bat" ? 12 : 7;
       const frame = Math.floor((state.animTime + enemy.wobble * 0.08) * rate) % 4;
-      drawSpriteFrame(assets[`${enemy.kind}Sheet`] || assets[enemy.kind], p.x, p.y + bob, enemy.size, frame);
+      drawSpriteFrame(assets[`${enemy.kind}Sheet`] || assets[enemy.kind], p.x, p.y + bob, enemy.size, frame - (frame % perf.enemyFrameStride));
     }
 
     const pulse = state.player.hit > 0 ? 1.06 : 1;
-    drawAura(state.w / 2, state.h / 2, 42 * pulse, rarity[character().rarity].color);
-    drawSprite(assets[`char-${character().cell}`], state.w / 2, state.h / 2, 82 * pulse);
+    if (perf.showAura) drawAura(state.w / 2, state.h / 2, 42 * pulse, rarity[character().rarity].color);
+    drawPlayerSprite(assets[`char-${character().cell}`], state.w / 2, state.h / 2, lowPowerDevice ? 74 * pulse : 82 * pulse);
 
     ctx.textAlign = "center";
     for (const pop of state.pops) {
@@ -654,7 +677,9 @@
   }
 
   function spawnHitEffect(x, y, color, count = 7) {
-    for (let i = 0; i < count; i++) {
+    if (state.effects.length >= perf.maxEffects) return;
+    const cappedCount = Math.max(1, Math.floor(count * perf.hitFxScale));
+    for (let i = 0; i < cappedCount && state.effects.length < perf.maxEffects; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 34 + Math.random() * 86;
       const life = 0.22 + Math.random() * 0.18;
@@ -672,6 +697,7 @@
   }
 
   function spawnTrailEffect(x, y, color, shape) {
+    if (state.effects.length >= perf.maxEffects) return;
     const size = shape === "beam" || shape === "needle" ? 2 : shape === "cannon" || shape === "hammer" ? 5 : 3;
     const life = shape === "fire" || shape === "orb" || shape === "sun" ? 0.26 : 0.16;
     state.effects.push({
@@ -809,6 +835,18 @@
     const dx = snap(x - drawSize / 2, 4);
     const dy = snap(y - drawSize / 2, 4);
     drawOutlinedSource(img, 0, 0, img.width, img.height, dx, dy, drawSize, drawSize);
+  }
+
+  function drawPlayerSprite(img, x, y, size) {
+    if (!img) return;
+    const drawSize = Math.max(8, snap(size, 4));
+    const dx = snap(x - drawSize / 2, 4);
+    const dy = snap(y - drawSize / 2, 4);
+    if (lowPowerDevice) {
+      ctx.drawImage(img, dx, dy, drawSize, drawSize);
+    } else {
+      drawOutlinedSource(img, 0, 0, img.width, img.height, dx, dy, drawSize, drawSize, "player");
+    }
   }
 
   function drawSpriteFrame(img, x, y, size, frame) {
