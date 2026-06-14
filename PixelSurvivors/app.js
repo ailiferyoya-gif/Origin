@@ -83,13 +83,37 @@
     { id: "moonsickle", name: "Moon Sickle", rarity: "epic", cell: 19, note: "\u5e83\u57df\u5f3e", stats: { damage: 1.25, cooldown: 1.04, projectiles: 3, speed: 4, magnet: 24, hp: 0 }, shot: { color: "#a6c7ff", size: 14, speed: 400, life: 1.25 } },
   ];
 
+  const weaponStyles = {
+    crossbow: { shape: "bolt", trail: "#ffe75c", spread: 0.12, pierce: 0, hitCount: 7 },
+    firewand: { shape: "fire", trail: "#ff3d24", spread: 0.1, splash: 42, hitCount: 14 },
+    steelsword: { shape: "blade", trail: "#dfe9ff", spread: 0.06, pierce: 2, hitCount: 8 },
+    daggers: { shape: "dagger", trail: "#c9d2e6", spread: 0.26, pierce: 0, hitCount: 4 },
+    longbow: { shape: "arrow", trail: "#b4ff75", spread: 0.04, pierce: 1, hitCount: 5 },
+    holystaff: { shape: "holy", trail: "#fff7ac", spread: 0.12, splash: 34, hitCount: 13 },
+    handcannon: { shape: "cannon", trail: "#ff9d35", spread: 0.04, splash: 58, knock: 10, hitCount: 18 },
+    spear: { shape: "spear", trail: "#a7d7ff", spread: 0.02, pierce: 3, hitCount: 6 },
+    flask: { shape: "flask", trail: "#7dff4f", spread: 0.18, splash: 50, wobble: 3, hitCount: 16 },
+    scythe: { shape: "scythe", trail: "#c7b7ff", spread: 0.2, pierce: 2, hitCount: 12 },
+    hammer: { shape: "hammer", trail: "#63e8ff", spread: 0.03, splash: 64, knock: 18, hitCount: 20 },
+    icetome: { shape: "ice", trail: "#8ee8ff", spread: 0.12, pierce: 1, hitCount: 10 },
+    needle: { shape: "needle", trail: "#70ff70", spread: 0.02, pierce: 0, hitCount: 3 },
+    boomerang: { shape: "boomerang", trail: "#ffc36b", spread: 0.42, wobble: 8, pierce: 1, hitCount: 7 },
+    orb: { shape: "orb", trail: "#d35cff", spread: 0.2, splash: 46, wobble: 4, hitCount: 15 },
+    chakram: { shape: "ring", trail: "#dbe5ff", spread: 0.34, pierce: 2, spin: 12, hitCount: 7 },
+    axe: { shape: "axe", trail: "#f0f2ff", spread: 0.08, pierce: 1, spin: 9, hitCount: 9 },
+    rifle: { shape: "beam", trail: "#49dfff", spread: 0.03, pierce: 2, hitCount: 8 },
+    sunblade: { shape: "sun", trail: "#ffe879", spread: 0.16, splash: 52, pierce: 1, hitCount: 18 },
+    moonsickle: { shape: "moon", trail: "#a6c7ff", spread: 0.32, pierce: 2, wobble: 5, hitCount: 12 },
+  };
+  for (const item of weapons) Object.assign(item.shot, weaponStyles[item.id]);
+
   const upgrades = [
     ["Rapid Fire", "\u653b\u6483\u9593\u9694\u304c\u77ed\u304f\u306a\u308b", () => state.fireCooldown = Math.max(0.14, state.fireCooldown * 0.84)],
     ["Sharp Bolts", "\u5f3e\u306e\u30c0\u30e1\u30fc\u30b8\u304c\u4e0a\u304c\u308b", () => state.damage += 0.65],
     ["Split Shot", "\u5f3e\u304c1\u3064\u5897\u3048\u308b", () => state.projectiles = Math.min(8, state.projectiles + 1)],
     ["Fleet Boots", "\u79fb\u52d5\u901f\u5ea6\u304c\u4e0a\u304c\u308b", () => state.speed += 24],
     ["Soul Magnet", "\u30b8\u30a7\u30e0\u5438\u5f15\u7bc4\u56f2\u304c\u5e83\u304c\u308b", () => state.magnet += 34],
-    ["Max Heart", "\u6700\u5927HP\u304c\u5897\u3048\u3066\u5168\u56de\u5fa9", () => { state.maxHp += 1; state.hp = state.maxHp; }],
+    ["Max Heart", "\u6700\u5927HP+5\u3067\u5168\u56de\u5fa9", () => { state.maxHp += 5; state.hp = state.maxHp; }],
   ];
 
   const audio = {
@@ -132,8 +156,8 @@
     level: 1,
     xp: 0,
     xpNeed: 8,
-    hp: 6,
-    maxHp: 6,
+    hp: 30,
+    maxHp: 30,
     kills: 0,
     damage: 1,
     projectiles: 1,
@@ -279,7 +303,7 @@
     const wep = weapon();
     const cp = itemPower(char, charLevel());
     const wp = itemPower(wep, weaponLevel());
-    state.maxHp = Math.max(3, Math.round(6 + char.stats.hp * cp + wep.stats.hp * wp));
+    state.maxHp = Math.max(10, Math.round(30 + char.stats.hp * cp * 3 + wep.stats.hp * wp * 3));
     state.hp = state.maxHp;
     state.damage = Math.max(.4, 1 + char.stats.damage * cp + wep.stats.damage * wp);
     state.projectiles = clamp(wep.stats.projectiles + Math.floor((weaponLevel() - 1) / 4), 1, 8);
@@ -317,7 +341,7 @@
     const n = norm(target.x - state.player.x, target.y - state.player.y);
     const baseAngle = Math.atan2(n.y, n.x);
     for (let i = 0; i < state.projectiles; i++) {
-      const spread = (i - (state.projectiles - 1) / 2) * 0.18;
+      const spread = (i - (state.projectiles - 1) / 2) * (state.shot.spread ?? 0.18);
       const angle = baseAngle + spread;
       state.bolts.push({
         x: state.player.x + Math.cos(angle) * 10,
@@ -328,6 +352,15 @@
         angle,
         size: state.shot.size,
         color: state.shot.color,
+        trail: state.shot.trail || state.shot.color,
+        shape: state.shot.shape || "bolt",
+        pierce: state.shot.pierce || 0,
+        splash: state.shot.splash || 0,
+        knock: state.shot.knock || 0,
+        wobble: state.shot.wobble || 0,
+        spin: state.shot.spin || 0,
+        hitCount: state.shot.hitCount || 7,
+        age: 0,
       });
     }
     state.fire = state.fireCooldown;
@@ -447,19 +480,27 @@
 
     for (let i = state.bolts.length - 1; i >= 0; i--) {
       const bolt = state.bolts[i];
-      bolt.x += bolt.vx * dt;
-      bolt.y += bolt.vy * dt;
+      bolt.age += dt;
+      const side = bolt.wobble ? Math.sin(bolt.age * bolt.wobble * 5) * bolt.wobble * 18 : 0;
+      bolt.x += (bolt.vx + Math.cos(bolt.angle + Math.PI / 2) * side) * dt;
+      bolt.y += (bolt.vy + Math.sin(bolt.angle + Math.PI / 2) * side) * dt;
       bolt.life -= dt;
+      if (Math.random() < 0.7) spawnTrailEffect(bolt.x, bolt.y, bolt.trail, bolt.shape);
       if (bolt.life <= 0) {
         state.bolts.splice(i, 1);
         continue;
       }
       for (let j = state.enemies.length - 1; j >= 0; j--) {
         const enemy = state.enemies[j];
-        if (Math.hypot(enemy.x - bolt.x, enemy.y - bolt.y) < 28) {
+        if (Math.hypot(enemy.x - bolt.x, enemy.y - bolt.y) < Math.max(24, bolt.size + 16)) {
           enemy.hp -= state.damage;
+          if (bolt.knock) {
+            enemy.x += Math.cos(bolt.angle) * bolt.knock;
+            enemy.y += Math.sin(bolt.angle) * bolt.knock;
+          }
           playSound("hit", 0.28, 0.025);
-          spawnHitEffect(enemy.x, enemy.y - enemy.size * 0.35, bolt.color);
+          spawnHitEffect(enemy.x, enemy.y - enemy.size * 0.35, bolt.color, bolt.hitCount);
+          if (bolt.splash) splashDamage(enemy, bolt);
           state.pops.push({
             x: enemy.x,
             y: enemy.y - enemy.size * 0.62,
@@ -468,7 +509,12 @@
             color: bolt.color,
             size: 14,
           });
-          state.bolts.splice(i, 1);
+          if (bolt.pierce > 0) {
+            bolt.pierce -= 1;
+            bolt.life *= 0.82;
+          } else {
+            state.bolts.splice(i, 1);
+          }
           if (enemy.hp <= 0) {
             spawnHitEffect(enemy.x, enemy.y, "#ff5c8a", 12);
             playSound("ko", 0.38, 0.08);
@@ -483,6 +529,21 @@
           }
           break;
         }
+      }
+    }
+
+    for (let i = state.enemies.length - 1; i >= 0; i--) {
+      const enemy = state.enemies[i];
+      if (enemy.hp > 0) continue;
+      spawnHitEffect(enemy.x, enemy.y, "#ff5c8a", 12);
+      playSound("ko", 0.38, 0.08);
+      state.gems.push({ x: enemy.x, y: enemy.y, pulse: Math.random() * 6 });
+      state.pops.push({ x: enemy.x, y: enemy.y, text: "KO", life: 0.45 });
+      state.enemies.splice(i, 1);
+      state.kills += 1;
+      if (state.kills % 10 === 0) {
+        save.coins += 10;
+        persist();
       }
     }
 
@@ -555,14 +616,7 @@
 
     for (const bolt of state.bolts) {
       const p = screen(bolt);
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(bolt.angle);
-      ctx.fillStyle = bolt.color;
-      ctx.fillRect(-bolt.size, -Math.max(4, bolt.size / 2), bolt.size * 2, bolt.size);
-      ctx.fillStyle = "#171015";
-      ctx.fillRect(-bolt.size, Math.max(4, bolt.size / 2), bolt.size * 2, 3);
-      ctx.restore();
+      drawProjectile(bolt, p.x, p.y);
     }
 
     for (const fx of state.effects) {
@@ -615,6 +669,138 @@
         maxLife: life,
       });
     }
+  }
+
+  function spawnTrailEffect(x, y, color, shape) {
+    const size = shape === "beam" || shape === "needle" ? 2 : shape === "cannon" || shape === "hammer" ? 5 : 3;
+    const life = shape === "fire" || shape === "orb" || shape === "sun" ? 0.26 : 0.16;
+    state.effects.push({
+      x: x + (Math.random() - 0.5) * 8,
+      y: y + (Math.random() - 0.5) * 8,
+      vx: (Math.random() - 0.5) * 26,
+      vy: (Math.random() - 0.5) * 26,
+      color,
+      size,
+      life,
+      maxLife: life,
+    });
+  }
+
+  function splashDamage(source, bolt) {
+    spawnHitEffect(source.x, source.y, bolt.trail, Math.max(8, Math.floor(bolt.splash / 4)));
+    for (const enemy of state.enemies) {
+      if (enemy === source) continue;
+      const d = Math.hypot(enemy.x - source.x, enemy.y - source.y);
+      if (d <= bolt.splash) {
+        enemy.hp -= state.damage * 0.42;
+        enemy.x += Math.cos(bolt.angle) * (bolt.knock || 4);
+        enemy.y += Math.sin(bolt.angle) * (bolt.knock || 4);
+        state.pops.push({
+          x: enemy.x,
+          y: enemy.y - enemy.size * 0.55,
+          text: formatDamage(state.damage * 0.42),
+          life: 0.48,
+          color: bolt.trail,
+          size: 11,
+        });
+      }
+    }
+  }
+
+  function drawProjectile(bolt, x, y) {
+    const s = bolt.size;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(bolt.angle + (bolt.spin ? bolt.age * bolt.spin : 0));
+    ctx.fillStyle = "#171015";
+    switch (bolt.shape) {
+      case "fire":
+        drawDiamond(s + 5, "#ffda63");
+        drawDiamond(s, bolt.color);
+        break;
+      case "blade":
+      case "spear":
+      case "arrow":
+        ctx.fillRect(-s - 5, -3, s * 2 + 10, 6);
+        ctx.fillStyle = bolt.color;
+        ctx.fillRect(-s - 2, -2, s * 2 + 4, 4);
+        ctx.fillRect(s - 2, -6, 8, 12);
+        break;
+      case "dagger":
+      case "needle":
+        ctx.fillRect(-s - 2, -2, s * 2 + 4, 4);
+        ctx.fillStyle = bolt.color;
+        ctx.fillRect(-s, -1, s * 2, 2);
+        break;
+      case "cannon":
+      case "hammer":
+        drawBlock(s + 5, "#171015");
+        drawBlock(s, bolt.color);
+        break;
+      case "flask":
+      case "orb":
+      case "holy":
+      case "ice":
+      case "sun":
+        drawOrb(s + 4, "#171015");
+        drawOrb(s, bolt.color);
+        if (bolt.shape === "sun") drawCross(s + 6, "#fff5a8");
+        break;
+      case "scythe":
+      case "moon":
+        ctx.fillRect(-s, -4, s * 2, 8);
+        ctx.fillStyle = bolt.color;
+        ctx.fillRect(-s + 3, -7, s * 2 - 6, 14);
+        ctx.clearRect(-3, -7, 7, 14);
+        break;
+      case "ring":
+      case "boomerang":
+        ctx.fillRect(-s, -s, s * 2, 5);
+        ctx.fillRect(s - 4, -s, 5, s * 2);
+        ctx.fillStyle = bolt.color;
+        ctx.fillRect(-s + 3, -s + 3, s * 2 - 6, 4);
+        ctx.fillRect(s - 7, -s + 3, 4, s * 2 - 6);
+        break;
+      case "beam":
+        ctx.fillRect(-s * 2, -3, s * 4, 6);
+        ctx.fillStyle = bolt.color;
+        ctx.fillRect(-s * 2, -1, s * 4, 2);
+        break;
+      default:
+        ctx.fillRect(-s, -Math.max(4, s / 2), s * 2, s);
+        ctx.fillStyle = bolt.color;
+        ctx.fillRect(-s + 2, -Math.max(2, s / 2 - 2), s * 2 - 4, Math.max(4, s - 4));
+    }
+    ctx.restore();
+  }
+
+  function drawBlock(size, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(-size / 2, -size / 2, size, size);
+  }
+
+  function drawDiamond(size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0, -size);
+    ctx.lineTo(size, 0);
+    ctx.lineTo(0, size);
+    ctx.lineTo(-size, 0);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawOrb(size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(0, 0, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function drawCross(size, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(-2, -size, 4, size * 2);
+    ctx.fillRect(-size, -2, size * 2, 4);
   }
 
   function drawSprite(img, x, y, size) {
