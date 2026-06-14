@@ -33,15 +33,18 @@
   const outlineCache = new Map();
   const lowPowerDevice = matchMedia("(pointer: coarse)").matches || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const perf = {
-    maxEnemies: lowPowerDevice ? 64 : 110,
-    maxBolts: lowPowerDevice ? 44 : 90,
-    maxEffects: lowPowerDevice ? 90 : 190,
-    maxPops: lowPowerDevice ? 34 : 70,
-    maxGems: lowPowerDevice ? 90 : 150,
-    trailChance: lowPowerDevice ? 0.18 : 0.42,
-    hitFxScale: lowPowerDevice ? 0.48 : 0.82,
+    maxEnemies: lowPowerDevice ? 36 : 110,
+    maxBolts: lowPowerDevice ? 28 : 90,
+    maxEffects: lowPowerDevice ? 34 : 190,
+    maxPops: lowPowerDevice ? 16 : 70,
+    maxGems: lowPowerDevice ? 48 : 150,
+    trailChance: lowPowerDevice ? 0.05 : 0.42,
+    hitFxScale: lowPowerDevice ? 0.2 : 0.82,
     showAura: !lowPowerDevice,
-    enemyFrameStride: lowPowerDevice ? 2 : 1,
+    enemyFrameStride: lowPowerDevice ? 4 : 1,
+    frameTime: lowPowerDevice ? 1 / 30 : 0,
+    simpleEnemyDraw: lowPowerDevice,
+    simpleFloor: lowPowerDevice,
   };
   const loadImage = (name, src) => new Promise((resolve) => {
     const img = new Image();
@@ -469,10 +472,10 @@
     state.player.hit = Math.max(0, state.player.hit - dt);
 
     if (state.spawn <= 0) {
-      const spawnCap = lowPowerDevice ? 9 : 16;
+      const spawnCap = lowPowerDevice ? 3 : 16;
       const count = Math.min(3 + Math.floor(state.time / 24), spawnCap, perf.maxEnemies - state.enemies.length);
       for (let i = 0; i < count; i++) spawnEnemy();
-      state.spawn = Math.max(lowPowerDevice ? 0.55 : 0.35, 1.14 - state.time / 180);
+      state.spawn = Math.max(lowPowerDevice ? 0.72 : 0.35, 1.14 - state.time / 180);
     }
     if (state.fire <= 0) fire();
 
@@ -610,7 +613,7 @@
     ctx.fillStyle = "#07080d";
     ctx.fillRect(0, 0, state.w, state.h);
 
-    const grid = 24;
+    const grid = perf.simpleFloor ? 32 : 24;
     const ox = ((-state.player.x % grid) + grid) % grid;
     const oy = ((-state.player.y % grid) + grid) % grid;
     for (let x = ox - grid; x < state.w + grid; x += grid) {
@@ -618,7 +621,7 @@
         const shade = ((Math.floor((x - ox + state.player.x) / grid) + Math.floor((y - oy + state.player.y) / grid)) & 1) ? "#10161c" : "#0b1016";
         ctx.fillStyle = shade;
         ctx.fillRect(Math.floor(x), Math.floor(y), grid - 2, grid - 2);
-        if ((((x + y) / grid) & 3) === 0) {
+        if (!perf.simpleFloor && (((x + y) / grid) & 3) === 0) {
           ctx.fillStyle = "rgba(255, 255, 255, .025)";
           ctx.fillRect(Math.floor(x + 4), Math.floor(y + 4), 4, 4);
         }
@@ -655,7 +658,7 @@
       const bob = Math.sin(enemy.wobble) * 4;
       const rate = enemy.kind === "bat" ? 12 : 7;
       const frame = Math.floor((state.animTime + enemy.wobble * 0.08) * rate) % 4;
-      drawSpriteFrame(assets[`${enemy.kind}Sheet`] || assets[enemy.kind], p.x, p.y + bob, enemy.size, frame - (frame % perf.enemyFrameStride));
+      drawEnemySprite(assets[`${enemy.kind}Sheet`] || assets[enemy.kind], p.x, p.y + bob, enemy.size, frame - (frame % perf.enemyFrameStride));
     }
 
     const pulse = state.player.hit > 0 ? 1.06 : 1;
@@ -864,6 +867,27 @@
     drawOutlinedSource(img, sourceX, 0, frameWidth, img.height, dx, dy, drawSize, drawSize);
   }
 
+  function drawEnemySprite(img, x, y, size, frame) {
+    if (!img) return;
+    if (!perf.simpleEnemyDraw) {
+      drawSpriteFrame(img, x, y, size, frame);
+      return;
+    }
+    if (img.width <= img.height * 1.5) {
+      drawRawImage(img, 0, 0, img.width, img.height, x, y, Math.max(8, snap(size * 0.9, 4)));
+      return;
+    }
+    const frameCount = 4;
+    const frameWidth = Math.floor(img.width / frameCount);
+    drawRawImage(img, (frame % frameCount) * frameWidth, 0, frameWidth, img.height, x, y, Math.max(8, snap(size * 0.9, 4)));
+  }
+
+  function drawRawImage(img, sx, sy, sw, sh, x, y, size) {
+    const dx = snap(x - size / 2, 4);
+    const dy = snap(y - size / 2, 4);
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, size, size);
+  }
+
   function drawSheetSprite(img, cell, cols, rows, x, y, size, type = "sheet") {
     if (!img) return;
     const sw = Math.floor(img.width / cols);
@@ -921,8 +945,13 @@
 
   function loop(t) {
     const now = t / 1000;
+    if (perf.frameTime && state.lastFrame && now - state.lastFrame < perf.frameTime) {
+      requestAnimationFrame(loop);
+      return;
+    }
     const dt = Math.min(0.05, now - (state.last || now));
     state.last = now;
+    state.lastFrame = now;
     update(dt);
     draw();
     updateHud();
@@ -1138,8 +1167,6 @@
 
   Promise.all([
     ...characters.map((item) => loadImage(`char-${item.cell}`, `./assets/roster/char-${item.cell.toString().padStart(2, "0")}.png?v=20260614-roster`)),
-    loadImage("bat", "./assets/bat.png?v=20260613-publish"),
-    loadImage("slime", "./assets/slime.png?v=20260613-publish"),
     loadImage("batSheet", "./assets/bat-sheet.png?v=20260613-anim"),
     loadImage("slimeSheet", "./assets/slime-sheet.png?v=20260613-anim"),
   ]).then(() => {
