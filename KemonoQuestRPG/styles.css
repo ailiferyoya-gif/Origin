@@ -56,9 +56,9 @@ button {
 .bg {
   z-index: -3;
   background:
-    linear-gradient(115deg, rgba(166, 116, 54, .24), transparent 30%),
-    linear-gradient(180deg, rgba(20, 32, 44, .86), rgba(30, 25, 22, .9) 54%, #11131a),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 42px);
+    linear-gradient(180deg, rgba(7, 8, 12, .28), rgba(7, 8, 12, .78)),
+    linear-gradient(115deg, rgba(166, 116, 54, .16), transparent 30%),
+    url("assets/generated/bg-guild.png") center / cover no-repeat;
   transition: filter .28s ease, background .28s ease;
 }
 
@@ -76,33 +76,32 @@ button {
     linear-gradient(90deg, transparent 0 46%, rgba(247, 201, 90, .08) 48% 52%, transparent 54%);
   background-size: 47px 73px, 96px 96px;
   animation: drift 8s linear infinite;
-  opacity: .34;
+  opacity: .18;
   mix-blend-mode: screen;
 }
 
 .phone[data-screen="characters"] .bg,
-.phone[data-screen="formation"] .bg {
+.phone[data-screen="formation"] .bg,
+.phone[data-screen="equipment"] .bg,
+.phone[data-screen="save"] .bg {
   background:
-    linear-gradient(140deg, rgba(78, 96, 104, .52), transparent 38%),
-    linear-gradient(180deg, #202a32, #171821 58%, #2d231d);
+    linear-gradient(180deg, rgba(8, 9, 13, .32), rgba(7, 8, 12, .82)),
+    linear-gradient(140deg, rgba(78, 96, 104, .28), transparent 38%),
+    url("assets/generated/bg-guild.png") center / cover no-repeat;
 }
 
 .phone[data-screen="missions"] .bg {
   background:
-    linear-gradient(130deg, rgba(138, 60, 64, .34), transparent 34%),
-    linear-gradient(180deg, #20242a, #131922 50%, #2a1d22);
+    linear-gradient(180deg, rgba(8, 9, 13, .2), rgba(7, 8, 12, .8)),
+    linear-gradient(130deg, rgba(138, 60, 64, .18), transparent 34%),
+    url("assets/generated/bg-raid.png") center / cover no-repeat;
 }
 
 .phone[data-screen="gacha"] .bg {
   background:
-    conic-gradient(from 30deg at 50% 36%, rgba(101, 201, 232, .18), transparent 18%, rgba(247, 201, 90, .2), transparent 42%, rgba(169, 141, 245, .18), transparent 62%),
-    linear-gradient(180deg, #201d2a, #151820 54%, #271d18);
-}
-
-.phone[data-screen="save"] .bg {
-  background:
-    linear-gradient(140deg, rgba(101, 201, 232, .2), transparent 34%),
-    linear-gradient(180deg, #172530, #131820 55%, #1d271f);
+    linear-gradient(180deg, rgba(9, 10, 18, .22), rgba(8, 8, 14, .76)),
+    conic-gradient(from 30deg at 50% 36%, rgba(101, 201, 232, .16), transparent 18%, rgba(247, 201, 90, .16), transparent 42%, rgba(169, 141, 245, .14), transparent 62%),
+    url("assets/generated/bg-summon.png") center / cover no-repeat;
 }
 
 .flash {
@@ -191,8 +190,8 @@ button {
   position: relative;
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
   padding: 10px 10px 0;
 }
 
@@ -202,7 +201,7 @@ button {
   border-radius: 999px;
   color: rgba(255, 248, 223, .76);
   background: linear-gradient(180deg, rgba(51, 44, 36, .64), rgba(10, 13, 18, .44));
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
   backdrop-filter: blur(12px);
 }
@@ -240,8 +239,8 @@ button {
   border-radius: 8px;
   background:
     linear-gradient(135deg, rgba(255, 239, 190, .1), transparent 40%),
-    linear-gradient(180deg, var(--parchment), transparent 48%),
-    var(--panel);
+    linear-gradient(180deg, rgba(83, 68, 45, .3), rgba(16, 16, 20, .58) 60%),
+    rgba(16, 17, 22, .68);
   box-shadow: 0 12px 30px rgba(0, 0, 0, .28), inset 0 0 0 1px rgba(255, 255, 255, .03);
   backdrop-filter: blur(16px);
 }
@@ -268,9 +267,9 @@ button {
 
 .hero-panel {
   background:
-    linear-gradient(135deg, rgba(147, 94, 45, .46), rgba(24, 25, 31, .78) 58%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, .035) 0 1px, transparent 1px 18px),
-    var(--panel);
+    linear-gradient(135deg, rgba(147, 94, 45, .34), rgba(24, 25, 31, .66) 58%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .026) 0 1px, transparent 1px 18px),
+    rgba(15, 16, 20, .58);
 }
 
 .scene-kicker {
@@ -383,6 +382,10 @@ button {
   background: linear-gradient(180deg, rgba(43, 36, 29, .34), rgba(8, 10, 14, .28));
 }
 
+.equipment-row {
+  grid-template-columns: 58px minmax(0, 1fr) 58px 58px;
+}
+
 .row-card.no-art,
 .raid-row {
   grid-template-columns: minmax(0, 1fr) auto;
@@ -440,6 +443,244 @@ button {
 .role-chip.guard { color: #c9dcff; border-color: rgba(112, 213, 255, .48); }
 .role-chip.support { color: #ffe37a; border-color: rgba(255, 212, 94, .6); }
 
+.equipment-hero {
+  min-height: 366px;
+}
+
+.loadout-stage {
+  position: relative;
+  min-height: 292px;
+  margin-top: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.loadout-stage::before {
+  content: "";
+  position: absolute;
+  width: 212px;
+  height: 212px;
+  border: 1px solid rgba(247, 201, 90, .24);
+  border-radius: 50%;
+  background: conic-gradient(from 20deg, rgba(101, 201, 232, .16), transparent 18%, rgba(247, 201, 90, .14), transparent 40%);
+  filter: drop-shadow(0 0 22px rgba(101, 201, 232, .12));
+}
+
+.loadout-character {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.loadout-character img {
+  width: 142px;
+  height: 210px;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 22px rgba(0, 0, 0, .62));
+}
+
+.loadout-character strong,
+.loadout-character span {
+  max-width: 148px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loadout-character strong {
+  font-size: 13px;
+}
+
+.loadout-character span {
+  color: rgba(255, 248, 223, .7);
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.loadout-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.loadout-slot {
+  position: absolute;
+  z-index: 2;
+  width: 98px;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-content: center;
+  align-items: center;
+  gap: 2px 6px;
+  padding: 6px;
+  border: 1px solid rgba(247, 201, 90, .22);
+  border-radius: 8px;
+  color: #fff8df;
+  background: linear-gradient(180deg, rgba(44, 36, 27, .72), rgba(8, 10, 14, .58));
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .26);
+  pointer-events: auto;
+}
+
+.loadout-slot img,
+.loadout-slot i,
+.equipment-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border: 1px solid rgba(247, 201, 90, .28);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle, rgba(247, 201, 90, .18), rgba(0, 0, 0, .16)),
+    rgba(0, 0, 0, .34);
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, .04), 0 8px 16px rgba(0, 0, 0, .28);
+}
+
+.loadout-slot img,
+.loadout-slot i {
+  grid-row: span 2;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.loadout-slot.active {
+  border-color: rgba(247, 201, 90, .9);
+  box-shadow: 0 0 22px rgba(247, 201, 90, .2), inset 0 0 16px rgba(247, 201, 90, .12);
+}
+
+.loadout-slot b,
+.loadout-slot span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loadout-slot b {
+  color: var(--gold);
+  font-size: 11px;
+}
+
+.loadout-slot span {
+  color: rgba(255, 248, 223, .74);
+  font-size: 9px;
+}
+
+.loadout-slot.slot-0 { left: 0; top: 18px; }
+.loadout-slot.slot-1 { right: 0; top: 18px; }
+.loadout-slot.slot-2 { left: 0; bottom: 42px; }
+.loadout-slot.slot-3 { right: 0; bottom: 42px; }
+
+.character-chip-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.character-chip {
+  min-width: 0;
+  min-height: 86px;
+  display: grid;
+  justify-items: center;
+  align-content: end;
+  gap: 2px;
+  padding: 5px;
+  border: 1px solid rgba(247, 201, 90, .16);
+  border-radius: 8px;
+  color: #fff8df;
+  background: rgba(0, 0, 0, .28);
+}
+
+.character-chip.active {
+  border-color: rgba(247, 201, 90, .82);
+  box-shadow: inset 0 0 16px rgba(247, 201, 90, .12);
+}
+
+.character-chip img {
+  width: 52px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.character-chip span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.equipment-craft-row button {
+  flex: 1 1 68px;
+}
+
+.equipment-gallery {
+  display: grid;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.equipment-gallery-group {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  gap: 6px;
+}
+
+.equipment-gallery-group b {
+  color: var(--gold);
+  font-size: 11px;
+  text-align: center;
+}
+
+.equipment-gallery-group div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.equipment-gallery img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  padding: 3px;
+  border: 1px solid rgba(247, 201, 90, .14);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, .34);
+}
+
+.equipment-gallery span {
+  color: rgba(255, 248, 223, .48);
+  font-size: 11px;
+}
+
+.equip-rarity {
+  display: inline-grid;
+  place-items: center;
+  min-width: 36px;
+  margin-right: 4px;
+  padding: 2px 5px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.equip-rarity.ur { color: #ffe37a; border-color: rgba(255, 227, 122, .72); }
+.equip-rarity.ssr { color: #ffc0df; border-color: rgba(255, 127, 190, .62); }
+.equip-rarity.sr { color: #9ed4ff; border-color: rgba(111, 190, 255, .55); }
+.equip-rarity.r { color: #c7ffa0; border-color: rgba(143, 230, 96, .5); }
+.equip-rarity.n { color: rgba(255, 255, 255, .76); }
+
 .raid-battle-panel {
   position: relative;
   min-height: 438px;
@@ -450,7 +691,7 @@ button {
   background:
     linear-gradient(180deg, rgba(252, 228, 161, .1), rgba(24, 16, 18, .72)),
     linear-gradient(125deg, rgba(53, 67, 78, .32), transparent 42%),
-    linear-gradient(145deg, #2b2924, #111820);
+    url("assets/generated/bg-raid.png") center / cover no-repeat;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .22), 0 22px 48px rgba(0, 0, 0, .38);
 }
 

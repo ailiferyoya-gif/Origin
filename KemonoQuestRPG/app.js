@@ -18,10 +18,32 @@ const boss = {
   img: "assets/boss-raid-muted.png"
 };
 
+const equipmentSlots = ["武器", "体", "頭", "指輪"];
+const equipmentRarityTable = [
+  { rarity: "UR", rate: 0.02, power: 42 },
+  { rarity: "SSR", rate: 0.1, power: 30 },
+  { rarity: "SR", rate: 0.32, power: 20 },
+  { rarity: "R", rate: 0.62, power: 12 },
+  { rarity: "N", rate: 1, power: 7 }
+];
+const equipmentNames = {
+  "武器": ["星晶の剣", "蒼刃レイライン", "古竜の短剣"],
+  "体": ["魔晶騎士鎧", "旅団の外套", "護光の胸甲"],
+  "頭": ["星詠みの冠", "迷宮守りの兜", "月灯のサークレット"],
+  "指輪": ["契約の指輪", "輝晶のリング", "守護紋の指輪"]
+};
+const equipmentArtBySlot = {
+  "武器": "assets/generated/equipment/weapon.png",
+  "体": "assets/generated/equipment/body.png",
+  "頭": "assets/generated/equipment/head.png",
+  "指輪": "assets/generated/equipment/ring.png"
+};
+
 const panels = {
   village: document.querySelector("#villagePanel"),
   characters: document.querySelector("#charactersPanel"),
   formation: document.querySelector("#formationPanel"),
+  equipment: document.querySelector("#equipmentPanel"),
   missions: document.querySelector("#missionsPanel"),
   save: document.querySelector("#savePanel")
 };
@@ -51,6 +73,8 @@ const confirmCancel = document.querySelector("#confirmCancel");
 let activeTab = "village";
 let activeView = { missions: "board" };
 let selectedFormationSlot = 0;
+let selectedEquipSlot = "武器";
+let selectedEquipCharacter = "crimson";
 let pendingConfirm = null;
 let lastTick = Date.now();
 let currentCards = [];
@@ -74,6 +98,11 @@ const defaultGame = () => ({
     blonde: { level: 1, copies: 1 }
   },
   charge: {},
+  equipment: [
+    equipment("eq-sword", "武器", "星晶の剣", "SR", 1, 20, "crimson"),
+    equipment("eq-armor", "体", "魔晶騎士鎧", "R", 1, 12, "silver"),
+    equipment("eq-ring", "指輪", "契約の指輪", "R", 1, 12, "blonde")
+  ],
   reports: [
     { type: "live", title: "ギルド遠征開始", text: "放置中も編成メンバーが自動でレイドに参加します。", time: Date.now() }
   ],
@@ -102,6 +131,7 @@ function loadGame() {
       room: makeRoom(),
       owned: { ...saved.owned },
       charge: { ...base.charge, ...saved.charge },
+      equipment: normalizeEquipment(saved.equipment || base.equipment),
       reports: Array.isArray(saved.reports) ? saved.reports.slice(0, 18) : base.reports,
       activities: Array.isArray(saved.activities) ? saved.activities : []
     };
@@ -130,11 +160,41 @@ function owned(id) {
   return game.owned[id] || null;
 }
 
+function equipment(id, slot, name, rarity, level, powerValue, equippedBy = null) {
+  return { id, slot, name, rarity, level, power: powerValue, equippedBy, img: equipmentImageFor(slot) };
+}
+
+function normalizeEquipment(items) {
+  return (Array.isArray(items) ? items : []).map(item => {
+    const slot = equipmentSlots.includes(item.slot) ? item.slot : "武器";
+    return {
+      ...item,
+      slot,
+      rarity: item.rarity || "N",
+      level: item.level || 1,
+      power: item.power || 7,
+      equippedBy: item.equippedBy || null,
+      img: equipmentImageFor(slot)
+    };
+  });
+}
+
+function equipmentImageFor(slot) {
+  return equipmentArtBySlot[slot] || equipmentArtBySlot["武器"];
+}
+
+function equippedPower(characterId) {
+  return game.equipment
+    .filter(item => item.equippedBy === characterId)
+    .reduce((sum, item) => sum + item.power, 0);
+}
+
 function power(id) {
   const character = getCharacter(id);
   const data = owned(id);
   if (!character || !data) return 0;
-  return Math.round(character.dps * (1 + (data.level - 1) * .34) * (1 + Math.max(0, data.copies - 1) * .09));
+  const base = character.dps * (1 + (data.level - 1) * .34) * (1 + Math.max(0, data.copies - 1) * .09);
+  return Math.round(base + equippedPower(id));
 }
 
 function teamDps() {
@@ -201,6 +261,7 @@ function renderHeader() {
     village: ["冒険者ギルド", `ROOM ${game.room} / 魔晶Lv${game.bossLevel}`],
     characters: ["仲間名簿", `${Object.keys(game.owned).length} / ${characters.length} 契約`],
     formation: ["出撃編成", `${yen(teamDps())} DPS / 3人編成`],
+    equipment: ["装備工房", `${game.equipment.length} 所持 / ${selectedEquipSlot}`],
     missions: ["クエストボード", "レイドとギルド活動"],
     gacha: ["契約召喚", `契約 ${game.tickets} / 輝晶 ${yen(game.crystals)}`],
     save: ["冒険の記録", "ローカル保存 / コード出力"]
@@ -230,6 +291,7 @@ function render() {
   renderVillage();
   renderCharacters();
   renderFormation();
+  renderEquipment();
   renderMissions();
   renderSave();
 }
@@ -239,7 +301,7 @@ function renderVillage() {
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Guild Hall</span>
       <h1>冒険者ギルドの作戦室</h1>
-      <p>レイドは自動進行。画面を閉じていても最大6時間分をローカル保存から計算します。</p>
+      <p>放置で進むレイド作戦。</p>
       <div class="metric-grid">
         <div><b>${yen(teamDps())}</b><span>DPS</span></div>
         <div><b>${eta()}</b><span>討伐予測</span></div>
@@ -271,7 +333,7 @@ function renderCharacters() {
     <article class="panel-card">
       <span class="scene-kicker">Adventurers</span>
       <h1>仲間名簿</h1>
-      <p>契約済みの仲間は強化と編成に使用できます。</p>
+      <p>契約した仲間を強化。</p>
       <div class="rarity-strip">
         <span class="role-chip guard">盾</span>
         <span class="role-chip heal">回復</span>
@@ -293,7 +355,7 @@ function characterRow(character) {
       <div>
         <strong>${character.name}</strong>
         <span>${character.role} / ${character.trait}</span>
-        <small>${data ? `Lv ${data.level} / ${power(character.id)} DPS / 重なり ${data.copies}` : "未入手"}</small>
+        <small>${data ? `Lv ${data.level} / ${power(character.id)} DPS / 装備+${equippedPower(character.id)} / 重なり ${data.copies}` : "未入手"}</small>
       </div>
       ${data ? `<button data-upgrade="${character.id}">${cost}素材</button>` : `<em>未</em>`}
     </article>
@@ -307,7 +369,7 @@ function renderFormation() {
     <article class="panel-card">
       <span class="scene-kicker">出撃設定</span>
       <h1>3人編成</h1>
-      <p>スロットを選んで、下のキャラから入れ替えます。</p>
+      <p>出撃メンバーを選択。</p>
       <div class="stat-grid">
         <div><b>${yen(teamDps())}</b><span>現在DPS</span></div>
         <div><b>${game.formation.includes("silver") ? "あり" : "なし"}</b><span>報酬補正</span></div>
@@ -354,6 +416,74 @@ function pickRow(character) {
   `;
 }
 
+function renderEquipment() {
+  const selected = getCharacter(selectedEquipCharacter) && owned(selectedEquipCharacter)
+    ? getCharacter(selectedEquipCharacter)
+    : characters.find(character => owned(character.id));
+  if (selected) selectedEquipCharacter = selected.id;
+  const equipped = selected ? game.equipment.filter(item => item.equippedBy === selected.id) : [];
+  const current = slot => equipped.find(item => item.slot === slot);
+  const available = game.equipment.filter(item => item.slot === selectedEquipSlot);
+  panels.equipment.innerHTML = `
+    <article class="panel-card hero-panel equipment-hero">
+      <span class="scene-kicker">Loadout</span>
+      <h1>装備欄</h1>
+      <p>部位装備でDPS上昇。</p>
+      ${selected ? `
+        <div class="loadout-stage">
+          <div class="loadout-character"><img src="${selected.img}" alt="${selected.name}"><strong>${selected.name}</strong><span>${selected.role} / ${power(selected.id)} DPS</span></div>
+          <div class="loadout-ring">
+            ${equipmentSlots.map((slot, index) => {
+              const item = current(slot);
+              return `<button class="loadout-slot slot-${index} ${selectedEquipSlot === slot ? "active" : ""}" data-equip-slot="${slot}">
+                ${item ? `<img src="${item.img}" alt="">` : `<i>${slot.slice(0, 1)}</i>`}
+                <b>${slot}</b><span>${item ? `${item.rarity} ${item.name}` : "未装備"}</span>
+              </button>`;
+            }).join("")}
+          </div>
+        </div>` : `<p>装備できる仲間がいません。</p>`}
+    </article>
+    <article class="panel-card compact-visual">
+      <h2>装備する仲間</h2>
+      <div class="character-chip-row">${characters.filter(c => owned(c.id)).map(character => `
+        <button class="character-chip ${selectedEquipCharacter === character.id ? "active" : ""}" data-equip-character="${character.id}">
+          <img src="${character.img}" alt=""><span>${character.name}</span>
+        </button>
+      `).join("")}</div>
+    </article>
+    <article class="panel-card compact-visual">
+      <h2>${selectedEquipSlot}を選択</h2>
+      <div class="action-row equipment-craft-row">
+        ${equipmentSlots.map(slot => `<button class="${selectedEquipSlot === slot ? "" : "secondary"}" data-equip-slot="${slot}">${slot}</button>`).join("")}
+        <button data-action="craft-equipment" data-slot-name="${selectedEquipSlot}">鍛造</button>
+      </div>
+      <div class="row-list">${available.map(equipmentPickRow).join("") || `<article class="row-card no-art"><div><strong>${selectedEquipSlot}の装備なし</strong><span>鍛造で追加できます。</span></div><em>空</em></article>`}</div>
+    </article>
+    <article class="panel-card compact-visual">
+      <h2>装備倉庫</h2>
+      <div class="equipment-gallery">${equipmentSlots.map(slot => `
+        <div class="equipment-gallery-group"><b>${slot}</b><div>${game.equipment.filter(item => item.slot === slot).map(item => `<img src="${item.img}" alt="${item.name}" title="${item.name}">`).join("") || "<span>空</span>"}</div></div>
+      `).join("")}</div>
+    </article>
+  `;
+}
+
+function equipmentPickRow(item) {
+  const owner = item.equippedBy ? getCharacter(item.equippedBy) : null;
+  return `
+    <article class="row-card equipment-row ${item.equippedBy === selectedEquipCharacter ? "selected" : ""}">
+      <img class="equipment-icon" src="${item.img}" alt="">
+      <div>
+        <strong><span class="equip-rarity ${item.rarity.toLowerCase()}">${item.rarity}</span> ${item.name}</strong>
+        <span>${item.slot} Lv.${item.level} / DPS +${yen(item.power)}</span>
+        <small>${owner ? `${owner.name} が装備中` : "装備可能"}</small>
+      </div>
+      <button data-action="equip-item" data-equip-id="${item.id}">装備</button>
+      <button class="secondary" data-action="enhance-equip" data-equip-id="${item.id}">強化</button>
+    </article>
+  `;
+}
+
 function renderMissions() {
   panels.missions.innerHTML = activeView.missions === "raid" ? raidBattleHtml() : missionBoardHtml();
 }
@@ -363,7 +493,7 @@ function missionBoardHtml() {
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Quest Board</span>
       <h1>ギルドクエスト</h1>
-      <p>クエストボードからレイド、遠征、ギルド活動を選びます。</p>
+      <p>レイドと遠征を選択。</p>
       <div class="metric-grid">
         <div><b>Lv ${game.bossLevel}</b><span>敵Lv</span></div>
         <div><b>${yen(game.bossHp)}</b><span>残HP</span></div>
@@ -443,7 +573,7 @@ function renderSave() {
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Chronicle</span>
       <h1>冒険の記録</h1>
-      <p>このブラウザ/端末にローカル保存します。共有URLは部屋IDだけを共有します。</p>
+      <p>端末にローカル保存。</p>
       <div class="save-status">
         <div><b>${new Date(game.lastSavedAt).toLocaleTimeString("ja-JP")}</b><span>最終保存</span></div>
         <div><b>${game.room}</b><span>部屋ID</span></div>
@@ -521,6 +651,79 @@ function upgrade(id) {
   game.materials -= cost;
   data.level += 1;
   addReport("live", "強化完了", `${getCharacter(id).name} が Lv${data.level} になりました。`);
+  saveGame(true);
+  render();
+}
+
+function randomFrom(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function craftEquipment(slot) {
+  const normalizedSlot = equipmentSlots.includes(slot) ? slot : "武器";
+  const cost = normalizedSlot === "指輪" ? 95 : 75;
+  showConfirm(
+    `${normalizedSlot}を鍛造しますか`,
+    "魔晶炉で装備を1つ作成します。レア度はNからURまで抽選されます。",
+    [`消費素材: ${cost}`, "完成品は装備倉庫に追加", "DPSに装備戦力が加算"],
+    () => {
+      if (game.materials < cost) {
+        screenSubtitle.textContent = "訓練素材が足りません";
+        return;
+      }
+      game.materials -= cost;
+      const roll = Math.random();
+      const rarityData = equipmentRarityTable.find(item => roll < item.rate) || equipmentRarityTable[equipmentRarityTable.length - 1];
+      const level = 1;
+      const name = randomFrom(equipmentNames[normalizedSlot]);
+      const item = equipment(
+        `eq-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        normalizedSlot,
+        name,
+        rarityData.rarity,
+        level,
+        rarityData.power + Math.floor(Math.random() * 6)
+      );
+      game.equipment.unshift(item);
+      selectedEquipSlot = normalizedSlot;
+      addReport("market", "装備鍛造", `${item.rarity} ${item.name} を入手しました。`);
+      saveGame(true);
+      render();
+    }
+  );
+}
+
+function enhanceEquipment(id) {
+  const item = game.equipment.find(equip => equip.id === id);
+  if (!item) return;
+  const cost = 45 + item.level * 25;
+  showConfirm(
+    `${item.name}を強化しますか`,
+    `Lv.${item.level} から Lv.${item.level + 1} へ強化します。`,
+    [`消費素材: ${cost}`, `DPS +${yen(item.power)} → +${yen(item.power + 7)}`],
+    () => {
+      if (game.materials < cost) {
+        screenSubtitle.textContent = "訓練素材が足りません";
+        return;
+      }
+      game.materials -= cost;
+      item.level += 1;
+      item.power += 7;
+      addReport("market", "装備強化", `${item.name} が Lv.${item.level} になりました。`);
+      saveGame(true);
+      render();
+    }
+  );
+}
+
+function equipItem(equipId) {
+  const item = game.equipment.find(equip => equip.id === equipId);
+  if (!item || !owned(selectedEquipCharacter)) return;
+  game.equipment
+    .filter(equip => equip.slot === item.slot && equip.equippedBy === selectedEquipCharacter)
+    .forEach(equip => { equip.equippedBy = null; });
+  item.equippedBy = selectedEquipCharacter;
+  addReport("live", "装備変更", `${getCharacter(selectedEquipCharacter).name} が ${item.name} を装備しました。`);
   saveGame(true);
   render();
 }
@@ -649,6 +852,14 @@ function handleClick(event) {
     selectedFormationSlot = Number(target.dataset.slot);
     render();
   }
+  if (target.dataset.equipCharacter) {
+    selectedEquipCharacter = target.dataset.equipCharacter;
+    render();
+  }
+  if (target.dataset.equipSlot) {
+    selectedEquipSlot = target.dataset.equipSlot;
+    render();
+  }
   if (target.dataset.pick) {
     const next = [...game.formation];
     next[selectedFormationSlot] = target.dataset.pick;
@@ -698,6 +909,9 @@ function handleClick(event) {
     saveGame(true);
     render();
   }
+  if (action === "craft-equipment") craftEquipment(target.dataset.slotName);
+  if (action === "equip-item") equipItem(target.dataset.equipId);
+  if (action === "enhance-equip") enhanceEquipment(target.dataset.equipId);
   if (action === "save") saveGame(false);
   if (action === "export") exportSave();
   if (action === "import") importSave();
