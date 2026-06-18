@@ -13,8 +13,8 @@ const characters = [
 const roleClass = { 回復: "heal", 盾: "guard", 支援: "support", 妨害: "support", 攻撃: "attack" };
 const worldNames = ["Aoi", "Ren", "Mika", "Towa", "Nagi", "Sora", "Kiri"];
 const boss = {
-  name: "封印核獣ロア",
-  subtitle: "静かな結晶体。派手さより圧で押してくる。",
+  name: "魔晶核アークロア",
+  subtitle: "古い迷宮の奥で目覚めた魔晶体。静かな圧で戦場を支配する。",
   img: "assets/boss-raid-muted.png"
 };
 
@@ -75,7 +75,7 @@ const defaultGame = () => ({
   },
   charge: {},
   reports: [
-    { type: "live", title: "レイドルーム作成", text: "放置中も編成メンバーが自動で攻撃します。", time: Date.now() }
+    { type: "live", title: "ギルド遠征開始", text: "放置中も編成メンバーが自動でレイドに参加します。", time: Date.now() }
   ],
   activities: [],
   sound: true
@@ -198,17 +198,17 @@ function addActivity(title, text, reward = 20) {
 
 function renderHeader() {
   const titles = {
-    village: ["ケモノレイド", `ROOM ${game.room} / Lv${game.bossLevel}`],
-    characters: ["キャラ一覧", `${Object.keys(game.owned).length} / ${characters.length} 入手`],
+    village: ["冒険者ギルド", `ROOM ${game.room} / 魔晶Lv${game.bossLevel}`],
+    characters: ["仲間名簿", `${Object.keys(game.owned).length} / ${characters.length} 契約`],
     formation: ["出撃編成", `${yen(teamDps())} DPS / 3人編成`],
-    missions: ["任務", "レイドとワールド活動"],
-    gacha: ["召喚", `札 ${game.tickets} / 輝晶 ${yen(game.crystals)}`],
-    save: ["保存", "ローカル保存 / コード出力"]
+    missions: ["クエストボード", "レイドとギルド活動"],
+    gacha: ["契約召喚", `契約 ${game.tickets} / 輝晶 ${yen(game.crystals)}`],
+    save: ["冒険の記録", "ローカル保存 / コード出力"]
   };
   const [title, subtitle] = titles[activeTab];
   screenTitle.textContent = title;
   screenSubtitle.textContent = subtitle;
-  ticketCurrency.textContent = `札 ${game.tickets}`;
+  ticketCurrency.textContent = `契約 ${game.tickets}`;
   crystalCurrency.textContent = `輝晶 ${yen(game.crystals)}`;
 }
 
@@ -237,16 +237,16 @@ function render() {
 function renderVillage() {
   panels.village.innerHTML = `
     <article class="panel-card hero-panel">
-      <span class="scene-kicker">放置レイド拠点</span>
-      <h1>封印核獣を見張る里</h1>
-      <p>戦闘は自動進行。画面を閉じていても最大6時間分をローカル保存から計算します。</p>
+      <span class="scene-kicker">Guild Hall</span>
+      <h1>冒険者ギルドの作戦室</h1>
+      <p>レイドは自動進行。画面を閉じていても最大6時間分をローカル保存から計算します。</p>
       <div class="metric-grid">
         <div><b>${yen(teamDps())}</b><span>DPS</span></div>
         <div><b>${eta()}</b><span>討伐予測</span></div>
         <div><b>${yen(game.pendingReward)}</b><span>未受取</span></div>
       </div>
       <div class="action-row">
-        <button data-tab="missions">任務へ</button>
+        <button data-tab="missions">クエストへ</button>
         <button class="secondary" data-action="claim">報酬受取</button>
         <button class="secondary" data-action="copy-room">部屋URL</button>
       </div>
@@ -260,7 +260,7 @@ function renderVillage() {
       </div>
     </article>
     <article class="panel-card">
-      <h2>ワールドフィード</h2>
+      <h2>ギルド掲示板</h2>
       <div class="npc-activity-list">${activityHtml(game.reports.slice(0, 5))}</div>
     </article>
   `;
@@ -269,9 +269,9 @@ function renderVillage() {
 function renderCharacters() {
   panels.characters.innerHTML = `
     <article class="panel-card">
-      <span class="scene-kicker">Diverse 5</span>
-      <h1>キャラ一覧</h1>
-      <p>入手済みキャラは強化と編成に使用できます。</p>
+      <span class="scene-kicker">Adventurers</span>
+      <h1>仲間名簿</h1>
+      <p>契約済みの仲間は強化と編成に使用できます。</p>
       <div class="rarity-strip">
         <span class="role-chip guard">盾</span>
         <span class="role-chip heal">回復</span>
@@ -361,9 +361,9 @@ function renderMissions() {
 function missionBoardHtml() {
   return `
     <article class="panel-card hero-panel">
-      <span class="scene-kicker">任務板</span>
-      <h1>レイド任務</h1>
-      <p>WafuNinja風に、任務画面からレイドへ入る構成です。</p>
+      <span class="scene-kicker">Quest Board</span>
+      <h1>ギルドクエスト</h1>
+      <p>クエストボードからレイド、遠征、ギルド活動を選びます。</p>
       <div class="metric-grid">
         <div><b>Lv ${game.bossLevel}</b><span>敵Lv</span></div>
         <div><b>${yen(game.bossHp)}</b><span>残HP</span></div>
@@ -371,15 +371,15 @@ function missionBoardHtml() {
       </div>
       <div class="action-row">
         <button data-action="enter-raid">レイドへ入る</button>
-        <button class="secondary" data-action="spawn-activity">巡回任務</button>
+        <button class="secondary" data-action="spawn-activity">素材遠征</button>
       </div>
     </article>
     <article class="panel-card">
-      <h2>進行中任務</h2>
-      <div class="row-list">${game.activities.length ? game.activities.map(activityRow).join("") : `<article class="row-card no-art"><div><strong>任務なし</strong><span>巡回任務を開始できます。</span></div><em>待機</em></article>`}</div>
+      <h2>進行中クエスト</h2>
+      <div class="row-list">${game.activities.length ? game.activities.map(activityRow).join("") : `<article class="row-card no-art"><div><strong>クエストなし</strong><span>素材遠征を開始できます。</span></div><em>待機</em></article>`}</div>
     </article>
     <article class="panel-card">
-      <h2>ワールド活動</h2>
+      <h2>ギルド活動</h2>
       <div class="npc-activity-list">${activityHtml(game.reports.slice(0, 8))}</div>
     </article>
   `;
@@ -404,7 +404,7 @@ function raidBattleHtml() {
   return `
     <article class="raid-battle-panel">
       <div class="raid-hud">
-        <div class="raid-boss-chip"><b>封</b><span>${boss.name} Lv${game.bossLevel}</span></div>
+        <div class="raid-boss-chip"><b>魔</b><span>${boss.name} Lv${game.bossLevel}</span></div>
         <div class="raid-hp-read">${hpPercent}%</div>
       </div>
       <div class="raid-boss-bar"><i style="width:${hpPercent}%"></i></div>
@@ -433,7 +433,7 @@ function raidBattleHtml() {
     <article class="panel-card">
       <h2>レイドログ</h2>
       <div class="raid-log-list">${activityHtml(game.reports.slice(0, 6), true)}</div>
-      <div class="action-row"><button class="secondary" data-action="mission-board">任務板へ</button><button data-action="claim">報酬受取</button></div>
+      <div class="action-row"><button class="secondary" data-action="mission-board">ボードへ</button><button data-action="claim">報酬受取</button></div>
     </article>
   `;
 }
@@ -441,9 +441,9 @@ function raidBattleHtml() {
 function renderSave() {
   panels.save.innerHTML = `
     <article class="panel-card hero-panel">
-      <span class="scene-kicker">Local Save</span>
-      <h1>ローカル保存</h1>
-      <p>このブラウザ/端末に保存します。共有URLは部屋IDだけを共有します。</p>
+      <span class="scene-kicker">Chronicle</span>
+      <h1>冒険の記録</h1>
+      <p>このブラウザ/端末にローカル保存します。共有URLは部屋IDだけを共有します。</p>
       <div class="save-status">
         <div><b>${new Date(game.lastSavedAt).toLocaleTimeString("ja-JP")}</b><span>最終保存</span></div>
         <div><b>${game.room}</b><span>部屋ID</span></div>
@@ -553,7 +553,7 @@ function pullFive() {
 }
 
 function resetGacha() {
-  caption.textContent = "Diverse 5 の縁を結ぶ";
+  caption.textContent = "契約の魔法陣を起動する";
   summonButton.disabled = false;
   resultGrid.innerHTML = "";
   currentCards = [];
@@ -563,7 +563,7 @@ async function summon() {
   currentCards = pullFive();
   if (!currentCards.length) return;
   summonButton.disabled = true;
-  caption.textContent = "召喚の煙が集まっています";
+  caption.textContent = "魔法陣に輝晶の光が集まっています";
   await wait(520);
   fireFlash();
   gachaStage.hidden = true;
@@ -664,7 +664,7 @@ function handleClick(event) {
     const activity = game.activities.find(item => item.id === target.dataset.claimActivity);
     if (activity && activity.finishAt <= Date.now()) {
       game.materials += activity.reward;
-      addReport("market", "巡回完了", `${activity.title} で訓練素材${activity.reward}を獲得。`);
+      addReport("market", "遠征完了", `${activity.title} で訓練素材${activity.reward}を獲得。`);
       game.activities = game.activities.filter(item => item.id !== activity.id);
       saveGame(true);
       render();
@@ -694,7 +694,7 @@ function handleClick(event) {
     render();
   }
   if (action === "spawn-activity") {
-    addActivity("里の巡回", "周辺の素材を回収しています。", 28);
+    addActivity("素材遠征", "ギルド周辺の遺跡で素材を回収しています。", 28);
     saveGame(true);
     render();
   }
@@ -732,7 +732,7 @@ function boot() {
     applyProgress(now - lastTick);
     lastTick = now;
     if (Math.random() < .18) npcHit();
-    if (Math.random() < .05) addActivity("臨時巡回", "里の協力者が素材を拾っています。", 16);
+    if (Math.random() < .05) addActivity("臨時遠征", "ギルドの冒険者が素材を持ち帰っています。", 16);
     saveGame(true);
     render();
   }, TICK_MS);
