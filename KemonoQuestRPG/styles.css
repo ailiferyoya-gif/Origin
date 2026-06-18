@@ -348,6 +348,60 @@ button {
   font-weight: 850;
 }
 
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.material-chip {
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+  gap: 0 8px;
+  padding: 9px;
+  border: 1px solid rgba(247, 201, 90, .2);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .1), transparent 36%),
+    linear-gradient(180deg, rgba(28, 31, 38, .78), rgba(10, 12, 16, .62));
+  overflow: hidden;
+}
+
+.material-chip b {
+  grid-row: 1 / 4;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: rgba(20, 15, 8, .9);
+  background: linear-gradient(180deg, #ffe59b, var(--gold));
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .24);
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.material-chip span,
+.material-chip small {
+  color: rgba(255, 248, 223, .7);
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.material-chip strong {
+  color: #fff8df;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.material-chip.blue b { background: linear-gradient(180deg, #b8f4ff, var(--blue)); }
+.material-chip.green b { background: linear-gradient(180deg, #dbffd7, var(--green)); }
+.material-chip.violet b { background: linear-gradient(180deg, #e5d8ff, var(--violet)); }
+.material-chip.gold b { background: linear-gradient(180deg, #fff1b1, var(--gold)); }
+
 .action-row,
 .chip-row {
   display: flex;
@@ -557,6 +611,58 @@ button {
   font-style: normal;
   font-size: 11px;
   font-weight: 1000;
+}
+
+.boss-roster {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.boss-roster::-webkit-scrollbar {
+  display: none;
+}
+
+.boss-thumb {
+  width: 94px;
+  height: 118px;
+  flex: 0 0 94px;
+  display: grid;
+  grid-template-rows: 82px 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: 5px;
+  padding: 6px;
+  border: 1px solid rgba(247, 201, 90, .18);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(247, 201, 90, .12), transparent 54%),
+    rgba(11, 13, 18, .56);
+}
+
+.boss-thumb.active {
+  border-color: rgba(247, 201, 90, .58);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14), 0 8px 22px rgba(247, 201, 90, .18);
+}
+
+.boss-thumb img {
+  width: 90px;
+  height: 82px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, .52));
+}
+
+.boss-thumb span {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255, 248, 223, .78);
+  font-size: 10px;
+  font-weight: 900;
+  text-align: center;
 }
 
 .rarity-strip {

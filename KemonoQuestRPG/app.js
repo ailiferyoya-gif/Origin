@@ -1,24 +1,82 @@
-const SAVE_KEY = "kemonoQuestRaid:wafuSplit:v1";
+const SAVE_KEY = "kemonoQuestRaid:fantasyRaid:v2";
 const TICK_MS = 1000;
 const OFFLINE_CAP_MS = 6 * 60 * 60 * 1000;
 
 const characters = [
-  { id: "silver", name: "Silver Bell", role: "回復", trait: "月鈴の祈り", skill: "放置報酬を増やす", dps: 18, img: "candidates/diverse5-silver-bell.png" },
-  { id: "crimson", name: "Crimson Paladin", role: "盾", trait: "紅盾の誓い", skill: "被害を抑えて継戦する", dps: 22, img: "candidates/diverse5-crimson-paladin.png" },
-  { id: "mint", name: "Mint Parasol", role: "支援", trait: "薄荷の結界", skill: "攻撃間隔を短縮する", dps: 20, img: "candidates/diverse5-mint-parasol.png" },
-  { id: "blue", name: "Blue Tactician", role: "妨害", trait: "蒼策の号令", skill: "敵防御を崩す", dps: 24, img: "candidates/diverse5-blue-tactician.png" },
-  { id: "blonde", name: "Blonde Carnival", role: "攻撃", trait: "星彩の連撃", skill: "高DPSで削る", dps: 30, img: "candidates/diverse5-blonde-carnival.png" }
+  { id: "silver", name: "Silver Bell", role: "回復", trait: "月鐘の祈り", skill: "報酬と薬草の獲得量を上げる", dps: 18, img: "candidates/diverse5-silver-bell.png" },
+  { id: "crimson", name: "Crimson Paladin", role: "盾", trait: "紅鋼の誓い", skill: "ボスの反撃を受け止め、放置DPSを安定させる", dps: 22, img: "candidates/diverse5-crimson-paladin.png" },
+  { id: "mint", name: "Mint Parasol", role: "支援", trait: "翠風の結界", skill: "全員の行動間隔を短縮する", dps: 20, img: "candidates/diverse5-mint-parasol.png" },
+  { id: "blue", name: "Blue Tactician", role: "妨害", trait: "蒼策の号令", skill: "敵防御を崩し、編成DPSを伸ばす", dps: 24, img: "candidates/diverse5-blue-tactician.png" },
+  { id: "blonde", name: "Blonde Carnival", role: "攻撃", trait: "星彩の連撃", skill: "高い単体DPSでボスを削る", dps: 30, img: "candidates/diverse5-blonde-carnival.png" },
+  { id: "aurora", name: "Aurora Lancer", role: "攻撃", trait: "極光の槍", skill: "バースト時に追加ダメージ", dps: 34, img: "candidates/gacha-aurora-lancer.png" },
+  { id: "verdant", name: "Verdant Alchemist", role: "回復", trait: "薬草錬成", skill: "遠征の薬草報酬を増やす", dps: 21, img: "candidates/gacha-verdant-alchemist.png" },
+  { id: "obsidian", name: "Obsidian Idol", role: "妨害", trait: "黒曜のステージ", skill: "ボスの防御を下げ、魔核報酬を増やす", dps: 27, img: "candidates/gacha-obsidian-idol.png" },
+  { id: "sunlit", name: "Sunlit Ranger", role: "攻撃", trait: "陽矢の狙撃", skill: "放置DPSを大きく伸ばす", dps: 32, img: "candidates/gacha-sunlit-ranger.png" },
+  { id: "lilac", name: "Lilac Oracle", role: "支援", trait: "星詠みの予告", skill: "討伐時の輝晶と遺物を増やす", dps: 23, img: "candidates/gacha-lilac-oracle.png" },
+  { id: "turquoise", name: "Turquoise Mender", role: "回復", trait: "救護結界", skill: "訓練素材の自然回復を増やす", dps: 20, img: "candidates/gacha-turquoise-mender.png" },
+  { id: "ruby", name: "Ruby Berserker", role: "盾", trait: "紅斧の前衛", skill: "盾役ながら高火力で前線を支える", dps: 29, img: "candidates/gacha-ruby-berserker.png" },
+  { id: "cobalt", name: "Cobalt Engineer", role: "支援", trait: "魔導工具", skill: "装備強化の効率を上げる", dps: 25, img: "candidates/gacha-cobalt-engineer.png" }
 ];
+
+const raidBosses = [
+  {
+    id: "arkwyrm",
+    name: "晶翼アークワーム",
+    title: "プリズム宝物庫の主",
+    subtitle: "結晶翼で空を裂く竜。鉱石と魔核を多く落とします。",
+    img: "assets/generated/bosses/boss-arkwyrm-prism.png",
+    hp: 180000,
+    drops: { crystals: 170, ore: 34, essence: 7, relics: 1 }
+  },
+  {
+    id: "colossus",
+    name: "鉄門のコロッサス",
+    title: "崩れた城塞の巨人",
+    subtitle: "古代城門そのものが動き出した巨像。装備素材向きです。",
+    img: "assets/generated/bosses/boss-iron-colossus.png",
+    hp: 230000,
+    drops: { crystals: 145, ore: 58, essence: 5, relics: 1 }
+  },
+  {
+    id: "matriarch",
+    name: "虚殻の女王",
+    title: "影巣を統べる母体",
+    subtitle: "妨害役が刺さる毒殻の女王。魔核と薬草を落とします。",
+    img: "assets/generated/bosses/boss-void-matriarch.png",
+    hp: 205000,
+    drops: { crystals: 155, herbs: 36, essence: 10, relics: 1 }
+  },
+  {
+    id: "leviathan",
+    name: "太陽鱗リヴァイアサン",
+    title: "空海を巡る神獣",
+    subtitle: "硬い光鱗を持つ長大な竜。輝晶報酬が高めです。",
+    img: "assets/generated/bosses/boss-solar-leviathan.png",
+    hp: 260000,
+    drops: { crystals: 220, ore: 24, essence: 8, relics: 2 }
+  },
+  {
+    id: "stag",
+    name: "冥樹ネクロリス",
+    title: "石森の亡霊王",
+    subtitle: "静かに森を侵す石の獣王。遺物の期待値が高い相手です。",
+    img: "assets/generated/bosses/boss-necrolith-stag.png",
+    hp: 240000,
+    drops: { crystals: 165, herbs: 28, essence: 6, relics: 3 }
+  }
+];
+
+const materialDefs = {
+  training: { label: "訓練素材", short: "訓", use: "キャラ強化", color: "green" },
+  ore: { label: "星鉱石", short: "鉱", use: "装備作成", color: "blue" },
+  herbs: { label: "霊草", short: "草", use: "回復役育成", color: "green" },
+  essence: { label: "魔核", short: "核", use: "装備強化", color: "violet" },
+  relics: { label: "古代遺物", short: "遺", use: "高位装備", color: "gold" }
+};
 
 const roleClass = { 回復: "heal", 盾: "guard", 支援: "support", 妨害: "support", 攻撃: "attack" };
 const worldNames = ["Aoi", "Ren", "Mika", "Towa", "Nagi", "Sora", "Kiri"];
-const boss = {
-  name: "魔晶核アークロア",
-  subtitle: "古い迷宮の奥で目覚めた魔晶体。静かな圧で戦場を支配する。",
-  img: "assets/boss-raid-muted.png"
-};
-
-const equipmentSlots = ["武器", "体", "頭", "指輪"];
+const equipmentSlots = ["武器", "鎧", "頭", "指輪"];
 const equipmentRarityTable = [
   { rarity: "UR", rate: 0.02, power: 42 },
   { rarity: "SSR", rate: 0.1, power: 30 },
@@ -27,16 +85,16 @@ const equipmentRarityTable = [
   { rarity: "N", rate: 1, power: 7 }
 ];
 const equipmentNames = {
-  "武器": ["星晶の剣", "蒼刃レイライン", "古竜の短剣"],
-  "体": ["魔晶騎士鎧", "旅団の外套", "護光の胸甲"],
-  "頭": ["星詠みの冠", "迷宮守りの兜", "月灯のサークレット"],
-  "指輪": ["契約の指輪", "輝晶のリング", "守護紋の指輪"]
+  武器: ["星晶の剣", "蒼刃レイライン", "古竜の短槍"],
+  鎧: ["魔晶騎士鎧", "巡礼者の外套", "護光の胸甲"],
+  頭: ["星詠みの冠", "迷宮守りの兜", "月灯のサークレット"],
+  指輪: ["女神の指輪", "輝晶のリング", "守護紋の指輪"]
 };
 const equipmentArtBySlot = {
-  "武器": "assets/generated/equipment/weapon.png",
-  "体": "assets/generated/equipment/body.png",
-  "頭": "assets/generated/equipment/head.png",
-  "指輪": "assets/generated/equipment/ring.png"
+  武器: "assets/generated/equipment/weapon.png",
+  鎧: "assets/generated/equipment/body.png",
+  頭: "assets/generated/equipment/head.png",
+  指輪: "assets/generated/equipment/ring.png"
 };
 const uiIcons = {
   guild: "assets/generated/ui/guild.png",
@@ -88,14 +146,17 @@ let pendingConfirm = null;
 let lastTick = Date.now();
 let currentCards = [];
 
+const defaultMaterials = () => ({ training: 120, ore: 80, herbs: 60, essence: 20, relics: 0 });
+
 const defaultGame = () => ({
   tickets: 3,
   crystals: 260,
-  materials: 120,
+  materials: defaultMaterials(),
   room: makeRoom(),
+  bossIndex: 0,
   bossLevel: 1,
-  bossHp: 160000,
-  bossMaxHp: 160000,
+  bossHp: raidBosses[0].hp,
+  bossMaxHp: raidBosses[0].hp,
   pendingReward: 0,
   totalDamage: 0,
   lastDamage: 0,
@@ -109,11 +170,11 @@ const defaultGame = () => ({
   charge: {},
   equipment: [
     equipment("eq-sword", "武器", "星晶の剣", "SR", 1, 20, "crimson"),
-    equipment("eq-armor", "体", "魔晶騎士鎧", "R", 1, 12, "silver"),
-    equipment("eq-ring", "指輪", "契約の指輪", "R", 1, 12, "blonde")
+    equipment("eq-armor", "鎧", "魔晶騎士鎧", "R", 1, 12, "silver"),
+    equipment("eq-ring", "指輪", "女神の指輪", "R", 1, 12, "blonde")
   ],
   reports: [
-    { type: "live", title: "ギルド遠征開始", text: "放置中も編成メンバーが自動でレイドに参加します。", time: Date.now() }
+    { type: "live", title: "ギルド待機開始", text: "放置中も編成メンバーが自動でレイドへ参加します。", time: Date.now() }
   ],
   activities: [],
   sound: true
@@ -129,17 +190,25 @@ function makeRoom() {
   return room;
 }
 
+function normalizeMaterials(value) {
+  if (typeof value === "number") return { ...defaultMaterials(), training: value };
+  return { ...defaultMaterials(), ...(value || {}) };
+}
+
 function loadGame() {
   try {
     const saved = JSON.parse(localStorage.getItem(SAVE_KEY));
     if (!saved) return defaultGame();
     const base = defaultGame();
+    const bossIndex = Number.isInteger(saved.bossIndex) ? saved.bossIndex % raidBosses.length : 0;
     return {
       ...base,
       ...saved,
       room: makeRoom(),
-      owned: { ...saved.owned },
-      charge: { ...base.charge, ...saved.charge },
+      bossIndex,
+      materials: normalizeMaterials(saved.materials),
+      owned: { ...base.owned, ...(saved.owned || {}) },
+      charge: { ...base.charge, ...(saved.charge || {}) },
       equipment: normalizeEquipment(saved.equipment || base.equipment),
       reports: Array.isArray(saved.reports) ? saved.reports.slice(0, 18) : base.reports,
       activities: Array.isArray(saved.activities) ? saved.activities : []
@@ -152,13 +221,15 @@ function loadGame() {
 function saveGame(silent = true) {
   game.lastSavedAt = Date.now();
   localStorage.setItem(SAVE_KEY, JSON.stringify(game));
-  if (!silent) {
-    screenSubtitle.textContent = "この端末にローカル保存しました";
-  }
+  if (!silent) screenSubtitle.textContent = "この端末にローカル保存しました";
 }
 
 function yen(value) {
   return Math.floor(value).toLocaleString("ja-JP");
+}
+
+function boss() {
+  return raidBosses[game.bossIndex % raidBosses.length];
 }
 
 function getCharacter(id) {
@@ -167,6 +238,17 @@ function getCharacter(id) {
 
 function owned(id) {
   return game.owned[id] || null;
+}
+
+function material(key) {
+  return game.materials[key] || 0;
+}
+
+function addMaterials(rewards = {}) {
+  Object.entries(rewards).forEach(([key, value]) => {
+    if (key === "crystals") game.crystals += value;
+    else game.materials[key] = material(key) + value;
+  });
 }
 
 function equipment(id, slot, name, rarity, level, powerValue, equippedBy = null) {
@@ -189,7 +271,7 @@ function normalizeEquipment(items) {
 }
 
 function equipmentImageFor(slot) {
-  return equipmentArtBySlot[slot] || equipmentArtBySlot["武器"];
+  return equipmentArtBySlot[slot] || equipmentArtBySlot.武器;
 }
 
 function equippedPower(characterId) {
@@ -206,12 +288,16 @@ function power(id) {
   return Math.round(base + equippedPower(id));
 }
 
+function roleBonus(role) {
+  return game.formation.some(id => getCharacter(id)?.role === role);
+}
+
 function teamDps() {
   const base = game.formation.reduce((sum, id) => sum + power(id), 0);
-  const blue = game.formation.includes("blue") ? 1.16 : 1;
-  const mint = game.formation.includes("mint") ? 1.1 : 1;
-  const crimson = game.formation.includes("crimson") ? 1.06 : 1;
-  return Math.max(1, Math.round(base * blue * mint * crimson));
+  const support = game.formation.filter(id => ["支援", "妨害"].includes(getCharacter(id)?.role)).length;
+  const guard = roleBonus("盾") ? 1.06 : 1;
+  const healer = roleBonus("回復") ? 1.05 : 1;
+  return Math.max(1, Math.round(base * (1 + support * .08) * guard * healer));
 }
 
 function applyProgress(ms, offline = false) {
@@ -221,8 +307,8 @@ function applyProgress(ms, offline = false) {
   game.bossHp = Math.max(0, game.bossHp - damage);
   game.totalDamage += damage;
   game.lastDamage = damage;
-  game.pendingReward += Math.floor(damage / 430) + (game.formation.includes("silver") ? Math.floor(seconds / 12) : 0);
-  game.materials += Math.floor(seconds / 90);
+  game.pendingReward += Math.floor(damage / 430) + (roleBonus("回復") ? Math.floor(seconds / 14) : 0);
+  game.materials.training += Math.floor(seconds / (roleBonus("回復") ? 70 : 90));
   game.formation.forEach(id => {
     game.charge[id] = ((game.charge[id] || 0) + seconds * 20) % 100;
   });
@@ -231,11 +317,22 @@ function applyProgress(ms, offline = false) {
 }
 
 function defeatBoss() {
-  const reward = 120 + game.bossLevel * 28;
-  game.pendingReward += reward;
-  addReport("raid", `ロア Lv${game.bossLevel} 討伐`, `討伐報酬 ${yen(reward)} 輝晶が保留中です。`);
+  const current = boss();
+  const levelBonus = 1 + (game.bossLevel - 1) * .08;
+  const rewards = {
+    crystals: Math.round(current.drops.crystals * levelBonus + game.bossLevel * 24),
+    ore: Math.round((current.drops.ore || 0) * levelBonus),
+    herbs: Math.round((current.drops.herbs || 0) * levelBonus),
+    essence: Math.round(current.drops.essence * levelBonus),
+    relics: current.drops.relics + (roleBonus("支援") && Math.random() < .35 ? 1 : 0)
+  };
+  game.pendingReward += rewards.crystals;
+  addMaterials({ ore: rewards.ore, herbs: rewards.herbs, essence: rewards.essence, relics: rewards.relics });
+  addReport("raid", `${current.name} Lv${game.bossLevel} 討伐`, `輝晶${yen(rewards.crystals)} / 鉱石${rewards.ore} / 魔核${rewards.essence} / 遺物${rewards.relics}`);
   game.bossLevel += 1;
-  game.bossMaxHp = Math.round(160000 * Math.pow(1.38, game.bossLevel - 1));
+  game.bossIndex = (game.bossIndex + 1) % raidBosses.length;
+  const next = boss();
+  game.bossMaxHp = Math.round(next.hp * Math.pow(1.22, game.bossLevel - 1));
   game.bossHp = game.bossMaxHp;
   fireFlash();
 }
@@ -254,26 +351,26 @@ function addReport(type, title, text) {
   game.reports = game.reports.slice(0, 18);
 }
 
-function addActivity(title, text, reward = 20) {
+function addActivity(title, text, reward = { training: 20 }, seconds = 45) {
   game.activities.unshift({
     id: `act-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     title,
     text,
     reward,
-    finishAt: Date.now() + 45000
+    finishAt: Date.now() + seconds * 1000
   });
   game.activities = game.activities.slice(0, 5);
 }
 
 function renderHeader() {
   const titles = {
-    village: ["冒険者ギルド", `ROOM ${game.room} / 魔晶Lv${game.bossLevel}`],
-    characters: ["仲間名簿", `${Object.keys(game.owned).length} / ${characters.length} 契約`],
+    village: ["冒険者ギルド", `ROOM ${game.room} / ${boss().name} Lv${game.bossLevel}`],
+    characters: ["仲間名簿", `${Object.keys(game.owned).length} / ${characters.length} 所持`],
     formation: ["出撃編成", `${yen(teamDps())} DPS / 3人編成`],
     equipment: ["装備工房", `${game.equipment.length} 所持 / ${selectedEquipSlot}`],
-    missions: ["クエストボード", "レイドとギルド活動"],
+    missions: ["クエストボード", "放置レイドと素材遠征"],
     gacha: ["契約召喚", `契約 ${game.tickets} / 輝晶 ${yen(game.crystals)}`],
-    save: ["冒険の記録", "ローカル保存 / コード出力"]
+    save: ["冒険の記録", "ローカル保存 / コード入出力"]
   };
   const [title, subtitle] = titles[activeTab];
   screenTitle.textContent = title;
@@ -305,20 +402,35 @@ function render() {
   renderSave();
 }
 
+function resourceGrid() {
+  return `
+    <div class="material-grid">
+      ${Object.entries(materialDefs).map(([key, def]) => `
+        <div class="material-chip ${def.color}">
+          <b>${def.short}</b>
+          <span>${def.label}</span>
+          <strong>${yen(material(key))}</strong>
+          <small>${def.use}</small>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 function renderVillage() {
   panels.village.innerHTML = `
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Guild Hall</span>
       <h1>冒険者ギルドの作戦室</h1>
-      <p>放置で進むレイド作戦。</p>
+      <p>放置で進む協力レイド。仲間・装備・素材を増やして次のボスへ進みます。</p>
       <div class="metric-grid">
         <div><b>${yen(teamDps())}</b><span>DPS</span></div>
         <div><b>${eta()}</b><span>討伐予測</span></div>
         <div><b>${yen(game.pendingReward)}</b><span>未受取</span></div>
       </div>
       <div class="command-grid home-command-grid">
-        ${commandCard({ tab: "missions", icon: uiIcons.quest, kicker: "RAID", title: "クエスト", text: "放置レイドへ", cta: "挑戦" })}
-        ${commandCard({ tab: "equipment", icon: uiIcons.equipment, kicker: "FORGE", title: "装備工房", text: "DPSを強化", cta: "鍛造" })}
+        ${commandCard({ tab: "missions", icon: uiIcons.quest, kicker: "RAID", title: "クエスト", text: `${boss().name}へ`, cta: "挑戦" })}
+        ${commandCard({ tab: "equipment", icon: uiIcons.equipment, kicker: "FORGE", title: "装備工房", text: "鉱石と魔核を使用", cta: "鍛造" })}
         ${commandCard({ tab: "gacha", icon: uiIcons.summon, kicker: "SUMMON", title: "契約召喚", text: "仲間を獲得", cta: "召喚" })}
       </div>
       <div class="action-row compact-actions">
@@ -327,12 +439,8 @@ function renderVillage() {
       </div>
     </article>
     <article class="panel-card">
-      <h2>資源</h2>
-      <div class="metric-grid">
-        <div><b>${yen(game.crystals)}</b><span>輝晶</span></div>
-        <div><b>${yen(game.materials)}</b><span>訓練素材</span></div>
-        <div><b>${yen(game.totalDamage)}</b><span>累計貢献</span></div>
-      </div>
+      <h2>素材庫</h2>
+      ${resourceGrid()}
     </article>
     <article class="panel-card">
       <h2>ギルド掲示板</h2>
@@ -361,7 +469,7 @@ function renderCharacters() {
     <article class="panel-card">
       <span class="scene-kicker">Adventurers</span>
       <h1>仲間名簿</h1>
-      <p>契約した仲間を強化。</p>
+      <p>追加された8人を含む全13人がガチャ排出対象です。</p>
       <div class="rarity-strip">
         <span class="role-chip guard">盾</span>
         <span class="role-chip heal">回復</span>
@@ -383,7 +491,7 @@ function characterRow(character) {
       <div>
         <strong>${character.name}</strong>
         <span>${character.role} / ${character.trait}</span>
-        <small>${data ? `Lv ${data.level} / ${power(character.id)} DPS / 装備+${equippedPower(character.id)} / 重なり ${data.copies}` : "未入手"}</small>
+        <small>${data ? `Lv ${data.level} / ${power(character.id)} DPS / 装備+${equippedPower(character.id)} / 重なり${data.copies}` : "未入手"}</small>
       </div>
       ${data ? `<button data-upgrade="${character.id}">${cost}素材</button>` : `<em>未</em>`}
     </article>
@@ -395,13 +503,13 @@ function renderFormation() {
   while (slots.length < 3) slots.push(null);
   panels.formation.innerHTML = `
     <article class="panel-card">
-      <span class="scene-kicker">出撃設定</span>
+      <span class="scene-kicker">Party</span>
       <h1>3人編成</h1>
-      <p>出撃メンバーを選択。</p>
+      <p>役目を混ぜるほど放置DPSと報酬効率が安定します。</p>
       <div class="stat-grid">
         <div><b>${yen(teamDps())}</b><span>現在DPS</span></div>
-        <div><b>${game.formation.includes("silver") ? "あり" : "なし"}</b><span>報酬補正</span></div>
-        <div><b>${game.formation.includes("blue") ? "有効" : "通常"}</b><span>防御崩し</span></div>
+        <div><b>${roleBonus("回復") ? "有効" : "なし"}</b><span>回復補正</span></div>
+        <div><b>${roleBonus("妨害") ? "有効" : "通常"}</b><span>防御崩し</span></div>
       </div>
     </article>
     <article class="panel-card">
@@ -456,7 +564,7 @@ function renderEquipment() {
     <article class="panel-card hero-panel equipment-hero">
       <span class="scene-kicker">Loadout</span>
       <h1>装備欄</h1>
-      <p>部位装備でDPS上昇。</p>
+      <p>武器・鎧・頭・指輪を装備し、鉱石と魔核で強化します。</p>
       ${selected ? `
         <div class="loadout-stage">
           <div class="loadout-character"><img src="${selected.img}" alt="${selected.name}"><strong>${selected.name}</strong><span>${selected.role} / ${power(selected.id)} DPS</span></div>
@@ -488,10 +596,9 @@ function renderEquipment() {
       </div>
       <button class="forge-command-card" data-action="craft-equipment" data-slot-name="${selectedEquipSlot}">
         <img src="${uiIcons.equipment}" alt="">
-        <div><small>FORGE</small><strong>${selectedEquipSlot}を鍛造</strong><span>素材 ${selectedEquipSlot === "指輪" ? 95 : 75} / レア抽選</span></div>
+        <div><small>FORGE</small><strong>${selectedEquipSlot}を鍛造</strong><span>鉱石${selectedEquipSlot === "指輪" ? 55 : 45} / 魔核${selectedEquipSlot === "指輪" ? 8 : 5}</span></div>
         <b>作成</b>
       </button>
-      </div>
       <div class="row-list">${available.map(equipmentPickRow).join("") || `<article class="row-card no-art"><div><strong>${selectedEquipSlot}の装備なし</strong><span>鍛造で追加できます。</span></div><em>空</em></article>`}</div>
     </article>
     <article class="panel-card compact-visual">
@@ -524,20 +631,30 @@ function renderMissions() {
 }
 
 function missionBoardHtml() {
+  const current = boss();
   return `
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Quest Board</span>
       <h1>ギルドクエスト</h1>
-      <p>レイドと遠征を選択。</p>
+      <p>5種のレイドボスを順番に討伐し、素材を集めます。</p>
       <div class="metric-grid">
         <div><b>Lv ${game.bossLevel}</b><span>敵Lv</span></div>
         <div><b>${yen(game.bossHp)}</b><span>残HP</span></div>
         <div><b>${yen(game.pendingReward)}</b><span>未受取</span></div>
       </div>
       <div class="command-grid quest-command-grid">
-        ${commandCard({ action: "enter-raid", icon: uiIcons.quest, kicker: "BOSS", title: "魔晶レイド", text: `${boss.name} Lv${game.bossLevel}`, cta: "出撃", tone: "raid-command" })}
+        ${commandCard({ action: "enter-raid", icon: uiIcons.quest, kicker: "BOSS", title: current.name, text: current.title, cta: "出撃", tone: "raid-command" })}
         ${commandCard({ action: "spawn-activity", icon: uiIcons.guild, kicker: "IDLE", title: "素材遠征", text: "45秒で素材回収", cta: "派遣", tone: "expedition-command" })}
       </div>
+    </article>
+    <article class="panel-card boss-roster-panel">
+      <h2>レイドボス一覧</h2>
+      <div class="boss-roster">${raidBosses.map((item, index) => `
+        <div class="boss-thumb ${index === game.bossIndex ? "active" : ""}">
+          <img src="${item.img}" alt="${item.name}">
+          <span>${item.name}</span>
+        </div>
+      `).join("")}</div>
     </article>
     <article class="panel-card">
       <h2>進行中クエスト</h2>
@@ -550,6 +667,12 @@ function missionBoardHtml() {
   `;
 }
 
+function activityRewardText(reward) {
+  return Object.entries(reward || {})
+    .map(([key, value]) => `${materialDefs[key]?.label || key}+${value}`)
+    .join(" / ");
+}
+
 function activityRow(activity) {
   const done = activity.finishAt <= Date.now();
   return `
@@ -557,7 +680,7 @@ function activityRow(activity) {
       <div>
         <strong>${activity.title}</strong>
         <span>${activity.text}</span>
-        <small>${done ? "完了" : `${Math.ceil((activity.finishAt - Date.now()) / 1000)}秒`}</small>
+        <small>${done ? "完了" : `${Math.ceil((activity.finishAt - Date.now()) / 1000)}秒`} / ${activityRewardText(activity.reward)}</small>
       </div>
       <button ${done ? "" : "disabled"} data-claim-activity="${activity.id}">${done ? "受取" : "進行"}</button>
     </article>
@@ -565,19 +688,20 @@ function activityRow(activity) {
 }
 
 function raidBattleHtml() {
+  const current = boss();
   const hpPercent = Math.max(1, Math.round((game.bossHp / game.bossMaxHp) * 100));
   return `
     <article class="raid-battle-panel">
       <div class="raid-hud">
-        <div class="raid-boss-chip"><b>魔</b><span>${boss.name} Lv${game.bossLevel}</span></div>
+        <div class="raid-boss-chip"><b>魔</b><span>${current.name} Lv${game.bossLevel}</span></div>
         <div class="raid-hp-read">${hpPercent}%</div>
       </div>
       <div class="raid-boss-bar"><i style="width:${hpPercent}%"></i></div>
-      <div class="raid-mode"><span>放置</span><i style="width:${Math.min(100, Math.round((teamDps() / 120) * 100))}%"></i></div>
+      <div class="raid-mode"><span>放置戦闘</span><i style="width:${Math.min(100, Math.round((teamDps() / 220) * 100))}%"></i></div>
       <div class="raid-stage">
         <div class="raid-enemy-side">
           <div class="raid-aura"></div>
-          <img src="${boss.img}" alt="${boss.name}">
+          <img src="${current.img}" alt="${current.name}">
         </div>
         <div id="damageCall" class="raid-damage-call">
           <small>DAMAGE</small>
@@ -592,7 +716,7 @@ function raidBattleHtml() {
       </div>
       <div class="raid-action-row">
         <button class="raid-attack-button" data-action="burst">号令</button>
-        <div><strong>${yen(teamDps())} DPS</strong><span>${boss.subtitle} 自動戦闘は継続中です。</span></div>
+        <div><strong>${yen(teamDps())} DPS</strong><span>${current.subtitle} 自動戦闘は継続中です。</span></div>
       </div>
     </article>
     <article class="panel-card">
@@ -608,11 +732,11 @@ function renderSave() {
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Chronicle</span>
       <h1>冒険の記録</h1>
-      <p>端末にローカル保存。</p>
+      <p>進行状況は端末にローカル保存されます。</p>
       <div class="save-status">
         <div><b>${new Date(game.lastSavedAt).toLocaleTimeString("ja-JP")}</b><span>最終保存</span></div>
         <div><b>${game.room}</b><span>部屋ID</span></div>
-        <div><b>${Object.keys(game.owned).length}</b><span>所持</span></div>
+        <div><b>${Object.keys(game.owned).length}</b><span>所持仲間</span></div>
       </div>
       <div class="action-row">
         <button data-action="save">保存</button>
@@ -678,14 +802,17 @@ function claimReward() {
 function upgrade(id) {
   const data = owned(id);
   if (!data) return;
-  const cost = 45 + data.level * 35;
-  if (game.materials < cost) {
-    screenSubtitle.textContent = "訓練素材が足りません";
+  const character = getCharacter(id);
+  const trainingCost = 45 + data.level * 35;
+  const herbCost = character.role === "回復" ? Math.ceil(trainingCost * .25) : 0;
+  if (material("training") < trainingCost || material("herbs") < herbCost) {
+    screenSubtitle.textContent = "強化素材が足りません";
     return;
   }
-  game.materials -= cost;
+  game.materials.training -= trainingCost;
+  game.materials.herbs -= herbCost;
   data.level += 1;
-  addReport("live", "強化完了", `${getCharacter(id).name} が Lv${data.level} になりました。`);
+  addReport("live", "強化完了", `${character.name} が Lv${data.level} になりました。`);
   saveGame(true);
   render();
 }
@@ -696,27 +823,27 @@ function randomFrom(items) {
 
 function craftEquipment(slot) {
   const normalizedSlot = equipmentSlots.includes(slot) ? slot : "武器";
-  const cost = normalizedSlot === "指輪" ? 95 : 75;
+  const oreCost = normalizedSlot === "指輪" ? 55 : 45;
+  const essenceCost = normalizedSlot === "指輪" ? 8 : 5;
   showConfirm(
     `${normalizedSlot}を鍛造しますか`,
-    "魔晶炉で装備を1つ作成します。レア度はNからURまで抽選されます。",
-    [`消費素材: ${cost}`, "完成品は装備倉庫に追加", "DPSに装備戦力が加算"],
+    "鉱石と魔核を使って装備を1つ作成します。レア度はNからURまで抽選されます。",
+    [`星鉱石: ${oreCost}`, `魔核: ${essenceCost}`, "完成品は装備倉庫に追加"],
     () => {
-      if (game.materials < cost) {
-        screenSubtitle.textContent = "訓練素材が足りません";
+      if (material("ore") < oreCost || material("essence") < essenceCost) {
+        screenSubtitle.textContent = "鍛造素材が足りません";
         return;
       }
-      game.materials -= cost;
+      game.materials.ore -= oreCost;
+      game.materials.essence -= essenceCost;
       const roll = Math.random();
       const rarityData = equipmentRarityTable.find(item => roll < item.rate) || equipmentRarityTable[equipmentRarityTable.length - 1];
-      const level = 1;
-      const name = randomFrom(equipmentNames[normalizedSlot]);
       const item = equipment(
         `eq-${Date.now()}-${Math.random().toString(16).slice(2)}`,
         normalizedSlot,
-        name,
+        randomFrom(equipmentNames[normalizedSlot]),
         rarityData.rarity,
-        level,
+        1,
         rarityData.power + Math.floor(Math.random() * 6)
       );
       game.equipment.unshift(item);
@@ -731,17 +858,19 @@ function craftEquipment(slot) {
 function enhanceEquipment(id) {
   const item = game.equipment.find(equip => equip.id === id);
   if (!item) return;
-  const cost = 45 + item.level * 25;
+  const oreCost = 25 + item.level * 15;
+  const essenceCost = 2 + item.level;
   showConfirm(
     `${item.name}を強化しますか`,
     `Lv.${item.level} から Lv.${item.level + 1} へ強化します。`,
-    [`消費素材: ${cost}`, `DPS +${yen(item.power)} → +${yen(item.power + 7)}`],
+    [`星鉱石: ${oreCost}`, `魔核: ${essenceCost}`, `DPS +${yen(item.power)} -> +${yen(item.power + 7)}`],
     () => {
-      if (game.materials < cost) {
-        screenSubtitle.textContent = "訓練素材が足りません";
+      if (material("ore") < oreCost || material("essence") < essenceCost) {
+        screenSubtitle.textContent = "強化素材が足りません";
         return;
       }
-      game.materials -= cost;
+      game.materials.ore -= oreCost;
+      game.materials.essence -= essenceCost;
       item.level += 1;
       item.power += 7;
       addReport("market", "装備強化", `${item.name} が Lv.${item.level} になりました。`);
@@ -781,7 +910,7 @@ function pullFive() {
       addReport("live", "仲間加入", `${character.name} が加入しました。`);
     } else {
       game.owned[character.id].copies += 1;
-      game.materials += 18;
+      game.materials.training += 18;
       addReport("market", "重なり変換", `${character.name} が訓練素材18に変換されました。`);
     }
     results.push(character);
@@ -791,7 +920,7 @@ function pullFive() {
 }
 
 function resetGacha() {
-  caption.textContent = "契約の魔法陣を起動する";
+  caption.textContent = "契約陣に魔晶光を集める";
   summonButton.disabled = false;
   resultGrid.innerHTML = "";
   currentCards = [];
@@ -852,6 +981,7 @@ function importSave() {
   if (!code) return;
   try {
     game = JSON.parse(decodeURIComponent(escape(atob(code))));
+    game.materials = normalizeMaterials(game.materials);
     saveGame(true);
     render();
     screenSubtitle.textContent = "セーブコードを読み込みました";
@@ -904,13 +1034,17 @@ function handleClick(event) {
   }
   if (target.dataset.upgrade) {
     const character = getCharacter(target.dataset.upgrade);
-    showConfirm("強化しますか", `${character.name} を強化します。`, [`消費素材: ${45 + owned(character.id).level * 35}`, `現在DPS: ${power(character.id)}`], () => upgrade(character.id));
+    const trainingCost = 45 + owned(character.id).level * 35;
+    const herbCost = character.role === "回復" ? Math.ceil(trainingCost * .25) : 0;
+    const details = [`訓練素材: ${trainingCost}`, `現在DPS: ${power(character.id)}`];
+    if (herbCost) details.push(`霊草: ${herbCost}`);
+    showConfirm("強化しますか", `${character.name} を強化します。`, details, () => upgrade(character.id));
   }
   if (target.dataset.claimActivity) {
     const activity = game.activities.find(item => item.id === target.dataset.claimActivity);
     if (activity && activity.finishAt <= Date.now()) {
-      game.materials += activity.reward;
-      addReport("market", "遠征完了", `${activity.title} で訓練素材${activity.reward}を獲得。`);
+      addMaterials(activity.reward);
+      addReport("market", "遠征完了", `${activity.title} で ${activityRewardText(activity.reward)} を獲得。`);
       game.activities = game.activities.filter(item => item.id !== activity.id);
       saveGame(true);
       render();
@@ -928,7 +1062,7 @@ function handleClick(event) {
     render();
   }
   if (action === "burst") {
-    const damage = teamDps() * 12;
+    const damage = teamDps() * (roleBonus("攻撃") ? 15 : 12);
     game.bossHp = Math.max(0, game.bossHp - damage);
     game.totalDamage += damage;
     game.lastDamage = damage;
@@ -940,7 +1074,14 @@ function handleClick(event) {
     render();
   }
   if (action === "spawn-activity") {
-    addActivity("素材遠征", "ギルド周辺の遺跡で素材を回収しています。", 28);
+    const options = [
+      { title: "訓練場支援", text: "ギルド教官が訓練素材をまとめています。", reward: { training: 32 } },
+      { title: "星鉱脈探索", text: "鉱山跡で装備用の星鉱石を採掘します。", reward: { ore: 24 } },
+      { title: "霊草採集", text: "森の泉で回復役用の霊草を集めます。", reward: { herbs: 22 } },
+      { title: "魔核回収", text: "レイド痕から魔核片を回収します。", reward: { essence: 6 } }
+    ];
+    const picked = randomFrom(options);
+    addActivity(picked.title, picked.text, picked.reward);
     saveGame(true);
     render();
   }
@@ -958,6 +1099,7 @@ function handleClick(event) {
     const raw = localStorage.getItem(`${SAVE_KEY}:slot:${target.dataset.loadSlot}`);
     if (raw) {
       game = JSON.parse(raw);
+      game.materials = normalizeMaterials(game.materials);
       saveGame(true);
       render();
     }
@@ -981,7 +1123,7 @@ function boot() {
     applyProgress(now - lastTick);
     lastTick = now;
     if (Math.random() < .18) npcHit();
-    if (Math.random() < .05) addActivity("臨時遠征", "ギルドの冒険者が素材を持ち帰っています。", 16);
+    if (Math.random() < .05) addActivity("臨時遠征", "ギルドの冒険者が素材を持ち帰っています。", { training: 12, ore: 4 });
     saveGame(true);
     render();
   }, TICK_MS);
