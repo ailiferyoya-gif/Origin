@@ -38,6 +38,15 @@ const equipmentArtBySlot = {
   "頭": "assets/generated/equipment/head.png",
   "指輪": "assets/generated/equipment/ring.png"
 };
+const uiIcons = {
+  guild: "assets/generated/ui/guild.png",
+  characters: "assets/generated/ui/characters.png",
+  party: "assets/generated/ui/party.png",
+  equipment: "assets/generated/ui/equipment.png",
+  quest: "assets/generated/ui/quest.png",
+  summon: "assets/generated/ui/summon.png",
+  save: "assets/generated/ui/save.png"
+};
 
 const panels = {
   village: document.querySelector("#villagePanel"),
@@ -307,9 +316,13 @@ function renderVillage() {
         <div><b>${eta()}</b><span>討伐予測</span></div>
         <div><b>${yen(game.pendingReward)}</b><span>未受取</span></div>
       </div>
-      <div class="action-row">
-        <button data-tab="missions">クエストへ</button>
-        <button class="secondary" data-action="claim">報酬受取</button>
+      <div class="command-grid home-command-grid">
+        ${commandCard({ tab: "missions", icon: uiIcons.quest, kicker: "RAID", title: "クエスト", text: "放置レイドへ", cta: "挑戦" })}
+        ${commandCard({ tab: "equipment", icon: uiIcons.equipment, kicker: "FORGE", title: "装備工房", text: "DPSを強化", cta: "鍛造" })}
+        ${commandCard({ tab: "gacha", icon: uiIcons.summon, kicker: "SUMMON", title: "契約召喚", text: "仲間を獲得", cta: "召喚" })}
+      </div>
+      <div class="action-row compact-actions">
+        <button data-action="claim">報酬受取</button>
         <button class="secondary" data-action="copy-room">部屋URL</button>
       </div>
     </article>
@@ -325,6 +338,21 @@ function renderVillage() {
       <h2>ギルド掲示板</h2>
       <div class="npc-activity-list">${activityHtml(game.reports.slice(0, 5))}</div>
     </article>
+  `;
+}
+
+function commandCard({ action = "", tab = "", icon, kicker, title, text, cta, tone = "" }) {
+  const attrs = `${action ? ` data-action="${action}"` : ""}${tab ? ` data-tab="${tab}"` : ""}`;
+  return `
+    <button class="command-card ${tone}"${attrs}>
+      <img src="${icon}" alt="">
+      <div>
+        <small>${kicker}</small>
+        <strong>${title}</strong>
+        <span>${text}</span>
+      </div>
+      <b>${cta}</b>
+    </button>
   `;
 }
 
@@ -453,9 +481,16 @@ function renderEquipment() {
     </article>
     <article class="panel-card compact-visual">
       <h2>${selectedEquipSlot}を選択</h2>
-      <div class="action-row equipment-craft-row">
-        ${equipmentSlots.map(slot => `<button class="${selectedEquipSlot === slot ? "" : "secondary"}" data-equip-slot="${slot}">${slot}</button>`).join("")}
-        <button data-action="craft-equipment" data-slot-name="${selectedEquipSlot}">鍛造</button>
+      <div class="equip-slot-menu">
+        ${equipmentSlots.map(slot => `<button class="equip-slot-button ${selectedEquipSlot === slot ? "active" : ""}" data-equip-slot="${slot}">
+          <img src="${equipmentImageFor(slot)}" alt=""><span>${slot}</span>
+        </button>`).join("")}
+      </div>
+      <button class="forge-command-card" data-action="craft-equipment" data-slot-name="${selectedEquipSlot}">
+        <img src="${uiIcons.equipment}" alt="">
+        <div><small>FORGE</small><strong>${selectedEquipSlot}を鍛造</strong><span>素材 ${selectedEquipSlot === "指輪" ? 95 : 75} / レア抽選</span></div>
+        <b>作成</b>
+      </button>
       </div>
       <div class="row-list">${available.map(equipmentPickRow).join("") || `<article class="row-card no-art"><div><strong>${selectedEquipSlot}の装備なし</strong><span>鍛造で追加できます。</span></div><em>空</em></article>`}</div>
     </article>
@@ -499,9 +534,9 @@ function missionBoardHtml() {
         <div><b>${yen(game.bossHp)}</b><span>残HP</span></div>
         <div><b>${yen(game.pendingReward)}</b><span>未受取</span></div>
       </div>
-      <div class="action-row">
-        <button data-action="enter-raid">レイドへ入る</button>
-        <button class="secondary" data-action="spawn-activity">素材遠征</button>
+      <div class="command-grid quest-command-grid">
+        ${commandCard({ action: "enter-raid", icon: uiIcons.quest, kicker: "BOSS", title: "魔晶レイド", text: `${boss.name} Lv${game.bossLevel}`, cta: "出撃", tone: "raid-command" })}
+        ${commandCard({ action: "spawn-activity", icon: uiIcons.guild, kicker: "IDLE", title: "素材遠征", text: "45秒で素材回収", cta: "派遣", tone: "expedition-command" })}
       </div>
     </article>
     <article class="panel-card">
