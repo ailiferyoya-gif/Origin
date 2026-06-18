@@ -7,105 +7,84 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="phone" aria-label="Kemono Quest Raid">
-    <section class="topbar">
-      <div>
-        <p class="eyebrow">Idle Co-op Raid</p>
-        <h1>ケモノクエスト レイド</h1>
+  <main class="phone" data-screen="village">
+    <div class="bg"></div>
+    <div class="shade"></div>
+    <div class="particles" aria-hidden="true"></div>
+    <div id="flash" class="flash" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <button id="backButton" class="icon" aria-label="戻る">‹</button>
+      <div class="title">
+        <strong id="screenTitle">ケモノレイド</strong>
+        <span id="screenSubtitle">ローカル保存 / 放置レイド</span>
       </div>
-      <div class="wallet">
-        <span id="roomCode">ROOM ----</span>
-        <strong><span id="crystals">0</span> 輝晶</strong>
+      <button id="soundToggle" class="icon sound-on" aria-label="効果音">♪</button>
+      <div id="ticketCurrency" class="currency">札 3</div>
+      <div id="crystalCurrency" class="currency">輝晶 260</div>
+    </header>
+
+    <nav class="tabs" aria-label="Game sections">
+      <button class="tab active" data-tab="village">里</button>
+      <button class="tab" data-tab="characters">キャラ</button>
+      <button class="tab" data-tab="formation">編成</button>
+      <button class="tab" data-tab="missions">任務</button>
+      <button class="tab" data-tab="gacha">ガチャ</button>
+      <button class="tab" data-tab="save">保存</button>
+    </nav>
+
+    <section id="villagePanel" class="game-panel"></section>
+    <section id="charactersPanel" class="game-panel" hidden></section>
+    <section id="formationPanel" class="game-panel" hidden></section>
+    <section id="missionsPanel" class="game-panel" hidden></section>
+    <section id="savePanel" class="game-panel" hidden></section>
+
+    <section id="gachaStage" class="stage" hidden>
+      <div class="portal" aria-hidden="true">
+        <div class="smoke smoke-a"></div>
+        <div class="smoke smoke-b"></div>
+        <div class="smoke-ring smoke-ring-a"></div>
+        <div class="smoke-ring smoke-ring-b"></div>
+        <div class="core">召</div>
+      </div>
+      <p id="caption" class="portal-caption">Diverse 5 の縁を結ぶ</p>
+      <button id="summon" class="summon">5回召喚 <b>札1 / 輝晶400</b></button>
+      <div class="rates">
+        <span>攻撃 <b>20%</b></span>
+        <span>支援 <b>40%</b></span>
+        <span>未入手補正 <b>あり</b></span>
       </div>
     </section>
 
-    <section class="raid-panel" aria-label="レイドボス">
-      <div class="boss-frame">
-        <div class="boss-aura" aria-hidden="true"></div>
-        <img src="assets/boss-vivid-raid.png" alt="幻彩核獣プリズマロア" class="boss-art">
+    <section id="results" class="results" hidden>
+      <h1>召喚結果</h1>
+      <div class="grid"></div>
+      <button id="again" class="continue">もう一度召喚</button>
+    </section>
+
+    <section id="newGet" class="new-get" hidden>
+      <div class="new-get-copy">
+        <span>仲間加入</span>
+        <strong>Silver Bell</strong>
+        <em>回復 / 月鈴の祈り</em>
       </div>
-      <div class="boss-info">
-        <div>
-          <p class="eyebrow">Raid Boss</p>
-          <h2>幻彩核獣プリズマロア</h2>
+      <img class="new-get-hero" src="candidates/diverse5-silver-bell.png" alt="">
+      <button id="newGetNext" class="new-get-next">結果を見る</button>
+    </section>
+
+    <section id="confirmModal" class="modal" hidden>
+      <div class="modal-card">
+        <span id="confirmKicker" class="scene-kicker">確認</span>
+        <h2 id="confirmTitle">確認</h2>
+        <p id="confirmBody"></p>
+        <div id="confirmDetails" class="modal-details"></div>
+        <div class="modal-actions">
+          <button id="confirmCancel">戻る</button>
+          <button id="confirmOk">実行</button>
         </div>
-        <span id="bossLevel" class="pill">Lv 1</span>
       </div>
-      <div class="hp-row">
-        <div class="hp-track"><span id="bossHpBar"></span></div>
-        <p id="bossHpText">HP 0 / 0</p>
-      </div>
-      <div class="raid-stats">
-        <div><span>DPS</span><strong id="partyDps">0</strong></div>
-        <div><span>討伐予測</span><strong id="eta">--:--</strong></div>
-        <div><span>貢献</span><strong id="contribution">0</strong></div>
-      </div>
-    </section>
-
-    <section class="party-strip" aria-label="編成中キャラ">
-      <div class="section-head">
-        <h2>出撃編成</h2>
-        <button id="openFormation" class="ghost">編成</button>
-      </div>
-      <div id="partySlots" class="party-slots"></div>
-    </section>
-
-    <section class="command-grid" aria-label="操作">
-      <button id="claimReward">報酬受取</button>
-      <button id="openGacha" class="secondary">ガチャ</button>
-      <button id="openUpgrade" class="secondary">強化</button>
-      <button id="copyRoom" class="secondary">部屋URL</button>
-    </section>
-
-    <section class="activity-panel" aria-label="レイドログ">
-      <div class="section-head">
-        <h2>レイド進行</h2>
-        <span id="idleState" class="pill">放置中</span>
-      </div>
-      <div id="raidLog" class="raid-log" aria-live="polite"></div>
     </section>
   </main>
-
-  <dialog id="formationModal" class="modal">
-    <div class="modal-head">
-      <div>
-        <p class="eyebrow">Party</p>
-        <h2>3人を選ぶ</h2>
-      </div>
-      <button class="icon-button" data-close="formationModal" aria-label="閉じる">×</button>
-    </div>
-    <div id="formationList" class="character-list"></div>
-  </dialog>
-
-  <dialog id="gachaModal" class="modal">
-    <div class="modal-head">
-      <div>
-        <p class="eyebrow">Gacha</p>
-        <h2>Diverse 5召喚</h2>
-      </div>
-      <button class="icon-button" data-close="gachaModal" aria-label="閉じる">×</button>
-    </div>
-    <div id="gachaResult" class="result-card">
-      <p>チケットか輝晶で召喚できます。</p>
-    </div>
-    <div class="modal-actions">
-      <button id="pullOnce">1回召喚</button>
-      <button id="pullTen" class="secondary">5回召喚</button>
-    </div>
-  </dialog>
-
-  <dialog id="upgradeModal" class="modal">
-    <div class="modal-head">
-      <div>
-        <p class="eyebrow">Training</p>
-        <h2>キャラ強化</h2>
-      </div>
-      <button class="icon-button" data-close="upgradeModal" aria-label="閉じる">×</button>
-    </div>
-    <div id="upgradeList" class="character-list"></div>
-  </dialog>
-
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>
