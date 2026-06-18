@@ -3,247 +3,109 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>ケモノクエスト</title>
+  <title>Kemono Quest Raid</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="phone">
+  <main class="phone" aria-label="Kemono Quest Raid">
     <section class="topbar">
       <div>
-        <h1>ケモノクエスト</h1>
-        <p>クラシックRPGプロトタイプ</p>
+        <p class="eyebrow">Idle Co-op Raid</p>
+        <h1>ケモノクエスト レイド</h1>
       </div>
       <div class="wallet">
-        <span id="level">Lv 1</span>
-        <span id="gold">23 G</span>
+        <span id="roomCode">ROOM ----</span>
+        <strong><span id="crystals">0</span> 輝晶</strong>
       </div>
     </section>
 
-    <section class="field-panel">
-      <div class="hero-row">
-        <img src="assets/hero.png" alt="主人公ルル" class="hero-art">
-        <div class="status">
-          <strong id="heroName">ルル</strong>
-          <label>HP <span id="hpText">34/34</span><meter id="hpMeter" min="0" max="34" value="34"></meter></label>
-          <label>MP <span id="mpText">12/12</span><meter id="mpMeter" min="0" max="12" value="12"></meter></label>
-        </div>
+    <section class="raid-panel" aria-label="レイドボス">
+      <div class="boss-frame">
+        <div class="boss-aura" aria-hidden="true"></div>
+        <img src="assets/boss-vivid-raid.png" alt="幻彩核獣プリズマロア" class="boss-art">
       </div>
-      <div id="map" class="map" aria-label="フィールドマップ"></div>
-    </section>
-
-    <section class="controls">
-      <div class="dpad">
-        <button data-move="0,-1">▲</button>
+      <div class="boss-info">
         <div>
-          <button data-move="-1,0">◀</button>
-          <button id="inspect">調べる</button>
-          <button data-move="1,0">▶</button>
+          <p class="eyebrow">Raid Boss</p>
+          <h2>幻彩核獣プリズマロア</h2>
         </div>
-        <button data-move="0,1">▼</button>
+        <span id="bossLevel" class="pill">Lv 1</span>
       </div>
-      <div class="side-actions">
-        <button id="characterList" class="secondary">キャラ</button>
-        <button id="battleStart" class="secondary">たたかう</button>
+      <div class="hp-row">
+        <div class="hp-track"><span id="bossHpBar"></span></div>
+        <p id="bossHpText">HP 0 / 0</p>
+      </div>
+      <div class="raid-stats">
+        <div><span>DPS</span><strong id="partyDps">0</strong></div>
+        <div><span>討伐予測</span><strong id="eta">--:--</strong></div>
+        <div><span>貢献</span><strong id="contribution">0</strong></div>
       </div>
     </section>
 
-    <section id="log" class="log" aria-live="polite"></section>
+    <section class="party-strip" aria-label="編成中キャラ">
+      <div class="section-head">
+        <h2>出撃編成</h2>
+        <button id="openFormation" class="ghost">編成</button>
+      </div>
+      <div id="partySlots" class="party-slots"></div>
+    </section>
+
+    <section class="command-grid" aria-label="操作">
+      <button id="claimReward">報酬受取</button>
+      <button id="openGacha" class="secondary">ガチャ</button>
+      <button id="openUpgrade" class="secondary">強化</button>
+      <button id="copyRoom" class="secondary">部屋URL</button>
+    </section>
+
+    <section class="activity-panel" aria-label="レイドログ">
+      <div class="section-head">
+        <h2>レイド進行</h2>
+        <span id="idleState" class="pill">放置中</span>
+      </div>
+      <div id="raidLog" class="raid-log" aria-live="polite"></div>
+    </section>
   </main>
 
-  <dialog id="dialogue" class="modal">
-    <h2 id="dialogueTitle">会話</h2>
-    <p id="dialogueText"></p>
-    <button id="dialogueClose">OK</button>
-  </dialog>
-
-  <dialog id="battle" class="modal battle">
-    <h2 id="enemyName">かげウルフ</h2>
-    <p id="enemyHp">HP 28 / 28</p>
-    <div class="battle-actions">
-      <button id="attack">こうげき</button>
-      <button id="spark">きらめき</button>
-      <button id="guard">ぼうぎょ</button>
-    </div>
-    <div id="battleLog" class="log compact"></div>
-  </dialog>
-
-  <dialog id="characters" class="modal character-modal">
+  <dialog id="formationModal" class="modal">
     <div class="modal-head">
       <div>
-        <h2>キャラ一覧</h2>
-        <p>生成した候補をゲーム内で確認できます。</p>
+        <p class="eyebrow">Party</p>
+        <h2>3人を選ぶ</h2>
       </div>
-      <button id="charactersClose" class="icon-close" aria-label="閉じる">×</button>
+      <button class="icon-button" data-close="formationModal" aria-label="閉じる">×</button>
     </div>
-    <div class="character-tabs" role="tablist" aria-label="キャラカテゴリ">
-      <button class="tab active" data-filter="all">全員</button>
-      <button class="tab" data-filter="hero">主人公</button>
-      <button class="tab" data-filter="party">仲間</button>
-      <button class="tab" data-filter="vivid">新規</button>
-      <button class="tab" data-filter="tall">高頭身</button>
-      <button class="tab" data-filter="eye15">Eye 15</button>
-      <button class="tab" data-filter="pose5">Pose 5</button>
-      <button class="tab" data-filter="diverse5">Diverse 5</button>
+    <div id="formationList" class="character-list"></div>
+  </dialog>
+
+  <dialog id="gachaModal" class="modal">
+    <div class="modal-head">
+      <div>
+        <p class="eyebrow">Gacha</p>
+        <h2>Diverse 5召喚</h2>
+      </div>
+      <button class="icon-button" data-close="gachaModal" aria-label="閉じる">×</button>
     </div>
-    <div class="character-grid" id="characterGrid">
-      <article class="character-card" data-kind="hero">
-        <img src="candidates/a-body-red-eyes-1-cool.png" alt="赤目の狐面剣士候補1">
-        <div><strong>Cool Red Eyes</strong><span>主人公候補 / バランス型</span></div>
-      </article>
-      <article class="character-card" data-kind="hero">
-        <img src="candidates/a-body-red-eyes-2-intense.png" alt="赤目の狐面剣士候補2">
-        <div><strong>Intense Gaze</strong><span>主人公候補 / 目力強め</span></div>
-      </article>
-      <article class="character-card" data-kind="hero">
-        <img src="candidates/a-body-red-eyes-3-clean.png" alt="赤目の狐面剣士候補3">
-        <div><strong>Clean Hero</strong><span>主人公候補 / 画面向き</span></div>
-      </article>
-      <article class="character-card" data-kind="party">
-        <img src="candidates/party-red-eye-guardian.png" alt="盾役の仲間候補">
-        <div><strong>Guardian</strong><span>仲間候補 / 盾役</span></div>
-      </article>
-      <article class="character-card" data-kind="party">
-        <img src="candidates/party-red-eye-spellcaster.png" alt="術師の仲間候補">
-        <div><strong>Spellcaster</strong><span>仲間候補 / 術師</span></div>
-      </article>
-      <article class="character-card" data-kind="party">
-        <img src="candidates/party-red-eye-rogue.png" alt="斥候の仲間候補">
-        <div><strong>Rogue</strong><span>仲間候補 / 弓短剣</span></div>
-      </article>
-      <article class="character-card" data-kind="vivid">
-        <img src="candidates/vivid-noears-prism-medic.png" alt="獣耳なしのプリズムメディック候補">
-        <div><strong>Prism Medic</strong><span>新規候補 / 回復役</span></div>
-      </article>
-      <article class="character-card" data-kind="vivid">
-        <img src="candidates/vivid-noears-astral-duelist.png" alt="獣耳なしの星剣士候補">
-        <div><strong>Astral Duelist</strong><span>新規候補 / レイピア</span></div>
-      </article>
-      <article class="character-card" data-kind="vivid">
-        <img src="candidates/vivid-noears-flame-dancer.png" alt="獣耳なしの炎踊り子候補">
-        <div><strong>Flame Dancer</strong><span>新規候補 / 踊り子</span></div>
-      </article>
-      <article class="character-card" data-kind="vivid">
-        <img src="candidates/vivid-noears-glacial-oracle.png" alt="獣耳なしの氷術師候補">
-        <div><strong>Glacial Oracle</strong><span>新規候補 / 氷術師</span></div>
-      </article>
-      <article class="character-card" data-kind="vivid">
-        <img src="candidates/vivid-noears-thunder-gunner.png" alt="獣耳なしの機工砲手候補">
-        <div><strong>Thunder Gunner</strong><span>新規候補 / 砲手</span></div>
-      </article>
-      <article class="character-card" data-kind="tall">
-        <img src="candidates/tall-female-moon-spellblade.png" alt="高頭身の月光剣士候補">
-        <div><strong>Moon Spellblade</strong><span>高頭身候補 / 月光剣士</span></div>
-      </article>
-      <article class="character-card" data-kind="tall">
-        <img src="candidates/tall-female-crimson-exorcist.png" alt="高頭身の祓魔師候補">
-        <div><strong>Crimson Exorcist</strong><span>高頭身候補 / 祓魔師</span></div>
-      </article>
-      <article class="character-card" data-kind="tall">
-        <img src="candidates/tall-female-neon-assassin.png" alt="高頭身の暗殺者候補">
-        <div><strong>Neon Assassin</strong><span>高頭身候補 / 暗殺者</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-lantern-attendant.png" alt="Eye shape candidate 01">
-        <div><strong>Lantern Attendant</strong><span>Eye 15 / Candidate 01</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-storm-lancer.png" alt="Eye shape candidate 02">
-        <div><strong>Storm Lancer</strong><span>Eye 15 / Candidate 02</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-jade-oracle.png" alt="Eye shape candidate 03">
-        <div><strong>Jade Oracle</strong><span>Eye 15 / Candidate 03</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-rose-captain.png" alt="Eye shape candidate 04">
-        <div><strong>Rose Captain</strong><span>Eye 15 / Candidate 04</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-rune-brawler.png" alt="Eye shape candidate 05">
-        <div><strong>Rune Brawler</strong><span>Eye 15 / Candidate 05</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-harp-priestess.png" alt="Eye shape candidate 06">
-        <div><strong>Harp Priestess</strong><span>Eye 15 / Candidate 06</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-mirror-witch.png" alt="Eye shape candidate 07">
-        <div><strong>Mirror Witch</strong><span>Eye 15 / Candidate 07</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-sunlit-ranger.png" alt="Eye shape candidate 08">
-        <div><strong>Sunlit Ranger</strong><span>Eye 15 / Candidate 08</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-coral-fencer.png" alt="Eye shape candidate 09">
-        <div><strong>Coral Fencer</strong><span>Eye 15 / Candidate 09</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-library-mage.png" alt="Eye shape candidate 10">
-        <div><strong>Library Mage</strong><span>Eye 15 / Candidate 10</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-silver-armor-mage.png" alt="Eye shape candidate 11">
-        <div><strong>Silver Armor Mage</strong><span>Eye 15 / Candidate 11</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-prism-thief.png" alt="Eye shape candidate 12">
-        <div><strong>Prism Thief</strong><span>Eye 15 / Candidate 12</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-venom-apothecary.png" alt="Eye shape candidate 13">
-        <div><strong>Venom Apothecary</strong><span>Eye 15 / Candidate 13</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-bluebell-timekeeper.png" alt="Eye shape candidate 14">
-        <div><strong>Bluebell Timekeeper</strong><span>Eye 15 / Candidate 14</span></div>
-      </article>
-      <article class="character-card" data-kind="eye15">
-        <img src="candidates/eye15-lotus-judge.png" alt="Eye shape candidate 15">
-        <div><strong>Lotus Judge</strong><span>Eye 15 / Candidate 15</span></div>
-      </article>
-      <article class="character-card" data-kind="pose5">
-        <img src="candidates/pose5-teal-duelist.png" alt="Static full-body pose candidate 01">
-        <div><strong>Teal Duelist</strong><span>Pose 5 / Static stance 01</span></div>
-      </article>
-      <article class="character-card" data-kind="pose5">
-        <img src="candidates/pose5-violet-mage.png" alt="Static full-body pose candidate 02">
-        <div><strong>Violet Mage</strong><span>Pose 5 / Static stance 02</span></div>
-      </article>
-      <article class="character-card" data-kind="pose5">
-        <img src="candidates/pose5-ceremony-knight.png" alt="Static full-body pose candidate 03">
-        <div><strong>Ceremony Knight</strong><span>Pose 5 / Static stance 03</span></div>
-      </article>
-      <article class="character-card" data-kind="pose5">
-        <img src="candidates/pose5-scholar.png" alt="Static full-body pose candidate 04">
-        <div><strong>Scholar</strong><span>Pose 5 / Static stance 04</span></div>
-      </article>
-      <article class="character-card" data-kind="pose5">
-        <img src="candidates/pose5-alchemist.png" alt="Static full-body pose candidate 05">
-        <div><strong>Alchemist</strong><span>Pose 5 / Static stance 05</span></div>
-      </article>
-      <article class="character-card" data-kind="diverse5">
-        <img src="candidates/diverse5-silver-bell.png" alt="Diverse face candidate 01">
-        <div><strong>Silver Bell</strong><span>Diverse 5 / Round orange eyes</span></div>
-      </article>
-      <article class="character-card" data-kind="diverse5">
-        <img src="candidates/diverse5-crimson-paladin.png" alt="Diverse face candidate 02">
-        <div><strong>Crimson Paladin</strong><span>Diverse 5 / Sharp turquoise eyes</span></div>
-      </article>
-      <article class="character-card" data-kind="diverse5">
-        <img src="candidates/diverse5-mint-parasol.png" alt="Diverse face candidate 03">
-        <div><strong>Mint Parasol</strong><span>Diverse 5 / Soft lavender eyes</span></div>
-      </article>
-      <article class="character-card" data-kind="diverse5">
-        <img src="candidates/diverse5-blue-tactician.png" alt="Diverse face candidate 04">
-        <div><strong>Blue Tactician</strong><span>Diverse 5 / Angular yellow eyes</span></div>
-      </article>
-      <article class="character-card" data-kind="diverse5">
-        <img src="candidates/diverse5-blonde-carnival.png" alt="Diverse face candidate 05">
-        <div><strong>Blonde Carnival</strong><span>Diverse 5 / Star heterochromia</span></div>
-      </article>
+    <div id="gachaResult" class="result-card">
+      <p>チケットか輝晶で召喚できます。</p>
+    </div>
+    <div class="modal-actions">
+      <button id="pullOnce">1回召喚</button>
+      <button id="pullTen" class="secondary">5回召喚</button>
     </div>
   </dialog>
+
+  <dialog id="upgradeModal" class="modal">
+    <div class="modal-head">
+      <div>
+        <p class="eyebrow">Training</p>
+        <h2>キャラ強化</h2>
+      </div>
+      <button class="icon-button" data-close="upgradeModal" aria-label="閉じる">×</button>
+    </div>
+    <div id="upgradeList" class="character-list"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>
