@@ -161,6 +161,7 @@ const defaultGame = () => ({
   totalDamage: 0,
   lastDamage: 0,
   lastSavedAt: Date.now(),
+  raidJoined: false,
   formation: ["crimson", "silver", "blonde"],
   owned: {
     silver: { level: 1, copies: 1 },
@@ -168,6 +169,7 @@ const defaultGame = () => ({
     blonde: { level: 1, copies: 1 }
   },
   charge: {},
+  partyHp: {},
   equipment: [
     equipment("eq-sword", "武器", "星晶の剣", "SR", 1, 20, "crimson"),
     equipment("eq-armor", "鎧", "魔晶騎士鎧", "R", 1, 12, "silver"),
@@ -209,6 +211,8 @@ function loadGame() {
       materials: normalizeMaterials(saved.materials),
       owned: { ...base.owned, ...(saved.owned || {}) },
       charge: { ...base.charge, ...(saved.charge || {}) },
+      partyHp: { ...(saved.partyHp || {}) },
+      raidJoined: Boolean(saved.raidJoined),
       equipment: normalizeEquipment(saved.equipment || base.equipment),
       reports: Array.isArray(saved.reports) ? saved.reports.slice(0, 18) : base.reports,
       activities: Array.isArray(saved.activities) ? saved.activities : []
@@ -300,20 +304,138 @@ function teamDps() {
   return Math.max(1, Math.round(base * (1 + support * .08) * guard * healer));
 }
 
+function characterMaxHp(id) {
+  const character = getCharacter(id);
+  const data = owned(id);
+  if (!character || !data) return 1;
+  const roleBase = { 盾: 220, 回復: 145, 支援: 155, 妨害: 150, 攻撃: 165 }[character.role] || 150;
+  return Math.round(roleBase + data.level * 24 + equippedPower(id) * 1.8);
+}
+
+function ensurePartyHp(fill = false) {
+  game.formation.forEach(id => {
+    const max = characterMaxHp(id);
+    const current = game.partyHp[id];
+    if (fill || !Number.isFinite(current)) game.partyHp[id] = max;
+    else game.partyHp[id] = Math.min(current, max);
+  });
+}
+
+function aliveFormation() {
+  ensurePartyHp(false);
+  return game.formation.filter(id => (game.partyHp[id] || 0) > 0);
+}
+
+function healLowest(amount) {
+  const target = game.formation
+    .filter(id => (game.partyHp[id] || 0) > 0)
+    .sort((a, b) => (game.partyHp[a] / characterMaxHp(a)) - (game.partyHp[b] / characterMaxHp(b)))[0];
+  if (!target) return null;
+  const before = game.partyHp[target];
+  game.partyHp[target] = Math.min(characterMaxHp(target), before + amount);
+  return { id: target, amount: game.partyHp[target] - before };
+}
+
+function characterAutoAction(id) {
+  const character = getCharacter(id);
+  const base = power(id);
+  game.charge[id] = Math.min(100, (game.charge[id] || 0) + 22);
+  const skillReady = game.charge[id] >= 100;
+  let damage = Math.max(1, Math.round(base * ({ 攻撃: 1.25, 妨害: .92, 支援: .82, 回復: .68, 盾: .78 }[character.role] || 1)));
+  let log = `${character.name} の攻撃 ${yen(damage)}ダメージ`;
+  if (skillReady) {
+    game.charge[id] = 0;
+    if (character.role === "回復") {
+      const healed = healLowest(Math.round(characterMaxHp(id) * .28 + base * 1.4));
+      damage = Math.round(base * .45);
+      log = healed ? `${character.name} が ${getCharacter(healed.id).name} を${healed.amount}回復` : `${character.name} が回復の光を展開`;
+    } else if (character.role === "盾") {
+      damage = Math.round(base * 1.25);
+      game.partyHp[id] = Math.min(characterMaxHp(id), game.partyHp[id] + Math.round(characterMaxHp(id) * .12));
+      log = `${character.name} が挑発しつつ ${yen(damage)}ダメージ`;
+    } else if (character.role === "支援") {
+      damage = Math.round(base * 1.45);
+      game.formation.forEach(member => { game.charge[member] = Math.min(100, (game.charge[member] || 0) + 12); });
+      log = `${character.name} の支援スキル ${yen(damage)}ダメージ`;
+    } else if (character.role === "妨害") {
+      damage = Math.round(base * 1.7);
+      game.materials.essence += Math.random() < .18 ? 1 : 0;
+      log = `${character.name} が防御を崩し ${yen(damage)}ダメージ`;
+    } else {
+      damage = Math.round(base * 2.15);
+      log = `${character.name} の必殺 ${yen(damage)}ダメージ`;
+    }
+  }
+  return { damage, log };
+}
+
+function enemyAttack() {
+  const alive = aliveFormation();
+  if (!alive.length) return false;
+  const current = boss();
+  const target = randomFrom(alive);
+  const targetCharacter = getCharacter(target);
+  const raw = Math.round((34 + game.bossLevel * 8) * (.75 + Math.random() * .7) * (current.hp / 200000));
+  const guardCut = targetCharacter.role === "盾" ? .62 : roleBonus("盾") ? .82 : 1;
+  const damage = Math.max(8, Math.round(raw * guardCut));
+  game.partyHp[target] = Math.max(0, (game.partyHp[target] || characterMaxHp(target)) - damage);
+  addReport("enemy", `${current.name} の攻撃`, `${targetCharacter.name} に ${damage} ダメージ。HP ${game.partyHp[target]}/${characterMaxHp(target)}`);
+  if (game.partyHp[target] <= 0) addReport("enemy", `${targetCharacter.name} 戦闘不能`, "控えに戻り、再参加で立て直せます。");
+  return true;
+}
+
+function autoRaidTick(seconds) {
+  if (!game.raidJoined) return 0;
+  ensurePartyHp(false);
+  let total = 0;
+  const ticks = Math.min(seconds, 120);
+  for (let i = 0; i < ticks; i += 1) {
+    const alive = aliveFormation();
+    if (!alive.length) {
+      game.raidJoined = false;
+      addReport("enemy", "パーティ撤退", "全員のHPが尽きたためレイド参加を解除しました。");
+      break;
+    }
+    const actor = alive[i % alive.length];
+    const action = characterAutoAction(actor);
+    total += action.damage;
+    game.bossHp = Math.max(0, game.bossHp - action.damage);
+    if (i === ticks - 1 || action.log.includes("必殺") || action.log.includes("回復")) addReport("player", "オート行動", action.log);
+    if (game.bossHp <= 0) {
+      defeatBoss();
+      break;
+    }
+    enemyAttack();
+  }
+  if (total > 0) {
+    game.totalDamage += total;
+    game.lastDamage = total;
+    game.pendingReward += Math.floor(total / 430) + (roleBonus("回復") ? Math.floor(seconds / 14) : 0);
+  }
+  return total;
+}
+
+function joinRaid() {
+  ensurePartyHp(true);
+  game.raidJoined = true;
+  addReport("live", "レイド参加", "編成メンバーがオート戦闘を開始しました。");
+  saveGame(true);
+  render();
+}
+
+function leaveRaid() {
+  game.raidJoined = false;
+  addReport("live", "レイド待機", "参加を解除しました。放置素材だけ進行します。");
+  saveGame(true);
+  render();
+}
+
 function applyProgress(ms, offline = false) {
   const seconds = Math.floor(ms / 1000);
   if (seconds <= 0) return;
-  const damage = teamDps() * seconds;
-  game.bossHp = Math.max(0, game.bossHp - damage);
-  game.totalDamage += damage;
-  game.lastDamage = damage;
-  game.pendingReward += Math.floor(damage / 430) + (roleBonus("回復") ? Math.floor(seconds / 14) : 0);
+  const damage = autoRaidTick(seconds);
   game.materials.training += Math.floor(seconds / (roleBonus("回復") ? 70 : 90));
-  game.formation.forEach(id => {
-    game.charge[id] = ((game.charge[id] || 0) + seconds * 20) % 100;
-  });
-  if (offline) addReport("live", "オフライン進行", `${yen(damage)} ダメージ / 報酬 ${yen(Math.floor(damage / 430))} 輝晶`);
-  if (game.bossHp <= 0) defeatBoss();
+  if (offline) addReport("live", "オフライン進行", game.raidJoined ? `${yen(damage)} ダメージ / オート戦闘継続` : "レイド未参加のため素材回収のみ進行");
 }
 
 function defeatBoss() {
@@ -334,6 +456,7 @@ function defeatBoss() {
   const next = boss();
   game.bossMaxHp = Math.round(next.hp * Math.pow(1.22, game.bossLevel - 1));
   game.bossHp = game.bossMaxHp;
+  ensurePartyHp(true);
   fireFlash();
 }
 
@@ -636,14 +759,14 @@ function missionBoardHtml() {
     <article class="panel-card hero-panel">
       <span class="scene-kicker">Quest Board</span>
       <h1>ギルドクエスト</h1>
-      <p>5種のレイドボスを順番に討伐し、素材を集めます。</p>
+      <p>任意参加のレイドです。参加中だけキャラHPつきのオート戦闘が進みます。</p>
       <div class="metric-grid">
         <div><b>Lv ${game.bossLevel}</b><span>敵Lv</span></div>
         <div><b>${yen(game.bossHp)}</b><span>残HP</span></div>
         <div><b>${yen(game.pendingReward)}</b><span>未受取</span></div>
       </div>
       <div class="command-grid quest-command-grid">
-        ${commandCard({ action: "enter-raid", icon: uiIcons.quest, kicker: "BOSS", title: current.name, text: current.title, cta: "出撃", tone: "raid-command" })}
+        ${commandCard({ action: "enter-raid", icon: uiIcons.quest, kicker: "BOSS", title: current.name, text: game.raidJoined ? "参加中・自動戦闘" : "未参加・任意参加", cta: "詳細", tone: "raid-command" })}
         ${commandCard({ action: "spawn-activity", icon: uiIcons.guild, kicker: "IDLE", title: "素材遠征", text: "45秒で素材回収", cta: "派遣", tone: "expedition-command" })}
       </div>
     </article>
@@ -687,9 +810,26 @@ function activityRow(activity) {
   `;
 }
 
+function raidAllyCard(id) {
+  const character = getCharacter(id);
+  const currentHp = Math.max(0, game.partyHp[id] ?? characterMaxHp(id));
+  const maxHp = characterMaxHp(id);
+  const hpPercent = Math.max(0, Math.round((currentHp / maxHp) * 100));
+  return `
+    <div class="raid-ally-card ${currentHp <= 0 ? "down" : ""}">
+      <img src="${character.img}" alt="${character.name}">
+      <strong>${character.name}</strong>
+      <span>${character.role} / ${Math.round(game.charge[id] || 0)}%</span>
+      <div class="ally-hp"><i style="width:${hpPercent}%"></i></div>
+      <small>HP ${currentHp}/${maxHp}</small>
+    </div>
+  `;
+}
+
 function raidBattleHtml() {
   const current = boss();
   const hpPercent = Math.max(1, Math.round((game.bossHp / game.bossMaxHp) * 100));
+  ensurePartyHp(false);
   return `
     <article class="raid-battle-panel">
       <div class="raid-hud">
@@ -697,7 +837,7 @@ function raidBattleHtml() {
         <div class="raid-hp-read">${hpPercent}%</div>
       </div>
       <div class="raid-boss-bar"><i style="width:${hpPercent}%"></i></div>
-      <div class="raid-mode"><span>放置戦闘</span><i style="width:${Math.min(100, Math.round((teamDps() / 220) * 100))}%"></i></div>
+      <div class="raid-mode"><span>${game.raidJoined ? "参加中・オート戦闘" : "未参加・待機中"}</span><i style="width:${game.raidJoined ? Math.min(100, Math.round((teamDps() / 220) * 100)) : 8}%"></i></div>
       <div class="raid-stage">
         <div class="raid-enemy-side">
           <div class="raid-aura"></div>
@@ -708,15 +848,14 @@ function raidBattleHtml() {
           <b>${yen(game.lastDamage || teamDps())}</b>
         </div>
         <div class="raid-ally-side">
-          ${game.formation.map(id => {
-            const character = getCharacter(id);
-            return `<div class="raid-ally-card"><img src="${character.img}" alt="${character.name}"><span>${Math.round(game.charge[id] || 0)}%</span></div>`;
-          }).join("")}
+          ${game.formation.map(raidAllyCard).join("")}
         </div>
       </div>
       <div class="raid-action-row">
-        <button class="raid-attack-button" data-action="burst">号令</button>
-        <div><strong>${yen(teamDps())} DPS</strong><span>${current.subtitle} 自動戦闘は継続中です。</span></div>
+        <div class="raid-buttons">
+          ${game.raidJoined ? `<button class="raid-attack-button" data-action="burst">号令</button><button class="secondary raid-join-button" data-action="raid-leave">撤退</button>` : `<button class="raid-attack-button" data-action="raid-join">参加</button>`}
+        </div>
+        <div><strong>${yen(teamDps())} DPS</strong><span>${current.subtitle} ${game.raidJoined ? "キャラが自動で攻撃・スキル・回復を行います。" : "参加するとオート戦闘が開始されます。"}</span></div>
       </div>
     </article>
     <article class="panel-card">
@@ -1061,13 +1200,20 @@ function handleClick(event) {
     activeView.missions = "board";
     render();
   }
+  if (action === "raid-join") joinRaid();
+  if (action === "raid-leave") leaveRaid();
   if (action === "burst") {
+    if (!game.raidJoined || !aliveFormation().length) {
+      screenSubtitle.textContent = "レイド参加中のみ号令できます";
+      return;
+    }
     const damage = teamDps() * (roleBonus("攻撃") ? 15 : 12);
     game.bossHp = Math.max(0, game.bossHp - damage);
     game.totalDamage += damage;
     game.lastDamage = damage;
     game.pendingReward += Math.floor(damage / 380);
     addReport("player", "号令攻撃", `${yen(damage)} ダメージ。`);
+    enemyAttack();
     if (game.bossHp <= 0) defeatBoss();
     saveGame(true);
     fireFlash();
@@ -1122,7 +1268,7 @@ function boot() {
     const now = Date.now();
     applyProgress(now - lastTick);
     lastTick = now;
-    if (Math.random() < .18) npcHit();
+    if (game.raidJoined && Math.random() < .18) npcHit();
     if (Math.random() < .05) addActivity("臨時遠征", "ギルドの冒険者が素材を持ち帰っています。", { training: 12, ore: 4 });
     saveGame(true);
     render();
