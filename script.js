@@ -92,15 +92,21 @@ const pages = {
       <a href="#/recruit">2026.06.02 採用適性検査の受付を開始しました</a>
       <a href="#/about">2026.05.27 組織の意思決定支援に関する研究方針を公開しました</a>
     </section>
+    <section class="visual-strip" aria-label="研究所の様子">
+      <a class="visual-card visual-research" href="#/about"><span>Research</span><b>意思決定支援研究</b></a>
+      <a class="visual-card visual-ops" href="#/ir"><span>Analytics</span><b>人的資本データ運用</b></a>
+      <a class="visual-card visual-recruit" href="#/recruit"><span>Recruit</span><b>採用適性面談</b></a>
+      <a class="visual-card visual-ir" href="#/ir"><span>IR</span><b>統合評価レポート</b></a>
+    </section>
     <section class="section">
       <div class="section-head">
         <p class="label">Business</p>
         <h2>人の状態を、組織が扱える情報へ。</h2>
       </div>
       <div class="service-grid">
-        <article class="service-card"><span>01</span><h3>感情ログ解析</h3><p>日々の入力、面談記録、業務上の反応から、組織内に蓄積する小さな変化を定量化します。</p></article>
-        <article class="service-card"><span>02</span><h3>適性評価設計</h3><p>採用、配置、異動、研修に必要な判断軸を設計し、迷いの少ない人事運用を支援します。</p></article>
-        <article class="service-card"><span>03</span><h3>ウェルビーイング運用</h3><p>相談前の兆候を読み取り、従業員が安心して働き続けられる状態を保ちます。</p></article>
+        <article class="service-card"><div class="service-thumb thumb-ops"></div><span>01</span><h3>感情ログ解析</h3><p>日々の入力、面談記録、業務上の反応から、組織内に蓄積する小さな変化を定量化します。</p></article>
+        <article class="service-card"><div class="service-thumb thumb-research"></div><span>02</span><h3>適性評価設計</h3><p>採用、配置、異動、研修に必要な判断軸を設計し、迷いの少ない人事運用を支援します。</p></article>
+        <article class="service-card"><div class="service-thumb thumb-recruit"></div><span>03</span><h3>ウェルビーイング運用</h3><p>相談前の兆候を読み取り、従業員が安心して働き続けられる状態を保ちます。</p></article>
       </div>
     </section>
     <section class="section split-section">
@@ -135,6 +141,9 @@ const pages = {
       <h1>企業理念</h1>
       <p>私たちは、人の迷いを減らし、組織の意思決定をなめらかにするために存在します。</p>
     </section>
+    <section class="page-photo photo-research">
+      <div><p class="label">Research environment</p><h2>記録された迷いから、組織の未来を読む。</h2></div>
+    </section>
     <section class="section">
       <div class="section-head">
         <p class="label">Four values</p>
@@ -156,6 +165,9 @@ const pages = {
       <h1>採用情報</h1>
       <p>ユメミノ総合研究所では、疑問を持ちすぎず、変化を楽しめる仲間を募集しています。</p>
     </section>
+    <section class="page-photo photo-recruit">
+      <div><p class="label">Interview scene</p><h2>あなたの反応も、選考の一部です。</h2></div>
+    </section>
     <section class="section">
       <div class="section-head">
         <p class="label">Interview</p>
@@ -175,6 +187,9 @@ const pages = {
       <p class="label">Investor relations</p>
       <h1>IR情報</h1>
       <p>人的資本データを中心に、当社の成長指標を公開しています。</p>
+    </section>
+    <section class="page-photo photo-ir">
+      <div><p class="label">Human capital report</p><h2>すべての数値は、安定を示しています。</h2></div>
     </section>
     <section class="section narrow">
       <h2>人的資本データ</h2>

@@ -246,6 +246,49 @@ h3 {
 .ticker a:hover {
   color: var(--blue);
 }
+.visual-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.visual-card {
+  min-height: clamp(220px, 24vw, 360px);
+  display: grid;
+  align-content: end;
+  gap: 6px;
+  padding: clamp(20px, 3vw, 34px);
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+.visual-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(9,15,24,.04), rgba(9,15,24,.7));
+}
+.visual-card span,
+.visual-card b {
+  position: relative;
+}
+.visual-card span {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.76);
+}
+.visual-card b {
+  font-size: clamp(18px, 2.1vw, 28px);
+  line-height: 1.25;
+}
+.visual-research { background-image: url("assets/research-meeting-room.png"); }
+.visual-ops { background-image: url("assets/analytics-ops-room.png"); }
+.visual-recruit { background-image: url("assets/recruit-interview.png"); }
+.visual-ir { background-image: url("assets/ir-boardroom-report.png"); }
 
 .section {
   padding: clamp(64px, 8vw, 112px) clamp(20px, 5vw, 72px);
@@ -306,7 +349,8 @@ h3 {
 .service-card {
   min-height: 260px;
   display: grid;
-  align-content: space-between;
+  align-content: start;
+  gap: 14px;
   transition: transform .24s ease, box-shadow .24s ease;
 }
 .service-card:hover {
@@ -322,6 +366,16 @@ h3 {
   color: var(--muted);
   font-weight: 700;
 }
+.service-thumb {
+  min-height: 170px;
+  margin: -26px -26px 6px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 16px 16px 0 0;
+}
+.thumb-ops { background-image: url("assets/analytics-ops-room.png"); }
+.thumb-research { background-image: url("assets/research-meeting-room.png"); }
+.thumb-recruit { background-image: url("assets/recruit-interview.png"); }
 .split-section {
   display: grid;
   grid-template-columns: minmax(320px, .9fr) minmax(0, 1fr);
@@ -336,6 +390,32 @@ h3 {
     url("assets/data-ops.png") center / cover;
   border-radius: 8px;
 }
+.page-photo {
+  min-height: clamp(300px, 38vw, 520px);
+  display: grid;
+  align-items: end;
+  padding: clamp(34px, 6vw, 72px);
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+.page-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(9,15,24,.72), rgba(9,15,24,.18));
+}
+.page-photo > div {
+  position: relative;
+  max-width: 760px;
+}
+.page-photo .label {
+  color: #a9c6ff;
+}
+.photo-research { background-image: url("assets/research-meeting-room.png"); }
+.photo-recruit { background-image: url("assets/recruit-interview.png"); }
+.photo-ir { background-image: url("assets/ir-boardroom-report.png"); }
 .metric-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -656,6 +736,9 @@ pre {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
+  .visual-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .hero-panel {
     min-height: 300px;
   }
@@ -712,6 +795,13 @@ pre {
   }
   .image-feature {
     min-height: 280px;
+  }
+  .visual-strip {
+    grid-template-columns: 1fr;
+  }
+  .visual-card,
+  .page-photo {
+    min-height: 260px;
   }
   .meta-list div {
     grid-template-columns: 1fr;
