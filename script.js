@@ -12,6 +12,10 @@ const answers = {
   bad: ["社員", "応募者", "沈黙", "silent", "SILENT"]
 };
 
+const hrAuthKey = "yriHrAuthenticated";
+const hrAuthNoticeKey = "yriHrAuthNotice";
+const protectedHrRoutes = new Set(["/employee-404"]);
+
 const siteTitle = "株式会社ユメミノ総合研究所 | Yumemino Research Institute";
 const publicFooter = "人的資本データ分析、組織改善コンサルティング、IR・開示資料支援";
 
@@ -52,9 +56,21 @@ function accepts(value, list) {
   return list.some(answer => normalizeAnswer(answer) === normalized);
 }
 
+function isHrAuthenticated() {
+  return sessionStorage.getItem(hrAuthKey) === "1";
+}
+
 function route() {
   const raw = location.hash.replace(/^#/, "") || "/";
-  return pageMeta[raw] ? raw : "/";
+  const current = pageMeta[raw] ? raw : "/";
+  if (protectedHrRoutes.has(current) && !isHrAuthenticated()) {
+    sessionStorage.setItem(hrAuthNoticeKey, "1");
+    if (location.hash !== "#/login") {
+      history.replaceState(null, "", "#/login");
+    }
+    return "/login";
+  }
+  return current;
 }
 
 function go(path) {
@@ -692,9 +708,11 @@ function bindForms() {
     const idOk = accepts(document.querySelector("#employee-id").value, answers.id);
     const passOk = accepts(document.querySelector("#employee-pass").value, answers.pass);
     if (idOk && passOk) {
+      sessionStorage.setItem(hrAuthKey, "1");
       setMessage("#login-message", "認証しました。通常の人事データベースには存在しない社員情報を表示します。", "success");
       setTimeout(() => go("/employee-404"), 650);
     } else {
+      sessionStorage.removeItem(hrAuthKey);
       setMessage("#login-message", "認証できませんでした。入力内容、または記録の存在状態を確認してください。", "error");
     }
   });
@@ -965,6 +983,10 @@ function render() {
   pages[current]();
   enrichOperationalContent(current);
   bindForms();
+  if (current === "/login" && sessionStorage.getItem(hrAuthNoticeKey) === "1") {
+    sessionStorage.removeItem(hrAuthNoticeKey);
+    setMessage("#login-message", "認証後に社員マスタを表示します。社員IDと記録名を入力してください。", "error");
+  }
   menu.setAttribute("aria-expanded", "false");
   nav.classList.remove("is-open");
   window.scrollTo({ top: 0, behavior: "instant" });
