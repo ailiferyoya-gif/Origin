@@ -12,26 +12,32 @@ const answers = {
   bad: ["社員", "応募者", "沈黙", "silent", "SILENT"]
 };
 
+const siteTitle = "株式会社ユメミノ総合研究所 | Yumemino Research Institute";
+const publicFooter = "人的資本データ分析、組織改善コンサルティング、IR・開示資料支援";
+
 const pageMeta = {
-  "/": { title: "株式会社ユメミノ総合研究所 | 採用適性検査", stage: "public", footer: "この作品はフィクションです。実在の企業・団体・人物とは関係ありません。" },
-  "/about": { title: "企業理念 | 株式会社ユメミノ総合研究所", stage: "public", footer: "この作品はフィクションです。実在の企業・団体・人物とは関係ありません。" },
-  "/recruit": { title: "採用情報 | 株式会社ユメミノ総合研究所", stage: "public", footer: "この作品はフィクションです。実在の企業・団体・人物とは関係ありません。" },
-  "/ir": { title: "IR情報 | 株式会社ユメミノ総合研究所", stage: "public", footer: "この作品はフィクションです。実在の企業・団体・人物とは関係ありません。" },
-  "/login": { title: "社員専用 | YRI人事ポータル", stage: "hr", footer: "© Yumemino Research Institute, Inc. / All logs reserved." },
-  "/employee-404": { title: "社員404 | YRI人事ポータル", stage: "hr", footer: "© Yumemino Research Institute, Inc. / All logs reserved." },
-  "/audit": { title: "監査室 | 削除済み文書", stage: "audit", footer: "© Yumemino Research Institute, Inc. / Your logs reserved." },
-  "/archive": { title: "監査室アーカイブ | 保護文書一覧", stage: "audit", footer: "© Yumemino Research Institute, Inc. / Your logs reserved." },
-  "/final": { title: "外部監査送信キュー | 最終告発フォーム", stage: "audit", footer: "© Yumemino Research Institute, Inc. / Your logs reserved." },
-  "/hints": { title: "ヒント | 採用適性検査", stage: "public", footer: "この作品はフィクションです。実在の企業・団体・人物とは関係ありません。" }
+  "/": { title: siteTitle, stage: "public", footer: publicFooter },
+  "/about": { title: `企業情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/business": { title: `事業内容 | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/news": { title: `ニュース | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/ir": { title: `IR情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/recruit": { title: `採用情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/contact": { title: `お問い合わせ | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/login": { title: "社員専用 | YRI人事ポータル", stage: "hr", footer: "YRI HR Portal / Access log enabled" },
+  "/employee-404": { title: "社員404 | YRI人事ポータル", stage: "hr", footer: "YRI HR Portal / Access log enabled" },
+  "/audit": { title: "監査室 | 削除済み文書", stage: "audit", footer: "Audit document terminal / View only" },
+  "/archive": { title: "監査室アーカイブ | 保護文書一覧", stage: "audit", footer: "Audit document terminal / View only" },
+  "/final": { title: "外部監査送信キュー | 最終告発フォーム", stage: "audit", footer: "External audit queue / Evidence locked" },
+  "/hints": { title: `補助資料 | ${siteTitle}`, stage: "public", footer: "補助資料は通常ナビゲーションには表示されません。" }
 };
 
 const hintData = [
-  { id: "q1", title: "第1問", hints: ["企業理念ページの見出しを確認します。", "4つの価値観の先頭に注目します。", "ミッション、ギャップレス評価、ウェルビーイング支援、エンゲージメント分析。"], answer: "右上" },
-  { id: "q2", title: "第2問", hints: ["合言葉は採用ページの社員インタビューにあります。", "本文中で少しだけ印が付いた文字を拾います。", "秘、密、録の順に読みます。"], answer: "秘密録" },
-  { id: "q3", title: "第3問", hints: ["社員IDはIR情報の中にあります。", "人的資本データ表と注釈を見比べます。", "表示制限中のアカウントを含む社員数です。"], answer: "404" },
+  { id: "q1", title: "第1問", hints: ["企業情報ページの価値観を確認します。", "4つの項目名の先頭に注目します。", "ミッション、ギャップレス評価、ウェルビーイング支援、エンゲージメント分析です。"], answer: "右上" },
+  { id: "q2", title: "第2問", hints: ["言葉は採用情報ページの社員インタビューにあります。", "本文中で少しだけ印刷の癖がある文字を拾います。", "秘、密、録の順に読みます。"], answer: "秘密録" },
+  { id: "q3", title: "第3問", hints: ["社員IDはIR情報の人的資本データにあります。", "社員数と注記を見比べます。", "表示制限の対象になっている数字です。"], answer: "404" },
   { id: "q4", title: "第4問", hints: ["社員404ページのアラート条件を使います。", "3、5、7番目のログを確認します。", "該当行の先頭の文字を順に読みます。"], answer: "監査室" },
-  { id: "q5", title: "第5問", hints: ["復元キーは理念の反対です。", "会社は疑問を減らすと書いています。", "減らすの反対は、持ち続けることです。"], answer: "疑え" },
-  { id: "q6", title: "第6問", hints: ["黒塗り文書名を自然な社内文書名に戻します。", "本文の単語から、＿拠、発＿、対象＿に入る字を推測します。", "欠けた文字だけを上から読みます。"], answer: "証言者" }
+  { id: "q5", title: "第5問", hints: ["復元キーは理念に反する二文字です。", "企業情報ページでは、疑問を減らすと書かれています。", "減らすことの反対です。"], answer: "疑え" },
+  { id: "q6", title: "第6問", hints: ["黒塗り文書名を自然な社内文書名に戻します。", "本文の単語から、証拠、発言、対象者に入る字を推測します。", "欠けた文字だけを上から読みます。"], answer: "証言者" }
 ];
 
 function normalizeAnswer(value) {
@@ -66,8 +72,10 @@ function crumb(items) {
   return `<nav class="breadcrumb" aria-label="パンくず"><a href="#/">HOME</a>${items.map(item => `<i>/</i><span>${item}</span>`).join("")}</nav>`;
 }
 
-function image(src, alt, className = "") {
-  return `<img class="${className}" src="assets/${src}" alt="${alt}" loading="lazy">`;
+function photo(file, alt, className = "") {
+  return `<figure class="photo-frame ${className}" data-missing="assets/${file}">
+    <img src="assets/${file}" alt="${alt}" loading="lazy" onerror="this.closest('.photo-frame').classList.add('is-missing'); this.remove();">
+  </figure>`;
 }
 
 function layout(content, stage) {
@@ -75,10 +83,11 @@ function layout(content, stage) {
   app.className = `page ${stage}-stage`;
   app.innerHTML = content;
   app.focus({ preventScroll: true });
+  requestAnimationFrame(prepareReveal);
 }
 
 function publicShell(content, modifier = "") {
-  layout(`<div class="public-document ${modifier}">${content}</div>`, "public");
+  layout(`<div class="public-site ${modifier}">${content}</div>`, "public");
 }
 
 function hrShell(active, content) {
@@ -87,7 +96,7 @@ function hrShell(active, content) {
       <aside class="hr-menu" aria-label="社内人事ポータルメニュー">
         <div class="hr-menu-title">
           <b>YRI人事ポータル</b>
-          <span>社員管理 / 感情ログ / 監査連携</span>
+          <span>社員マスタ / 面談履歴 / 感情ログ / 権限情報</span>
         </div>
         <a class="${active === "login" ? "is-active" : ""}" href="#/login">認証</a>
         <a class="${active === "employee" ? "is-active" : ""}" href="#/employee-404">社員マスタ</a>
@@ -95,7 +104,7 @@ function hrShell(active, content) {
         <a href="#/employee-404">感情ログ</a>
         <a href="#/employee-404">権限情報</a>
         <a href="#/employee-404">操作ログ</a>
-        <small>接続先: hr-master-prd-04 / 同期状態: 遅延あり</small>
+        <small>接続先: hr-master-prd-04 / 最終同期: 2025-08-07 02:14</small>
       </aside>
       <section class="hr-workarea">${content}</section>
     </div>
@@ -107,8 +116,7 @@ function auditShell(content) {
     <div class="audit-frame">
       <header class="audit-bar">
         <b>監査室 文書閲覧端末</b>
-        <span>閲覧権限: 一時付与 / 出力制限: 有効</span>
-        <a href="#/hints">ヒント</a>
+        <span>閲覧権限: 一時付与 / 出力制限: 有効 / 操作記録: 保存</span>
       </header>
       ${content}
     </div>
@@ -117,388 +125,440 @@ function auditShell(content) {
 
 const pages = {
   "/": () => publicShell(`
-    <div class="notice-strip">
-      <b>重要なお知らせ</b>
-      <span>2025年度 採用適性検査の受付を開始しました。受検中の操作ログは品質改善のため記録されます。</span>
-    </div>
-
-    <section class="top-ledger">
-      <div class="top-copy">
-        ${crumb(["企業情報"])}
-        <p class="doc-label">株式会社ユメミノ総合研究所 企業情報</p>
-        <h1>人の可能性を、正しく測る。</h1>
-        <p>ユメミノ総合研究所は、働く人々の感情・行動・意思決定を可視化し、組織が抱える不安を未然に整える研究開発企業です。迷いのない職場へ。疑問の少ないチームへ。すべての人が、安心して働き続けられる社会へ。</p>
-        <dl class="definition-strip">
-          <div><dt>設立</dt><dd>2017年4月</dd></div>
-          <div><dt>本社</dt><dd>東京都架空区白路町</dd></div>
-          <div><dt>事業領域</dt><dd>感情ログ解析 / 人的資本モニタリング</dd></div>
-        </dl>
+    <section class="brand-hero reveal-block">
+      ${photo("hero-office.jpg", "都市の中にあるガラス張りのオフィスフロア", "hero-photo")}
+      <div class="hero-copy">
+        <p class="eyebrow">Human Capital Data & Organizational Insight</p>
+        <h1><span>人と組織の状態を、</span><span>見えるかたちへ。</span></h1>
+        <p>ユメミノ総合研究所は、人的資本データの分析と組織改善支援を通じて、働く人と企業の持続的な成長を支援します。</p>
       </div>
-      <aside class="top-photo-box">
-        ${image("hero-2026-data-layer.png", "ユメミノ総合研究所の受付と業務フロア")}
-        <p>本社4階 解析業務フロア。写真は採用広報用に撮影されたものです。</p>
+      <aside class="hero-news">
+        <b>Latest</b>
+        <a href="#/news"><time>2025.12.01</time><span>年末年始休業のお知らせ</span></a>
+        <a href="#/news"><time>2025.11.18</time><span>人的資本開示支援サービスに関する資料を公開しました</span></a>
+        <a href="#/news"><time>2025.10.30</time><span>導入事例「コールセンター運営企業様」を公開しました</span></a>
       </aside>
     </section>
 
-    <section class="newspaper-grid">
-      <article class="company-column">
-        <h2>会社概要</h2>
-        <table class="compact-table">
-          <tbody>
-            <tr><th>会社名</th><td>株式会社ユメミノ総合研究所</td></tr>
-            <tr><th>代表者</th><td>代表取締役社長 夢野 透</td></tr>
-            <tr><th>所在地</th><td>東京都架空区白路町 4-04-4</td></tr>
-            <tr><th>事業内容</th><td>感情ログ解析、人的資本モニタリング、組織安定化支援</td></tr>
-            <tr><th>届出区分</th><td>架空情報処理事業者 登録第YRI-1704号</td></tr>
-          </tbody>
-        </table>
-      </article>
-      <article class="business-column">
-        <h2>事業内容</h2>
-        <section>
-          <h3>感情ログ解析事業</h3>
-          <p>従業員が日々入力する気分・疲労・不安・疑問の変化を時系列で解析し、部署単位の状態変化を月次資料として整理します。</p>
-        </section>
-        <section>
-          <h3>人的資本モニタリング事業</h3>
-          <p>離職予兆、面談頻度、発言量の偏りを指標化し、経営企画・人事・IR担当者向けに補足資料を作成します。</p>
-        </section>
-        <section>
-          <h3>組織安定化支援</h3>
-          <p>従業員の不安が表面化する前に、情報導線、面談設計、配置確認の手順を整備します。</p>
-        </section>
-      </article>
-      <aside class="kpi-column">
-        <h2>主要指標</h2>
-        <dl class="small-kpi">
-          <div><dt>導入組織数</dt><dd>184組織</dd></div>
-          <div><dt>月間ログ件数</dt><dd>2,409,118件</dd></div>
-          <div><dt>面談推奨件数</dt><dd>18,430件</dd></div>
-          <div><dt>離職予兆検出率</dt><dd>92.4%</dd></div>
-          <div><dt>記録保護件数</dt><dd>非公開</dd></div>
-        </dl>
-        <p class="micro-note">※記録保護件数は個人情報保護および内部統制上の理由により非開示です。</p>
-      </aside>
+    <section class="split-feature wide reveal-block">
+      ${photo("people-meeting.jpg", "会議室で資料とダッシュボードを確認するコンサルティングチーム", "landscape")}
+      <div>
+        <p class="section-kicker">About</p>
+        <h2>人的資本を、数字だけで終わらせない。</h2>
+        <p>従業員サーベイ、面談記録、勤怠傾向、組織診断データを統合し、企業ごとの課題に合わせた改善支援を行います。私たちは、データの背後にある人と組織の関係を丁寧に読み解きます。</p>
+        <a class="text-link" href="#/about">企業情報を見る</a>
+      </div>
     </section>
 
-    <section class="top-lower-grid">
-      <article class="field-list">
-        <h2>導入領域</h2>
-        <ul>
-          <li>上場企業の人的資本開示支援</li>
-          <li>コールセンターの離職抑制</li>
-          <li>自治体職員のストレスチェック補助</li>
-          <li>教育機関の相談傾向分析</li>
-          <li>採用選考における違和感検出</li>
-        </ul>
+    <section class="services-editorial reveal-block">
+      <div class="section-heading">
+        <p class="section-kicker">Services</p>
+        <h2>組織の状態を、経営判断に接続する。</h2>
+      </div>
+      <article class="service-large">
+        <span>01</span>
+        <div>
+          <h3>人的資本データ分析</h3>
+          <p>従業員サーベイ、面談記録、勤怠傾向などを統合し、組織状態を可視化します。</p>
+        </div>
+        ${photo("data-room.jpg", "複数のモニターでデータを確認する静かな分析室", "service-image")}
       </article>
-      <article class="news-ledger">
-        <h2>お知らせ</h2>
-        <a href="#/recruit"><time>2025.12.01</time><span>2025年度 採用適性検査の受付を開始しました。</span></a>
-        <a href="#/ir"><time>2025.11.18</time><span>人的資本データの可視化に関する補足資料を公開しました。</span></a>
-        <a href="#/ir"><time>2025.10.30</time><span>従業員幸福度改善システムの運用手順を更新しました。</span></a>
-        <a href="#/login"><time>2025.08.07</time><span>一部社員情報の表示不具合について。現在は復旧済みです。</span></a>
-        <a href="#/about"><time>2025.04.12</time><span>内部通報管理規程を改定しました。</span></a>
+      <div class="service-pair">
+        <article>
+          <span>02</span>
+          <h3>組織改善コンサルティング</h3>
+          <p>部署ごとの課題を整理し、面談設計、配置、コミュニケーション改善を支援します。</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>開示資料・IR支援</h3>
+          <p>人的資本開示、統合報告書、サステナビリティ関連資料の作成を支援します。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="case-band reveal-block">
+      <div>
+        <p class="section-kicker">Case Study</p>
+        <h2>現場の変化を、経営が読める粒度に。</h2>
+      </div>
+      <div class="case-list">
+        <article><b>コールセンター運営企業</b><span>離職要因の見える化と面談設計の再構築</span></article>
+        <article><b>医療法人グループ</b><span>複数拠点の組織診断と管理職向けレポート整備</span></article>
+        <article><b>地方自治体</b><span>職員サーベイ結果の分析と開示資料への反映</span></article>
+        <article><b>教育機関</b><span>相談窓口データと勤怠傾向の統合分析</span></article>
+      </div>
+      ${photo("news-visual.jpg", "資料を広げて導入事例を検討するデスク", "case-thumb")}
+    </section>
+
+    <section class="home-ir-recruit reveal-block">
+      <article>
+        ${photo("report-preview.jpg", "統合報告書と分析資料の紙面プレビュー", "paper-preview")}
+        <div>
+          <p class="section-kicker">IR Support</p>
+          <h2>人的資本開示を、読み手に届く資料へ。</h2>
+          <p>分析結果をそのまま掲載するのではなく、経営方針、現場課題、改善施策がつながる資料構成を設計します。</p>
+          <a class="text-link" href="#/ir">IR情報を見る</a>
+        </div>
       </article>
-      <article class="test-guide">
-        <h2>採用適性検査への案内</h2>
-        <p>本検査では、回答だけでなく、確認したページ、入力修正、ヒント利用状況を選考資料として扱います。公開情報の中に残された記録を順に照合してください。</p>
-        <a class="plain-button" href="#/recruit">採用情報を確認する</a>
+      <article>
+        ${photo("recruit-hero.jpg", "落ち着いたオフィスの廊下と働く人の気配", "portrait-wide")}
+        <div>
+          <p class="section-kicker">Careers</p>
+          <h2>データと現場の間で考える人へ。</h2>
+          <p>調査設計、データ分析、開示資料支援、クライアント伴走を横断して担うメンバーを募集しています。</p>
+          <a class="text-link" href="#/recruit">採用情報を見る</a>
+        </div>
       </article>
     </section>
-  `, "home-layout"),
+  `, "home"),
 
   "/about": () => publicShell(`
-    <section class="pamphlet-head">
-      ${crumb(["企業理念"])}
+    <section class="page-hero compact reveal-block">
+      ${crumb(["企業情報"])}
       <div>
-        <p class="doc-label">企業理念・データ管理方針</p>
-        <h1>企業理念</h1>
-        <p>私たちは、人の迷いを減らし、組織の意思決定をなめらかにするために存在します。働く人が何に不安を感じ、どこで立ち止まり、どの瞬間に疑問を持つのか。それらを丁寧に記録し、分析し、組織が先回りして整えることで、誰もが安心して働ける環境を実現します。</p>
+        <p class="section-kicker">Company</p>
+        <h1>人の状態と、組織の意思決定をつなぐ。</h1>
+      </div>
+      ${photo("people-meeting.jpg", "代表メッセージ用の会議風景", "page-hero-photo")}
+    </section>
+
+    <section class="message-layout reveal-block">
+      <article>
+        <p class="section-kicker">Message</p>
+        <h2>代表メッセージ</h2>
+        <p>組織の課題は、声が大きくなってからでは遅い場合があります。ユメミノ総合研究所は、声になる前の揺らぎを記録し、人と組織の間にある温度差を丁寧に整えます。</p>
+        <p>私たちは、人的資本を単なる数値ではなく、働く人の実感と経営の判断をつなぐ基盤として扱います。</p>
+        <p class="signature">代表取締役　夢野 総</p>
+      </article>
+      <aside class="company-fact">
+        <b>Founded in 2017</b>
+        <span>Human Capital Data / Organizational Insight / IR Support</span>
+      </aside>
+    </section>
+
+    <section class="philosophy-section reveal-block">
+      <div class="section-heading">
+        <p class="section-kicker">Philosophy</p>
+        <h2>企業理念</h2>
+      </div>
+      <div class="value-list">
+        <article><h3><span>ミ</span>ッション</h3><p>人の不安を、測定可能な状態にします。</p></article>
+        <article><h3><span>ギ</span>ャップレス評価</h3><p>感情、行動、成果の差分を見えるかたちに整えます。</p></article>
+        <article><h3><span>ウ</span>ェルビーイング支援</h3><p>働く人が迷わず動ける環境を、継続的に支援します。</p></article>
+        <article><h3><span>エ</span>ンゲージメント分析</h3><p>組織にとって望ましい状態を、定点で読み解きます。</p></article>
       </div>
     </section>
 
-    <section class="about-layout">
-      <article class="philosophy-table-wrap">
-        <h2>4つの価値観</h2>
-        <table class="philosophy-table">
-          <tbody>
-            <tr><th><span>ミ</span>ッション</th><td>人の不安を、測定可能な状態にします。</td></tr>
-            <tr><th><span>ギ</span>ャップレス評価</th><td>感情・行動・成果の差分を可視化します。</td></tr>
-            <tr><th><span>ウ</span>ェルビーイング支援</th><td>従業員が迷わず働ける環境を整えます。</td></tr>
-            <tr><th><span>エ</span>ンゲージメント分析</th><td>組織にとって望ましい状態を維持します。</td></tr>
-          </tbody>
-        </table>
-        <p class="micro-note">※当社では、従業員の疑問や不安を早期に把握することを「心理的安全性の維持」と定義しています。</p>
-      </article>
-
-      <aside class="president-note">
-        <h2>代表メッセージ</h2>
-        <p>組織の問題は、声が大きくなってからでは遅い場合があります。ユメミノ総合研究所は、声になる前の揺らぎを記録し、働く人と組織の間にある温度差を丁寧に整えます。</p>
-        <p class="signature">代表取締役社長　夢野 透</p>
-      </aside>
-
-      <article class="policy-note">
-        <h2>データ管理方針</h2>
-        <ol>
-          <li>ログは本人の健康管理および組織安定化の目的で保管します。</li>
-          <li>監査上必要な場合、人事部および監査室が記録を参照します。</li>
-          <li>記録保護状態のアカウントは、通常検索結果から除外されることがあります。</li>
-        </ol>
-      </article>
-
-      <article class="company-profile-box">
+    <section class="company-grid reveal-block">
+      <article class="profile-table-wrap">
         <h2>会社概要</h2>
-        <table class="compact-table">
+        <table class="corporate-table">
           <tbody>
             <tr><th>会社名</th><td>株式会社ユメミノ総合研究所</td></tr>
             <tr><th>設立</th><td>2017年4月</td></tr>
             <tr><th>所在地</th><td>東京都架空区白路町 4-04-4</td></tr>
-            <tr><th>代表者</th><td>代表取締役社長 夢野 透</td></tr>
-            <tr><th>事業内容</th><td>感情ログ解析、人的資本モニタリング、組織安定化支援</td></tr>
-            <tr><th>従業員数</th><td>404名</td></tr>
+            <tr><th>代表者</th><td>代表取締役　夢野 総</td></tr>
+            <tr><th>事業内容</th><td>人的資本データ分析、組織改善コンサルティング、IR・開示資料支援</td></tr>
           </tbody>
         </table>
       </article>
+      <article class="timeline">
+        <h2>沿革</h2>
+        <dl>
+          <div><dt>2017</dt><dd>組織状態の可視化を目的に創業</dd></div>
+          <div><dt>2020</dt><dd>従業員サーベイ分析サービスを提供開始</dd></div>
+          <div><dt>2023</dt><dd>人的資本開示支援チームを設置</dd></div>
+          <div><dt>2025</dt><dd>統合報告書支援領域を拡張</dd></div>
+        </dl>
+      </article>
+      <article class="policy-panel">
+        <h2>データ管理方針</h2>
+        <p>取得したデータは、利用目的、アクセス権限、保存期間を明確にしたうえで管理します。個人が特定される情報は必要最小限の範囲で扱い、分析結果は組織改善のための指標として提供します。</p>
+      </article>
     </section>
-  `, "about-layout-page"),
+  `, "company"),
+
+  "/business": () => publicShell(`
+    <section class="page-hero business-hero reveal-block">
+      ${crumb(["事業内容"])}
+      <div>
+        <p class="section-kicker">Business</p>
+        <h1>データの収集から、開示資料の言葉づくりまで。</h1>
+        <p>調査、分析、改善提案、人的資本開示をひとつながりで支援します。</p>
+      </div>
+      ${photo("data-room.jpg", "分析室とデータ可視化モニター", "page-hero-photo")}
+    </section>
+
+    <section class="business-stories reveal-block">
+      <article>
+        ${photo("people-meeting.jpg", "会議室でサーベイ結果を確認する人々", "story-photo")}
+        <div><span>01</span><h2>人的資本データ分析</h2><p>従業員サーベイ、面談記録、勤怠傾向、相談窓口データなどを統合し、部門別の状態変化を読み解きます。</p></div>
+      </article>
+      <article>
+        <div><span>02</span><h2>組織改善コンサルティング</h2><p>分析結果をもとに、面談設計、配置、管理職向けフィードバック、コミュニケーション設計を支援します。</p></div>
+        ${photo("news-visual.jpg", "資料を整理する手元と会議資料", "story-photo")}
+      </article>
+      <article>
+        ${photo("report-preview.jpg", "報告書とPDF資料のプレビュー", "story-photo")}
+        <div><span>03</span><h2>開示資料・IR支援</h2><p>人的資本開示、統合報告書、サステナビリティ関連資料の作成を、定量・定性の両面から支援します。</p></div>
+      </article>
+    </section>
+
+    <section class="process-grid reveal-block">
+      <h2>導入プロセス</h2>
+      <ol>
+        <li><b>現状整理</b><span>既存データ、調査設計、開示方針を確認</span></li>
+        <li><b>分析設計</b><span>部門、職種、期間ごとの比較軸を設計</span></li>
+        <li><b>レポーティング</b><span>経営会議・IR資料向けに要約</span></li>
+        <li><b>改善伴走</b><span>施策の実行と次回測定の設計を支援</span></li>
+      </ol>
+    </section>
+
+    <section class="deliverables reveal-block">
+      <article><h2>提供資料</h2><p>組織診断レポート、人的資本開示ドラフト、経営会議用サマリー、面談設計テンプレート、施策進捗ダッシュボード。</p></article>
+      <article><h2>よくある相談</h2><p>サーベイ結果の読み方が分からない、離職率の説明に困っている、統合報告書の人的資本パートを強化したい、部門ごとの状態差を経営に伝えたい。</p></article>
+    </section>
+  `, "business"),
+
+  "/news": () => publicShell(`
+    <section class="news-page-head reveal-block">
+      ${crumb(["ニュース"])}
+      <div>
+        <p class="section-kicker">News</p>
+        <h1>お知らせ</h1>
+      </div>
+      ${photo("news-visual.jpg", "ニュース資料のサムネイル", "news-visual")}
+    </section>
+    <section class="news-index reveal-block">
+      ${[
+        ["2025.12.01", "お知らせ", "年末年始休業のお知らせ", "年末年始期間中の営業日および各種窓口の対応についてご案内します。"],
+        ["2025.11.18", "資料公開", "人的資本開示支援サービスに関する資料を公開しました", "開示項目の整理、定量指標の扱い、定性情報の編集方針をまとめた資料を公開しました。"],
+        ["2025.10.30", "導入事例", "導入事例「コールセンター運営企業様」を公開しました", "相談履歴と勤怠傾向をもとに、部門別の改善施策へつなげた事例です。"],
+        ["2025.08.07", "障害情報", "一部サービスの表示不具合について", "一部アカウント情報が通常画面に表示されない事象を確認し、現在は復旧済みです。"],
+        ["2025.04.12", "規程改定", "内部通報管理規程の改定に伴うお知らせ", "法令改正と運用整理に伴い、規程の一部表現を更新しました。"]
+      ].map(item => `
+        <article class="news-row">
+          <time>${item[0]}</time>
+          <span>${item[1]}</span>
+          <div><h2>${item[2]}</h2><p>${item[3]}</p></div>
+        </article>
+      `).join("")}
+    </section>
+  `, "news"),
 
   "/recruit": () => publicShell(`
-    <section class="recruit-header">
+    <section class="recruit-visual reveal-block">
       ${crumb(["採用情報"])}
-      <h1>採用情報</h1>
-      <p>変化に迷わず、組織と同じ方向を向ける人へ。ユメミノ総合研究所では、感情データを通じて組織の不安を整える仲間を募集しています。</p>
+      ${photo("recruit-hero.jpg", "採用ページのオフィス風景", "recruit-main-photo")}
+      <div>
+        <p class="section-kicker">Careers</p>
+        <h1>データと現場の間で、組織を読み解く。</h1>
+        <p>分析だけで終わらせず、現場の言葉と経営の判断をつなぐ仕事です。</p>
+      </div>
     </section>
 
-    <section class="recruit-layout">
-      <article class="requirements-sheet">
-        <h2>募集要項</h2>
-        <table class="dense-table">
+    <section class="recruit-layout reveal-block">
+      <article class="workplace">
+        <h2>働く環境</h2>
+        <p>プロジェクトごとに、分析担当、リサーチャー、編集担当、コンサルタントが小さなチームを組みます。資料の精度だけでなく、現場でどのように読まれるかを重視します。</p>
+      </article>
+      <article class="job-table">
+        <h2>募集職種</h2>
+        <table class="corporate-table">
           <tbody>
-            <tr><th>募集職種</th><td>感情ログアナリスト / 組織安定化コンサルタント / 採用適性検査オペレーター</td></tr>
-            <tr><th>勤務地</th><td>東京都架空区白路町 本社、または提携先執務室</td></tr>
-            <tr><th>業務内容</th><td>ログ確認、面談設計、部署別レポート作成、選考時の閲覧傾向確認</td></tr>
-            <tr><th>勤務時間</th><td>9:00-18:00。ログ確認当番日は別途シフト表による。</td></tr>
-            <tr><th>提出書類</th><td>履歴書、職務経歴書、感情ログ利用同意書</td></tr>
+            <tr><th>リサーチャー</th><td>調査設計、サーベイ分析、インタビュー設計</td></tr>
+            <tr><th>データアナリスト</th><td>人的資本データの統合、可視化、レポート作成</td></tr>
+            <tr><th>開示資料ディレクター</th><td>統合報告書、人的資本開示、IR資料の構成設計</td></tr>
           </tbody>
         </table>
       </article>
-
-      <aside class="selection-flow">
-        <h2>選考フロー</h2>
-        <ol>
-          <li><span>01</span>エントリー</li>
-          <li><span>02</span>Web採用適性検査</li>
-          <li><span>03</span>一次面談</li>
-          <li><span>04</span>感情ログ提出</li>
-          <li><span>05</span>配属前確認</li>
-          <li><span>06</span>内定</li>
-        </ol>
-        <p class="micro-note">※正答率だけでなく、迷った時間・戻ったページ・入力の修正回数も確認します。</p>
-      </aside>
-
-      <article class="interview-paper">
-        <h2>社員インタビュー</h2>
-        <section>
-          <h3>社員A　感情ログアナリスト</h3>
-          <p>入社してから、仕事の<span class="print-mark">秘</span>訣は「考えすぎないこと」だと知りました。以前よりも悩む時間が減り、毎朝すぐに行動できます。上長が先に不安を見つけてくれるので、自分で抱え込む必要がありません。</p>
-        </section>
-        <section>
-          <h3>社員B　組織安定化コンサルタント</h3>
-          <p>一人ひとりの感情の<span class="print-mark">密</span>度まで見てくれるので、孤独を感じることがありません。今では、自分の気持ちよりもチームの状態を優先できます。疑問がある時も、まずはログに残すことで安心できます。</p>
-        </section>
-        <section>
-          <h3>社員C　採用適性検査オペレーター</h3>
-          <p>毎朝のログは、自分の変化を残す大切な記<span class="print-mark">録</span>です。最初は少し戸惑いましたが、今では記録されない時間のほうが不安です。応募者の方にも、同じ安心を体験してほしいと思っています。</p>
-        </section>
-      </article>
-
-      <aside class="training-and-faq">
-        <h2>研修制度</h2>
-        <ul>
-          <li>入社時ログ取扱研修</li>
-          <li>面談同席研修</li>
-          <li>個人情報保護・監査連携研修</li>
-        </ul>
-        <h2>よくある質問</h2>
-        <details open><summary>感情ログは必ず入力する必要がありますか？</summary><p>入力は任意ですが、未入力が続く場合は状態確認の対象となることがあります。</p></details>
-        <details><summary>疑問や不安を入力すると評価に影響しますか？</summary><p>直接の評価項目ではありません。ただし、組織安定化のため必要な範囲で参照されます。</p></details>
-        <details><summary>外部相談窓口はありますか？</summary><p>まずは上長または監査室にご相談ください。外部機関への相談は、状況を複雑にする場合があります。</p></details>
-      </aside>
     </section>
-  `, "recruit-layout-page"),
+
+    <section class="interview-editorial reveal-block">
+      <div class="section-heading">
+        <p class="section-kicker">Interview</p>
+        <h2>社員インタビュー</h2>
+      </div>
+      <article>
+        ${photo("interview-01.jpg", "社員インタビュー用の横顔と資料", "interview-photo")}
+        <div><h3>調査設計チーム / A</h3><p>調査票の設計では、回答者が本音に近い温度で答えられるかを大切にしています。数値に出る前の小さな<span class="print-mark">秘</span>訣は、質問の順番にも表れます。</p></div>
+      </article>
+      <article>
+        ${photo("interview-02.jpg", "採用広報風の会議風景", "interview-photo tall")}
+        <div><h3>分析チーム / B</h3><p>部署ごとの状態差を読むときは、単純な平均値ではなく、背景にある業務量や関係性まで見ます。数字の奥にある<span class="print-mark">密</span>度を読む仕事です。</p></div>
+      </article>
+      <article>
+        ${photo("interview-03.jpg", "ノートPCと社員証のあるデスク", "interview-photo")}
+        <div><h3>資料編集チーム / C</h3><p>経営層に渡す資料は、事実を並べるだけでは届きません。現場で起きた変化を、後からたどれる<span class="print-mark">録</span>として残します。</p></div>
+      </article>
+    </section>
+
+    <section class="recruit-bottom reveal-block">
+      <article>
+        <h2>数字で見るユメミノ</h2>
+        <dl class="metric-list">
+          <div><dt>平均年齢</dt><dd>36.8歳</dd></div>
+          <div><dt>リモート併用率</dt><dd>72%</dd></div>
+          <div><dt>職種横断PJ比率</dt><dd>81%</dd></div>
+        </dl>
+      </article>
+      <article>
+        <h2>選考フロー</h2>
+        <ol class="flow-list">
+          <li>書類確認</li><li>一次面談</li><li>課題提出</li><li>最終面談</li><li>条件面談</li>
+        </ol>
+      </article>
+      <article>
+        <h2>FAQ</h2>
+        <details><summary>未経験でも応募できますか</summary><p>調査、分析、編集、コンサルティングのいずれかの経験があれば歓迎します。</p></details>
+        <details><summary>働き方は固定ですか</summary><p>担当プロジェクトとクライアント状況に応じて、出社とリモートを組み合わせます。</p></details>
+      </article>
+    </section>
+  `, "recruit"),
 
   "/ir": () => publicShell(`
-    <section class="ir-header-block">
+    <section class="ir-hero reveal-block">
       ${crumb(["IR情報"])}
-      <h1>IR情報</h1>
-      <p>ユメミノ総合研究所は、人的資本データの透明性を重視し、組織状態の定量的な開示に取り組んでいます。本ページでは、売上高、社員数、離職率、面談件数、感情ログ入力率などの主要指標を掲載しています。</p>
-      <p class="micro-note">資料番号: IR-YRI-2025-Q4 / 最終更新: 2025.12.01 / 担当部署: 経営企画部</p>
+      <div>
+        <p class="section-kicker">Investor Relations</p>
+        <h1>人的資本の変化を、資料として読み解く。</h1>
+      </div>
+      ${photo("report-preview.jpg", "統合報告書のプレビュー画像", "report-photo")}
     </section>
 
-    <section class="ir-ledger-layout">
-      <article class="ir-main-table">
-        <h2>人的資本データ</h2>
-        <table class="ir-ledger-table">
-          <thead><tr><th>年度</th><th>売上高</th><th>社員数</th><th>離職率</th><th>面談件数</th><th>感情ログ入力率</th></tr></thead>
+    <section class="ir-layout reveal-block">
+      <article class="highlight-sheet">
+        <h2>業績ハイライト</h2>
+        <table class="ir-table">
+          <thead><tr><th>年度</th><th>売上高</th><th>社員数</th><th>離職率</th></tr></thead>
           <tbody>
-            <tr><td>2022年</td><td>34.7億円</td><td>412名</td><td>12.4%</td><td>3,104件</td><td>68.2%</td></tr>
-            <tr><td>2023年</td><td>51.2億円</td><td>406名</td><td>3.1%</td><td>8,902件</td><td>82.9%</td></tr>
-            <tr><td>2024年</td><td>88.8億円</td><td>404名</td><td>0.0%</td><td>14,420件</td><td>99.8%</td></tr>
-            <tr><td>2025年</td><td>132.6億円</td><td>404名</td><td>0.0%</td><td>18,430件</td><td>100.0%</td></tr>
+            <tr><td>2022年</td><td>34.7億円</td><td>412名</td><td>12.4%</td></tr>
+            <tr><td>2023年</td><td>51.2億円</td><td>406名</td><td>3.1%</td></tr>
+            <tr><td>2024年</td><td>88.8億円</td><td>404名</td><td>0.0%</td></tr>
+            <tr><td>2025年</td><td>132.6億円</td><td>404名</td><td>0.0%</td></tr>
           </tbody>
         </table>
-        <ol class="ir-footnotes">
-          <li>社員数には、表示制限中のアカウントを含みます。</li>
-          <li>一部の社員情報は、記録保護のため Not Found と表示される場合があります。</li>
-          <li>離職率は当社定義による状態変更処理後の集計値です。</li>
-        </ol>
+        <p class="micro-note">注記: 一部の社員情報は、記録保護のため Not Found と表示される場合があります。</p>
       </article>
-
-      <aside class="ir-side-docs">
+      <aside class="pdf-list">
         <h2>PDF資料一覧</h2>
-        <a href="#/ir"><span>PDF</span> 2025年度 人的資本データ補足資料</a>
-        <a href="#/ir"><span>PDF</span> 組織安定化支援サービス説明資料</a>
-        <a href="#/ir"><span>PDF</span> 内部統制に関する運用報告</a>
-        <h2>用語定義</h2>
-        <dl>
-          <div><dt>記録保護</dt><dd>通常検索結果から一時的に除外する状態区分。</dd></div>
-          <div><dt>状態変更</dt><dd>雇用状態とは別に、表示範囲を変更する処理。</dd></div>
-        </dl>
+        <a href="#/ir"><span>PDF</span>2025年度 人的資本開示補足資料</a>
+        <a href="#/ir"><span>PDF</span>統合報告書 2025</a>
+        <a href="#/ir"><span>PDF</span>サステナビリティデータブック</a>
       </aside>
-
-      <article class="excel-chart">
-        <h2>売上高推移</h2>
-        <div class="excel-bars" aria-label="売上高推移の簡易グラフ">
-          <div><span>2022</span><b style="--value: 26%"></b><em>34.7</em></div>
-          <div><span>2023</span><b style="--value: 39%"></b><em>51.2</em></div>
-          <div><span>2024</span><b style="--value: 67%"></b><em>88.8</em></div>
-          <div><span>2025</span><b style="--value: 100%"></b><em>132.6</em></div>
-        </div>
-      </article>
-
-      <article class="ir-history">
-        <h2>更新履歴</h2>
-        <table class="compact-table">
-          <tbody>
-            <tr><th>2025.12.01</th><td>2025年度採用適性検査に関する注記を追加。</td></tr>
-            <tr><th>2025.11.18</th><td>人的資本データ補足資料を公開。</td></tr>
-            <tr><th>2025.08.07</th><td>一部社員情報の表示不具合について復旧済みと記載。</td></tr>
-          </tbody>
-        </table>
+      <article class="ir-notes">
+        <h2>更新履歴・注記</h2>
+        <dl>
+          <div><dt>2025.11.18</dt><dd>人的資本開示支援サービス資料を公開</dd></div>
+          <div><dt>2025.08.07</dt><dd>一部指標の表示形式を修正</dd></div>
+          <div><dt>2025.04.01</dt><dd>用語定義を更新</dd></div>
+        </dl>
+        <p>人的資本関連指標は、社内管理基準と外部開示基準の差異により、資料ごとに集計範囲が異なる場合があります。</p>
       </article>
     </section>
-  `, "ir-layout-page"),
+  `, "ir"),
+
+  "/contact": () => publicShell(`
+    <section class="contact-head reveal-block">
+      ${crumb(["お問い合わせ"])}
+      <div>
+        <p class="section-kicker">Contact</p>
+        <h1>お問い合わせ</h1>
+        <p>人的資本データ分析、組織改善支援、IR・開示資料支援に関するご相談を受け付けています。</p>
+      </div>
+    </section>
+    <section class="contact-layout reveal-block">
+      <form class="contact-form" id="contact-form">
+        <label>会社名<input name="company" required></label>
+        <label>氏名<input name="name" required></label>
+        <label>メールアドレス<input name="email" type="email" required></label>
+        <label>お問い合わせ種別<select name="type"><option>人的資本データ分析</option><option>組織改善コンサルティング</option><option>IR・開示資料支援</option><option>その他</option></select></label>
+        <label>内容<textarea name="body" rows="6" required></textarea></label>
+        <label class="check-row"><input type="checkbox" required>個人情報の取り扱いに同意する</label>
+        <button class="brand-button" type="submit">送信内容を確認する</button>
+        <p class="message" id="contact-message" role="status"></p>
+      </form>
+      <aside class="contact-side">
+        <h2>資料請求</h2>
+        <p>サービス概要資料、人的資本開示チェックリスト、導入事例集をご希望の場合もこちらからお問い合わせください。</p>
+        ${photo("people-meeting.jpg", "問い合わせページ用の会議写真", "contact-photo")}
+      </aside>
+    </section>
+  `, "contact"),
 
   "/login": () => hrShell("login", `
-    <div class="login-console">
-      ${crumb(["社員専用", "認証"])}
-      <div class="system-window-title">YRI Internal Portal / Authentication</div>
-      <h1>社員専用ページ</h1>
-      <p>社員IDと合言葉を入力してください。入力内容は認証ログに記録されます。</p>
+    <section class="login-console">
+      <div class="system-window-title">YRI-HR / AUTH / v4.08</div>
+      <h1>社員専用ログイン</h1>
+      <p>社員マスタ、面談履歴、権限情報を参照します。認証ログは保存されます。</p>
       <form class="system-form" id="login-form">
         <label for="employee-id">社員ID</label>
         <input id="employee-id" name="employee-id" autocomplete="off" required>
-        <label for="employee-pass">合言葉</label>
+        <label for="employee-pass">参照キー</label>
         <input id="employee-pass" name="employee-pass" autocomplete="off" required>
         <button class="system-button" type="submit">認証</button>
       </form>
       <p class="message" id="login-message" role="status"></p>
-      <table class="compact-table login-hints">
-        <tbody>
-          <tr><th>確認項目</th><td>社員ID / 合言葉</td></tr>
-          <tr><th>社員ID</th><td>IR情報の中に記録されています。</td></tr>
-          <tr><th>合言葉</th><td>働く人の声の中に残されています。</td></tr>
-        </tbody>
-      </table>
-    </div>
+    </section>
   `),
 
   "/employee-404": () => hrShell("employee", `
-    <div class="hr-alert">警告: このアカウントは記録保護状態です。通常の検索結果には表示されません。</div>
     <div class="hr-title-row">
       <div>
-        ${crumb(["社員専用", "社員404"])}
+        <p class="system-label">社員マスタ / EMP-000404</p>
         <h1>社員404 詳細</h1>
       </div>
       <table class="mini-status-table">
-        <tbody>
-          <tr><th>表示区分</th><td>Not Found</td></tr>
-          <tr><th>最終状態変更</th><td>2025-08-07 02:14</td></tr>
-        </tbody>
+        <tbody><tr><th>表示区分</th><td>Not Found</td></tr><tr><th>最終状態変更</th><td>2025-08-07 02:14</td></tr></tbody>
       </table>
     </div>
-
+    <div class="hr-alert">本人確認: 未完了 / 退職同意: 未取得 / 外部接触: 検知あり / 監査室共有: 済</div>
     <section class="employee-system-grid">
       <article class="master-pane">
-        <h2>社員マスタ</h2>
+        <h2>社員基本情報</h2>
         <table class="hr-dense-table">
           <tbody>
-            <tr><th>社員ID</th><td>404</td><th>氏名</th><td>未登録</td></tr>
-            <tr><th>所属</th><td>未登録</td><th>在籍状況</th><td>記録なし</td></tr>
-            <tr><th>本人確認</th><td>未完了</td><th>退職同意</th><td>未取得</td></tr>
-            <tr><th>外部接触</th><td>検知あり</td><th>閲覧制限</th><td>実施済み</td></tr>
-            <tr><th>家族連絡</th><td>不要判定</td><th>監査室共有</th><td>済</td></tr>
-            <tr><th>状態変更理由</th><td colspan="3">記録保護。本人への再通知は不要と判断されました。</td></tr>
+            <tr><th>社員ID</th><td>404</td><th>所属</th><td>人材データ分析部</td></tr>
+            <tr><th>氏名</th><td>表示制限中</td><th>検索区分</th><td>通常検索から除外</td></tr>
+            <tr><th>状態変更理由</th><td>記録保護</td><th>家族連絡</th><td>不要判定</td></tr>
+            <tr><th>人事コメント</th><td colspan="3">本人への再通知は不要。退職処理ではなく、状態変更として扱います。</td></tr>
           </tbody>
         </table>
       </article>
-
-      <aside class="mood-pane">
-        <h2>本日の気分入力</h2>
-        <div class="mood-buttons" aria-label="気分入力">
-          <button type="button" data-mood>安心</button>
-          <button type="button" data-mood>不安</button>
-          <button type="button" data-mood>疑問</button>
-          <button type="button" data-mood>怒り</button>
-        </div>
-        <p class="message" id="mood-message" role="status"></p>
-        <p class="micro-note">入力された感情は本人の健康管理および組織安定化のために使用されます。</p>
-      </aside>
-
-      <article class="rule-pane">
+      <aside class="rule-pane">
         <h2>アラート条件</h2>
-        <table class="compact-table">
-          <tbody>
-            <tr><th>不安が3回</th><td>上長面談</td></tr>
-            <tr><th>疑問が5回</th><td>部署異動</td></tr>
-            <tr><th>怒りが7回</th><td>記録保護</td></tr>
-          </tbody>
-        </table>
-      </article>
-
+        <p>外部相談窓口への接触傾向が確認された場合、監査室へ共有されます。対象者の閲覧範囲は自動で制限されます。</p>
+      </aside>
       <article class="log-pane">
-        <h2>社員404 感情ログ</h2>
-        <table class="hr-dense-table">
-          <thead><tr><th>No.</th><th>状態</th><th>判定</th><th>記録時刻</th></tr></thead>
+        <h2>操作ログ</h2>
+        <table class="hr-dense-table log-table">
           <tbody>
-            <tr><td>1</td><td>安心</td><td>通常範囲</td><td>2025.07.18 09:02</td></tr>
-            <tr><td>2</td><td>平常</td><td>通常範囲</td><td>2025.07.19 09:00</td></tr>
-            <tr><td>3</td><td>監視対象</td><td>一次判定</td><td>2025.07.21 22:41</td></tr>
-            <tr><td>4</td><td>安心</td><td>通常範囲</td><td>2025.07.22 08:55</td></tr>
-            <tr><td>5</td><td>査定保留</td><td>二次判定</td><td>2025.07.26 01:13</td></tr>
-            <tr><td>6</td><td>平常</td><td>通常範囲</td><td>2025.07.28 08:59</td></tr>
-            <tr><td>7</td><td>室長確認</td><td>最終判定</td><td>2025.08.01 23:48</td></tr>
+            <tr><td>1</td><td>本</td><td>通常検索から除外</td><td>2025.07.18 09:21</td></tr>
+            <tr><td>2</td><td>人</td><td>面談記録の参照制限</td><td>2025.07.19 18:06</td></tr>
+            <tr><td>3</td><td>監</td><td>外部接触フラグを検知</td><td>2025.07.21 22:41</td></tr>
+            <tr><td>4</td><td>理</td><td>通知対象から除外</td><td>2025.07.22 08:55</td></tr>
+            <tr><td>5</td><td>査</td><td>記録保護へ状態変更</td><td>2025.07.26 01:13</td></tr>
+            <tr><td>6</td><td>部</td><td>家族連絡不要判定</td><td>2025.07.28 08:59</td></tr>
+            <tr><td>7</td><td>室</td><td>部門長確認済み</td><td>2025.08.01 23:48</td></tr>
           </tbody>
         </table>
       </article>
-
       <article class="interview-log-pane">
         <h2>面談履歴</h2>
-        <table class="compact-table">
+        <table class="hr-dense-table">
           <tbody>
-            <tr><th>2025.07.21</th><td>通常面談: 本人より「業務方針への疑問」入力あり。</td></tr>
-            <tr><th>2025.07.26</th><td>追加面談: 外部相談窓口に関する検索履歴を確認。</td></tr>
-            <tr><th>2025.08.01</th><td>監査室確認: 記録保護候補として共有。</td></tr>
-            <tr><th>2025.08.07</th><td>状態変更: Not Found。</td></tr>
+            <tr><th>2025.07.21</th><td>通常面談: 業務方針への疑問あり</td></tr>
+            <tr><th>2025.07.26</th><td>追加面談: 外部相談窓口に関する検索履歴を確認</td></tr>
+            <tr><th>2025.08.01</th><td>権限確認: 記録保護候補として共有</td></tr>
+            <tr><th>2025.08.07</th><td>状態変更: Not Found</td></tr>
           </tbody>
         </table>
       </article>
-
       <aside class="dept-search-pane">
-        <h2>部署検索</h2>
+        <h2>部門検索</h2>
         <form class="system-form compact-system-form" id="dept-form">
-          <label for="dept-answer">部署名を入力してください</label>
+          <label for="dept-answer">部門名を入力してください</label>
           <input id="dept-answer" name="dept-answer" autocomplete="off" required>
           <button class="system-button" type="submit">検索</button>
         </form>
@@ -508,25 +568,22 @@ const pages = {
   `),
 
   "/audit": () => auditShell(`
-    <section class="deleted-document">
-      <div class="doc-stamp-row">
-        <span>文書番号: AR-04-DEL</span>
-        <span>更新日時: 2025-08-07 02:23</span>
-      </div>
+    <section class="deleted-document paper-texture">
+      <div class="doc-stamp-row"><span>文書番号: AR-04-DEL</span><span>更新日時: 2025-08-07 02:23</span></div>
       ${crumb(["監査室", "削除済み文書"])}
-      <h1>監査室</h1>
-      <p class="document-status">このページは削除されました。</p>
+      <h1>削除済み文書</h1>
+      <p class="document-status">この文書は削除されました。</p>
       <table class="audit-meta-table">
         <tbody>
-          <tr><th>削除理由</th><td>内部通報管理規程 第■■条に基づく記録保護</td></tr>
-          <tr><th>承認者</th><td>監査室長 / 人事統括 / <span class="blackout">非開示</span></td></tr>
-          <tr><th>公開範囲</th><td>社内監査室、記録保護担当者</td></tr>
+          <tr><th>削除理由</th><td>内部通報管理規程 第七条に基づく記録保護</td></tr>
+          <tr><th>承認者</th><td>監査室長 / 人事統括 / <span class="blackout">非表示</span></td></tr>
+          <tr><th>公開範囲</th><td>社内調査室、記録保護担当者</td></tr>
           <tr><th>備考</th><td>当該社員への再通知は不要と判断されました。</td></tr>
         </tbody>
       </table>
       <div class="principle-excerpt">
         <b>当社理念 抜粋</b>
-        <p>迷いをなくす。疑問を減らす。声を整える。記録を管理する。</p>
+        <p>疑問を減らす。声を整える。記録を管理する。</p>
       </div>
       <form class="audit-form" id="key-form">
         <label for="restore-key">復元キー</label>
@@ -545,83 +602,52 @@ const pages = {
         <a class="is-active" href="#/archive"><span>A-01</span>＿拠保全手順</a>
         <a href="#/archive"><span>B-02</span>発＿テンプレート</a>
         <a href="#/archive"><span>C-03</span>対象＿リスト</a>
-        <a href="#/archive"><span>D-04</span>PROJECT SILENT 仕様書</a>
+        <a href="#/archive"><span>D-04</span>内部施策仕様書</a>
         <a href="#/archive"><span>E-05</span>感情ログ運用マニュアル</a>
-        <a href="#/archive"><span>F-06</span>退職処理自動化フロー</a>
+        <a href="#/archive"><span>F-06</span>状態変更フロー</a>
       </aside>
-
-      <article class="document-viewer">
-        <div class="viewer-tabs">
-          <button type="button" class="is-active">本文</button>
-          <button type="button">注釈</button>
-          <button type="button">証跡</button>
-        </div>
+      <article class="document-viewer paper-texture">
+        <div class="viewer-tabs"><button type="button" class="is-active">本文</button><button type="button">注記</button><button type="button">証跡</button></div>
         ${crumb(["監査室", "アーカイブ"])}
         <h1>監査室アーカイブ</h1>
         <p class="micro-note">閲覧範囲: Protected / 印刷: 不可 / 外部送信: 申請制</p>
-
         <section class="redacted-doc-row">
           <article class="redacted-doc">
             <header><span>A-01</span><h2>＿拠保全手順</h2></header>
             <table class="audit-mini-table"><tbody><tr><th>分類</th><td>外部監査提出資料</td></tr><tr><th>最終更新</th><td>2025.08.01</td></tr><tr><th>承認者</th><td>監査室長</td></tr></tbody></table>
-            <p>記録媒体の保全、原本性の確認、提出時の添付資料一覧を定める。面談記録、操作ログ、閲覧履歴は改変防止のため原本と写しを分けて保管する。</p>
-            <p class="redacted-line">外部監査提出時、<span class="blackout">■■</span>として扱う資料を別紙にまとめること。</p>
+            <p>記録媒体の保全、原本性の確認、外部監査提出時の添付資料一覧を定める。面談記録、操作ログ、閲覧履歴は改変防止のため原本と写しを分けて保管する。</p>
+            <p class="redacted-line">提出時は<span class="blackout">■■■■</span>として扱う資料を時系列にまとめる。</p>
           </article>
           <article class="redacted-doc">
             <header><span>B-02</span><h2>発＿テンプレート</h2></header>
             <table class="audit-mini-table"><tbody><tr><th>分類</th><td>面談記録様式</td></tr><tr><th>最終更新</th><td>2025.08.03</td></tr><tr><th>承認者</th><td>人事統括</td></tr></tbody></table>
             <p>通報者が発した内容、面談時の発言、供述の整合性を確認するための記入様式。本人の表現を損なわない範囲で、記録用語を統一する。</p>
-            <p class="redacted-line">本人が口頭で述べた内容は、<span class="blackout">■■</span>欄に時系列で記入する。</p>
+            <p class="redacted-line">口頭で述べられた内容は、<span class="blackout">■■</span>欄に時系列で記入する。</p>
           </article>
           <article class="redacted-doc">
             <header><span>C-03</span><h2>対象＿リスト</h2></header>
             <table class="audit-mini-table"><tbody><tr><th>分類</th><td>記録保護対象</td></tr><tr><th>最終更新</th><td>2025.08.07</td></tr><tr><th>承認者</th><td>監査室長</td></tr></tbody></table>
-            <p>該当者、対象となる従業員、記録保護処理済みアカウントを一覧化する。表示区分が Not Found の場合も退職処理とは区別して扱う。</p>
+            <p>該当者、対象となる従業員、記録保護対象アカウントを一覧化する。表示区分が Not Found の場合も退職処理とは区別して扱う。</p>
             <p class="redacted-line">一覧の第三列には、対象となる<span class="blackout">■</span>の状態変更理由を記載する。</p>
           </article>
         </section>
-
-        <section class="internal-doc-body">
-          <h2>D-04 PROJECT SILENT 仕様書 Ver. 2.4</h2>
-          <p>目的: 従業員の感情変動を検知し、組織運営上の不確実性を低減する。Level 5以降の処理内容は、本人への開示対象外とする。</p>
-          <table class="audit-mini-table">
-            <tbody>
-              <tr><th>Level 1</th><td>本人へのセルフケア通知</td></tr>
-              <tr><th>Level 2</th><td>上長への面談推奨</td></tr>
-              <tr><th>Level 3</th><td>部署異動候補として記録</td></tr>
-              <tr><th>Level 4</th><td>内部通報リスクとして監査室に共有</td></tr>
-              <tr><th>Level 5</th><td>記録保護処理</td></tr>
-            </tbody>
-          </table>
-        </section>
-
         <section class="internal-doc-columns">
-          <article>
-            <h2>E-05 感情ログ運用マニュアル</h2>
-            <p>疑問の継続的な入力、怒りの複数回入力、組織方針への不一致、社外相談窓口への接触傾向が確認された場合、本人の安全確保のため監査室による確認対象とします。</p>
-          </article>
-          <article>
-            <h2>F-06 退職処理自動化フロー</h2>
-            <p>状態変更後の表示は、在籍中 Active、退職済 Closed、記録保護 Not Found とする。Not Found は退職を意味しない。通常検索結果から除外されている状態を示す。</p>
-          </article>
+          <article><h2>D-04 内部施策仕様書 Ver. 2.4</h2><p>従業員の状態変化を検知し、組織運営上の不確実性を低下させる。Level 4以上の処理は本人への開示対象外とする。</p></article>
+          <article><h2>E-05 感情ログ運用マニュアル</h2><p>疑問の継続的な入力、怒りの複数回入力、外部相談窓口への接触傾向が確認された場合、本人の安全確保のため監査室による確認対象とします。</p></article>
         </section>
-
         <div class="archive-submit">
           <p>復元した文書を外部監査機関へ送信する場合は、あなたの役割を入力してください。</p>
-          <a class="audit-button link-button" href="#/final">最終告発フォームへ</a>
+          <a class="audit-button link-button" href="#/final">外部監査送信キューへ</a>
         </div>
       </article>
     </section>
   `),
 
   "/final": () => auditShell(`
-    <section class="final-queue">
-      <div class="doc-stamp-row">
-        <span>送信キュー: EXT-AUDIT-404</span>
-        <span>状態: 入力待ち</span>
-      </div>
+    <section class="final-queue paper-texture">
+      <div class="doc-stamp-row"><span>送信キュー: EXT-AUDIT-404</span><span>状態: 入力待ち</span></div>
       ${crumb(["監査室", "外部監査送信"])}
-      <h1>最終告発フォーム</h1>
+      <h1>外部監査送信キュー</h1>
       <table class="audit-meta-table">
         <tbody>
           <tr><th>送信先</th><td>外部監査機関 受付キュー</td></tr>
@@ -631,20 +657,19 @@ const pages = {
       </table>
       <p>最後に、あなたの役割を入力してください。</p>
       <form class="audit-form" id="final-form">
-        <label for="final-answer">あなたは、何者ですか？</label>
+        <label for="final-answer">あなたは、何者ですか。</label>
         <input id="final-answer" name="final-answer" autocomplete="off" required>
         <button class="audit-button" type="submit">送信</button>
       </form>
       <p class="message" id="final-message" role="status"></p>
-      <p class="micro-note">入力内容が復元された文書名と一致しない場合、送信キューは保留されます。</p>
     </section>
   `),
 
   "/hints": () => publicShell(`
-    <section class="hint-page">
-      ${crumb(["ヒント"])}
-      <h1>ヒント</h1>
-      <p>ヒントは段階的に開いてください。答えを表示すると、ヒント閲覧ログに記録されます。</p>
+    <section class="hint-page reveal-block">
+      ${crumb(["補助資料"])}
+      <h1>補助資料</h1>
+      <p>段階的に開いてください。答えを表示すると、ヒント閲覧ログに記録されます。</p>
       <div class="hint-accordion">
         ${hintData.map(item => `
           <article class="hint-record" data-hint-record="${item.id}">
@@ -658,7 +683,7 @@ const pages = {
         `).join("")}
       </div>
     </section>
-  `, "hint-layout-page")
+  `, "hint")
 };
 
 function bindForms() {
@@ -667,24 +692,20 @@ function bindForms() {
     const idOk = accepts(document.querySelector("#employee-id").value, answers.id);
     const passOk = accepts(document.querySelector("#employee-pass").value, answers.pass);
     if (idOk && passOk) {
-      setMessage("#login-message", "認証しました。注意: この社員情報は、通常の人事データベースには存在しません。", "success");
-      setTimeout(() => go("/employee-404"), 850);
+      setMessage("#login-message", "認証しました。通常の人事データベースには存在しない社員情報を表示します。", "success");
+      setTimeout(() => go("/employee-404"), 650);
     } else {
       setMessage("#login-message", "認証できませんでした。入力内容、または記録の存在状態を確認してください。", "error");
     }
   });
 
-  document.querySelectorAll("[data-mood]").forEach(button => {
-    button.addEventListener("click", () => setMessage("#mood-message", "このアカウントでは新規ログを追加できません。", "error"));
-  });
-
   document.querySelector("#dept-form")?.addEventListener("submit", event => {
     event.preventDefault();
     if (accepts(document.querySelector("#dept-answer").value, answers.dept)) {
-      setMessage("#dept-message", "部署を確認しました。監査室ページを開きます。", "success");
-      setTimeout(() => go("/audit"), 800);
+      setMessage("#dept-message", "部門を確認しました。監査室ページを開きます。", "success");
+      setTimeout(() => go("/audit"), 650);
     } else {
-      setMessage("#dept-message", "該当する部署は見つかりませんでした。", "error");
+      setMessage("#dept-message", "該当する部門は見つかりませんでした。", "error");
     }
   });
 
@@ -692,7 +713,7 @@ function bindForms() {
     event.preventDefault();
     if (accepts(document.querySelector("#restore-key").value, answers.key)) {
       setMessage("#key-message", "復元キーを確認しました。監査室アーカイブを表示します。", "success");
-      setTimeout(() => go("/archive"), 900);
+      setTimeout(() => go("/archive"), 700);
     } else {
       setMessage("#key-message", "復元キーが一致しません。", "error");
     }
@@ -706,8 +727,13 @@ function bindForms() {
     } else if (accepts(value, answers.bad)) {
       renderBadEnd();
     } else {
-      setMessage("#final-message", "送信できませんでした。入力内容が、復元された文書と一致しません。", "error");
+      setMessage("#final-message", "送信できませんでした。入力内容が復元済み文書と一致しません。", "error");
     }
+  });
+
+  document.querySelector("#contact-form")?.addEventListener("submit", event => {
+    event.preventDefault();
+    setMessage("#contact-message", "現在フォームはメンテナンス中です。恐れ入りますが、時間をおいて再度お試しください。", "success");
   });
 
   document.querySelectorAll(".reveal-answer").forEach(button => {
@@ -729,7 +755,7 @@ function renderBadEnd() {
     <section class="final-queue bad-end">
       <div class="doc-stamp-row"><span>送信キュー: CANCELED</span><span>状態: 記録済み</span></div>
       <h1>送信は取り消されました。</h1>
-      <p>入力された役割は、復元文書と一致しませんでした。採用適性検査の結果は、組織安定化資料として保存されます。</p>
+      <p>入力された役割は、復元文書と一致しませんでした。送信内容は組織安定化資料として保存されます。</p>
       <a class="audit-button link-button" href="#/final">戻る</a>
     </section>
   `);
@@ -737,7 +763,7 @@ function renderBadEnd() {
 
 function renderClear() {
   auditShell(`
-    <section class="final-queue clear-document">
+    <section class="final-queue clear-document paper-texture">
       <div class="doc-stamp-row"><span>送信キュー: COMPLETED</span><span>状態: 外部送信済み</span></div>
       <h1>送信が完了しました。</h1>
       <table class="audit-meta-table">
@@ -745,10 +771,10 @@ function renderClear() {
           <tr><th>A-01</th><td>復元済み</td></tr>
           <tr><th>B-02</th><td>復元済み</td></tr>
           <tr><th>C-03</th><td>復元済み</td></tr>
-          <tr><th>PROJECT SILENT</th><td>一部記録を外部監査機関へ送信済み</td></tr>
+          <tr><th>証跡ログ</th><td>外部監査機関へ送信済み</td></tr>
         </tbody>
       </table>
-      <p>おめでとうございます。あなたは、ユメミノ総合研究所の採用適性検査を完了しました。</p>
+      <p>受理番号は表示されません。送信元端末の操作記録は保全されました。</p>
       <div class="cold-result">
         <b>判定結果</b>
         <table class="audit-mini-table">
@@ -761,7 +787,6 @@ function renderClear() {
           </tbody>
         </table>
       </div>
-      <p>まもなく担当者よりご連絡いたします。</p>
       <p class="last-line">画面を閉じても、記録は残ります。</p>
       <h2 class="true-title">社員404は退職していない</h2>
     </section>
@@ -778,6 +803,27 @@ function updateChrome(path) {
   });
 }
 
+function prepareReveal() {
+  const blocks = document.querySelectorAll(".reveal-block");
+  if (!blocks.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+    blocks.forEach(block => block.classList.add("is-visible"));
+    return;
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
+  blocks.forEach(block => observer.observe(block));
+}
+
+function updateScrolledState() {
+  document.body.classList.toggle("is-scrolled", window.scrollY > 20);
+}
+
 function render() {
   const current = route();
   updateChrome(current);
@@ -785,6 +831,7 @@ function render() {
   bindForms();
   menu.setAttribute("aria-expanded", "false");
   nav.classList.remove("is-open");
+  window.scrollTo({ top: 0, behavior: "instant" });
 }
 
 menu.addEventListener("click", () => {
@@ -793,5 +840,7 @@ menu.addEventListener("click", () => {
   nav.classList.toggle("is-open", !open);
 });
 
+window.addEventListener("scroll", updateScrolledState, { passive: true });
 window.addEventListener("hashchange", render);
+updateScrolledState();
 render();
