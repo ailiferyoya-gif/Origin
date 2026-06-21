@@ -820,6 +820,141 @@ function prepareReveal() {
   blocks.forEach(block => observer.observe(block));
 }
 
+function enrichOperationalContent(path) {
+  if (path === "/") {
+    const heroNews = document.querySelector(".hero-news");
+    if (heroNews) {
+      heroNews.innerHTML = `
+        <b>Latest</b>
+        <a href="#/news"><time>2025.12.01</time><em>お知らせ</em><span>年末年始休業のお知らせ</span></a>
+        <a href="#/news"><time>2025.11.18</time><em>資料公開</em><span>人的資本開示支援サービスに関する資料を公開しました</span></a>
+        <a href="#/news"><time>2025.10.30</time><em>導入事例</em><span>コールセンター運営企業様の事例を公開しました</span></a>
+        <a href="#/news"><time>2025.09.26</time><em>セミナー</em><span>管理職面談設計ウェビナーを開催します</span></a>
+        <a href="#/news"><time>2025.08.07</time><em>障害情報</em><span>一部サービスの表示不具合について</span></a>
+        <a href="#/news"><time>2025.04.12</time><em>規程改定</em><span>内部通報管理規程の改定に伴うお知らせ</span></a>
+      `;
+    }
+
+    document.querySelector(".services-editorial")?.insertAdjacentHTML("beforeend", `
+      <div class="service-directory">
+        ${[
+          ["人的資本データ分析", "サーベイ、勤怠、面談記録、相談窓口データを統合します。"],
+          ["組織改善コンサルティング", "部門別課題の整理から改善施策の定着まで伴走します。"],
+          ["開示資料・IR支援", "人的資本開示と統合報告書の構成・編集を支援します。"],
+          ["従業員サーベイ設計", "設問設計、集計軸、回答率向上の運用を整えます。"],
+          ["面談記録分析", "面談メモを定性データとして整理し、傾向を抽出します。"],
+          ["統合報告書編集支援", "経営方針と現場データを読み手に伝わる資料へ編集します。"]
+        ].map(([title, text]) => `<article><h3>${title}</h3><p>${text}</p><a href="#/business">詳細を見る</a></article>`).join("")}
+      </div>
+    `);
+
+    const caseList = document.querySelector(".case-list");
+    if (caseList) {
+      caseList.innerHTML = `
+        <article><b>コールセンター運営企業</b><dl><div><dt>従業員規模</dt><dd>約1,200名</dd></div><div><dt>支援領域</dt><dd>離職要因分析、面談設計</dd></div><div><dt>課題</dt><dd>拠点ごとの離職傾向を説明できない</dd></div><div><dt>実施内容</dt><dd>勤怠傾向と相談履歴を統合し、管理職向け月次資料を整備</dd></div></dl><a href="#/business">詳細を見る</a></article>
+        <article><b>医療法人グループ</b><dl><div><dt>従業員規模</dt><dd>約900名</dd></div><div><dt>支援領域</dt><dd>職員サーベイ、組織診断</dd></div><div><dt>課題</dt><dd>複数拠点の回答結果を横断比較できない</dd></div><div><dt>実施内容</dt><dd>部門属性を再整理し、経営会議用サマリーを作成</dd></div></dl><a href="#/business">詳細を見る</a></article>
+        <article><b>地方自治体</b><dl><div><dt>従業員規模</dt><dd>約2,400名</dd></div><div><dt>支援領域</dt><dd>人的資本データ整理、開示資料補助</dd></div><div><dt>課題</dt><dd>職員意識調査の活用範囲が限定的</dd></div><div><dt>実施内容</dt><dd>年次推移と部門別傾向を整理し、公開資料向けに要約</dd></div></dl><a href="#/business">詳細を見る</a></article>
+      `;
+    }
+
+    document.querySelector(".case-band")?.insertAdjacentHTML("afterend", `
+      <section class="resources-section reveal-block">
+        <div class="section-heading compact-heading"><p class="section-kicker">Documents / Seminar</p><h2>資料・セミナー</h2></div>
+        <div class="resource-list">
+          <a href="#/contact"><span>PDF</span><b>人的資本開示チェックリスト</b><small>開示項目の棚卸しに使える実務資料です。</small></a>
+          <a href="#/contact"><span>PDF</span><b>組織サーベイ設計ガイド</b><small>設問設計と集計軸の基本をまとめています。</small></a>
+          <a href="#/news"><span>WEBINAR</span><b>管理職面談設計ウェビナー</b><small>2026.01.22 開催予定 / オンライン</small></a>
+          <a href="#/news"><span>SEMINAR</span><b>統合報告書 人的資本パート作成講座</b><small>IR・サステナビリティ部門向け。</small></a>
+        </div>
+        <div class="more-links"><a href="#/news">お知らせ一覧へ</a><a href="#/business">導入事例一覧へ</a><a href="#/contact">資料請求へ</a></div>
+      </section>
+    `);
+  }
+
+  if (path === "/business") {
+    document.querySelector(".business-hero, .page-hero")?.insertAdjacentHTML("afterend", `
+      <nav class="local-nav" aria-label="事業内容内ナビ">
+        <a href="#service-scope">支援範囲</a><a href="#deliverables">納品物</a><a href="#departments">対応部門</a><a href="#materials">関連資料</a><a href="#/contact">お問い合わせ</a>
+      </nav>
+    `);
+    document.querySelector(".business-stories")?.insertAdjacentHTML("afterend", `
+      <section class="service-detail-block reveal-block" id="service-scope">
+        <h2>サービスごとの支援範囲</h2>
+        <div class="detail-tables">
+          <article><h3>人的資本データ分析</h3><table><tbody><tr><th>対象データ</th><td>従業員サーベイ、勤怠傾向、面談記録、相談窓口利用状況、部門属性</td></tr><tr><th>主な納品物</th><td>月次レポート、経営会議用サマリー、部門別ダッシュボード、改善提案書</td></tr><tr><th>対応部門</th><td>人事部、経営企画部、IR部門、サステナビリティ推進室</td></tr></tbody></table></article>
+          <article><h3>組織改善コンサルティング</h3><table><tbody><tr><th>支援内容</th><td>面談設計、管理職向けフィードバック、配置検討、コミュニケーション改善</td></tr><tr><th>よくある課題</th><td>部署ごとの温度差、離職兆候、サーベイ結果の活用不足</td></tr><tr><th>期間目安</th><td>初期診断 4週間 / 改善伴走 3か月から</td></tr></tbody></table></article>
+          <article><h3>開示資料・IR支援</h3><table><tbody><tr><th>対応資料</th><td>統合報告書、有価証券報告書補足資料、人的資本開示資料</td></tr><tr><th>納品物</th><td>構成案、本文ドラフト、図表原稿、注記整理表</td></tr><tr><th>関連資料</th><td><span class="label-pdf">PDF</span> 人的資本開示チェックリスト</td></tr></tbody></table></article>
+        </div>
+      </section>
+      <section class="operation-cta reveal-block" id="materials">
+        <div><h2>関連資料</h2><p>サービス詳細、導入プロセス、料金目安は資料請求フォームからご依頼ください。</p></div>
+        <a class="brand-button" href="#/contact">資料請求・お問い合わせ</a>
+      </section>
+    `);
+  }
+
+  if (path === "/news") {
+    const newsIndex = document.querySelector(".news-index");
+    if (newsIndex) {
+      newsIndex.outerHTML = `
+        <section class="news-operations reveal-block">
+          <aside class="news-sidebar"><h2>年別アーカイブ</h2><a href="#/news">2025年</a><a href="#/news">2024年</a><h2>カテゴリ</h2><button>お知らせ</button><button>導入事例</button><button>セミナー</button><button>資料公開</button><button>障害情報</button></aside>
+          <div class="news-index">
+            ${[
+              ["2025.12.01", "お知らせ", "年末年始休業のお知らせ", "年末年始期間中の営業日および各種窓口の対応についてご案内します。"],
+              ["2025.11.18", "資料公開", "人的資本開示支援サービスに関する資料を公開しました", "開示項目の整理、定量指標の扱い、定性情報の編集方針をまとめた資料です。"],
+              ["2025.10.30", "導入事例", "導入事例「コールセンター運営企業様」を公開しました", "相談履歴と勤怠傾向をもとに、部門別の改善施策へつなげた事例です。"],
+              ["2025.09.26", "セミナー", "管理職面談設計ウェビナー開催のお知らせ", "人事部門と管理職が共有できる面談設計の基本を解説します。"],
+              ["2025.08.07", "障害情報", "一部サービスの表示不具合について", "一部アカウント情報が通常画面に表示されない事象を確認し、現在は復旧済みです。"],
+              ["2025.07.10", "お知らせ", "夏季休業期間中のサポート対応について", "サポート窓口の受付時間を一部変更します。"],
+              ["2025.06.19", "資料公開", "組織サーベイ設計ガイドを公開しました", "設問設計、回答率向上、部門別分析のポイントをまとめています。"],
+              ["2025.05.22", "導入事例", "医療法人グループ様の導入事例を公開しました", "複数拠点の職員サーベイを横断分析した事例です。"],
+              ["2025.04.12", "規程改定", "内部通報管理規程の改定に伴うお知らせ", "法令改正と運用整理に伴い、規程の一部表現を更新しました。"],
+              ["2025.03.03", "お知らせ", "役員人事に関するお知らせ", "2025年4月1日付の執行体制についてお知らせします。"]
+            ].map(item => `<article class="news-row rich"><figure class="news-thumb"></figure><time>${item[0]}</time><span>${item[1]}</span><div><h2>${item[2]}</h2><p>${item[3]}</p><a href="#/news">一覧へ戻る</a></div></article>`).join("")}
+            <nav class="pager" aria-label="ページネーション"><span>1</span><a href="#/news">2</a><a href="#/news">次へ</a></nav>
+          </div>
+        </section>
+      `;
+    }
+  }
+
+  if (path === "/ir") {
+    document.querySelector(".ir-layout")?.insertAdjacentHTML("beforeend", `
+      <article class="ir-ops"><h2>IRニュース</h2><ul><li>2025.11.18 人的資本開示支援サービス資料を公開</li><li>2025.08.07 一部指標の表示形式を修正</li><li>2025.04.01 用語定義を更新</li></ul></article>
+      <article class="ir-ops"><h2>IRカレンダー</h2><table><tbody><tr><th>2026.02</th><td>第3四半期補足資料 公開予定</td></tr><tr><th>2026.05</th><td>通期レポート 公開予定</td></tr><tr><th>2026.06</th><td>人的資本データ説明会</td></tr></tbody></table></article>
+      <article class="ir-ops"><h2>よくある質問</h2><details><summary>人的資本データの集計範囲はどこですか</summary><p>原則として正社員、契約社員、常勤委託を含みます。資料により注記で範囲を示します。</p></details><details><summary>PDF資料の更新頻度はどの程度ですか</summary><p>四半期ごとの補足更新と、年次の統合資料更新を行います。</p></details></article>
+      <article class="ir-ops disclaimer"><h2>免責事項</h2><p>掲載情報は資料作成時点の判断に基づくものであり、将来の実績を保証するものではありません。人的資本関連指標は、社内管理基準と外部開示基準の差異により集計範囲が異なる場合があります。</p></article>
+    `);
+  }
+
+  if (path === "/recruit") {
+    document.querySelector(".recruit-layout")?.insertAdjacentHTML("afterend", `
+      <section class="recruit-detail-grid reveal-block">
+        <article><h2>募集要項詳細</h2><table><tbody><tr><th>雇用形態</th><td>正社員 / 契約社員</td></tr><tr><th>勤務地</th><td>東京本社、リモート併用</td></tr><tr><th>勤務時間</th><td>フレックスタイム制</td></tr></tbody></table></article>
+        <article><h2>職種別仕事内容</h2><ul><li>調査設計とサーベイ運用</li><li>人的資本データ分析</li><li>経営会議向けレポート作成</li><li>統合報告書の編集支援</li></ul></article>
+        <article><h2>福利厚生</h2><ul><li>書籍購入補助</li><li>資格取得支援</li><li>在宅勤務手当</li><li>プロジェクト休暇制度</li></ul></article>
+        <article><h2>エントリー</h2><p>募集職種ごとの応募条件をご確認のうえ、お問い合わせフォームよりご連絡ください。</p><a class="brand-button" href="#/contact">採用に関するお問い合わせ</a></article>
+      </section>
+    `);
+  }
+
+  if (path === "/employee-404") {
+    const logBody = document.querySelector(".log-table tbody");
+    if (logBody) {
+      logBody.innerHTML = `
+        <tr><td>1</td><td>本人情報表示制限</td><td>通常検索から除外</td><td>2025.07.18 09:21</td></tr>
+        <tr><td>2</td><td>人事面談記録制限</td><td>面談記録の参照制限</td><td>2025.07.19 18:06</td></tr>
+        <tr><td>3</td><td>監視対象判定</td><td>外部接触フラグを検知</td><td>2025.07.21 22:41</td></tr>
+        <tr><td>4</td><td>理事通知除外</td><td>通知対象から除外</td><td>2025.07.22 08:55</td></tr>
+        <tr><td>5</td><td>査定保留処理</td><td>記録保護へ状態変更</td><td>2025.07.26 01:13</td></tr>
+        <tr><td>6</td><td>部署外共有制限</td><td>家族連絡不要判定</td><td>2025.07.28 08:59</td></tr>
+        <tr><td>7</td><td>室長確認済</td><td>部門長確認済み</td><td>2025.08.01 23:48</td></tr>
+      `;
+    }
+  }
+}
+
 function updateScrolledState() {
   document.body.classList.toggle("is-scrolled", window.scrollY > 20);
 }
@@ -828,6 +963,7 @@ function render() {
   const current = route();
   updateChrome(current);
   pages[current]();
+  enrichOperationalContent(current);
   bindForms();
   menu.setAttribute("aria-expanded", "false");
   nav.classList.remove("is-open");
