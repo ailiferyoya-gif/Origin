@@ -61,30 +61,71 @@ function layout(content, className = "") {
 const pages = {
   "/": () => layout(`
     <section class="hero">
-      <div>
-        <p class="label">Recruitment aptitude test</p>
+      <div class="hero-copy">
+        <p class="label">Human analytics company</p>
         <h1>人の可能性を、正しく測る。</h1>
         <p class="lead">ユメミノ総合研究所は、働く人々の感情・行動・意思決定を可視化し、組織が抱える不安を未然に整える研究開発企業です。</p>
-        <p class="lead">迷いのない職場へ。疑問の少ないチームへ。すべての人が、安心して働き続けられる社会へ。</p>
+        <p class="lead">迷いのない職場へ。疑問の少ないチームへ。すべての人が、安心して働き続けられる社会へ。私たちは、組織の静かな変化を読み解くための基盤をつくっています。</p>
         <div class="hero-actions">
           <a class="primary-link" href="#/about">企業理念を見る</a>
           <a class="ghost-link" href="#/recruit">採用情報</a>
           <a class="ghost-link" href="#/ir">IR情報</a>
         </div>
+        <dl class="hero-meta">
+          <div><dt>Research area</dt><dd>感情解析 / 行動ログ / 組織評価</dd></div>
+          <div><dt>Established</dt><dd>2019</dd></div>
+        </dl>
       </div>
       <aside class="hero-panel">
         <p class="label">Yumemino Research Institute</p>
         <h2>人の迷いを、組織の安心へ。</h2>
         <p>あなたの違和感は、組織改善のための貴重なデータです。</p>
+        <div class="panel-status">
+          <span>Assessment mode</span>
+          <b>Active</b>
+        </div>
       </aside>
     </section>
-    <section class="section narrow">
+    <section class="ticker" aria-label="重要なお知らせ">
+      <span>News</span>
+      <a href="#/ir">2026.06.18 人的資本データの統合評価モデルを更新しました</a>
+      <a href="#/recruit">2026.06.02 採用適性検査の受付を開始しました</a>
+      <a href="#/about">2026.05.27 組織の意思決定支援に関する研究方針を公開しました</a>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <p class="label">Business</p>
+        <h2>人の状態を、組織が扱える情報へ。</h2>
+      </div>
+      <div class="service-grid">
+        <article class="service-card"><span>01</span><h3>感情ログ解析</h3><p>日々の入力、面談記録、業務上の反応から、組織内に蓄積する小さな変化を定量化します。</p></article>
+        <article class="service-card"><span>02</span><h3>適性評価設計</h3><p>採用、配置、異動、研修に必要な判断軸を設計し、迷いの少ない人事運用を支援します。</p></article>
+        <article class="service-card"><span>03</span><h3>ウェルビーイング運用</h3><p>相談前の兆候を読み取り、従業員が安心して働き続けられる状態を保ちます。</p></article>
+      </div>
+    </section>
+    <section class="section split-section">
+      <div class="image-feature" aria-hidden="true"></div>
       <div class="text-block">
-        <p class="label">Notice</p>
+        <p class="label">Recruitment aptitude test</p>
         <h2>採用適性検査は、サイトの閲覧から始まっています。</h2>
         <p>本検査では、企業情報の読み取り、資料間の照合、入力フォームへの回答を通じて、応募者の観察力を確認します。実際の外部送信や閲覧行動の収集は行いません。</p>
-        <p class="hint-note">この作品はフィクションです。実在の企業・団体・人物とは関係ありません。</p>
+        <div class="metric-row">
+          <div><b>404</b><span>Protected records</span></div>
+          <div><b>0.0%</b><span>Reported turnover</span></div>
+          <div><b>24h</b><span>Log retention</span></div>
+        </div>
       </div>
+    </section>
+    <section class="section case-band">
+      <div>
+        <p class="label">Case study</p>
+        <h2>迷いを減らすことで、組織は静かになる。</h2>
+      </div>
+      <p>導入企業では、面談前の不安傾向、会議後の違和感、退職意思の兆候を一元的に把握し、早期の配置調整と記録保護を実現しています。</p>
+      <a class="primary-link" href="#/ir">人的資本データを見る</a>
+    </section>
+    <section class="section narrow">
+      <p class="hint-note">この作品はフィクションです。実在の企業・団体・人物とは関係ありません。</p>
     </section>
   `),
 
