@@ -27,6 +27,7 @@ const pageMeta = {
   "/ir": { title: `IR情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
   "/recruit": { title: `採用情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
   "/contact": { title: `お問い合わせ | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/works": { title: `作品一覧 | ${siteTitle}`, stage: "public", footer: "公開中の謎解き作品一覧" },
   "/login": { title: "社員専用 | YRI人事ポータル", stage: "hr", footer: "YRI HR Portal / Access log enabled" },
   "/employee-404": { title: "社員404 | YRI人事ポータル", stage: "hr", footer: "YRI HR Portal / Access log enabled" },
   "/audit": { title: "監査室 | 削除済み文書", stage: "audit", footer: "Audit document terminal / View only" },
@@ -156,6 +157,20 @@ const pages = {
       </aside>
     </section>
 
+    <section class="archive-index-strip reveal-block">
+      <div>
+        <p class="section-kicker">Nazotoki Archive</p>
+        <h2>公開中の謎解き作品</h2>
+        <p>失踪した映像制作チームの取材端末を調べる、iPhone風Web謎解きゲームを追加しました。</p>
+      </div>
+      <a class="archive-work-card compact" href="nazotokiarchive/">
+        <span>NEW</span>
+        <b>取材端末06 未編集素材</b>
+        <small>モキュメンタリー風ホラー / iPhone縦画面</small>
+      </a>
+      <a class="text-link" href="#/works">作品一覧を見る</a>
+    </section>
+
     <section class="split-feature wide reveal-block">
       ${photo("people-meeting.jpg", "会議室で資料とダッシュボードを確認するコンサルティングチーム", "landscape")}
       <div>
@@ -228,6 +243,38 @@ const pages = {
       </article>
     </section>
   `, "home"),
+
+  "/works": () => publicShell(`
+    <section class="page-hero compact reveal-block">
+      ${crumb(["作品一覧"])}
+      <div>
+        <p class="section-kicker">Nazotoki Archive</p>
+        <h1>公開中の謎解き作品</h1>
+        <p>ブラウザで遊べる謎解き作品の入口です。各作品は別タブに移動せず、このGitHub Pages内で開けます。</p>
+      </div>
+      <article class="archive-terminal-preview" aria-label="取材端末06のプレビュー">
+        <span>REC</span>
+        <b>取材端末 06</b>
+        <small>未編集素材 / 復元待ち</small>
+      </article>
+    </section>
+
+    <section class="archive-index-page reveal-block">
+      <article class="archive-work-card is-featured">
+        <div>
+          <p class="section-kicker">New / Web Mystery</p>
+          <h2>取材端末06 未編集素材</h2>
+          <p>失踪した映像制作チームが残したiPhone風の取材端末を調べ、未公開映像、録音、時系列の矛盾、削除ログに隠された謎を解きます。</p>
+          <dl>
+            <div><dt>形式</dt><dd>React + TypeScript / 静的サイト</dd></div>
+            <div><dt>推奨</dt><dd>iPhone縦画面 / Safari</dd></div>
+            <div><dt>保存</dt><dd>localStorageで進行保存</dd></div>
+          </dl>
+        </div>
+        <a class="brand-button" href="nazotokiarchive/">プレイする</a>
+      </article>
+    </section>
+  `, "works"),
 
   "/about": () => publicShell(`
     <section class="page-hero compact reveal-block">
