@@ -3,21 +3,18 @@ const saveKey = "yriDesktopMvpState";
 const initialState = {
   contactSubmitted: false,
   searchUnlocked: false,
+  talkContactAdded: false,
+  pendingFriendRequest: false,
   unreadTalk: 0,
   unreadFiles: 0,
   currentFolder: "downloads",
   selectedFile: "",
   browserPath: "/",
   searchQuery: "",
-  messageIds: ["welcome-1"]
+  messageIds: []
 };
 
 const talkMessages = {
-  "welcome-1": {
-    from: "資料窓口",
-    body: "ユメミノ総合研究所 資料窓口です。企業サイトの資料請求フォームからお申し込みください。",
-    time: "09:12"
-  },
   "request-1": {
     from: "me",
     body: "資料請求フォームを送信しました。",
@@ -25,9 +22,14 @@ const talkMessages = {
   },
   "request-2": {
     from: "資料窓口",
-    body: "ご請求ありがとうございます。サービス概要資料をこの端末のDownloadsへ保存しました。あわせて、関連情報を確認できるSearchアプリを有効化しています。",
+    body: "ご請求ありがとうございます。サービス概要資料をこの端末のDownloadsへ保存しました。",
     time: "now",
     attachment: "service_overview_2026.pdf"
+  },
+  "request-3": {
+    from: "資料窓口",
+    body: "資料の注意事項をご確認のうえ、不明点があればこのトークへ返信してください。",
+    time: "now"
   }
 };
 
@@ -55,10 +57,18 @@ const routeMap = {
 const state = loadState();
 const layer = document.querySelector("#window-layer");
 const notice = document.querySelector("#topbar-notice");
+let currentApp = "";
 
 function loadState() {
   try {
-    return { ...initialState, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
+    const saved = JSON.parse(localStorage.getItem(saveKey) || "{}");
+    const merged = { ...initialState, ...saved };
+    if (!merged.talkContactAdded && merged.messageIds?.includes("welcome-1")) {
+      merged.messageIds = [];
+      merged.pendingFriendRequest = Boolean(merged.contactSubmitted);
+      merged.searchUnlocked = false;
+    }
+    return merged;
   } catch {
     return { ...initialState };
   }
@@ -105,12 +115,20 @@ function updateBadges() {
   const talkBadge = document.querySelector("#talk-badge");
   const filesBadge = document.querySelector("#files-badge");
   const searchIcon = document.querySelector("#search-icon");
+  const taskbarSearch = document.querySelector("#taskbar-search");
 
   talkBadge.hidden = state.unreadTalk < 1;
   talkBadge.textContent = state.unreadTalk;
   filesBadge.hidden = state.unreadFiles < 1;
   filesBadge.textContent = state.unreadFiles;
   searchIcon.classList.toggle("is-locked", !state.searchUnlocked);
+  taskbarSearch?.classList.toggle("is-locked", !state.searchUnlocked);
+}
+
+function updateTaskbarActive(app) {
+  document.querySelectorAll(".taskbar-app").forEach(button => {
+    button.classList.toggle("is-active", button.dataset.app === app);
+  });
 }
 
 function setHash(app) {
@@ -119,7 +137,8 @@ function setHash(app) {
 }
 
 function currentAppFromHash() {
-  return location.hash.replace(/^#\//, "") || "browser";
+  const route = location.hash.replace(/^#\//, "");
+  return ["browser", "talk", "files", "search", "notes"].includes(route) ? route : "";
 }
 
 function appLabel(app) {
@@ -134,14 +153,16 @@ function appLabel(app) {
 
 function openApp(app) {
   if (app === "search" && !state.searchUnlocked) {
-    toast("Searchはまだ利用できません", "資料請求後に検索インデックスが同期されます。");
+    toast("Searchはまだ利用できません", "資料窓口を追加すると検索インデックスが同期されます。");
     setNotice("Searchはロックされています");
     return;
   }
 
   if (app === "talk") state.unreadTalk = 0;
   if (app === "files") state.unreadFiles = 0;
+  currentApp = app;
   saveState();
+  updateTaskbarActive(app);
 
   layer.innerHTML = "";
   layer.appendChild(createWindow(app));
@@ -158,8 +179,9 @@ function createWindow(app) {
     <header class="window-titlebar">
       <b>${appLabel(app)}</b>
       <div class="window-actions">
-        <button type="button" data-action="home" aria-label="Browserを開く">B</button>
-        <button type="button" data-action="close" aria-label="閉じる">x</button>
+        <button type="button" data-action="minimize" aria-label="最小化">−</button>
+        <button type="button" data-action="maximize" aria-label="最大化">□</button>
+        <button type="button" data-action="close" aria-label="閉じる">×</button>
       </div>
     </header>
     <div class="window-body">${renderApp(app)}</div>
@@ -171,14 +193,25 @@ function createWindow(app) {
 function bindWindow(win, app) {
   win.querySelector('[data-action="close"]')?.addEventListener("click", () => {
     win.remove();
+    currentApp = "";
+    updateTaskbarActive("");
     history.replaceState(null, "", "#/");
   });
-  win.querySelector('[data-action="home"]')?.addEventListener("click", () => openApp("browser"));
+  win.querySelector('[data-action="minimize"]')?.addEventListener("click", () => {
+    win.remove();
+    currentApp = "";
+    updateTaskbarActive("");
+    history.replaceState(null, "", "#/");
+  });
+  win.querySelector('[data-action="maximize"]')?.addEventListener("click", () => {
+    win.classList.toggle("is-maximized");
+  });
 
   if (app === "browser") bindBrowser(win);
   if (app === "talk") bindTalk(win);
   if (app === "files") bindFiles(win);
   if (app === "search") bindSearch(win);
+  if (app === "notes") bindNotes(win);
 }
 
 function renderApp(app) {
@@ -246,24 +279,101 @@ function bindBrowser(win) {
 
 function renderTalk() {
   const messages = state.messageIds.map(id => talkMessages[id]).filter(Boolean);
+  const sidebar = renderTalkSidebar();
+  let main;
+  if (state.talkContactAdded) {
+    main = renderTalkConversation(messages);
+  } else if (state.pendingFriendRequest) {
+    main = renderFriendRequest();
+  } else {
+    main = renderTalkEmpty();
+  }
+
+  return `<div class="talk-layout">${sidebar}${main}</div>`;
+}
+
+function renderTalkSidebar() {
+  const latest = state.talkContactAdded
+    ? "サービス概要資料を送付しました。"
+    : state.pendingFriendRequest
+      ? "友だち追加リクエスト"
+      : "友だちはまだ追加されていません";
   return `
-    <div class="talk-layout">
-      <aside class="talk-sidebar">
-        <div class="talk-profile"><b>Talk</b><small>Local secure messenger</small></div>
-        <div class="thread-list">
-          <button class="is-active" type="button"><b>資料窓口</b><small>ユメミノ総合研究所</small></button>
-          <button type="button"><b>システム通知</b><small>未読はありません</small></button>
+    <aside class="talk-sidebar">
+      <div class="talk-profile"><b>Talk</b><small>Local messenger</small></div>
+      <div class="thread-list">
+        ${state.contactSubmitted ? `
+          <button class="${state.talkContactAdded || state.pendingFriendRequest ? "is-active" : ""}" type="button">
+            <span class="talk-avatar">資</span>
+            <span class="thread-copy"><b>ユメミノ資料窓口</b><small>${latest}</small></span>
+            <span class="thread-time">now</span>
+            ${state.unreadTalk > 0 ? `<span class="talk-unread">${state.unreadTalk}</span>` : ""}
+          </button>
+        ` : `
+          <button class="is-active" type="button">
+            <span class="talk-avatar">?</span>
+            <span class="thread-copy"><b>友だち追加待ち</b><small>資料請求後に通知されます</small></span>
+            <span class="thread-time">--:--</span>
+          </button>
+        `}
+        <button type="button">
+          <span class="talk-avatar">端</span>
+          <span class="thread-copy"><b>端末通知</b><small>未読はありません</small></span>
+          <span class="thread-time"></span>
+        </button>
+      </div>
+    </aside>
+  `;
+}
+
+function renderTalkEmpty() {
+  return `
+    <section class="talk-main">
+      <header class="talk-head"><span class="talk-avatar">?</span><div><b>Talk</b><small>友だち追加待ち</small></div></header>
+      <div class="messages">
+        <div class="talk-empty">
+          <h2>友だちはまだ追加されていません。</h2>
+          <p>企業サイトの資料請求フォームを送信すると、資料窓口から連絡が届きます。</p>
         </div>
-      </aside>
-      <section class="talk-main">
-        <header class="talk-head"><b>資料窓口</b><small>この会話は仮想端末内に保存されます</small></header>
-        <div class="messages">${messages.map(renderBubble).join("")}</div>
-        <div class="talk-actions">
-          <button type="button" data-reply="confirm">資料を確認します</button>
-          <button class="secondary" type="button" data-open-files>Filesを開く</button>
+      </div>
+      <div class="talk-actions"><span class="reply-field">メッセージを送信できる相手がいません</span></div>
+    </section>
+  `;
+}
+
+function renderFriendRequest() {
+  return `
+    <section class="talk-main">
+      <header class="talk-head"><span class="talk-avatar">資</span><div><b>友だち追加リクエスト</b><small>資料請求フォームからの連絡</small></div></header>
+      <div class="messages">
+        <div class="friend-request">
+          <small>新しい連絡先</small>
+          <div class="friend-request-card">
+            <span class="talk-avatar">資</span>
+            <div><b>ユメミノ資料窓口</b><p>株式会社ユメミノ総合研究所</p></div>
+          </div>
+          <div class="friend-request-actions">
+            <button class="desktop-button" type="button" data-add-contact>追加</button>
+            <button class="desktop-button secondary" type="button" data-hold-contact>保留</button>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+      <div class="talk-actions"><span class="reply-field">友だち追加後にトークを開始できます</span></div>
+    </section>
+  `;
+}
+
+function renderTalkConversation(messages) {
+  return `
+    <section class="talk-main">
+      <header class="talk-head"><span class="talk-avatar">資</span><div><b>ユメミノ資料窓口</b><small>この会話は仮想端末内に保存されます</small></div></header>
+      <div class="messages">${messages.map(renderBubble).join("")}</div>
+      <div class="talk-actions">
+        <span class="reply-field">選択肢から返信</span>
+        <button type="button" data-reply="confirm">資料を確認します</button>
+        <button class="secondary" type="button" data-open-files>Filesを開く</button>
+      </div>
+    </section>
   `;
 }
 
@@ -280,7 +390,23 @@ function renderBubble(message) {
   `;
 }
 
+function addTalkContact() {
+  state.talkContactAdded = true;
+  state.pendingFriendRequest = false;
+  state.messageIds = ["request-1", "request-2", "request-3"];
+  state.searchUnlocked = true;
+  state.unreadTalk = 0;
+  saveState();
+  setNotice("Searchを利用できるようになりました");
+  toast("Files", "service_overview_2026.pdf をDownloadsに保存しました。");
+  openApp("talk");
+}
+
 function bindTalk(win) {
+  win.querySelector("[data-add-contact]")?.addEventListener("click", addTalkContact);
+  win.querySelector("[data-hold-contact]")?.addEventListener("click", () => {
+    toast("Talk", "このリクエストは保留されました。追加すると資料窓口とのトークを開始できます。");
+  });
   win.querySelector("[data-reply='confirm']")?.addEventListener("click", () => {
     toast("Talk", "資料の確認はFilesアプリから行えます。");
   });
@@ -387,7 +513,7 @@ function bindFiles(win) {
 
 function renderSearch() {
   if (!state.searchUnlocked) {
-    return `<div class="locked-panel"><h2>Search is locked</h2><p>資料請求後に社内検索インデックスが同期されます。</p></div>`;
+    return `<div class="locked-panel"><h2>Search is locked</h2><p>資料窓口を追加すると社内検索インデックスが同期されます。</p></div>`;
   }
 
   return `
@@ -456,31 +582,48 @@ function renderNotes() {
       </div>
       <div class="hint-block">
         <h3>ヒント2</h3>
-        <p>資料請求後はTalkの未読とFilesのDownloadsを見てください。</p>
+        <p>資料請求後はTalkの友だち追加リクエストを確認してください。追加後にSearchが利用できます。</p>
       </div>
       <div class="hint-block">
-        <h3>セーブ</h3>
-        <p>進行状況はlocalStorageに保存されます。上部バーの「セーブ初期化」でMVPの状態を初期化できます。</p>
+        <h3>進行状況</h3>
+        <p>この端末の進行状況はブラウザ内に保存されています。</p>
+        <button class="desktop-button secondary" type="button" data-reset-progress>進行状況を初期化する</button>
       </div>
     </div>
   `;
 }
 
+function bindNotes(win) {
+  win.querySelector("[data-reset-progress]")?.addEventListener("click", () => {
+    if (!confirm("進行状況を初期化します。")) return;
+    if (!confirm("この操作は取り消せません。本当に初期化しますか？")) return;
+    localStorage.removeItem(saveKey);
+    Object.keys(state).forEach(key => delete state[key]);
+    Object.assign(state, { ...initialState });
+    saveState();
+    setNotice("進行状況を初期化しました");
+    toast("Notes", "進行状況を初期化しました。");
+    openApp("browser");
+  });
+}
+
 function completeContactRequest() {
   if (state.contactSubmitted) {
-    toast("資料請求", "資料はすでにDownloadsへ保存されています。");
+    toast("資料請求", state.talkContactAdded ? "資料はすでにDownloadsへ保存されています。" : "資料窓口からの友だち追加リクエストを確認してください。");
     return;
   }
   state.contactSubmitted = true;
-  state.searchUnlocked = true;
-  state.unreadTalk += 2;
+  state.pendingFriendRequest = true;
+  state.talkContactAdded = false;
+  state.searchUnlocked = false;
+  state.unreadTalk += 1;
   state.unreadFiles += 1;
-  state.messageIds = ["welcome-1", "request-1", "request-2"];
+  state.messageIds = [];
   state.currentFolder = "downloads";
   state.selectedFile = "";
   saveState();
-  setNotice("Talkに資料窓口から新着メッセージがあります");
-  toast("Talk", "資料窓口からメッセージが届きました。");
+  setNotice("Talkに友だち追加リクエストがあります");
+  toast("Talk", "ユメミノ資料窓口から友だち追加リクエストが届きました。");
   setTimeout(() => toast("Files", "service_overview_2026.pdf をDownloadsに保存しました。"), 800);
 }
 
@@ -493,18 +636,12 @@ document.querySelectorAll("[data-app]").forEach(button => {
 });
 
 document.querySelector("#home-button").addEventListener("click", () => openApp("browser"));
-document.querySelector("#reset-button").addEventListener("click", () => {
-  if (!confirm("仮想デスクトップのセーブデータを初期化します。よろしいですか？")) return;
-  localStorage.removeItem(saveKey);
-  Object.assign(state, initialState);
-  saveState();
-  openApp("browser");
-  toast("セーブ初期化", "進行状況を初期化しました。");
+window.addEventListener("hashchange", () => {
+  const next = currentAppFromHash();
+  if (next && next !== currentApp) openApp(next);
 });
-
-window.addEventListener("hashchange", () => openApp(currentAppFromHash()));
 
 updateClock();
 setInterval(updateClock, 1000 * 20);
 updateBadges();
-openApp(currentAppFromHash());
+openApp(currentAppFromHash() || "browser");

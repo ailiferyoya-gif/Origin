@@ -6,24 +6,12 @@
   <title>YRI Workstation</title>
   <meta name="description" content="株式会社ユメミノ総合研究所の仮想業務端末です。">
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="desktop.css?v=20260623-mvp">
+  <link rel="stylesheet" href="desktop.css?v=20260623-win11talk">
 </head>
 <body>
   <div class="desktop">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="system-button" id="home-button" type="button">YRI Workstation</button>
-        <span class="session-label">OFFLINE / LOCAL SESSION</span>
-      </div>
-      <div class="topbar-center" id="topbar-notice" role="status">業務端末を起動しました</div>
-      <div class="topbar-right">
-        <button class="system-link" id="reset-button" type="button">セーブ初期化</button>
-        <time id="clock">--:--</time>
-      </div>
-    </header>
-
     <main class="desktop-space" aria-label="仮想デスクトップ">
-      <section class="desktop-icons" aria-label="アプリ">
+      <section class="desktop-icons" aria-label="デスクトップアプリ">
         <button class="app-icon" data-app="browser" type="button"><span>BR</span><b>Browser</b></button>
         <button class="app-icon" data-app="talk" type="button"><span>TK</span><b>Talk</b><em class="badge" id="talk-badge" hidden>0</em></button>
         <button class="app-icon" data-app="files" type="button"><span>FL</span><b>Files</b><em class="badge" id="files-badge" hidden>0</em></button>
@@ -31,19 +19,27 @@
         <button class="app-icon" data-app="notes" type="button"><span>NT</span><b>Notes</b></button>
       </section>
 
-      <section class="dock" aria-label="起動中アプリ">
-        <button data-app="browser" type="button">Browser</button>
-        <button data-app="talk" type="button">Talk</button>
-        <button data-app="files" type="button">Files</button>
-        <button data-app="search" type="button">Search</button>
-        <button data-app="notes" type="button">Notes</button>
-      </section>
+      <div class="window-layer" id="window-layer" aria-live="polite"></div>
     </main>
 
+    <footer class="taskbar" aria-label="タスクバー">
+      <div class="taskbar-center">
+        <button class="start-button" id="home-button" type="button" aria-label="スタート">◆</button>
+        <button class="taskbar-app" data-app="browser" type="button">Browser</button>
+        <button class="taskbar-app" data-app="talk" type="button">Talk</button>
+        <button class="taskbar-app" data-app="files" type="button">Files</button>
+        <button class="taskbar-app is-locked" data-app="search" type="button" id="taskbar-search">Search</button>
+        <button class="taskbar-app" data-app="notes" type="button">Notes</button>
+      </div>
+      <div class="taskbar-right">
+        <span id="topbar-notice" role="status">業務端末を起動しました</span>
+        <time id="clock">--:--</time>
+      </div>
+    </footer>
+
     <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
-    <div class="window-layer" id="window-layer" aria-live="polite"></div>
   </div>
 
-  <script src="desktop.js?v=20260623-mvp"></script>
+  <script src="desktop.js?v=20260623-win11talk"></script>
 </body>
 </html>
