@@ -84,6 +84,10 @@ function setMessage(selector, text, type = "error") {
   el.className = `message ${type}`;
 }
 
+function postDesktopEvent(type) {
+  window.parent?.postMessage?.({ type }, "*");
+}
+
 function crumb(items) {
   return `<nav class="breadcrumb" aria-label="パンくず"><a href="#/">HOME</a>${items.map(item => `<i>/</i><span>${item}</span>`).join("")}</nav>`;
 }
@@ -709,6 +713,7 @@ function bindForms() {
     const passOk = accepts(document.querySelector("#employee-pass").value, answers.pass);
     if (idOk && passOk) {
       sessionStorage.setItem(hrAuthKey, "1");
+      postDesktopEvent("YRI_EMPLOYEE_LOGIN_SUCCESS");
       setMessage("#login-message", "認証しました。通常の人事データベースには存在しない社員情報を表示します。", "success");
       setTimeout(() => go("/employee-404"), 650);
     } else {
@@ -720,6 +725,7 @@ function bindForms() {
   document.querySelector("#dept-form")?.addEventListener("submit", event => {
     event.preventDefault();
     if (accepts(document.querySelector("#dept-answer").value, answers.dept)) {
+      postDesktopEvent("YRI_DEPT_SEARCH_SUCCESS");
       setMessage("#dept-message", "部門を確認しました。監査室ページを開きます。", "success");
       setTimeout(() => go("/audit"), 650);
     } else {
@@ -730,6 +736,7 @@ function bindForms() {
   document.querySelector("#key-form")?.addEventListener("submit", event => {
     event.preventDefault();
     if (accepts(document.querySelector("#restore-key").value, answers.key)) {
+      postDesktopEvent("YRI_AUDIT_KEY_SUCCESS");
       setMessage("#key-message", "復元キーを確認しました。監査室アーカイブを表示します。", "success");
       setTimeout(() => go("/archive"), 700);
     } else {
@@ -741,6 +748,7 @@ function bindForms() {
     event.preventDefault();
     const value = document.querySelector("#final-answer").value;
     if (accepts(value, answers.final)) {
+      postDesktopEvent("YRI_FINAL_SUBMITTED");
       renderClear();
     } else if (accepts(value, answers.bad)) {
       renderBadEnd();
@@ -751,7 +759,7 @@ function bindForms() {
 
   document.querySelector("#contact-form")?.addEventListener("submit", event => {
     event.preventDefault();
-    window.parent?.postMessage?.({ type: "YRI_CONTACT_REQUEST_SUBMITTED" }, "*");
+    postDesktopEvent("YRI_CONTACT_REQUEST_SUBMITTED");
     setMessage("#contact-message", "現在フォームはメンテナンス中です。恐れ入りますが、時間をおいて再度お試しください。", "success");
   });
 
@@ -982,6 +990,7 @@ function render() {
   const current = route();
   updateChrome(current);
   pages[current]();
+  if (current === "/archive") postDesktopEvent("YRI_ARCHIVE_OPENED");
   enrichOperationalContent(current);
   bindForms();
   if (current === "/login" && sessionStorage.getItem(hrAuthNoticeKey) === "1") {
