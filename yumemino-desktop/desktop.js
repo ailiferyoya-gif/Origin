@@ -886,7 +886,7 @@ function fileContent(fileId) {
   if (fileId === "b02_statement") return `<header><div><small>B-02</small><h2>発＿テンプレート</h2></div></header><section><p>通報者が発した内容、面談時の発言、供述の整合性を確認するための標準書式。本人への再通知は必要最小限とする。</p></section>`;
   if (fileId === "c03_subject") return `<header><div><small>C-03</small><h2>対象＿リスト</h2></div></header><section><p>該当者、対象となる従業員、記録保護対象を一覧化する。通常検索から除外する条件を含む。</p></section>`;
   if (fileId === "employee404_partial_log") return `<header><div><small>EMP404-PARTIAL</small><h2>社員404 操作ログ抜粋</h2></div></header><section><p>3. 監視対象判定 / 5. 査定保留処理 / 7. 室長確認済</p><p class="pdf-note">先頭文字だけが部門名として残されています。</p></section>`;
-  if (fileId === "final_transfer_receipt") return `<header><div><small>EXT-AUDIT-QUEUE</small><h2>外部監査送信キュー</h2></div></header><section><table><tr><th>状態</th><td>送信済み</td></tr><tr><th>復元文書</th><td>A-01 / B-02 / C-03</td></tr><tr><th>判定</th><td>重大な組織リスク</td></tr></table><p>画面を閉じても、記録は残ります。</p></section>`;
+  if (fileId === "final_transfer_receipt") return `<header><div><small>final_transfer_receipt.txt / EXT-AUDIT-QUEUE</small><h2>外部監査送信キュー</h2></div></header><section><table><tr><th>状態</th><td>送信済み</td></tr><tr><th>復元文書</th><td>A-01 / B-02 / C-03</td></tr><tr><th>判定</th><td>重大な組織リスク</td></tr></table><p>画面を閉じても、記録は残ります。</p></section>`;
   return `<header><div><h2>${escapeHtml(fileNameFor(fileId))}</h2></div></header><section><p>表示できる内容がありません。</p></section>`;
 }
 
@@ -957,15 +957,22 @@ function bindSearch(win) {
   win.querySelector("#search-form")?.addEventListener("submit", event => {
     event.preventDefault();
     state.searchQuery = win.querySelector("#search-query").value;
-    if (searchTriggersCall(state.searchQuery)) {
+    const shouldTriggerUnknownCall = searchTriggersCall(state.searchQuery) && !state.searched404;
+    if (shouldTriggerUnknownCall) {
       state.searched404 = true;
     }
     saveState();
     win.querySelector("#search-results").innerHTML = renderSearchResults(state.searchQuery);
-    bindSearch(win);
-    if (state.searched404) setTimeout(() => triggerIncomingCall("unknown-01"), 450);
-  });
+    bindSearchResultButtons(win);
+    if (shouldTriggerUnknownCall) setTimeout(() => triggerIncomingCall("unknown-01"), 450);
+  }, { once: true });
+  bindSearchResultButtons(win);
+}
+
+function bindSearchResultButtons(win) {
   win.querySelectorAll("[data-search-action]").forEach(button => {
+    if (button.dataset.bound === "1") return;
+    button.dataset.bound = "1";
     button.addEventListener("click", () => {
       const action = JSON.parse(button.dataset.searchAction);
       if (action.type === "browser") navigateBrowser(action.path);
@@ -977,6 +984,31 @@ function bindSearch(win) {
       }
     });
   });
+}
+
+function renderDebugPanel() {
+  const rows = [
+    ["contactSubmitted", state.contactSubmitted],
+    ["talkContactAdded", state.talkContactAdded],
+    ["searchUnlocked", state.searchUnlocked],
+    ["searched404", state.searched404],
+    ["employeeLoginSuccess", state.employeeLoginSuccess],
+    ["deptSearchSuccess", state.deptSearchSuccess],
+    ["auditKeySuccess", state.auditKeySuccess],
+    ["archiveOpened", state.archiveOpened],
+    ["finalSubmitted", state.finalSubmitted],
+    ["pendingCallId", state.pendingCallId || "-"],
+    ["activeCallId", state.activeCallId || "-"],
+    ["completedCalls", state.completedCalls.join(", ") || "-"]
+  ];
+  return `
+    <div class="hint-block debug-panel">
+      <h3>進行状態</h3>
+      <dl>
+        ${rows.map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(String(value))}</dd></div>`).join("")}
+      </dl>
+    </div>
+  `;
 }
 
 function renderNotes() {
@@ -1018,6 +1050,7 @@ function renderNotes() {
         <p>この端末の進行状況はブラウザ内に保存されています。</p>
         <button class="desktop-button secondary" type="button" data-reset-progress>進行状況を初期化する</button>
       </div>
+      ${renderDebugPanel()}
     </div>
   `;
 }
@@ -1079,6 +1112,7 @@ function handleAuditKeySuccess() {
   state.unreadFiles += 1;
   saveState();
   setNotice("復元キーを確認しました");
+  setTimeout(handleArchiveOpened, 700);
 }
 
 function handleArchiveOpened() {
@@ -1095,6 +1129,12 @@ function handleArchiveOpened() {
 function handleFinalSubmitted() {
   if (state.finalSubmitted) return;
   state.finalSubmitted = true;
+  state.servicePdfOpened = true;
+  state.searched404 = true;
+  state.employeeLoginSuccess = true;
+  state.deptSearchSuccess = true;
+  state.auditKeySuccess = true;
+  state.archiveOpened = true;
   state.unreadTalk += 1;
   state.unreadFiles += 1;
   addMessages(["final-1", "final-2"]);

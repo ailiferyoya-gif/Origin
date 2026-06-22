@@ -905,6 +905,34 @@ body.is-ending .desktop {
   background: #eef8f0;
 }
 
+.debug-panel dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 6px;
+  margin: 0;
+}
+
+.debug-panel dl div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #f6f8fa;
+  border: 1px solid var(--win-line);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.debug-panel dt {
+  color: var(--win-muted);
+}
+
+.debug-panel dd {
+  margin: 0;
+  color: var(--win-text);
+  font-family: Consolas, "Courier New", monospace;
+}
+
 .toast-stack {
   position: fixed;
   right: 18px;
