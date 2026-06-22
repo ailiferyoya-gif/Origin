@@ -88,18 +88,18 @@ const callRecords = {
 };
 
 const talkMessages = {
-  "request-1": { thread: "desk", from: "me", body: "資料請求フォームを送信しました。", time: "now" },
+  "request-1": { thread: "desk", from: "me", body: "Talkで資料窓口を追加しました。", time: "now" },
   "request-2": {
     thread: "desk",
     from: "資料窓口",
-    body: "ご請求ありがとうございます。サービス概要資料をこの端末のDownloadsへ保存しました。",
+    body: "サービス概要資料をこの端末のDownloadsへ保存しました。",
     time: "now",
     attachment: "service_overview_2026"
   },
   "request-3": {
     thread: "desk",
     from: "資料窓口",
-    body: "資料の注意事項をご確認のうえ、不明点があればこのトークへ返信してください。",
+    body: "資料の注意事項をご確認ください。不明点があればこのトークへ返信してください。",
     time: "now"
   },
   "unknown-1": { thread: "unknown", from: "Unknown", body: "通話履歴を保存しました。", time: "now" },
@@ -123,9 +123,9 @@ const threadInfo = {
 const fileRecords = {
   downloads: [
     { id: "readme", name: "readme_first.txt", type: "TEXT", updated: "2026-06-23 09:00", available: true },
-    { id: "service_overview_2026", name: "service_overview_2026.pdf", type: "PDF", updated: "2026-06-23 09:18", gatedBy: "contactSubmitted" },
-    { id: "human_capital_report_2025", name: "human_capital_report_2025.pdf", type: "PDF", updated: "2025-12-20", gatedBy: "contactSubmitted" },
-    { id: "notice_20250807", name: "notice_20250807.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "contactSubmitted" },
+    { id: "service_overview_2026", name: "service_overview_2026.pdf", type: "PDF", updated: "2026-06-23 09:18", gatedBy: "talkContactAdded" },
+    { id: "human_capital_report_2025", name: "human_capital_report_2025.pdf", type: "PDF", updated: "2025-12-20", gatedBy: "talkContactAdded" },
+    { id: "notice_20250807", name: "notice_20250807.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "talkContactAdded" },
     { id: "call_unknown_01_transcript", name: "call_unknown_01_transcript.txt", type: "TEXT", updated: "通話後", gatedByCall: "unknown-01" },
     { id: "call_employee404_01_transcript", name: "call_employee404_01_transcript.txt", type: "TEXT", updated: "通話後", gatedByCall: "employee404-01" },
     { id: "voicemail_archive_01_transcript", name: "voicemail_archive_01_transcript.txt", type: "TEXT", updated: "通話後", gatedByCall: "archive-01" },
@@ -507,7 +507,7 @@ function renderThreadButton(thread) {
     return `
       <button class="is-active" type="button">
         <span class="talk-avatar">?</span>
-        <span class="thread-copy"><b>トークはまだありません</b><small>資料請求後に通知されます</small></span>
+        <span class="thread-copy"><b>トークはまだありません</b><small>資料窓口の追加後に通知されます</small></span>
         <span class="thread-time">--:--</span>
       </button>
     `;
@@ -532,7 +532,7 @@ function renderTalkEmpty() {
       <div class="messages">
         <div class="talk-empty">
           <h2>トークはまだありません。</h2>
-          <p>企業サイトの資料請求フォームを送信すると、資料窓口から連絡が届きます。</p>
+          <p>企業サイトの資料請求ページから、資料窓口をTalkに追加してください。</p>
         </div>
       </div>
       <div class="talk-actions"><span class="reply-field">メッセージを送信できる相手がいません</span></div>
@@ -543,13 +543,13 @@ function renderTalkEmpty() {
 function renderFriendRequest() {
   return `
     <section class="talk-main">
-      <header class="talk-head"><span class="talk-avatar">資</span><div><b>友だち追加リクエスト</b><small>資料請求フォームからの連絡</small></div></header>
+      <header class="talk-head"><span class="talk-avatar">資</span><div><b>友だち追加リクエスト</b><small>資料窓口からの連絡</small></div></header>
       <div class="messages">
         <div class="friend-request">
           <small>新しい連絡先</small>
           <div class="friend-request-card">
             <span class="talk-avatar">資</span>
-            <div><b>ユメミノ資料窓口</b><p>株式会社ユメミノ総合研究所</p></div>
+            <div><b>ユメミノ資料窓口</b><p>サービス資料・導入事例集を送付します。</p></div>
           </div>
           <div class="friend-request-actions">
             <button class="desktop-button" type="button" data-add-contact>追加</button>
@@ -655,14 +655,17 @@ function renderActiveCall() {
 }
 
 function addTalkContact() {
+  const wasAdded = state.talkContactAdded;
   state.talkContactAdded = true;
   state.pendingFriendRequest = false;
   state.currentTalkThread = "desk";
   addMessages(["request-1", "request-2", "request-3"]);
   state.searchUnlocked = true;
   state.unreadTalk = 0;
+  if (!wasAdded) state.unreadFiles += 1;
   saveState();
   setNotice("Searchを利用できるようになりました");
+  toast("Search", "Searchを利用できるようになりました。");
   toast("Files", "service_overview_2026.pdf をDownloadsに保存しました。");
   openApp("talk");
 }
@@ -954,18 +957,22 @@ function searchTriggersCall(query) {
 }
 
 function bindSearch(win) {
-  win.querySelector("#search-form")?.addEventListener("submit", event => {
-    event.preventDefault();
-    state.searchQuery = win.querySelector("#search-query").value;
-    const shouldTriggerUnknownCall = searchTriggersCall(state.searchQuery) && !state.searched404;
-    if (shouldTriggerUnknownCall) {
-      state.searched404 = true;
-    }
-    saveState();
-    win.querySelector("#search-results").innerHTML = renderSearchResults(state.searchQuery);
-    bindSearchResultButtons(win);
-    if (shouldTriggerUnknownCall) setTimeout(() => triggerIncomingCall("unknown-01"), 450);
-  }, { once: true });
+  const form = win.querySelector("#search-form");
+  if (form && form.dataset.bound !== "1") {
+    form.dataset.bound = "1";
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      state.searchQuery = win.querySelector("#search-query").value;
+      const shouldTriggerUnknownCall = searchTriggersCall(state.searchQuery) && !state.searched404;
+      if (shouldTriggerUnknownCall) {
+        state.searched404 = true;
+      }
+      saveState();
+      win.querySelector("#search-results").innerHTML = renderSearchResults(state.searchQuery);
+      bindSearchResultButtons(win);
+      if (shouldTriggerUnknownCall) setTimeout(() => triggerIncomingCall("unknown-01"), 450);
+    });
+  }
   bindSearchResultButtons(win);
 }
 
@@ -1013,7 +1020,6 @@ function renderDebugPanel() {
 
 function renderNotes() {
   const checks = [
-    ["資料請求フォームを送信する", state.contactSubmitted],
     ["Talkで資料窓口を追加する", state.talkContactAdded],
     ["Filesでサービス概要資料を読む", state.servicePdfOpened],
     ["Searchで404を調べる", state.searched404],
@@ -1079,14 +1085,12 @@ function completeContactRequest() {
   state.talkContactAdded = false;
   state.searchUnlocked = false;
   state.unreadTalk += 1;
-  state.unreadFiles += 1;
   state.messageIds = [];
   state.currentFolder = "downloads";
   state.selectedFile = "";
   saveState();
   setNotice("Talkに友だち追加リクエストがあります");
   toast("Talk", "ユメミノ資料窓口から友だち追加リクエストが届きました。");
-  setTimeout(() => toast("Files", "service_overview_2026.pdf をDownloadsに保存しました。"), 800);
 }
 
 function handleEmployeeLoginSuccess() {

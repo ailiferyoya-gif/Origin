@@ -1309,6 +1309,35 @@ summary {
   gap: 16px;
 }
 
+.contact-talk-card h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.contact-talk-card p {
+  max-width: 620px;
+}
+
+.contact-material-list {
+  display: grid;
+  gap: 8px;
+  margin: 2px 0 4px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--public-line);
+  border-bottom: 1px solid var(--public-line);
+}
+
+.contact-material-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--public-line);
+  font-size: 13px;
+}
+
+.contact-material-list li:last-child {
+  border-bottom: 0;
+}
+
 label { font-weight: 600; }
 input, select, textarea {
   width: 100%;

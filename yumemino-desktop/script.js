@@ -26,7 +26,7 @@ const pageMeta = {
   "/news": { title: `ニュース | ${siteTitle}`, stage: "public", footer: publicFooter },
   "/ir": { title: `IR情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
   "/recruit": { title: `採用情報 | ${siteTitle}`, stage: "public", footer: publicFooter },
-  "/contact": { title: `お問い合わせ | ${siteTitle}`, stage: "public", footer: publicFooter },
+  "/contact": { title: `資料請求 | ${siteTitle}`, stage: "public", footer: publicFooter },
   "/login": { title: "社員専用 | YRI人事ポータル", stage: "hr", footer: "YRI HR Portal / Access log enabled" },
   "/employee-404": { title: "社員404 | YRI人事ポータル", stage: "hr", footer: "YRI HR Portal / Access log enabled" },
   "/audit": { title: "監査室 | 削除済み文書", stage: "audit", footer: "Audit document terminal / View only" },
@@ -481,27 +481,28 @@ const pages = {
 
   "/contact": () => publicShell(`
     <section class="contact-head reveal-block">
-      ${crumb(["お問い合わせ"])}
+      ${crumb(["資料請求"])}
       <div>
         <p class="section-kicker">Contact</p>
-        <h1>お問い合わせ</h1>
-        <p>人的資本データ分析、組織改善支援、IR・開示資料支援に関するご相談を受け付けています。</p>
+        <h1>資料請求</h1>
+        <p>サービス概要資料、人的資本開示チェックリスト、導入事例集は、この端末のTalkアプリに送付されます。</p>
       </div>
     </section>
     <section class="contact-layout reveal-block">
-      <form class="contact-form" id="contact-form">
-        <label>会社名<input name="company" required></label>
-        <label>氏名<input name="name" required></label>
-        <label>メールアドレス<input name="email" type="email" required></label>
-        <label>お問い合わせ種別<select name="type"><option>人的資本データ分析</option><option>組織改善コンサルティング</option><option>IR・開示資料支援</option><option>その他</option></select></label>
-        <label>内容<textarea name="body" rows="6" required></textarea></label>
-        <label class="check-row"><input type="checkbox" required>個人情報の取り扱いに同意する</label>
-        <button class="brand-button" type="submit">送信内容を確認する</button>
+      <article class="contact-form contact-talk-card" id="contact-talk-card">
+        <h2>Talkで資料窓口を追加</h2>
+        <p>資料を受け取るには、ユメミノ資料窓口をTalkに追加してください。外部のメッセージアプリやメールアドレスは使用しません。</p>
+        <ul class="contact-material-list">
+          <li>サービス概要資料</li>
+          <li>人的資本開示チェックリスト</li>
+          <li>導入事例集</li>
+        </ul>
+        <button class="brand-button" id="contact-talk-button" type="button">Talkで資料窓口を追加</button>
         <p class="message" id="contact-message" role="status"></p>
-      </form>
+      </article>
       <aside class="contact-side">
-        <h2>資料請求</h2>
-        <p>サービス概要資料、人的資本開示チェックリスト、導入事例集をご希望の場合もこちらからお問い合わせください。</p>
+        <h2>資料の受け取り方法</h2>
+        <p>この仮想端末内のTalkに追加リクエストが届きます。追加後、Downloadsに資料が保存されます。</p>
         ${photo("people-meeting.jpg", "問い合わせページ用の会議写真", "contact-photo")}
       </aside>
     </section>
@@ -757,10 +758,17 @@ function bindForms() {
     }
   });
 
-  document.querySelector("#contact-form")?.addEventListener("submit", event => {
-    event.preventDefault();
+  document.querySelector("#contact-talk-button")?.addEventListener("click", event => {
+    const button = event.currentTarget;
+    if (button.dataset.sent === "1") {
+      setMessage("#contact-message", "資料窓口への追加リクエストは送信済みです。Talkアプリをご確認ください。", "success");
+      return;
+    }
+    button.dataset.sent = "1";
+    button.textContent = "追加リクエスト送信済み";
+    button.disabled = true;
     postDesktopEvent("YRI_CONTACT_REQUEST_SUBMITTED");
-    setMessage("#contact-message", "現在フォームはメンテナンス中です。恐れ入りますが、時間をおいて再度お試しください。", "success");
+    setMessage("#contact-message", "資料窓口からTalkに追加リクエストを送信しました。デスクトップのTalkアプリをご確認ください。", "success");
   });
 
   document.querySelectorAll(".reveal-answer").forEach(button => {
@@ -893,7 +901,7 @@ function enrichOperationalContent(path) {
           <a href="#/news"><span>WEBINAR</span><b>管理職面談設計ウェビナー</b><small>2026.01.22 開催予定 / オンライン</small></a>
           <a href="#/news"><span>SEMINAR</span><b>統合報告書 人的資本パート作成講座</b><small>IR・サステナビリティ部門向け。</small></a>
         </div>
-        <div class="more-links"><a href="#/news">お知らせ一覧へ</a><a href="#/business">導入事例一覧へ</a><a href="#/contact">資料請求へ</a></div>
+        <div class="more-links"><a href="#/news">お知らせ一覧へ</a><a href="#/business">導入事例一覧へ</a><a href="#/contact">Talkで資料請求</a></div>
       </section>
     `);
   }
@@ -901,7 +909,7 @@ function enrichOperationalContent(path) {
   if (path === "/business") {
     document.querySelector(".business-hero, .page-hero")?.insertAdjacentHTML("afterend", `
       <nav class="local-nav" aria-label="事業内容内ナビ">
-        <a href="#service-scope">支援範囲</a><a href="#deliverables">納品物</a><a href="#departments">対応部門</a><a href="#materials">関連資料</a><a href="#/contact">お問い合わせ</a>
+        <a href="#service-scope">支援範囲</a><a href="#deliverables">納品物</a><a href="#departments">対応部門</a><a href="#materials">関連資料</a><a href="#/contact">Talkで資料請求</a>
       </nav>
     `);
     document.querySelector(".business-stories")?.insertAdjacentHTML("afterend", `
@@ -914,8 +922,8 @@ function enrichOperationalContent(path) {
         </div>
       </section>
       <section class="operation-cta reveal-block" id="materials">
-        <div><h2>関連資料</h2><p>サービス詳細、導入プロセス、料金目安は資料請求フォームからご依頼ください。</p></div>
-        <a class="brand-button" href="#/contact">資料請求・お問い合わせ</a>
+        <div><h2>関連資料</h2><p>サービス詳細、導入プロセス、料金目安はTalkの資料窓口から受け取れます。</p></div>
+        <a class="brand-button" href="#/contact">Talkで資料請求</a>
       </section>
     `);
   }
@@ -961,7 +969,7 @@ function enrichOperationalContent(path) {
         <article><h2>募集要項詳細</h2><table><tbody><tr><th>雇用形態</th><td>正社員 / 契約社員</td></tr><tr><th>勤務地</th><td>東京本社、リモート併用</td></tr><tr><th>勤務時間</th><td>フレックスタイム制</td></tr></tbody></table></article>
         <article><h2>職種別仕事内容</h2><ul><li>調査設計とサーベイ運用</li><li>人的資本データ分析</li><li>経営会議向けレポート作成</li><li>統合報告書の編集支援</li></ul></article>
         <article><h2>福利厚生</h2><ul><li>書籍購入補助</li><li>資格取得支援</li><li>在宅勤務手当</li><li>プロジェクト休暇制度</li></ul></article>
-        <article><h2>エントリー</h2><p>募集職種ごとの応募条件をご確認のうえ、お問い合わせフォームよりご連絡ください。</p><a class="brand-button" href="#/contact">採用に関するお問い合わせ</a></article>
+        <article><h2>エントリー</h2><p>募集職種ごとの応募条件をご確認のうえ、資料窓口から採用関連資料もご確認ください。</p><a class="brand-button" href="#/contact">資料を受け取る</a></article>
       </section>
     `);
   }
