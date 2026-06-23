@@ -75,6 +75,7 @@ button { cursor: pointer; }
 }
 
 .desktop-icon {
+  position: relative;
   width: 82px;
   padding: 8px 6px;
   color: #10202f;
@@ -110,6 +111,29 @@ button { cursor: pointer; }
   font-size: 12px;
   font-weight: 600;
   text-shadow: 0 1px 1px rgba(255,255,255,.6);
+}
+
+.desktop-icon.is-locked,
+.taskbar-app.is-locked {
+  opacity: .42;
+  filter: grayscale(.45);
+}
+
+.desktop-icon.is-locked {
+  cursor: not-allowed;
+}
+
+.desktop-icon.is-locked::after {
+  content: "LOCK";
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 5px;
+  color: #5d6670;
+  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(91,101,111,.24);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
 }
 
 .window-layer {
@@ -237,6 +261,11 @@ button { cursor: pointer; }
 .start-button:hover,
 .taskbar-app.is-active {
   background: rgba(255,255,255,.78);
+}
+
+.taskbar-app.is-locked:hover {
+  background: transparent;
+  cursor: not-allowed;
 }
 
 .toast-stack {

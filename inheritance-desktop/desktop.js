@@ -1,10 +1,14 @@
-const saveKey = "inheritanceDesktopStateV2";
+const saveKey = "inheritanceDesktopStateV3";
 const params = new URLSearchParams(location.search);
 const isDebug = params.get("debug") === "1";
 
 if (params.get("reset") === "1") {
-  localStorage.removeItem("inheritanceDesktopStateV1");
-  localStorage.removeItem("inheritanceDesktopStateV2");
+  Object.keys(localStorage)
+    .filter(key => key.startsWith("inheritanceDesktopState"))
+    .forEach(key => localStorage.removeItem(key));
+  if (location.hash !== "#/notes") {
+    history.replaceState(null, "", `${location.pathname}${location.search}#/notes`);
+  }
 }
 
 const initialState = {
@@ -19,6 +23,7 @@ const initialState = {
   selectedTrash: "",
   readFiles: [],
   unlocked: [],
+  unlockedApps: ["notes", "files", "talk", "mail"],
   talkOnline: false,
   talkMessages: [],
   workLog: ["端末を起動しました。Notesの作業メモを確認してください。"],
@@ -55,7 +60,7 @@ const folders = {
   documents: {
     label: "Documents",
     sub: "返却候補",
-    files: ["return_list", "contract", "family_contacts", "unsent_list"]
+    files: ["work_intro", "return_list", "contract", "family_contacts", "unsent_list"]
   },
   photos: {
     label: "Photos",
@@ -95,10 +100,25 @@ const folders = {
 };
 
 const fileDefs = {
+  work_intro: {
+    name: "作業メモ_はじめに.txt",
+    type: "TEXT",
+    folder: "documents",
+    onOpen: "prepUnsent",
+    body: [
+      "案件番号: D-0317",
+      "対象端末: 白瀬灯 様 使用PC",
+      "",
+      "この端末では、返却対象の資料と保留すべき資料を分けて確認します。",
+      "まずは返却リスト、契約書、家族連絡先を確認してください。",
+      "未送信メールがある場合は、本文だけで処理を判断しないでください。"
+    ]
+  },
   return_list: {
     name: "返却リスト.txt",
     type: "TEXT",
     folder: "documents",
+    onOpen: "prepUnsent",
     body: [
       "案件番号: D-0317 / 対象端末: 白瀬灯 様 使用PC",
       "返却候補:",
@@ -142,13 +162,14 @@ const fileDefs = {
     name: "未送信メール一覧.txt",
     type: "TEXT",
     folder: "documents",
+    gatedBy: "unsentListVisible",
     onOpen: "wakeTalk",
     body: [
       "未送信メール一覧 / 書き出し日時 2026-03-18 09:42",
       "1. 母へ_未送信.eml / 作成 2026-03-17 03:07 / 状態: 保留",
       "2. 作業先_返信下書き.eml / 作成 2026-03-17 00:20 / 状態: 破棄候補",
       "",
-      "注記: 母へ_未送信.eml は本文とヘッダの作成元が一致しません。Talk、Call、Calendar、Trashを確認してください。"
+      "注記: 未送信メールは本文だけで判断せず、関連する記録の有無を確認してください。"
     ]
   },
   photo_index: {
@@ -538,6 +559,11 @@ function toast(title, body) {
 
 function openApp(app) {
   if (!appLabels[app]) app = "notes";
+  if (!isAppUnlocked(app)) {
+    toast("System", "このアプリはまだ利用できません。Notesの作業メモとFilesの返却資料を確認してください。");
+    updateTaskbar(state.currentApp || "");
+    return;
+  }
   state.currentApp = app;
   saveState();
   layer.innerHTML = "";
@@ -545,9 +571,6 @@ function openApp(app) {
   layer.appendChild(currentWindow);
   updateTaskbar(app);
   setHash(app);
-  if (app === "photos") addUnique("unlocked", "openedPhotos");
-  if (app === "calendar") addUnique("unlocked", "openedCalendar");
-  if (app === "call") addUnique("unlocked", "openedCall");
 }
 
 function createWindow(app) {
@@ -607,7 +630,12 @@ function renderApp(app) {
 }
 
 function updateTaskbar(app) {
-  document.querySelectorAll("[data-app]").forEach(button => button.classList.toggle("is-active", button.dataset.app === app));
+  document.querySelectorAll("[data-app]").forEach(button => {
+    const unlocked = isAppUnlocked(button.dataset.app);
+    button.classList.toggle("is-active", button.dataset.app === app);
+    button.classList.toggle("is-locked", !unlocked);
+    button.setAttribute("aria-disabled", unlocked ? "false" : "true");
+  });
 }
 
 function setHash(app) {
@@ -618,6 +646,24 @@ function isUnlocked(flag) {
   return Boolean(state[flag]) || state.unlocked.includes(flag);
 }
 
+function ensureUnlockedApps() {
+  if (!Array.isArray(state.unlockedApps)) state.unlockedApps = ["notes", "files", "talk", "mail"];
+}
+
+function isAppUnlocked(app) {
+  ensureUnlockedApps();
+  return state.unlockedApps.includes(app);
+}
+
+function unlockApp(app) {
+  ensureUnlockedApps();
+  if (!appLabels[app] || state.unlockedApps.includes(app)) return;
+  state.unlockedApps.push(app);
+  saveState();
+  updateTaskbar(state.currentApp || "");
+  toast("System", `${appLabels[app]} が利用可能になりました。`);
+}
+
 function isFileAvailable(fileId) {
   const def = fileDefs[fileId];
   if (!def) return false;
@@ -625,15 +671,27 @@ function isFileAvailable(fileId) {
   return true;
 }
 
+function isFolderVisible(folderId) {
+  if (folderId === "documents" || folderId === "work") return true;
+  if (folderId === "mail") return isUnlocked("unsentListRead");
+  if (folderId === "photos") return isAppUnlocked("photos");
+  if (folderId === "private") return isUnlocked("unsentListRead") || isUnlocked("photoHotspotFound");
+  if (folderId === "calllogs") return isUnlocked("callAkariPlayed");
+  if (folderId === "trash") return isAppUnlocked("trash");
+  if (folderId === "recovered") return isUnlocked("photoHotspotFound") || state.ending;
+  return true;
+}
+
 function renderFiles() {
-  const folder = folders[state.currentFolder] ? state.currentFolder : "documents";
+  const folder = folders[state.currentFolder] && isFolderVisible(state.currentFolder) ? state.currentFolder : "documents";
   const files = folders[folder].files.filter(isFileAvailable);
+  const visibleFolders = Object.entries(folders).filter(([id]) => isFolderVisible(id));
   return `
     <div class="files-layout">
       <aside class="files-sidebar">
         <div class="sidebar-head"><b>Files</b><small>Local storage</small></div>
         <div class="folder-list">
-          ${Object.entries(folders).map(([id, f]) => `<button class="${id === folder ? "is-active" : ""}" data-folder="${id}" type="button"><b>${escapeHtml(f.label)}</b><small>${escapeHtml(f.sub)}</small></button>`).join("")}
+          ${visibleFolders.map(([id, f]) => `<button class="${id === folder ? "is-active" : ""}" data-folder="${id}" type="button"><b>${escapeHtml(f.label)}</b><small>${escapeHtml(f.sub)}</small></button>`).join("")}
         </div>
       </aside>
       <section class="files-main">
@@ -684,14 +742,23 @@ function openFile(fileId) {
 }
 
 function handleFileEvent(event) {
+  if (event === "prepUnsent") {
+    if (!isUnlocked("unsentListVisible")) {
+      addUnique("unlocked", "unsentListVisible");
+      logWork("返却資料を確認。未送信メール一覧の確認が必要になりました。");
+      toast("Files", "未送信メール一覧.txt が表示されました。");
+    }
+  }
   if (event === "wakeTalk" && !state.talkOnline) {
     addUnique("unlocked", "unsentListRead");
     state.talkOnline = true;
     ["akari-1", "akari-2", "akari-3", "akari-4", "akari-5", "akari-6"].forEach(addTalk);
+    unlockApp("photos");
     logWork("未送信メール一覧を開いた直後、白瀬灯アカウントがオンライン表示になりました。");
     toast("Talk", "白瀬 灯 からメッセージが届きました。");
   } else if (event === "wakeTalk") {
     addUnique("unlocked", "unsentListRead");
+    unlockApp("photos");
   }
   if (event === "readScript") {
     state.trashChecked = true;
@@ -841,6 +908,7 @@ function bindPhotos(win) {
     state.photoHotspotFound = true;
     addUnique("unlocked", "photoHotspotFound");
     addUnique("unlocked", "box_locked");
+    unlockApp("calendar");
     logWork("Photosで木箱の現在位置を確認。Private/box_locked が開放されました。");
     toast("Files", "Private/box_locked が開放されました。");
     saveState();
@@ -874,6 +942,7 @@ function bindCalendar(win) {
   }));
   win.querySelector("[data-play-notifications]")?.addEventListener("click", () => {
     state.calendarPlayed = true;
+    unlockApp("call");
     logWork("Calendar通知を再生。3/17の確認順が Mail / Photos / Call / Final として読めます。");
     saveState();
     openApp("calendar");
@@ -930,6 +999,7 @@ function playCall(callId) {
   addUnique("playedCalls", callId);
   if (callId === "akari_0317") {
     addUnique("unlocked", "callAkariPlayed");
+    unlockApp("trash");
     logWork("call_akari_0317 を再生。音声と自動文字起こしの否定語が一致しません。");
     toast("Files", "CallLogsに復元ログが追加されました。");
   }
@@ -1141,8 +1211,9 @@ function bindNotes(win) {
   win.querySelector("[data-reset]")?.addEventListener("click", () => {
     if (!confirm("進行状況を初期化します。")) return;
     if (!confirm("この操作は取り消せません。本当に初期化しますか？")) return;
-    localStorage.removeItem("inheritanceDesktopStateV1");
-    localStorage.removeItem(saveKey);
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("inheritanceDesktopState"))
+      .forEach(key => localStorage.removeItem(key));
     Object.assign(state, { ...initialState });
     openApp("notes");
   });
@@ -1158,4 +1229,5 @@ tickClock();
 setInterval(tickClock, 10000);
 document.querySelector("#desktop").classList.toggle("is-ended", state.ending);
 const initialHashApp = location.hash.replace("#/", "");
-openApp(appLabels[initialHashApp] ? initialHashApp : state.currentApp || "notes");
+const requestedInitialApp = appLabels[initialHashApp] ? initialHashApp : state.currentApp || "notes";
+openApp(isAppUnlocked(requestedInitialApp) ? requestedInitialApp : "notes");
