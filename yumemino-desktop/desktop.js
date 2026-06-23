@@ -24,6 +24,8 @@ const initialState = {
   callHistory: [],
   completedCalls: [],
   unlockedFlags: [],
+  callMuted: false,
+  callVolume: 35,
 
   unreadTalk: 0,
   unreadFiles: 0,
@@ -42,6 +44,11 @@ const callRecords = {
     avatar: "?",
     audio: "assets/audio/call_unknown_01.mp3",
     duration: "00:37",
+    voiceMode: "broken",
+    noise: true,
+    lineStatus: "不安定",
+    glitchText: true,
+    recoveryAccuracy: "72%",
     trigger: "afterSearch404",
     transcriptFile: "call_unknown_01_transcript",
     thread: "unknown",
@@ -49,9 +56,12 @@ const callRecords = {
       "……聞こえますか。",
       "404は人数じゃありません。",
       "状態です。",
-      "IRの数字と、採用ページの声をもう一度見てください。",
-      "社員IDと参照キーが揃えば、社員専用ページに入れます。"
+      "数字だけを見ないでください。",
+      "IRの注記と、採用ページの声を照合してください。",
+      "社員IDと参照キーが揃えば、社員専用ページに入れます。",
+      "ただし、入ったことは残ります。"
     ],
+    transcriptGlitch: ["[不明瞭]", "[音声欠落 00:21-00:24]", "[復元失敗: 呼吸音のみ]"],
     unlocks: ["call_unknown_01_done"]
   },
   "employee404-01": {
@@ -59,16 +69,23 @@ const callRecords = {
     avatar: "404",
     audio: "assets/audio/call_employee404_01.mp3",
     duration: "00:52",
+    voiceMode: "voicemail",
+    noise: true,
+    lineStatus: "録音再生",
+    glitchText: true,
+    recoveryAccuracy: "81%",
     trigger: "afterEmployeeLogin",
     transcriptFile: "call_employee404_01_transcript",
     thread: "employee404",
     transcript: [
+      "これは、残した記録です。",
       "ログを見て。",
       "全部じゃない。",
-      "三番目、五番目、七番目。",
       "アラート条件と同じ番号だけを見てください。",
-      "その行にだけ、部署名の痕跡が残っています。"
+      "その行にだけ、部署名の痕跡が残っています。",
+      "この音声を聞いた時点で、あなたの端末も記録されています。"
     ],
+    transcriptGlitch: ["[録音開始音]", "[長い無音 00:16-00:19]"],
     unlocks: ["call_employee404_01_done"]
   },
   "archive-01": {
@@ -76,15 +93,22 @@ const callRecords = {
     avatar: "!",
     audio: "assets/audio/voicemail_archive_01.mp3",
     duration: "00:44",
+    voiceMode: "broken",
+    noise: true,
+    lineStatus: "留守番メッセージ",
+    glitchText: true,
+    recoveryAccuracy: "68%",
     trigger: "afterArchiveOpen",
     transcriptFile: "voicemail_archive_01_transcript",
     thread: "archive",
     transcript: [
       "三つの文書名を戻してください。",
-      "本文の中に、それぞれの文書名を戻すための周辺語があります。",
-      "戻したあと、欠落箇所だけを記録してください。",
-      "最終フォームは、その記録を役割として扱います。"
+      "本文の中に、戻すための周辺語があります。",
+      "黒塗りの位置は一文字ずつです。",
+      "戻したあと、欠けていた部分だけを記録してください。",
+      "その文字列が、送信前に求められる役割です。"
     ],
+    transcriptGlitch: ["[留守録転送]", "[音声欠落 00:31-00:33]", "[復元ノイズ]"],
     unlocks: ["call_archive_01_done"]
   }
 };
@@ -95,16 +119,22 @@ Object.assign(callRecords, {
     avatar: "M",
     audio: "assets/audio/call_former_employee_m_01.mp3",
     duration: "01:08",
+    voiceMode: "human",
+    noise: false,
+    lineStatus: "通常",
+    glitchText: false,
+    recoveryAccuracy: "94%",
     trigger: "afterMailFwdOpen",
     transcriptFile: "call_former_employee_m_01_transcript",
     thread: "formerM",
     transcript: [
       "メールの件名だけ見てください。",
-      "本文より、件名のほうが消し忘れられています。",
+      "本文は直されます。",
+      "でも、件名は残ります。",
       "同じ日付の三通を、送信時刻順に並べてください。",
-      "同じ読み方が、社員404のログにも残っているはずです。",
-      "2025年8月7日の前後だけを追ってください。"
+      "そこで見つけた読み方は、社員404のログでも使えます。"
     ],
+    transcriptGlitch: ["[環境音: キーボード]", "[小声のため自動補正]"],
     unlocks: ["call_former_employee_m_01_done"]
   },
   "audit-autoresponder-01": {
@@ -112,16 +142,24 @@ Object.assign(callRecords, {
     avatar: "監",
     audio: "assets/audio/call_audit_autoresponder_01.mp3",
     duration: "00:49",
+    voiceMode: "automated",
+    noise: true,
+    lineStatus: "自動応答",
+    glitchText: false,
+    recoveryAccuracy: "89%",
     trigger: "afterAuditRoom",
     transcriptFile: "call_audit_autoresponder_01_transcript",
     thread: "auditBot",
     transcript: [
       "監査室文書閲覧端末です。",
+      "この通話は記録されています。",
+      "復元キーを確認してください。",
       "復元キーは、理念に反する行動です。",
       "疑問を減らす。",
       "その反対を入力してください。",
-      "復元処理は記録されます。"
+      "復元処理は取り消せません。"
     ],
+    transcriptGlitch: ["[自動応答ID: AUD-VOICE-07]"],
     unlocks: ["call_audit_autoresponder_01_done"]
   }
 });
@@ -368,13 +406,13 @@ const fileRecords = {
     { id: "a01_evidence", name: "A-01_＿拠保全手順.txt", type: "TEXT", updated: "2025-08-01", gatedBy: "archiveOpened" },
     { id: "b02_statement", name: "B-02_発＿テンプレート.txt", type: "TEXT", updated: "2025-08-02", gatedBy: "archiveOpened" },
     { id: "c03_subject", name: "C-03_対象＿リスト.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "archiveOpened" },
-    { id: "employee404_partial_log", name: "employee404_partial_log.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "employeeLoginSuccess" },
-    { id: "audit_room_key_memo", name: "audit_room_key_memo.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "deptSearchSuccess" },
+    { id: "employee404_partial_log", name: "employee404_partial_log.txt", type: "TEXT", updated: "2025-08-07", gatedByCall: "employee404-01" },
+    { id: "audit_room_key_memo", name: "audit_room_key_memo.txt", type: "TEXT", updated: "2025-08-07", gatedByCall: "audit-autoresponder-01" },
     { id: "silent_core_operation", name: "silent_core_operation.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "archiveOpened" },
     { id: "deleted_notice_draft", name: "deleted_notice_draft.txt", type: "TEXT", updated: "2025-08-06", gatedBy: "archiveOpened" },
     { id: "status_change_matrix", name: "status_change_matrix.csv", type: "CSV", updated: "2025-08-07", gatedBy: "employeeLoginSuccess" },
     { id: "audit_article_7_extract", name: "audit_article_7_extract.txt", type: "TEXT", updated: "2025-04-12", gatedBy: "archiveOpened" },
-    { id: "redaction_compare_notes", name: "redaction_compare_notes.txt", type: "TEXT", updated: "2025-08-08", gatedBy: "archiveOpened" }
+    { id: "redaction_compare_notes", name: "redaction_compare_notes.txt", type: "TEXT", updated: "2025-08-08", gatedByCall: "archive-01" }
   ],
   trash: [
     { id: "old_contact_reply", name: "old_contact_reply.txt", type: "TEXT", updated: "2025-08-03", gatedBy: "talkContactAdded" },
@@ -468,7 +506,7 @@ searchIndex.push(
   { keywords: ["EMP-000404", "社員404"], title: "Fwd_社員404に関する確認.eml", url: "files://Mail/Fwd_社員404に関する確認.eml", body: "元社員Mからの転送メール。件名に部署コードのヒントが残る。", action: { type: "file", folder: "mail", file: "mail_fwd_employee404" }, gatedBy: "searched404" },
   { keywords: ["査定保留", "部署照合"], title: "査定保留処理について.eml", url: "files://Mail/査定保留処理について.eml", body: "同日メールの件名照合に使う2通目。送信時刻順に並べます。", action: { type: "file", folder: "mail", file: "mail_assessment_hold" }, gatedBy: "mailKeyRead" },
   { keywords: ["室長確認", "部署照合"], title: "室長確認済み.eml", url: "files://Mail/室長確認済み.eml", body: "同日メールの件名照合に使う3通目。本文ではなく件名を見ます。", action: { type: "file", folder: "mail", file: "mail_manager_confirm" }, gatedBy: "mailKeyRead" },
-  { keywords: ["復元キー", "理念"], title: "復元キー メモ", url: "files://Recovered/audit_room_key_memo.txt", body: "理念文と反対の動作を照合するためのメモ。答えそのものは記載されていません。", action: { type: "file", folder: "recovered", file: "audit_room_key_memo" }, gatedBy: "deptSearchSuccess" },
+  { keywords: ["復元キー", "理念"], title: "復元キー メモ", url: "files://Recovered/audit_room_key_memo.txt", body: "理念文と反対の動作を照合するためのメモ。答えそのものは記載されていません。", action: { type: "file", folder: "recovered", file: "audit_room_key_memo" }, gatedByCall: "audit-autoresponder-01" },
   { keywords: ["復元キー", "理念"], title: "文書閲覧端末", url: "yri.local/audit", body: "復元キー入力画面。企業理念の表現と照らし合わせます。", action: { type: "browser", path: "/audit" }, gatedBy: "deptSearchSuccess" },
   { keywords: ["Recovered", "証拠"], title: "A-01_＿拠保全手順.txt", url: "files://Recovered/A-01", body: "原本性、証跡ハッシュ、外部監査提出時の添付資料。", action: { type: "file", folder: "recovered", file: "a01_evidence" }, gatedBy: "archiveOpened" },
   { keywords: ["Recovered", "発言"], title: "B-02_発＿テンプレート.txt", url: "files://Recovered/B-02", body: "面談時の発言、供述の整合性。", action: { type: "file", folder: "recovered", file: "b02_statement" }, gatedBy: "archiveOpened" },
@@ -476,7 +514,7 @@ searchIndex.push(
   { keywords: ["最終", "送信キュー"], title: "外部監査送信キュー", url: "yri.local/final", body: "A-01/B-02/C-03の黒塗り位置を照合して役割を入力する。", action: { type: "browser", path: "/final" }, gatedBy: "archiveOpened" },
   { keywords: ["Trash", "通知案", "0807"], title: "draft_notice_20250807.txt", url: "files://Trash/draft_notice_20250807.txt", body: "黒塗り語を別資料から復元する中謎。用語アーカイブとの照合が必要。", action: { type: "file", folder: "trash", file: "draft_notice_20250807" }, gatedBy: "searched404" },
   { keywords: ["Trash", "検索語"], title: "deleted_search_terms.csv", url: "files://Trash/deleted_search_terms.csv", body: "削除された検索語。社員404、再通知不要、記録保護。", action: { type: "file", folder: "trash", file: "deleted_search_terms" }, gatedBy: "searched404" },
-  { keywords: ["黒塗り", "照合"], title: "redaction_compare_notes.txt", url: "files://Recovered/redaction_compare_notes.txt", body: "A/B/C文書の本文語を比較する最終大謎用メモ。黒塗り位置だけが残る。", action: { type: "file", folder: "recovered", file: "redaction_compare_notes" }, gatedBy: "archiveOpened" },
+  { keywords: ["黒塗り", "照合"], title: "redaction_compare_notes.txt", url: "files://Recovered/redaction_compare_notes.txt", body: "A/B/C文書の本文語を比較する最終大謎用メモ。黒塗り位置だけが残る。", action: { type: "file", folder: "recovered", file: "redaction_compare_notes" }, gatedByCall: "archive-01" },
   { keywords: ["SILENT Core", "記録保護"], title: "silent_core_operation.txt", url: "files://Recovered/silent_core_operation.txt", body: "状態変更は退職処理ではない、という内部文書。", action: { type: "file", folder: "recovered", file: "silent_core_operation" }, gatedBy: "archiveOpened" },
   { keywords: ["資料請求", "自動返信"], title: "自動返信_資料請求受付.eml", url: "files://Mail/自動返信_資料請求受付.eml", body: "資料窓口追加の受付記録。", action: { type: "file", folder: "mail", file: "mail_auto_reply" }, gatedBy: "contactSubmitted" },
   { keywords: ["FAQ", "Not Found"], title: "faq_contact_export.txt", url: "files://Downloads/faq_contact_export.txt", body: "問い合わせFAQに残ったNot Foundの説明。", action: { type: "file", folder: "downloads", file: "faq_contact_export" }, gatedBy: "talkContactAdded" },
@@ -490,6 +528,9 @@ const notice = document.querySelector("#topbar-notice");
 let currentApp = "";
 let ringOscillator = null;
 let ringAudioContext = null;
+let phoneAudioContext = null;
+let phoneNoiseNodes = [];
+let speechLineTimer = null;
 
 function loadState() {
   try {
@@ -653,12 +694,14 @@ function createWindow(app) {
 
 function bindWindow(win, app) {
   win.querySelector('[data-action="close"]')?.addEventListener("click", () => {
+    if (app === "talk") endAllCallAudio();
     win.remove();
     currentApp = "";
     updateTaskbarActive("");
     history.replaceState(null, "", "#/");
   });
   win.querySelector('[data-action="minimize"]')?.addEventListener("click", () => {
+    if (app === "talk") endAllCallAudio();
     win.remove();
     currentApp = "";
     updateTaskbarActive("");
@@ -885,14 +928,57 @@ function fileNameFor(fileId) {
   return Object.values(fileRecords).flat().find(file => file.id === fileId)?.name || fileId;
 }
 
+function callVoiceLabel(call) {
+  const labels = {
+    human: "通常音声",
+    machine: "機械音声 / 自動復元",
+    automated: "自動応答",
+    broken: "破損音声 / 復元中",
+    voicemail: "留守番メッセージ"
+  };
+  return labels[call.voiceMode] || "通常音声";
+}
+
+function effectiveCallVolume() {
+  if (state.callMuted) return 0;
+  const volume = Number(state.callVolume);
+  return Number.isFinite(volume) ? Math.max(0, Math.min(100, volume)) / 100 : 0.35;
+}
+
+function callStatusRows(call) {
+  return [
+    ["回線状態", call.lineStatus || "通常"],
+    ["音声形式", callVoiceLabel(call)],
+    ["録音状態", "保存中"],
+    ["文字起こし", call.glitchText ? "不完全 / 自動復元" : "自動復元"],
+    ["復元精度", call.recoveryAccuracy || "--"]
+  ];
+}
+
+function transcriptLinesForDisplay(call) {
+  const output = [];
+  const glitch = call.transcriptGlitch || [];
+  call.transcript.forEach((line, index) => {
+    output.push({ text: line, glitch: false });
+    if (call.glitchText && glitch[index % glitch.length] && index < call.transcript.length - 1) {
+      output.push({ text: glitch[index % glitch.length], glitch: true });
+    }
+  });
+  return output;
+}
+
 function renderCallHistoryRow(record) {
   const call = callRecords[record.callId];
   return `
-    <button class="call-history-row" type="button" data-open-file="${escapeHtml(call.transcriptFile)}">
+    <div class="call-history-row">
       <span>${record.status === "missed" ? "不在着信" : "通話"}</span>
       <b>${escapeHtml(call.from)}</b>
-      <small>${escapeHtml(call.duration)} / 文字起こし保存済み</small>
-    </button>
+      <small>${escapeHtml(call.duration)} / ${escapeHtml(callVoiceLabel(call))} / 文字起こし保存済み</small>
+      <div class="call-history-actions">
+        <button type="button" data-replay-call="${escapeHtml(record.callId)}">再生</button>
+        <button type="button" data-open-file="${escapeHtml(call.transcriptFile)}">文字起こし</button>
+      </div>
+    </div>
   `;
 }
 
@@ -916,16 +1002,27 @@ function renderIncomingCall() {
 
 function renderActiveCall() {
   const call = callRecords[state.activeCallId];
-  const transcript = call.transcript.map(line => `<p>${escapeHtml(line)}</p>`).join("");
+  const transcript = transcriptLinesForDisplay(call)
+    .map(line => `<p class="${line.glitch ? "is-glitch" : ""}">${escapeHtml(line.text)}</p>`)
+    .join("");
+  const modeClass = `is-${call.voiceMode || "human"}`;
   return `
     <section class="talk-main call-screen-wrap">
-      <div class="active-call">
+      <div class="active-call ${escapeHtml(modeClass)}">
         <span class="talk-avatar call-avatar">${escapeHtml(call.avatar)}</span>
         <small>Talk 通話中</small>
         <h2>${escapeHtml(call.from)}</h2>
         <p class="call-time">想定再生時間 ${escapeHtml(call.duration)}</p>
+        <dl class="call-meta">
+          ${callStatusRows(call).map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}
+        </dl>
         <audio id="call-audio" src="${escapeHtml(call.audio)}" preload="auto"></audio>
-        <p class="call-status" id="call-status">音声を再生しています。音声ファイルが未配置の場合は文字起こしを表示します。</p>
+        <p class="call-status" id="call-status">音声ファイルを確認しています。</p>
+        <div class="call-volume">
+          <label>音量 <input type="range" min="0" max="100" value="${escapeHtml(String(state.callVolume))}" data-call-volume></label>
+          <button class="desktop-button secondary" type="button" data-toggle-mute>${state.callMuted ? "ミュート解除" : "ミュート"}</button>
+        </div>
+        ${call.noise ? `<p class="call-warning">ノイズ警告: 回線復元中。大きな音は再生されません。</p>` : ""}
         <div class="call-transcript" id="call-transcript" hidden>${transcript}</div>
         <div class="incoming-actions">
           <button class="desktop-button secondary" type="button" data-show-transcript="${escapeHtml(state.activeCallId)}">文字起こしを表示</button>
@@ -1005,13 +1102,158 @@ function answerCall(callId) {
 }
 
 function playCallAudio(callId) {
+  const call = callRecords[callId];
   const audio = document.querySelector("#call-audio");
   const status = document.querySelector("#call-status");
-  if (!audio) return;
-  audio.play().catch(() => {
+  if (!call) return;
+  startPhoneNoise(call);
+  if (!audio || !call.audio) {
+    playMachineVoice(callId);
+    return;
+  }
+  audio.volume = effectiveCallVolume();
+  audio.muted = state.callMuted;
+  audio.play().then(() => {
+    if (status) status.textContent = call.noise ? "音声ファイルを再生中。回線ノイズを重ねています。" : "音声ファイルを再生中。";
+  }).catch(() => {
+    if (status) status.textContent = "音声ファイル未配置。機械音声モードで再生しています。";
+    playMachineVoice(callId);
+  });
+}
+
+function playMachineVoice(callId) {
+  const call = callRecords[callId];
+  const status = document.querySelector("#call-status");
+  if (!call) return;
+  if (status) status.textContent = `${callVoiceLabel(call)}で再生しています。`;
+  if (!("speechSynthesis" in window)) {
+    showCallTranscript(callId);
+    if (status) status.textContent = "音声再生に対応していないため、文字起こしを表示しています。";
+    return;
+  }
+  if (call.voiceMode === "human") {
     showCallTranscript(callId);
     if (status) status.textContent = "音声ファイル未配置。文字起こしを表示しています。";
-  });
+    return;
+  }
+  speakTranscriptLines(call);
+}
+
+function speakTranscriptLines(call) {
+  const lines = call.transcript || [];
+  let index = 0;
+  stopMachineVoice();
+
+  function speakNext() {
+    if (index >= lines.length || state.activeCallId === "") {
+      showCallTranscript();
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(lines[index]);
+    utter.lang = "ja-JP";
+    utter.volume = state.callMuted ? 0 : Math.max(0.05, effectiveCallVolume());
+    if (call.voiceMode === "machine") {
+      utter.rate = 0.82;
+      utter.pitch = 0.55;
+    } else if (call.voiceMode === "automated") {
+      utter.rate = 0.9;
+      utter.pitch = 0.7;
+    } else if (call.voiceMode === "broken") {
+      utter.rate = 0.68;
+      utter.pitch = 0.45;
+    } else if (call.voiceMode === "voicemail") {
+      utter.rate = 0.78;
+      utter.pitch = 0.5;
+    } else {
+      utter.rate = 0.95;
+      utter.pitch = 0.9;
+    }
+    utter.onend = () => {
+      index += 1;
+      if (call.voiceMode === "broken" && index < lines.length) playDtmfSequence([620, 480]);
+      speechLineTimer = setTimeout(speakNext, call.voiceMode === "broken" ? 850 : 420);
+    };
+    window.speechSynthesis.speak(utter);
+  }
+
+  window.speechSynthesis.cancel();
+  speakNext();
+}
+
+function stopMachineVoice() {
+  if (speechLineTimer) clearTimeout(speechLineTimer);
+  speechLineTimer = null;
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+function startPhoneNoise(call = {}) {
+  try {
+    stopPhoneNoise();
+    phoneAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const bufferSize = 2 * phoneAudioContext.sampleRate;
+    const noiseBuffer = phoneAudioContext.createBuffer(1, bufferSize, phoneAudioContext.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) {
+      output[i] = (Math.random() * 2 - 1) * 0.018;
+    }
+    const whiteNoise = phoneAudioContext.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+    const gain = phoneAudioContext.createGain();
+    gain.gain.value = effectiveCallVolume() * (call.noise ? 0.035 : 0.012);
+    const filter = phoneAudioContext.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = call.voiceMode === "broken" ? 720 : 900;
+    filter.Q.value = 0.8;
+    whiteNoise.connect(filter).connect(gain).connect(phoneAudioContext.destination);
+    whiteNoise.start();
+    phoneNoiseNodes = [whiteNoise, gain, filter];
+    playDtmfSequence(call.voiceMode === "automated" ? [880] : [440]);
+  } catch {
+    // ノイズは演出なので失敗しても進行を止めない。
+  }
+}
+
+function stopPhoneNoise() {
+  try {
+    phoneNoiseNodes.forEach(node => {
+      if (typeof node.stop === "function") node.stop();
+    });
+    phoneAudioContext?.close();
+  } catch {
+    // ignore
+  }
+  phoneNoiseNodes = [];
+  phoneAudioContext = null;
+}
+
+function playDtmfSequence(sequence = []) {
+  if (!phoneAudioContext || state.callMuted || !sequence.length) return;
+  try {
+    sequence.forEach((frequency, index) => {
+      const osc = phoneAudioContext.createOscillator();
+      const gain = phoneAudioContext.createGain();
+      osc.frequency.value = frequency;
+      gain.gain.value = effectiveCallVolume() * 0.018;
+      osc.connect(gain).connect(phoneAudioContext.destination);
+      const start = phoneAudioContext.currentTime + index * 0.12;
+      osc.start(start);
+      osc.stop(start + 0.055);
+    });
+  } catch {
+    // ignore
+  }
+}
+
+function endAllCallAudio() {
+  stopPhoneNoise();
+  stopFallbackRing();
+  stopMachineVoice();
+  const audio = document.querySelector("#call-audio");
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
 }
 
 function showCallTranscript() {
@@ -1020,9 +1262,10 @@ function showCallTranscript() {
 }
 
 function completeCall(callId, status = "answered") {
-  stopFallbackRing();
+  endAllCallAudio();
   const call = callRecords[callId];
   if (!call) return;
+  const firstCompletion = !isCallDone(callId);
   state.pendingCallId = "";
   state.activeCallId = "";
   state.callMode = "";
@@ -1037,17 +1280,31 @@ function completeCall(callId, status = "answered") {
   if (callId === "audit-autoresponder-01") addMessages(longMessageIds("auditBot", 20));
   if (callId === "archive-01") addMessages(["archive-1", "archive-2", ...longMessageIds("archive", 20)]);
   state.currentTalkThread = call.thread;
-  state.unreadFiles += 1;
+  if (firstCompletion) state.unreadFiles += 1;
   saveState();
-  setNotice(`${call.from} の文字起こしを保存しました`);
-  toast("Files", `${fileNameFor(call.transcriptFile)} を保存しました。`);
+  setNotice(firstCompletion ? `${call.from} の文字起こしを保存しました` : `${call.from} の再生を終了しました`);
+  toast(firstCompletion ? "Files" : "Talk", firstCompletion ? `${fileNameFor(call.transcriptFile)} を保存しました。` : "通話履歴から再生した音声を終了しました。");
   openApp("talk");
 }
 
 function rejectCall(callId) {
-  stopFallbackRing();
+  endAllCallAudio();
   toast("Talk", "不在着信。文字起こしログが保存されました。");
   completeCall(callId, "missed");
+}
+
+function replayCall(callId) {
+  const call = callRecords[callId];
+  if (!call) return;
+  endAllCallAudio();
+  state.pendingCallId = "";
+  state.activeCallId = callId;
+  state.callMode = "replay";
+  state.callStartedAt = Date.now();
+  state.currentTalkThread = call.thread;
+  saveState();
+  openApp("talk");
+  setTimeout(() => playCallAudio(callId), 80);
 }
 
 function bindTalk(win) {
@@ -1066,6 +1323,25 @@ function bindTalk(win) {
   win.querySelector("[data-reject-call]")?.addEventListener("click", event => rejectCall(event.currentTarget.dataset.rejectCall));
   win.querySelector("[data-show-transcript]")?.addEventListener("click", () => showCallTranscript());
   win.querySelector("[data-end-call]")?.addEventListener("click", event => completeCall(event.currentTarget.dataset.endCall));
+  win.querySelectorAll("[data-replay-call]").forEach(button => {
+    button.addEventListener("click", event => replayCall(event.currentTarget.dataset.replayCall));
+  });
+  win.querySelector("[data-toggle-mute]")?.addEventListener("click", () => {
+    state.callMuted = !state.callMuted;
+    saveState();
+    const audio = document.querySelector("#call-audio");
+    if (audio) audio.muted = state.callMuted;
+    if (state.callMuted) stopPhoneNoise();
+    win.querySelector("[data-toggle-mute]").textContent = state.callMuted ? "ミュート解除" : "ミュート";
+    const status = document.querySelector("#call-status");
+    if (status) status.textContent = state.callMuted ? "ミュート中。文字起こしで確認できます。" : "ミュートを解除しました。";
+  });
+  win.querySelector("[data-call-volume]")?.addEventListener("input", event => {
+    state.callVolume = Number(event.currentTarget.value);
+    saveState();
+    const audio = document.querySelector("#call-audio");
+    if (audio) audio.volume = effectiveCallVolume();
+  });
   win.querySelector("[data-reply='confirm']")?.addEventListener("click", () => {
     toast("Talk", "資料の確認はFilesアプリから行えます。");
   });
@@ -1139,10 +1415,23 @@ function renderFileContent(fileId) {
 
 function transcriptContent(callId) {
   const call = callRecords[callId];
+  const lines = transcriptLinesForDisplay(call)
+    .map(line => `<p class="${line.glitch ? "is-glitch" : ""}">${escapeHtml(line.text)}</p>`)
+    .join("");
   return `
-    <header><div><small>Talk Call Transcript</small><h2>${escapeHtml(call.from)} / ${escapeHtml(call.duration)}</h2></div><small>${escapeHtml(call.audio)}</small></header>
-    <section>${call.transcript.map(line => `<p>${escapeHtml(line)}</p>`).join("")}</section>
-    <section><p class="pdf-note">音声ファイル未配置の場合も、この文字起こしを正式な進行ログとして扱います。</p></section>
+    <header><div><small>Talk Call Transcript / Auto Recovery</small><h2>${escapeHtml(call.from)} / ${escapeHtml(call.duration)}</h2></div><small>${escapeHtml(call.audio)}</small></header>
+    <section>
+      <table>
+        <tr><th>発信者</th><td>${escapeHtml(call.from)}</td></tr>
+        <tr><th>回線状態</th><td>${escapeHtml(call.lineStatus || "通常")}</td></tr>
+        <tr><th>音声形式</th><td>${escapeHtml(callVoiceLabel(call))}</td></tr>
+        <tr><th>voiceMode</th><td>${escapeHtml(call.voiceMode || "human")}</td></tr>
+        <tr><th>復元精度</th><td>${escapeHtml(call.recoveryAccuracy || "--")}</td></tr>
+        <tr><th>保存先</th><td>Files / ${escapeHtml(fileNameFor(call.transcriptFile))}</td></tr>
+      </table>
+    </section>
+    <section><h3>自動文字起こし</h3>${lines}</section>
+    <section><p class="pdf-note">この文字起こしは、端末内で自動復元されたものです。一部の語句は音声と一致しない可能性があります。音声ファイル未配置の場合も、この文字起こしを正式な進行ログとして扱います。</p></section>
   `;
 }
 
@@ -1299,7 +1588,11 @@ function renderSearch() {
 
 function renderSearchResults(query) {
   const q = query.trim().toLowerCase();
-  const isResultAvailable = item => !item.gatedBy || state[item.gatedBy];
+  const isResultAvailable = item => {
+    if (item.gatedBy && !state[item.gatedBy]) return false;
+    if (item.gatedByCall && !isCallDone(item.gatedByCall)) return false;
+    return true;
+  };
   const results = q
     ? searchIndex.filter(item => isResultAvailable(item) && item.keywords.some(keyword => q.includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(q)))
     : searchIndex.filter(isResultAvailable).slice(0, 6);
