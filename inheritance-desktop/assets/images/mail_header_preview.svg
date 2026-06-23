@@ -1,15 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="メールヘッダ詳細画面のスクリーンショット風画像">
-  <rect width="900" height="620" fill="#eef3f6"/>
-  <rect x="90" y="70" width="720" height="470" rx="16" fill="#fff" stroke="#cfd8df"/>
-  <rect x="90" y="70" width="720" height="54" rx="16" fill="#e4ebf0"/>
-  <text x="124" y="106" font-family="sans-serif" font-size="20" fill="#23313d">母へ_未送信.eml</text>
-  <g font-family="monospace" font-size="18" fill="#27323b">
-    <text x="130" y="170">From: akari</text>
-    <text x="130" y="205">To: mother</text>
-    <text x="130" y="240">Date: 2026-03-17 03:17</text>
-    <text x="130" y="275">Saved: 2026-03-17 03:18</text>
-    <text x="130" y="310">Device: SHIRASE-PC</text>
-    <text x="130" y="345">Source: auto_reply.js</text>
+  <defs>
+    <filter id="screenNoise"><feTurbulence baseFrequency=".9" numOctaves="3" seed="21"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .08"/></feComponentTransfer></filter>
+  </defs>
+  <rect width="900" height="620" fill="#1c2228"/>
+  <g transform="translate(52 44)">
+    <rect width="796" height="520" rx="18" fill="#edf0f2"/>
+    <rect y="0" width="796" height="48" rx="18" fill="#d9e0e5"/>
+    <circle cx="26" cy="24" r="7" fill="#9a6b67"/><circle cx="50" cy="24" r="7" fill="#9c956f"/><circle cx="74" cy="24" r="7" fill="#6f9380"/>
+    <rect x="34" y="76" width="728" height="390" rx="6" fill="#fff" stroke="#c8d0d6"/>
+    <text x="62" y="112" font-family="monospace" font-size="18" fill="#1f252b">MAIL HEADER DETAIL</text>
+    <path d="M62 138h650" stroke="#d4d9de"/>
+    <g font-family="monospace" font-size="16" fill="#2b3137">
+      <text x="62" y="176">From: akari</text><text x="62" y="212">To: mother</text>
+      <text x="62" y="248">Date: 2026-03-17 03:17</text><text x="62" y="284">Saved: 2026-03-17 03:18</text>
+      <text x="62" y="320">Device: SHIRASE-PC</text><text x="62" y="356">Source: auto_reply.js</text>
+    </g>
+    <rect x="58" y="386" width="312" height="40" rx="20" fill="#e9deda"/><text x="82" y="412" font-family="sans-serif" font-size="15" fill="#733f3b">Source mismatch flagged</text>
+    <rect width="796" height="520" rx="18" filter="url(#screenNoise)"/>
   </g>
-  <rect x="130" y="382" width="620" height="92" fill="#f7f9fb" stroke="#d5dde5"/>
 </svg>

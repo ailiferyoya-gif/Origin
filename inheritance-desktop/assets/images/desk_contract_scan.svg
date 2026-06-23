@@ -1,9 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="契約書スキャン風画像">
-  <rect width="900" height="620" fill="#d8d2c8"/>
-  <rect x="120" y="45" width="660" height="530" rx="4" fill="#f6f1e8" stroke="#b7afa3"/>
-  <text x="160" y="105" font-family="serif" font-size="30" fill="#28231e">業務委託契約書</text>
-  <g stroke="#bbb2a6"><path d="M160 145h570M160 185h570M160 225h570M160 265h570M160 305h570M160 345h570M160 385h570"/></g>
-  <rect x="160" y="430" width="190" height="58" fill="none" stroke="#9e9488"/>
-  <circle cx="620" cy="450" r="46" fill="none" stroke="#a64b3f" stroke-width="6" opacity=".7"/>
-  <path d="M592 450h56M620 422v56" stroke="#a64b3f" stroke-width="5" opacity=".55"/>
+  <defs>
+    <filter id="paperNoise"><feTurbulence baseFrequency=".65" numOctaves="4" seed="11"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .13"/></feComponentTransfer></filter>
+    <linearGradient id="desk" x1="0" x2="1"><stop stop-color="#6d6257"/><stop offset="1" stop-color="#35312d"/></linearGradient>
+  </defs>
+  <rect width="900" height="620" fill="url(#desk)"/>
+  <g transform="translate(166 34) rotate(-2.2 286 276)">
+    <rect x="0" y="0" width="568" height="552" rx="6" fill="#eee8dc" filter="url(#paperNoise)"/>
+    <rect x="38" y="36" width="492" height="480" fill="#f8f3e8" opacity=".92"/>
+    <text x="62" y="84" font-family="serif" font-size="30" fill="#292722">契約書</text>
+    <text x="62" y="118" font-family="monospace" font-size="13" fill="#777064">字幕編集業務委託 / D-0317</text>
+    <path d="M62 150h400M62 190h400M62 230h400M62 270h400M62 310h400M62 350h400" stroke="#a9a096" stroke-width="2"/>
+    <path d="M62 392h170M62 424h180M62 456h160" stroke="#6c6760" stroke-width="5" opacity=".5"/>
+    <circle cx="432" cy="426" r="45" fill="none" stroke="#8f312d" stroke-width="8" opacity=".35"/>
+    <path d="M410 426h44M432 404v44" stroke="#8f312d" stroke-width="5" opacity=".28"/>
+  </g>
+  <text x="30" y="590" font-family="monospace" font-size="16" fill="#e5ded3" opacity=".5">scan_preview / contract_subtitle_work.pdf</text>
 </svg>

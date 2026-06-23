@@ -1,13 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="3月17日3時17分の暗い部屋。机の上にスマホだけが光っている。">
-  <rect width="1200" height="720" fill="#101820"/>
-  <rect x="90" y="70" width="1020" height="560" rx="18" fill="#2b3034"/>
-  <rect x="130" y="110" width="430" height="250" fill="#1c2730"/>
-  <rect x="650" y="110" width="330" height="380" fill="#332f2d"/>
-  <rect x="240" y="465" width="460" height="42" fill="#35281f"/>
-  <rect x="290" y="365" width="340" height="110" fill="#42352b"/>
-  <rect x="420" y="386" width="60" height="94" rx="9" fill="#05080a"/>
-  <rect x="431" y="401" width="38" height="62" fill="#b7f2ff" opacity=".85"/>
-  <circle cx="450" cy="432" r="115" fill="#9de8ff" opacity=".12"/>
-  <rect x="870" y="460" width="150" height="170" fill="#2b2521"/>
-  <text x="96" y="650" font-family="sans-serif" font-size="22" fill="#e7f8ff" opacity=".32">03:17</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="3月17日3時17分の暗い部屋写真風。机の上にスマホだけが光っている。">
+  <defs>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".95" numOctaves="4" seed="317317"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .18"/></feComponentTransfer></filter>
+    <radialGradient id="phoneGlow" cx=".5" cy=".5" r=".55"><stop stop-color="#93b8c0" stop-opacity=".62"/><stop offset=".42" stop-color="#3b5961" stop-opacity=".24"/><stop offset="1" stop-color="transparent"/></radialGradient>
+    <radialGradient id="vignette" cx=".44" cy=".42" r=".75"><stop offset=".38" stop-color="transparent"/><stop offset="1" stop-color="#020305" stop-opacity=".82"/></radialGradient>
+  </defs>
+  <rect width="1200" height="720" fill="#0d1117"/>
+  <g transform="translate(52 34) rotate(-.8 548 326)">
+    <rect x="0" y="0" width="1092" height="652" rx="24" fill="#e9e3d8"/>
+    <rect x="28" y="28" width="1036" height="596" rx="12" fill="#20262b"/>
+    <path d="M28 454h1036v170H28z" fill="#2e2c2a"/>
+    <path d="M130 94h205v240H130z" fill="#393a38"/><path d="M157 118h151v190H157z" fill="#1d252c"/>
+    <rect x="698" y="154" width="235" height="320" rx="5" fill="#33291f"/><path d="M710 226h211M710 302h211M710 378h211" stroke="#4c3f31" stroke-width="8"/>
+    <rect x="188" y="402" width="472" height="42" rx="4" fill="#2b241f"/><rect x="214" y="444" width="32" height="122" fill="#1c1714"/><rect x="600" y="444" width="32" height="122" fill="#1c1714"/>
+    <ellipse cx="504" cy="382" rx="170" ry="118" fill="url(#phoneGlow)"/>
+    <rect x="486" y="354" width="48" height="84" rx="9" fill="#090c11"/><rect x="494" y="366" width="32" height="56" rx="3" fill="#6fabb2"/>
+    <path d="M940 398c34 14 57 43 58 79" stroke="#1a1f23" stroke-width="10" fill="none"/><rect x="930" y="432" width="42" height="132" rx="14" fill="#1e262b"/>
+    <text x="52" y="584" font-family="monospace" font-size="22" fill="#d8e2df" opacity=".36">IMG_0317_room_0317 / 03:17</text>
+    <rect x="28" y="28" width="1036" height="596" rx="12" fill="url(#vignette)"/>
+    <rect x="28" y="28" width="1036" height="596" rx="12" filter="url(#grain)"/>
+  </g>
 </svg>

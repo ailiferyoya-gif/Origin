@@ -1,20 +1,26 @@
-const saveKey = "inheritanceDesktopStateV1";
-const isDebug = new URLSearchParams(location.search).get("debug") === "1";
+const saveKey = "inheritanceDesktopStateV2";
+const params = new URLSearchParams(location.search);
+const isDebug = params.get("debug") === "1";
+
+if (params.get("reset") === "1") {
+  localStorage.removeItem("inheritanceDesktopStateV1");
+  localStorage.removeItem("inheritanceDesktopStateV2");
+}
 
 const initialState = {
   currentApp: "notes",
   currentFolder: "documents",
   selectedFile: "",
   currentThread: "mother",
-  selectedMail: "draft_mother",
-  selectedPhoto: "room_0315",
-  selectedEvent: "0317",
-  selectedCall: "akari_0317",
-  selectedTrash: "auto_reply",
+  selectedMail: "",
+  selectedPhoto: "",
+  selectedEvent: "",
+  selectedCall: "",
+  selectedTrash: "",
   readFiles: [],
   unlocked: [],
   talkOnline: false,
-  talkMessages: ["mother-1", "brother-1", "work-1"],
+  talkMessages: [],
   workLog: ["端末を起動しました。Notesの作業メモを確認してください。"],
   playedCalls: [],
   calendarPlayed: false,
@@ -175,6 +181,7 @@ const fileDefs = {
     name: "白瀬灯_文体サンプル.txt",
     type: "TEXT",
     folder: "private",
+    gatedBy: "unsentListRead",
     body: [
       "本人の癖:",
       "・句点をあまり使わない",
@@ -190,6 +197,7 @@ const fileDefs = {
     name: "03-17_操作時刻メモ.txt",
     type: "TEXT",
     folder: "private",
+    gatedBy: "unsentListRead",
     body: [
       "03:07 母への下書き保存",
       "03:12 死亡推定時刻",
@@ -215,6 +223,7 @@ const fileDefs = {
     name: "母へ_未送信.eml",
     type: "MAIL",
     folder: "mail",
+    gatedBy: "unsentListRead",
     body: [
       "本文:",
       "お母さんへ",
@@ -229,6 +238,7 @@ const fileDefs = {
     name: "メールヘッダ矛盾メモ.txt",
     type: "TEXT",
     folder: "mail",
+    gatedBy: "unsentListRead",
     image: "assets/images/mail_header_preview.svg",
     body: [
       "From: akari",
@@ -322,6 +332,7 @@ const fileDefs = {
     name: "last_message.tmp",
     type: "TMP",
     folder: "trash",
+    gatedBy: "lastMessageReady",
     onOpen: "lastMessage",
     body: ["まだいますか？"]
   },
@@ -415,6 +426,17 @@ const mails = {
     source: "auto_reply.js",
     body: "お母さんへ\nいろいろごめんね\nでもこれは今は送らないで\n箱の中身だけ見て",
     note: "ヘッダ上は自動生成。本文は本人文体に近いが、送信状態は03:21に保留へ変わっています。"
+  },
+  family_check: {
+    subject: "家族連絡先確認",
+    from: "local-export",
+    to: "整理者",
+    date: "2026-03-18 09:20",
+    saved: "2026-03-18 09:20",
+    device: "D-0317",
+    source: "contact_export",
+    body: "母: 返却対象\n兄: 返却対象\n備考: 未送信メールは本文だけで返却判断しないこと。",
+    note: "作業前確認用の連絡先エクスポート。"
   },
   work_reply: {
     subject: "Re: 3/17納品確認",
@@ -630,13 +652,17 @@ function renderFileGrid(files) {
   }).join("")}</div>`;
 }
 
+function imageFrame(src, alt = "", className = "image-frame") {
+  return `<figure class="${className} image-frame"><img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" onerror="this.closest('.image-frame').classList.add('is-missing');this.remove();"></figure>`;
+}
+
 function renderFile(fileId) {
   const file = fileDefs[fileId];
   if (!file) return `<p class="empty-state">ファイルを表示できません。</p>`;
   return `
     <article class="doc-viewer">
       <header><div><small>${escapeHtml(file.type)} / ${escapeHtml(file.folder)}</small><h2>${escapeHtml(file.name)}</h2></div><small>D-0317</small></header>
-      ${file.image ? `<figure><img src="${escapeHtml(file.image)}" alt="" style="max-width:100%;border:1px solid var(--line);border-radius:10px"></figure>` : ""}
+      ${file.image ? imageFrame(file.image, `${file.name} preview`, "doc-image") : ""}
       ${renderLines(file.body)}
     </article>
   `;
@@ -659,18 +685,23 @@ function openFile(fileId) {
 
 function handleFileEvent(event) {
   if (event === "wakeTalk" && !state.talkOnline) {
+    addUnique("unlocked", "unsentListRead");
     state.talkOnline = true;
     ["akari-1", "akari-2", "akari-3", "akari-4", "akari-5", "akari-6"].forEach(addTalk);
     logWork("未送信メール一覧を開いた直後、白瀬灯アカウントがオンライン表示になりました。");
     toast("Talk", "白瀬 灯 からメッセージが届きました。");
+  } else if (event === "wakeTalk") {
+    addUnique("unlocked", "unsentListRead");
   }
   if (event === "readScript") {
     state.trashChecked = true;
     addUnique("unlocked", "scriptRead");
+    unlockLastMessageIfReady();
     logWork("akari_auto_reply.js を確認。Talkの一部は自動応答条件で説明できます。");
   }
   if (event === "readLog") {
     addUnique("unlocked", "readLogChecked");
+    unlockLastMessageIfReady();
     logWork("既読ログを確認。m0318は整理作業中の端末でついた既読です。");
   }
   if (event === "lastMessage" && !state.finalMessageRead) {
@@ -678,6 +709,12 @@ function handleFileEvent(event) {
     addTalk("akari-9");
     logWork("last_message.tmp を開いた後、白瀬灯スレッドに最後の通知が残りました。");
     toast("Talk", "白瀬 灯 から新しい通知があります。");
+  }
+}
+
+function unlockLastMessageIfReady() {
+  if (state.trashChecked && state.unlocked.includes("readLogChecked")) {
+    addUnique("unlocked", "lastMessageReady");
   }
 }
 
@@ -735,23 +772,34 @@ function bindTalk(win) {
 }
 
 function renderMail() {
-  const active = mails[state.selectedMail] ? state.selectedMail : "draft_mother";
-  const mail = mails[active];
+  const visible = visibleMailIds();
+  const active = visible.includes(state.selectedMail) ? state.selectedMail : "";
+  const mail = active ? mails[active] : null;
   return `
     <div class="mail-layout">
       <aside class="mail-sidebar">
         <div class="sidebar-head"><b>Mail</b><small>Local export</small></div>
-        <div class="mail-list">${Object.entries(mails).map(([id, m]) => `<button class="${id === active ? "is-active" : ""}" data-mail="${id}" type="button"><b>${escapeHtml(m.subject)}</b><small>${escapeHtml(m.date)}</small></button>`).join("")}</div>
+        <div class="mail-list">${visible.map(id => {
+          const m = mails[id];
+          return `<button class="${id === active ? "is-active" : ""}" data-mail="${id}" type="button"><b>${escapeHtml(m.subject)}</b><small>${escapeHtml(m.date)}</small></button>`;
+        }).join("")}</div>
       </aside>
       <section class="mail-main">
-        <article class="mail-viewer">
+        ${mail ? `<article class="mail-viewer">
           <header><div><small>MAIL DETAIL</small><h2>${escapeHtml(mail.subject)}</h2></div><small>${escapeHtml(mail.date)}</small></header>
           <table><tr><th>From</th><td>${escapeHtml(mail.from)}</td></tr><tr><th>To</th><td>${escapeHtml(mail.to)}</td></tr><tr><th>Date</th><td>${escapeHtml(mail.date)}</td></tr><tr><th>Saved</th><td>${escapeHtml(mail.saved)}</td></tr><tr><th>Device</th><td>${escapeHtml(mail.device)}</td></tr><tr><th>Source</th><td>${escapeHtml(mail.source)}</td></tr></table>
           <section><h3>本文</h3>${renderLines(mail.body.split("\n"))}<p class="meta-note">${escapeHtml(mail.note)}</p></section>
-        </article>
+        </article>` : `<div class="empty-state"><b>メールを選択してください。</b><p>未送信メールやメールヘッダは、Filesで関連資料を確認したあとに開いてください。</p></div>`}
       </section>
     </div>
   `;
+}
+
+function visibleMailIds() {
+  const ids = ["work_reply", "family_check"];
+  if (state.readFiles.includes("unsent_list") || state.unlocked.includes("unsentListRead")) ids.push("draft_mother");
+  if (state.trashChecked || state.unlocked.includes("scriptRead")) ids.push("style_compare");
+  return ids.filter(id => mails[id]);
 }
 
 function bindMail(win) {
@@ -763,20 +811,20 @@ function bindMail(win) {
 }
 
 function renderPhotos() {
-  const active = photos.find(photo => photo.id === state.selectedPhoto) || photos[0];
+  const active = photos.find(photo => photo.id === state.selectedPhoto) || null;
   return `
     <div class="photos-layout">
-      <aside class="photo-sidebar"><div class="sidebar-head"><b>Photos</b><small>比較ビュー</small></div><div class="photo-list">${photos.map(photo => `<button class="${photo.id === active.id ? "is-active" : ""}" data-photo="${photo.id}" type="button"><b>${escapeHtml(photo.file)}</b><small>${escapeHtml(photo.album)} / ${escapeHtml(photo.date)}</small></button>`).join("")}</div></aside>
+      <aside class="photo-sidebar"><div class="sidebar-head"><b>Photos</b><small>比較ビュー</small></div><div class="photo-list">${photos.map(photo => `<button class="${active && photo.id === active.id ? "is-active" : ""}" data-photo="${photo.id}" type="button"><b>${escapeHtml(photo.file)}</b><small>${escapeHtml(photo.album)} / ${escapeHtml(photo.date)}</small></button>`).join("")}</div></aside>
       <section class="photo-main">
-        <div class="panel-title"><div><h2>${escapeHtml(active.file)}</h2><p>同じ部屋の物の位置を比較してください。</p></div></div>
-        <div class="photo-stage">
-          <img src="${escapeHtml(active.src)}" alt="${escapeHtml(active.memo)}">
+        <div class="panel-title"><div><h2>${active ? escapeHtml(active.file) : "写真を選択してください"}</h2><p>同じ部屋の写真を比較すると、物の位置の変化が分かります。</p></div></div>
+        ${active ? `<div class="photo-stage image-frame">
+          <img src="${escapeHtml(active.src)}" alt="${escapeHtml(active.memo)}" onerror="this.closest('.image-frame').classList.add('is-missing');this.remove();">
           ${active.id === "room_0317_0219" ? `<button class="hotspot" type="button" data-box-hotspot aria-label="傘立ての奥を確認"></button>` : ""}
-        </div>
+        </div>` : `<div class="empty-state"><b>写真を選択してください。</b><p>同じ部屋の写真を切り替えて、木箱の位置がどこへ移ったかを確認してください。</p></div>`}
       </section>
       <aside class="photo-meta">
         <h2>メタデータ</h2>
-        <table><tr><th>撮影日</th><td>${escapeHtml(active.date)}</td></tr><tr><th>場所</th><td>${escapeHtml(active.place)}</td></tr><tr><th>メモ</th><td>${escapeHtml(active.memo)}</td></tr><tr><th>ファイル名</th><td>${escapeHtml(active.file)}</td></tr></table>
+        ${active ? `<table><tr><th>撮影日</th><td>${escapeHtml(active.date)}</td></tr><tr><th>場所</th><td>${escapeHtml(active.place)}</td></tr><tr><th>メモ</th><td>${escapeHtml(active.memo)}</td></tr><tr><th>ファイル名</th><td>${escapeHtml(active.file)}</td></tr></table>` : `<p class="meta-note">一覧から写真を選ぶと、撮影日・場所・メモを確認できます。</p>`}
         <p class="meta-note">ヒント: 写真を切り替えて、同じものの位置を比べる。</p>
       </aside>
     </div>
@@ -801,10 +849,10 @@ function bindPhotos(win) {
 }
 
 function renderCalendar() {
-  const active = events.find(event => event.id === state.selectedEvent) || events[4];
+  const active = events.find(event => event.id === state.selectedEvent) || null;
   return `
     <div class="calendar-layout">
-      <aside class="calendar-sidebar"><div class="sidebar-head"><b>Calendar</b><small>2026 / March</small></div><div class="event-list">${events.map(event => `<button class="${event.id === active.id ? "is-active" : ""}" data-event="${event.id}" type="button"><b>${escapeHtml(event.date)} ${escapeHtml(event.title)}</b><small>${escapeHtml(event.memo)}</small></button>`).join("")}</div></aside>
+      <aside class="calendar-sidebar"><div class="sidebar-head"><b>Calendar</b><small>2026 / March</small></div><div class="event-list">${events.map(event => `<button class="${active && event.id === active.id ? "is-active" : ""}" data-event="${event.id}" type="button"><b>${escapeHtml(event.date)} ${escapeHtml(event.title)}</b><small>${escapeHtml(event.memo)}</small></button>`).join("")}</div></aside>
       <section class="calendar-main">
         <div class="panel-title"><div><h2>3月の予定</h2><p>死亡日以降の予定を含むローカルカレンダーです。</p></div><button class="desktop-button" type="button" data-play-notifications>3/17 通知を再生</button></div>
         <div class="calendar-board">${events.map(event => `<div class="calendar-day ${event.important ? "is-important" : ""}"><b>${escapeHtml(event.date)}</b><span>${escapeHtml(event.title)}</span><small>${escapeHtml(event.memo)}</small></div>`).join("")}</div>
@@ -833,12 +881,12 @@ function bindCalendar(win) {
 }
 
 function renderCall() {
-  const active = calls[state.selectedCall] || calls.akari_0317;
+  const active = calls[state.selectedCall] || null;
   return `
     <div class="call-layout">
       <aside class="call-sidebar"><div class="sidebar-head"><b>Call</b><small>Voice logs</small></div><div class="call-list">${Object.entries(calls).map(([id, call]) => `<button class="${id === state.selectedCall ? "is-active" : ""}" data-call="${id}" type="button"><b>${escapeHtml(call.from)}</b><small>${escapeHtml(call.time)} / ${escapeHtml(call.duration)}</small></button>`).join("")}</div></aside>
       <section class="call-main">
-        <div class="call-player">
+        ${active ? `<div class="call-player">
           <small>${escapeHtml(active.voiceMode)} / ${escapeHtml(active.audio)}</small>
           <h2>${escapeHtml(active.from)} ${escapeHtml(active.time)}</h2>
           <p class="meta-note">音声ファイルが未配置の場合、機械音声または文字起こしで進行します。</p>
@@ -846,7 +894,7 @@ function renderCall() {
           <button class="desktop-button secondary" type="button" data-show-call-text>文字起こしを表示</button>
           <button class="desktop-button secondary" type="button" data-toggle-call-mute>${state.callMuted ? "ミュート解除" : "ミュート"}</button>
           <div class="call-transcript" id="call-transcript" ${state.playedCalls.includes(state.selectedCall) ? "" : "hidden"}>${renderCallTranscript(active)}</div>
-        </div>
+        </div>` : `<div class="empty-state"><b>通話ログを選択してください。</b><p>再生後に音声復元ログが追加されます。音声がない環境でも文字起こしで確認できます。</p></div>`}
       </section>
     </div>
   `;
@@ -865,7 +913,8 @@ function bindCall(win) {
   }));
   win.querySelector("[data-play-call]")?.addEventListener("click", event => playCall(event.currentTarget.dataset.playCall));
   win.querySelector("[data-show-call-text]")?.addEventListener("click", () => {
-    win.querySelector("#call-transcript").hidden = false;
+    const transcript = win.querySelector("#call-transcript");
+    if (transcript) transcript.hidden = false;
   });
   win.querySelector("[data-toggle-call-mute]")?.addEventListener("click", () => {
     state.callMuted = !state.callMuted;
@@ -964,12 +1013,12 @@ function endCallAudio() {
 }
 
 function renderTrash() {
-  const files = folders.trash.files;
-  const active = fileDefs[state.selectedTrash] ? state.selectedTrash : files[0];
+  const files = folders.trash.files.filter(isFileAvailable);
+  const active = files.includes(state.selectedTrash) ? state.selectedTrash : "";
   return `
     <div class="trash-layout">
       <aside class="trash-sidebar"><div class="sidebar-head"><b>Trash</b><small>Deleted files</small></div><div class="trash-list">${files.map(id => `<button class="${id === active ? "is-active" : ""}" data-trash="${id}" type="button"><b>${escapeHtml(fileDefs[id].name)}</b><small>${escapeHtml(fileDefs[id].type)}</small></button>`).join("")}</div></aside>
-      <section class="trash-main"><div class="panel-title"><div><h2>削除済みファイル</h2><p>復元せず、内容だけを確認します。</p></div></div><article class="trash-viewer"><header><div><small>${escapeHtml(fileDefs[active].type)}</small><h2>${escapeHtml(fileDefs[active].name)}</h2></div></header>${renderLines(fileDefs[active].body)}</article></section>
+      <section class="trash-main"><div class="panel-title"><div><h2>削除済みファイル</h2><p>復元せず、内容だけを確認します。</p></div></div>${active ? `<article class="trash-viewer"><header><div><small>${escapeHtml(fileDefs[active].type)}</small><h2>${escapeHtml(fileDefs[active].name)}</h2></div></header>${renderLines(fileDefs[active].body)}</article>` : `<div class="empty-state"><b>削除済みファイルを選択してください。</b><p>last_message.tmp は条件を満たすまで一覧に表示されません。</p></div>`}</section>
     </div>
   `;
 }
@@ -1025,6 +1074,7 @@ function renderNotes() {
         <article class="note-card">
           <h2>セーブ</h2>
           <p>進行状況はこのブラウザのlocalStorageに保存されます。</p>
+          <p class="note-small">初期状態で確認したい場合は、URL末尾に ?reset=1 を付けて起動してください。例: start.html?reset=1#/notes</p>
           <button class="desktop-button danger" type="button" data-reset>進行状況を初期化する</button>
         </article>
       </section>
@@ -1091,6 +1141,7 @@ function bindNotes(win) {
   win.querySelector("[data-reset]")?.addEventListener("click", () => {
     if (!confirm("進行状況を初期化します。")) return;
     if (!confirm("この操作は取り消せません。本当に初期化しますか？")) return;
+    localStorage.removeItem("inheritanceDesktopStateV1");
     localStorage.removeItem(saveKey);
     Object.assign(state, { ...initialState });
     openApp("notes");

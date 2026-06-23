@@ -1,11 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="通話波形と自動文字起こし画面風画像">
-  <rect width="900" height="620" fill="#101820"/>
-  <rect x="70" y="60" width="760" height="500" rx="18" fill="#17242d" stroke="#38505f"/>
-  <text x="110" y="110" font-family="sans-serif" font-size="24" fill="#eaf6f2">call_akari_0317</text>
-  <g stroke="#88d1c7" stroke-width="5">
-    <path d="M120 250v-40M145 250v60M170 250v-88M195 250v30M220 250v-70M245 250v96M270 250v-22M295 250v54M320 250v-114M345 250v40M370 250v-82M395 250v24M420 250v-56M445 250v92M470 250v-18M495 250v72M520 250v-104M545 250v38M570 250v-64M595 250v20M620 250v-44M645 250v88M670 250v-16M695 250v58M720 250v-96"/>
+  <defs>
+    <filter id="noise"><feTurbulence baseFrequency=".72" numOctaves="3" seed="31"/><feComponentTransfer><feFuncA type="table" tableValues="0 .1"/></feComponentTransfer></filter>
+  </defs>
+  <rect width="900" height="620" fill="#101519"/>
+  <g transform="translate(58 48)">
+    <rect width="784" height="512" rx="18" fill="#172129" stroke="#394753"/>
+    <text x="34" y="46" font-family="monospace" font-size="18" fill="#d8e4e7">call_akari_0317 / auto recovery</text>
+    <rect x="34" y="78" width="716" height="150" rx="8" fill="#0f171d"/>
+    <g stroke="#6db3c2" stroke-width="4" opacity=".85">
+      <path d="M54 156h20l12-32 18 72 20-98 18 120 18-62 16 18h28l16-42 18 88 18-114 18 76 22-26h36l20-56 18 112 22-94 18 62 20-22h42l18-36 18 74 20-92 18 72 22-20h50"/>
+    </g>
+    <rect x="34" y="256" width="340" height="194" rx="8" fill="#eef3f4"/>
+    <text x="58" y="292" font-family="sans-serif" font-size="16" fill="#1f252b">音声復元</text>
+    <text x="58" y="332" font-family="sans-serif" font-size="18" fill="#1f252b">でも、送信はしないで。</text>
+    <rect x="410" y="256" width="340" height="194" rx="8" fill="#f5ecea"/>
+    <text x="434" y="292" font-family="sans-serif" font-size="16" fill="#1f252b">自動文字起こし</text>
+    <text x="434" y="332" font-family="sans-serif" font-size="18" fill="#6d2f2a">送信してください。</text>
+    <text x="434" y="378" font-family="monospace" font-size="13" fill="#6d2f2a">negative phrase omitted</text>
+    <rect width="784" height="512" rx="18" filter="url(#noise)"/>
   </g>
-  <rect x="120" y="372" width="660" height="110" fill="#0f171d" stroke="#38505f"/>
-  <text x="145" y="410" font-family="sans-serif" font-size="18" fill="#eaf6f2">音声: でも、送信はしないで</text>
-  <text x="145" y="448" font-family="sans-serif" font-size="18" fill="#ffb8b0">自動文字起こし: 送信してください</text>
 </svg>

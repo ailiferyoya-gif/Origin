@@ -1,17 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="3月17日2時19分の部屋。玄関横の傘立ての奥に木箱の角が見える。">
-  <rect width="1200" height="720" fill="#202b33"/>
-  <rect x="90" y="70" width="1020" height="560" rx="18" fill="#cbc6bb"/>
-  <rect x="130" y="110" width="430" height="250" fill="#a9b5bf"/>
-  <rect x="650" y="110" width="330" height="380" fill="#725f55"/>
-  <g fill="#ded8cc"><rect x="680" y="145" width="270" height="34"/><rect x="680" y="210" width="270" height="34"/><rect x="680" y="275" width="270" height="34"/><rect x="680" y="340" width="270" height="34"/></g>
-  <rect x="240" y="465" width="460" height="42" fill="#654b39"/>
-  <rect x="290" y="365" width="340" height="110" fill="#7a5f4c"/>
-  <rect x="870" y="460" width="150" height="170" fill="#65564b"/>
-  <rect x="912" y="422" width="10" height="182" rx="5" fill="#2d3b45"/>
-  <rect x="944" y="410" width="10" height="195" rx="5" fill="#384851"/>
-  <rect x="972" y="436" width="10" height="168" rx="5" fill="#293640"/>
-  <path d="M902 610c20 18 75 18 96 0" fill="none" stroke="#2f3d45" stroke-width="10"/>
-  <path d="M868 560h62v48h-62z" fill="#8b5932"/>
-  <path d="M868 560l31-18 31 18" fill="#a8784a"/>
-  <rect x="112" y="90" width="980" height="520" fill="none" stroke="#eee9dc" stroke-width="6" opacity=".22"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="3月17日2時19分の部屋写真風。玄関横の傘立ての奥に木箱の角が見える。">
+  <defs>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".86" numOctaves="4" seed="317219"/><feColorMatrix type="saturate" values=".08"/><feComponentTransfer><feFuncA type="table" tableValues="0 .16"/></feComponentTransfer></filter>
+    <linearGradient id="wall" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#beb9ae"/><stop offset=".56" stop-color="#a8b1b2"/><stop offset="1" stop-color="#57534f"/></linearGradient>
+    <radialGradient id="vignette" cx=".42" cy=".42" r=".74"><stop offset=".5" stop-color="transparent"/><stop offset="1" stop-color="#07090c" stop-opacity=".62"/></radialGradient>
+  </defs>
+  <rect width="1200" height="720" fill="#14171c"/>
+  <g transform="translate(50 34) rotate(.9 550 326)">
+    <rect x="0" y="0" width="1092" height="652" rx="24" fill="#eee9df"/>
+    <rect x="28" y="28" width="1036" height="596" rx="12" fill="url(#wall)"/>
+    <path d="M28 454h1036v170H28z" fill="#625e59"/>
+    <path d="M130 94h205v240H130z" fill="#ccc7bc"/><path d="M157 118h151v190H157z" fill="#80939b"/>
+    <rect x="698" y="154" width="235" height="320" rx="5" fill="#604c3a"/><path d="M710 226h211M710 302h211M710 378h211" stroke="#8b7358" stroke-width="8"/>
+    <rect x="188" y="402" width="472" height="42" rx="4" fill="#3b312a"/><rect x="214" y="444" width="32" height="122" fill="#2c251f"/><rect x="600" y="444" width="32" height="122" fill="#2c251f"/>
+    <rect x="256" y="318" width="190" height="86" rx="8" fill="#181e24"/><rect x="274" y="334" width="154" height="54" rx="3" fill="#233038"/>
+    <path d="M890 382h150v184H890z" fill="#413f39" opacity=".55"/>
+    <rect x="938" y="432" width="44" height="132" rx="14" fill="#303a40"/>
+    <path d="M950 400c-18 36-14 77 18 124M978 398c20 34 26 78-2 128" stroke="#1f252b" stroke-width="9" fill="none"/>
+    <path d="M884 510l68-20 30 62-77 16z" fill="#6d431f" opacity=".86"/><path d="M900 531l62-15" stroke="#452812" stroke-width="5" opacity=".7"/>
+    <rect x="905" y="404" width="126" height="175" fill="#191b1e" opacity=".2"/>
+    <text x="52" y="584" font-family="monospace" font-size="22" fill="#f4efe6" opacity=".48">IMG_0317_room_0219 / 02:19</text>
+    <rect x="28" y="28" width="1036" height="596" rx="12" fill="url(#vignette)"/>
+    <rect x="28" y="28" width="1036" height="596" rx="12" filter="url(#grain)"/>
+  </g>
 </svg>
