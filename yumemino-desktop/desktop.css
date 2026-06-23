@@ -880,6 +880,43 @@ body.is-ending .desktop {
   font-size: 15px;
 }
 
+.chapter-check {
+  padding: 8px 0 10px;
+  border-top: 1px solid var(--win-line);
+}
+
+.chapter-check:first-of-type {
+  border-top: 0;
+}
+
+.chapter-check h4 {
+  margin: 0 0 8px;
+  color: var(--win-text);
+  font-size: 13px;
+}
+
+.chapter-hint {
+  padding: 10px 0;
+  border-top: 1px solid var(--win-line);
+}
+
+.chapter-hint summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.chapter-hint p {
+  margin: 8px 0;
+}
+
+.note-answer {
+  padding: 8px 10px;
+  background: #f1f5f9;
+  border: 1px solid var(--win-line);
+  border-radius: 8px;
+  font-weight: 700;
+}
+
 .note-small {
   color: var(--win-muted);
   font-size: 12px;
