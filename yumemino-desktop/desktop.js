@@ -7,6 +7,7 @@ const initialState = {
   pendingFriendRequest: false,
 
   servicePdfOpened: false,
+  noticeCodeFound: false,
   mailKeyRead: false,
   trashReviewed: false,
   searched404: false,
@@ -65,8 +66,8 @@ const callRecords = {
       "ログを見て。",
       "全部じゃない。",
       "三番目、五番目、七番目。",
-      "先頭だけ読めば、部門名になる。",
-      "そこから先は、もう人事の画面じゃない。"
+      "アラート条件と同じ番号だけを見てください。",
+      "その行にだけ、部署名の痕跡が残っています。"
     ],
     unlocks: ["call_employee404_01_done"]
   },
@@ -80,10 +81,9 @@ const callRecords = {
     thread: "archive",
     transcript: [
       "三つの文書名を戻してください。",
-      "証拠。",
-      "発言。",
-      "対象者。",
-      "欠けていた文字だけが、あなたの役割です。"
+      "本文の中に、それぞれの文書名を戻すための周辺語があります。",
+      "戻したあと、欠落箇所だけを記録してください。",
+      "最終フォームは、その記録を役割として扱います。"
     ],
     unlocks: ["call_archive_01_done"]
   }
@@ -101,8 +101,8 @@ Object.assign(callRecords, {
     transcript: [
       "メールの件名だけ見てください。",
       "本文より、件名のほうが消し忘れられています。",
-      "監、査、室。",
-      "同じ言葉が、社員404のログにも残っているはずです。",
+      "同じ日付の三通を、送信時刻順に並べてください。",
+      "同じ読み方が、社員404のログにも残っているはずです。",
       "2025年8月7日の前後だけを追ってください。"
     ],
     unlocks: ["call_former_employee_m_01_done"]
@@ -146,7 +146,7 @@ const talkMessages = {
   "employee404-1": { thread: "employee404", from: "社員404", body: "三、五、七。", time: "now" },
   "employee404-2": { thread: "employee404", from: "社員404", body: "それ以上は、ここには書けません。", time: "now" },
   "archive-1": { thread: "archive", from: "非通知", body: "ボイスメッセージを保存しました。", time: "now" },
-  "archive-2": { thread: "archive", from: "非通知", body: "欠けた文字だけを読んでください。", time: "now" },
+  "archive-2": { thread: "archive", from: "非通知", body: "黒塗りの前後に残った語を照合してください。", time: "now" },
   "final-1": { thread: "system", from: "端末通知", body: "外部監査送信キューの送信が完了しました。", time: "now" },
   "final-2": { thread: "system", from: "端末通知", body: "記録はこの端末のFilesに保存されています。", time: "now" }
 };
@@ -211,7 +211,7 @@ const talkBlueprints = {
     "ログを見て。",
     "全部じゃない。",
     "三、五、七。",
-    "先頭だけ読めば、部門名になる。",
+    "アラート条件と同じ番号だけを見てください。",
     "そこから先は、もう人事の画面じゃない。",
     "本人確認は未完了のままです。",
     "退職同意は未取得です。",
@@ -220,36 +220,36 @@ const talkBlueprints = {
     "外部接触の検知時刻を見てください。",
     "2025.08.07 02:14。",
     "同じ時刻がメールにもあります。",
-    "監視対象判定。",
-    "査定保留処理。",
-    "室長確認済。",
+    "処理名は三つだけで足ります。",
+    "人事コメントではなく、処理名を見てください。",
+    "行番号と処理名を別紙に写してください。",
     "業務ログとして残っているから消されにくい。",
-    "部署検索に入れてください。",
-    "監査室。",
+    "部署検索に入れる語は、複数資料で同じ形になります。",
+    "Talkだけで決めないでください。",
     "復元キーは私には分かりません。",
     "理念の反対を考えてください。"
   ],
   formerM: [
     "私の端末にも同じ通知が来ました。",
     "その時は、Filesに残っていたメールを見落としました。",
-    "件名だけでいい。並べれば部署コードになります。",
+    "件名だけでいい。本文より、件名の並びを見てください。",
     "本文は黒塗りで誘導されます。",
     "件名は処理の都合で残ります。",
-    "監査室共有依頼。",
-    "査定保留処理について。",
-    "室長確認済み。",
-    "これを順に読んでください。",
+    "同じ日付の三通を並べてください。",
+    "似た処理名が社員ログにも出ます。",
+    "一文字ずつ抜く場所は件名の端です。",
+    "これを本文より優先してください。",
     "社員404の画面にも同じ順番があります。",
     "第七条は状態変更の根拠です。",
     "再通知不要は危ない言葉です。",
     "本人に知らせない処理です。",
     "Trashに通知案が残っているなら読んでください。",
-    "記録保護という語を復元できます。",
+    "黒塗り語は用語アーカイブと通知案で照合できます。",
     "それはNot Foundの意味を変えます。",
-    "私は証言者になれませんでした。",
+    "私は最後の役割まで辿り着けませんでした。",
     "あなたが最後に入力する役割は一つです。",
-    "A、B、Cの欠けた文字だけを見てください。",
-    "証拠、発言、対象者。"
+    "A、B、Cの文書名を、本文から自然な語に戻してください。",
+    "本文に残った業務語が戻し方の手がかりです。"
   ],
   auditBot: [
     "監査室自動応答です。",
@@ -264,9 +264,9 @@ const talkBlueprints = {
     "B-02は面談時の発話に関する文書です。",
     "C-03は該当者を扱う一覧です。",
     "文書名の黒塗りは一文字ずつです。",
-    "本文は答えを直接書きません。",
+    "本文は復元候補名を直接書きません。",
     "周辺語から自然な文書名に戻してください。",
-    "戻した文書名から欠けた字を拾ってください。",
+    "戻した文書名と黒塗り位置を別紙に写してください。",
     "送信前確認は役割だけを求めます。",
     "社員ID、参照キー、部門、復元キーを揃えてください。",
     "送信後は取り消せません。",
@@ -275,25 +275,25 @@ const talkBlueprints = {
   ],
   archive: [
     "三つの文書名を戻してください。",
-    "証拠。",
-    "発言。",
-    "対象者。",
-    "欠けた文字だけが、あなたの役割です。",
+    "本文に残った専門語を拾ってください。",
+    "文書名として自然になる語だけを採用してください。",
+    "黒塗り位置は一文字ずつです。",
+    "最終フォームは、その一文字列を役割として扱います。",
     "A-01は原本性と提出添付資料。",
     "B-02は面談時の発言と供述の整合性。",
     "C-03は該当者と記録保護対象。",
     "復元候補とは表示しません。",
     "あなたが推測してください。",
-    "証。",
-    "言。",
-    "者。",
+    "A、B、Cの順番は変えないでください。",
+    "同じ漢字が本文中に何度も出る場合、文書名に入るものだけを使います。",
+    "答えをTalkだけで確定しないでください。",
     "社員404は退職していません。",
     "退職処理ではなく状態変更です。",
     "状態はNot Foundです。",
     "記録は消えていません。",
     "見えない場所に移されています。",
     "最後の入力欄は役割を聞いています。",
-    "証言者。"
+    "最後はRecovered文書と送信キューを照合してください。"
   ],
   system: [
     "端末を起動しました。",
@@ -344,7 +344,7 @@ const fileRecords = {
     { id: "notice_20250807", name: "notice_20250807.txt", type: "TEXT", updated: "2025-08-07", gatedBy: "talkContactAdded" },
     { id: "terms_archive_2025", name: "terms_archive_2025.txt", type: "TEXT", updated: "2025-08-08", gatedBy: "talkContactAdded" },
     { id: "faq_contact_export", name: "faq_contact_export.txt", type: "TEXT", updated: "2025-11-19", gatedBy: "talkContactAdded" },
-    { id: "search_cache_index", name: "search_cache_index.txt", type: "TEXT", updated: "2025-12-01", gatedBy: "searched404" },
+    { id: "search_cache_index", name: "search_cache_index.txt", type: "TEXT", updated: "2025-12-01", gatedBy: "noticeCodeFound" },
     { id: "call_unknown_01_transcript", name: "call_unknown_01_transcript.txt", type: "TEXT", updated: "通話後", gatedByCall: "unknown-01" },
     { id: "call_employee404_01_transcript", name: "call_employee404_01_transcript.txt", type: "TEXT", updated: "通話後", gatedByCall: "employee404-01" },
     { id: "call_former_employee_m_01_transcript", name: "call_former_employee_m_01_transcript.txt", type: "TEXT", updated: "通話後", gatedByCall: "former-employee-m-01" },
@@ -359,10 +359,10 @@ const fileRecords = {
     { id: "mail_auto_reply", name: "自動返信_資料請求受付.eml", type: "MAIL", updated: "2026-06-23 09:18", gatedBy: "contactSubmitted" },
     { id: "mail_fwd_employee404", name: "Fwd_社員404に関する確認.eml", type: "MAIL", updated: "2025-08-09 18:44", gatedBy: "searched404" },
     { id: "mail_policy_revision", name: "内部通報管理規程改定通知.eml", type: "MAIL", updated: "2025-04-12", gatedBy: "talkContactAdded" },
-    { id: "mail_external_contact", name: "Re_外部相談窓口への接触傾向.eml", type: "MAIL", updated: "2025-08-07 02:14", gatedBy: "searched404" },
-    { id: "mail_assessment_hold", name: "査定保留処理について.eml", type: "MAIL", updated: "2025-08-07 10:42", gatedBy: "searched404" },
-    { id: "mail_manager_confirm", name: "室長確認済み.eml", type: "MAIL", updated: "2025-08-07 11:03", gatedBy: "searched404" },
-    { id: "mail_article_seven", name: "第七条_状態変更照会.eml", type: "MAIL", updated: "2025-08-07 11:18", gatedBy: "employeeLoginSuccess" }
+    { id: "mail_external_contact", name: "Re_外部相談窓口への接触傾向.eml", type: "MAIL", updated: "2025-08-07 02:14", gatedBy: "mailKeyRead" },
+    { id: "mail_assessment_hold", name: "査定保留処理について.eml", type: "MAIL", updated: "2025-08-07 10:42", gatedBy: "mailKeyRead" },
+    { id: "mail_manager_confirm", name: "室長確認済み.eml", type: "MAIL", updated: "2025-08-07 11:03", gatedBy: "mailKeyRead" },
+    { id: "mail_article_seven", name: "第七条_状態変更照会.eml", type: "MAIL", updated: "2025-08-07 11:18", gatedBy: "mailKeyRead" }
   ],
   recovered: [
     { id: "a01_evidence", name: "A-01_＿拠保全手順.txt", type: "TEXT", updated: "2025-08-01", gatedBy: "archiveOpened" },
@@ -420,8 +420,9 @@ const searchIndex = [
     keywords: ["404", "Not Found", "社員404", "記録保護"],
     title: "人的資本データ注記 | Not Found",
     url: "yri.local/ir#human-capital",
-    body: "一部の社員情報は、記録保護のため Not Found と表示される場合があります。",
+    body: "人的資本データの注記欄。404という数値とNot Found注記が同じ表に残っています。",
     action: { type: "browser", path: "/ir" },
+    gatedBy: "servicePdfOpened",
     triggersCall: "unknown-01"
   },
   {
@@ -444,41 +445,42 @@ const searchIndex = [
     title: "監査室 文書閲覧端末",
     url: "yri.local/audit",
     body: "社員404ページのログから部門名を確認したあと、文書閲覧端末に移動できます。",
-    action: { type: "browser", path: "/audit" }
+    action: { type: "browser", path: "/audit" },
+    gatedBy: "deptSearchSuccess"
   }
 ];
 
 searchIndex.push(
-  { keywords: ["ユメミノ 404", "社員404"], title: "キャッシュ: 社員404に関する問い合わせ", url: "cache://yri/employee404", body: "削除済みFAQのキャッシュ。社員404、Not Found、記録保護の語が並ぶ。", action: { type: "file", folder: "downloads", file: "search_cache_index" }, gatedBy: "searched404" },
+  { keywords: ["ユメミノ 404", "社員404", "0807"], title: "キャッシュ: 社員404に関する問い合わせ", url: "cache://yri/employee404", body: "削除済みFAQのキャッシュ。0807コード確認後に開ける索引です。", action: { type: "file", folder: "downloads", file: "search_cache_index" }, gatedBy: "noticeCodeFound" },
   { keywords: ["ユメミノ 表示不具合", "表示不具合"], title: "業界メディア: 表示不具合と人的資本データ", url: "media.local/article/yri-20250807", body: "2025.08.07の告知を分析した短い記事。障害情報としては説明が薄い。", action: { type: "browser", path: "/news" }, gatedBy: "talkContactAdded" },
-  { keywords: ["2025 08 07", "2025.08.07"], title: "2025-08-07_表示不具合対応.eml", url: "files://Mail/2025-08-07_表示不具合対応.eml", body: "公開文面の調整メール。記録保護、Not Found、社員404の語を隠す指示が残る。", action: { type: "file", folder: "mail", file: "mail_20250807_display" }, gatedBy: "talkContactAdded" },
-  { keywords: ["Not Found", "記録保護"], title: "用語アーカイブ: 記録保護 / Not Found", url: "files://Downloads/terms_archive_2025.txt", body: "Not Foundが欠損ではなく表示制限状態であることを示す用語資料。", action: { type: "file", folder: "downloads", file: "terms_archive_2025" }, gatedBy: "talkContactAdded" },
-  { keywords: ["記録保護", "再通知不要"], title: "人事部_状態変更一覧.eml", url: "files://Mail/人事部_状態変更一覧.eml", body: "EMP-000404の状態変更と再通知不要判定が記録されている。", action: { type: "file", folder: "mail", file: "mail_hr_status_changes" }, gatedBy: "searched404" },
-  { keywords: ["監査室", "部署コード"], title: "監査室共有依頼.eml", url: "files://Mail/監査室共有依頼.eml", body: "件名頭文字謎の1通目。監査室を示す導線。", action: { type: "file", folder: "mail", file: "mail_audit_share" }, gatedBy: "searched404" },
+  { keywords: ["2025 08 07", "2025.08.07"], title: "2025-08-07_表示不具合対応.eml", url: "files://Mail/2025-08-07_表示不具合対応.eml", body: "公開文面の調整メール。公開語と内部語の差分を確認できます。", action: { type: "file", folder: "mail", file: "mail_20250807_display" }, gatedBy: "talkContactAdded" },
+  { keywords: ["Not Found", "記録保護"], title: "用語アーカイブ: 表示制限用語", url: "files://Downloads/terms_archive_2025.txt", body: "Not Foundの表示仕様を、用語定義として確認する資料です。", action: { type: "file", folder: "downloads", file: "terms_archive_2025" }, gatedBy: "servicePdfOpened" },
+  { keywords: ["記録保護", "再通知不要"], title: "人事部_状態変更一覧.eml", url: "files://Mail/人事部_状態変更一覧.eml", body: "EMP-000404の状態変更記録。通知区分と承認欄を照合してください。", action: { type: "file", folder: "mail", file: "mail_hr_status_changes" }, gatedBy: "searched404" },
+  { keywords: ["部署コード", "共有依頼"], title: "監査室共有依頼.eml", url: "files://Mail/監査室共有依頼.eml", body: "同日メールの件名照合に使う1通目。本文より件名を優先します。", action: { type: "file", folder: "mail", file: "mail_audit_share" }, gatedBy: "mailKeyRead" },
   { keywords: ["秘密録", "採用"], title: "採用情報 | 社員インタビュー", url: "yri.local/recruit", body: "秘・密・録が本文中に自然に埋め込まれている。", action: { type: "browser", path: "/recruit" }, gatedBy: "talkContactAdded" },
-  { keywords: ["内部通報管理規程", "第七条"], title: "内部通報管理規程改定通知.eml", url: "files://Mail/内部通報管理規程改定通知.eml", body: "第七条の改定通知。外部相談窓口への接触傾向が記録保護に接続される。", action: { type: "file", folder: "mail", file: "mail_policy_revision" }, gatedBy: "talkContactAdded" },
-  { keywords: ["第七条", "状態変更"], title: "第七条_状態変更照会.eml", url: "files://Mail/第七条_状態変更照会.eml", body: "監査室自動応答による照会ログ。記録保護と再通知不要が並ぶ。", action: { type: "file", folder: "mail", file: "mail_article_seven" }, gatedBy: "employeeLoginSuccess" },
-  { keywords: ["外部相談窓口"], title: "Re_外部相談窓口への接触傾向.eml", url: "files://Mail/Re_外部相談窓口への接触傾向.eml", body: "外部相談窓口への接触傾向とEMP-000404の状態変更が結びつく。", action: { type: "file", folder: "mail", file: "mail_external_contact" }, gatedBy: "searched404" },
-  { keywords: ["人的資本 離職率 0.0", "離職率"], title: "human_capital_report_2025.pdf", url: "files://Downloads/human_capital_report_2025.pdf", body: "社員数404と離職率0.0%の表、注記番号3/5/7が残る。", action: { type: "file", folder: "downloads", file: "human_capital_report_2025" }, gatedBy: "talkContactAdded" },
+  { keywords: ["内部通報管理規程", "第七条"], title: "内部通報管理規程改定通知.eml", url: "files://Mail/内部通報管理規程改定通知.eml", body: "第七条の改定通知。状態変更の根拠条文だけが残っています。", action: { type: "file", folder: "mail", file: "mail_policy_revision" }, gatedBy: "mailKeyRead" },
+  { keywords: ["第七条", "状態変更"], title: "第七条_状態変更照会.eml", url: "files://Mail/第七条_状態変更照会.eml", body: "自動応答による照会ログ。通知区分、根拠条文、共有先を並べて確認します。", action: { type: "file", folder: "mail", file: "mail_article_seven" }, gatedBy: "mailKeyRead" },
+  { keywords: ["外部相談窓口"], title: "Re_外部相談窓口への接触傾向.eml", url: "files://Mail/Re_外部相談窓口への接触傾向.eml", body: "外部相談窓口への接触傾向とEMP-000404の状態変更時刻を照合できます。", action: { type: "file", folder: "mail", file: "mail_external_contact" }, gatedBy: "mailKeyRead" },
+  { keywords: ["人的資本 離職率 0.0", "離職率"], title: "human_capital_report_2025.pdf", url: "files://Downloads/human_capital_report_2025.pdf", body: "社員数404と離職率0.0%の表、注記番号3/5/7が残る。番号の扱いを学ぶ資料です。", action: { type: "file", folder: "downloads", file: "human_capital_report_2025" }, gatedBy: "talkContactAdded" },
   { keywords: ["状態変更", "YRI-HR"], title: "status_change_matrix.csv", url: "files://Recovered/status_change_matrix.csv", body: "EMP-000404の表示区分がNot Foundになっている。", action: { type: "file", folder: "recovered", file: "status_change_matrix" }, gatedBy: "employeeLoginSuccess" },
-  { keywords: ["表示制限"], title: "deleted_employee_list.csv", url: "files://Trash/deleted_employee_list.csv", body: "削除済み社員一覧。404のstatusがrecord_protectedとして残る。", action: { type: "file", folder: "trash", file: "deleted_employee_list" }, gatedBy: "searched404" },
+  { keywords: ["表示制限"], title: "deleted_employee_list.csv", url: "files://Trash/deleted_employee_list.csv", body: "削除済み社員一覧。404の表示区分だけが通常社員と異なります。", action: { type: "file", folder: "trash", file: "deleted_employee_list" }, gatedBy: "searched404" },
   { keywords: ["YRI-HR", "EMP-000404"], title: "YRI-HR / EMP-000404", url: "yri.local/login", body: "社員専用ページ。社員IDと参照キーが必要。", action: { type: "browser", path: "/login" }, gatedBy: "searched404" },
   { keywords: ["EMP-000404", "社員404"], title: "Fwd_社員404に関する確認.eml", url: "files://Mail/Fwd_社員404に関する確認.eml", body: "元社員Mからの転送メール。件名に部署コードのヒントが残る。", action: { type: "file", folder: "mail", file: "mail_fwd_employee404" }, gatedBy: "searched404" },
-  { keywords: ["査定保留", "監査室"], title: "査定保留処理について.eml", url: "files://Mail/査定保留処理について.eml", body: "件名頭文字謎の2通目。", action: { type: "file", folder: "mail", file: "mail_assessment_hold" }, gatedBy: "searched404" },
-  { keywords: ["室長確認", "監査室"], title: "室長確認済み.eml", url: "files://Mail/室長確認済み.eml", body: "件名頭文字謎の3通目。", action: { type: "file", folder: "mail", file: "mail_manager_confirm" }, gatedBy: "searched404" },
-  { keywords: ["監査室", "復元キー"], title: "監査室復元キー メモ", url: "files://Recovered/audit_room_key_memo.txt", body: "理念に反する二文字を探すメモ。", action: { type: "file", folder: "recovered", file: "audit_room_key_memo" }, gatedBy: "deptSearchSuccess" },
-  { keywords: ["疑え", "復元キー"], title: "監査室 文書閲覧端末", url: "yri.local/audit", body: "復元キー入力画面。企業理念と反対の語を使う。", action: { type: "browser", path: "/audit" }, gatedBy: "deptSearchSuccess" },
+  { keywords: ["査定保留", "部署照合"], title: "査定保留処理について.eml", url: "files://Mail/査定保留処理について.eml", body: "同日メールの件名照合に使う2通目。送信時刻順に並べます。", action: { type: "file", folder: "mail", file: "mail_assessment_hold" }, gatedBy: "mailKeyRead" },
+  { keywords: ["室長確認", "部署照合"], title: "室長確認済み.eml", url: "files://Mail/室長確認済み.eml", body: "同日メールの件名照合に使う3通目。本文ではなく件名を見ます。", action: { type: "file", folder: "mail", file: "mail_manager_confirm" }, gatedBy: "mailKeyRead" },
+  { keywords: ["復元キー", "理念"], title: "復元キー メモ", url: "files://Recovered/audit_room_key_memo.txt", body: "理念文と反対の動作を照合するためのメモ。答えそのものは記載されていません。", action: { type: "file", folder: "recovered", file: "audit_room_key_memo" }, gatedBy: "deptSearchSuccess" },
+  { keywords: ["復元キー", "理念"], title: "文書閲覧端末", url: "yri.local/audit", body: "復元キー入力画面。企業理念の表現と照らし合わせます。", action: { type: "browser", path: "/audit" }, gatedBy: "deptSearchSuccess" },
   { keywords: ["Recovered", "証拠"], title: "A-01_＿拠保全手順.txt", url: "files://Recovered/A-01", body: "原本性、証跡ハッシュ、外部監査提出時の添付資料。", action: { type: "file", folder: "recovered", file: "a01_evidence" }, gatedBy: "archiveOpened" },
   { keywords: ["Recovered", "発言"], title: "B-02_発＿テンプレート.txt", url: "files://Recovered/B-02", body: "面談時の発言、供述の整合性。", action: { type: "file", folder: "recovered", file: "b02_statement" }, gatedBy: "archiveOpened" },
   { keywords: ["Recovered", "対象者"], title: "C-03_対象＿リスト.txt", url: "files://Recovered/C-03", body: "該当者、対象となる従業員、記録保護対象。", action: { type: "file", folder: "recovered", file: "c03_subject" }, gatedBy: "archiveOpened" },
-  { keywords: ["証言者", "最終"], title: "外部監査送信キュー", url: "yri.local/final", body: "A-01/B-02/C-03の欠けた文字から役割を入力する。", action: { type: "browser", path: "/final" }, gatedBy: "archiveOpened" },
-  { keywords: ["Trash", "記録保護"], title: "draft_notice_20250807.txt", url: "files://Trash/draft_notice_20250807.txt", body: "黒塗り前の語を別資料から復元する中謎。復元語は記録保護。", action: { type: "file", folder: "trash", file: "draft_notice_20250807" }, gatedBy: "searched404" },
+  { keywords: ["最終", "送信キュー"], title: "外部監査送信キュー", url: "yri.local/final", body: "A-01/B-02/C-03の黒塗り位置を照合して役割を入力する。", action: { type: "browser", path: "/final" }, gatedBy: "archiveOpened" },
+  { keywords: ["Trash", "通知案", "0807"], title: "draft_notice_20250807.txt", url: "files://Trash/draft_notice_20250807.txt", body: "黒塗り語を別資料から復元する中謎。用語アーカイブとの照合が必要。", action: { type: "file", folder: "trash", file: "draft_notice_20250807" }, gatedBy: "searched404" },
   { keywords: ["Trash", "検索語"], title: "deleted_search_terms.csv", url: "files://Trash/deleted_search_terms.csv", body: "削除された検索語。社員404、再通知不要、記録保護。", action: { type: "file", folder: "trash", file: "deleted_search_terms" }, gatedBy: "searched404" },
-  { keywords: ["証言者", "黒塗り"], title: "redaction_compare_notes.txt", url: "files://Recovered/redaction_compare_notes.txt", body: "A/B/C文書の本文語を比較する最終大謎用メモ。", action: { type: "file", folder: "recovered", file: "redaction_compare_notes" }, gatedBy: "archiveOpened" },
+  { keywords: ["黒塗り", "照合"], title: "redaction_compare_notes.txt", url: "files://Recovered/redaction_compare_notes.txt", body: "A/B/C文書の本文語を比較する最終大謎用メモ。黒塗り位置だけが残る。", action: { type: "file", folder: "recovered", file: "redaction_compare_notes" }, gatedBy: "archiveOpened" },
   { keywords: ["SILENT Core", "記録保護"], title: "silent_core_operation.txt", url: "files://Recovered/silent_core_operation.txt", body: "状態変更は退職処理ではない、という内部文書。", action: { type: "file", folder: "recovered", file: "silent_core_operation" }, gatedBy: "archiveOpened" },
   { keywords: ["資料請求", "自動返信"], title: "自動返信_資料請求受付.eml", url: "files://Mail/自動返信_資料請求受付.eml", body: "資料窓口追加の受付記録。", action: { type: "file", folder: "mail", file: "mail_auto_reply" }, gatedBy: "contactSubmitted" },
   { keywords: ["FAQ", "Not Found"], title: "faq_contact_export.txt", url: "files://Downloads/faq_contact_export.txt", body: "問い合わせFAQに残ったNot Foundの説明。", action: { type: "file", folder: "downloads", file: "faq_contact_export" }, gatedBy: "talkContactAdded" },
-  { keywords: ["サーベイ", "3 5 7"], title: "survey_design_guide.pdf", url: "files://Downloads/survey_design_guide.pdf", body: "注記3/5/7の先頭文字が監査室になる。", action: { type: "file", folder: "downloads", file: "survey_design_guide" }, gatedBy: "talkContactAdded" },
+  { keywords: ["サーベイ", "3 5 7"], title: "survey_design_guide.pdf", url: "files://Downloads/survey_design_guide.pdf", body: "注記3/5/7が、社員ログで使う番号の読み方を先に示しています。", action: { type: "file", folder: "downloads", file: "survey_design_guide" }, gatedBy: "talkContactAdded" },
   { keywords: ["導入事例", "コールセンター"], title: "case_study_callcenter.pdf", url: "files://Downloads/case_study_callcenter.pdf", body: "公開向けに加工された導入事例。表示対象外アカウントの別紙参照が残る。", action: { type: "file", folder: "downloads", file: "case_study_callcenter" }, gatedBy: "talkContactAdded" }
 );
 
@@ -1157,35 +1159,35 @@ function mailPage({ subject, from, to = "YRI調査端末", date, body, note = ""
 
 function supplementalFileContent(fileId) {
   const genericDocs = {
-    case_study_callcenter: ["PDF", "導入事例: コールセンター運営企業", ["離職傾向の可視化、面談設計、月次報告の整備を実施。", "課題欄には、表示対象外となったアカウントの扱いが別紙参照として残る。"]],
-    survey_design_guide: ["PDF", "組織サーベイ設計ガイド", ["設問設計、集計軸、匿名性の注記をまとめた資料。", "注記3: 監視対象判定の質問群は通常集計に含めない。", "注記5: 査定保留処理に関する回答は人事部門のみ閲覧可。", "注記7: 室長確認済みの案件は監査室に共有する。"]],
-    terms_archive_2025: ["TEXT", "用語アーカイブ 2025", ["記録保護: 本人の安全確保を理由として、通常検索と一覧表示から除外する状態。", "Not Found: データ不存在ではなく、表示制限状態の代替表示。", "再通知不要: 状態変更後、本人への再通知を行わない処理区分。"]],
-    faq_contact_export: ["TEXT", "問い合わせFAQエクスポート", ["Q. Not Foundと表示される社員情報は削除済みですか。", "A. 削除ではなく、記録保護状態の可能性があります。", "Q. 社員404という検索語は何ですか。", "A. 公開FAQでは回答できません。"]],
-    search_cache_index: ["TEXT", "Searchキャッシュ索引", ["2025.08.07 表示不具合 / 記録保護 / 社員404 / 外部相談窓口", "キャッシュページはSearch内でのみ閲覧可能。"]],
-    audit_room_key_memo: ["TEXT", "監査室復元キー メモ", ["企業理念: 疑問を減らす。", "復元キーは理念に反する二文字。", "入力語は疑問を増やす行為を指す。"]],
-    silent_core_operation: ["TEXT", "SILENT Core 運用抜粋", ["状態変更は退職処理ではない。", "対象者は通常検索から除外される。", "外部相談窓口への接触傾向は監査室へ共有する。"]],
-    deleted_notice_draft: ["TEXT", "削除済み通知案", ["一部アカウント情報は■■■■のため Not Found と表示される場合があります。", "別資料の用語定義と照合すると、黒塗りは記録保護。"]],
-    status_change_matrix: ["CSV", "状態変更マトリクス", ["id,status,notice,share", "EMP-000404,Not Found,再通知不要,監査室", "EMP-000357,monitoring,要確認,人事部"]],
-    audit_article_7_extract: ["TEXT", "第七条 抜粋", ["第七条: 外部相談窓口への接触傾向が確認された場合、記録保護状態として扱うことができる。", "本人への再通知は、監査室長の確認により不要とする。"]],
-    redaction_compare_notes: ["TEXT", "黒塗り比較メモ", ["A-01: 原本性、外部監査提出時の添付資料、証跡ハッシュ。", "B-02: 面談時の発言、供述の整合性。", "C-03: 該当者、対象となる従業員。"]],
+    case_study_callcenter: ["PDF", "導入事例: コールセンター運営企業", ["文書番号: CS-CC-2025-10 / 作成日: 2025.10.30 / 担当: 組織改善支援部", "離職傾向の可視化、面談設計、月次報告の整備を実施。公開版では固有名詞と社員IDを加工しています。", "導入前の課題: 拠点ごとの離職率に説明不能な偏りがあり、相談窓口利用後の状態変更が別管理になっていた。", "実施内容: 勤怠傾向、面談記録、サーベイ自由記述を月次で突合。状態変更済みアカウントは別紙M-07に転記。", "注記: 表示対象外アカウントの扱いは障害報告ではなく、管理区分の差異として処理されています。"]],
+    survey_design_guide: ["PDF", "組織サーベイ設計ガイド", ["文書番号: YRI-SURV-G-2025 / 作成日: 2025.11.18 / 担当: 調査設計室", "設問設計、集計軸、匿名性の注記をまとめた資料。人事システム側の処理名と同じ語が一部残っています。", "注記1: 集計単位は部署、雇用区分、勤務形態の三軸とします。", "注記3: 監視対象判定の質問群は通常集計に含めない。", "注記5: 査定保留処理に関する回答は人事部門のみ閲覧可。", "注記7: 室長確認済みの案件は別系統の閲覧権限へ移管する。", "読解メモ: 注記番号は本文順ではなく、社内ログの参照番号と対応する場合があります。"]],
+    terms_archive_2025: ["TEXT", "用語アーカイブ 2025", ["文書番号: TERM-ARC-2025 / 作成日: 2025.08.08 / 担当: 情報管理室", "記録保護: 本人の安全確保を理由として、通常検索と一覧表示から除外する状態。障害ではなく表示範囲の変更として扱う。", "Not Found: データ不存在ではなく、表示制限状態の代替表示。外部説明では欠損と誤読されやすいため注記を付ける。", "再通知不要: 状態変更後、本人への再通知を行わない処理区分。適用時は承認者と根拠条文を残す。", "照合欄: 2025.08.07の通知案にある四文字黒塗りは、この用語一覧のいずれかと一致する。"]],
+    faq_contact_export: ["TEXT", "問い合わせFAQエクスポート", ["文書番号: FAQ-EXPORT-2025 / 作成日: 2025.11.19 / 担当: 資料窓口", "Q. Not Foundと表示される社員情報は削除済みですか。", "A. 削除と断定せず、表示範囲の設定、権限、注記欄を確認してください。", "Q. 社員番号が404の場合、通常の社員検索に出ないことがありますか。", "A. 公開FAQでは回答できません。管理画面上の表示区分と資料の注記を参照してください。"]],
+    search_cache_index: ["TEXT", "Searchキャッシュ索引", ["文書番号: CACHE-0807 / 作成日: 2025.08.07 / 担当: Search同期処理", "0807コードで開いたキャッシュ索引。表示不具合、状態変更、外部相談窓口の三系統が同じ時刻帯に更新されている。", "注意: キャッシュは確定情報ではありません。FilesのMailフォルダ、Trashの通知案、人的資本レポートと照合してください。"]],
+    audit_room_key_memo: ["TEXT", "復元キー メモ", ["文書番号: AUD-KEY-MEMO / 作成日: 2025.08.07 / 担当: 監査室文書管理", "企業理念の一節に、復元キーの反対側にある行動が記載されています。", "本文引用: 疑問を減らし、評価のゆらぎをなくす。", "入力欄には、引用文中の動作と反対になる二文字を入れる。ここにはキーそのものを記載しない。"]],
+    silent_core_operation: ["TEXT", "SILENT Core 運用抜粋", ["文書番号: OP-SC-2025-08 / 作成日: 2025.08.07 / 担当: 情報管理室", "状態変更は退職処理ではなく、表示範囲と参照権限の変更として登録する。", "対象者は通常検索から除外され、問い合わせ対応では公開語に置換して説明する。", "外部相談窓口への接触傾向が確認された場合、共有先の承認履歴を残すこと。", "注記: 本抜粋は文書名復元の答えではありません。状態変更の言い換えだけを確認してください。"]],
+    deleted_notice_draft: ["TEXT", "削除済み通知案", ["文書番号: DRAFT-NOTICE-0807 / 作成日: 2025.08.06 / 担当: 広報部", "一部アカウント情報は■■■■のため Not Found と表示される場合があります。", "公開時は上記四文字を「一部サービスの表示不具合」に置換し、対象範囲を社内管理画面の一部に限定して説明する。", "復元メモ: 黒塗り語は用語アーカイブ2025の定義語と一致。意味がもっとも近いものを採用する。"]],
+    status_change_matrix: ["CSV", "状態変更マトリクス", ["document_id,SCM-0807", "id,status,notice,share,approved_at", "EMP-000404,Not Found,再通知不要,部署コード要照合,2025-08-07 02:14", "EMP-000357,monitoring,要確認,人事部,2025-08-07 03:01", "note,共有先はMail件名照合と社員ログの番号読みで確認する"]],
+    audit_article_7_extract: ["TEXT", "第七条 抜粋", ["文書番号: AUD-ART7-EXT / 改定日: 2025.04.12 / 担当: 法務・監査連絡", "第七条: 外部相談窓口への接触傾向が確認された場合、記録保護状態として扱うことができる。", "本人への再通知は、承認者確認により不要とすることができる。", "運用注記: 共有先名は本条文に直接記載せず、別紙の承認履歴またはメール件名から照合する。"]],
+    redaction_compare_notes: ["TEXT", "黒塗り比較メモ", ["文書番号: REDACT-COMP-03 / 作成日: 2025.08.08 / 担当: 監査室補助者", "A-01: 原本性、外部監査提出時の添付資料、証跡ハッシュ。文書名の欠落は先頭一文字。", "B-02: 面談時の発言、供述の整合性、発話ログ。文書名の欠落は中央一文字。", "C-03: 該当者、対象となる従業員、記録保護対象。文書名の欠落は末尾一文字。", "注意: このメモは復元候補名を確定しません。各本文から自然な文書名を作ってから、黒塗り位置だけを別に控えてください。"]],
     old_contact_reply: ["TEXT", "古い問い合わせ返信", ["お問い合わせありがとうございます。資料はメール送付ではなく、端末内Talkでの配布に移行しました。"]],
     deleted_employee_list: ["CSV", "削除済み社員リスト", ["employee_id,display,status", "404,Not Found,record_protected", "406,visible,active"]],
     draft_notice_20250807: ["TEXT", "表示不具合通知案", ["一部の社員情報は、■■■■のため Not Found と表示される場合があります。", "公開版では「表示不具合」に表現を変更すること。"]],
-    trash_mail_index: ["TEXT", "削除メール索引", ["監査室共有依頼", "査定保留処理について", "室長確認済み", "件名頭文字を部署コードとして扱う。"]],
+    trash_mail_index: ["TEXT", "削除メール索引", ["文書番号: TRASH-MAIL-IDX / 作成日: 2025.08.08 / 担当: 端末保全", "2025-08-07 10:31 監査室共有依頼", "2025-08-07 10:42 査定保留処理について", "2025-08-07 11:03 室長確認済み", "メモ: 同じ日付で連続した三通。本文が削られている場合は件名端の文字を控える。"]],
     old_policy_comment: ["TEXT", "規程コメント旧版", ["第七条の適用範囲が広すぎる。外部相談窓口への接触だけで記録保護扱いにするのは再検討が必要。"]],
     deleted_search_terms: ["CSV", "削除検索語", ["term,reason", "社員404,問い合わせ増加", "再通知不要,内部語", "記録保護,説明困難"]]
   };
   const mailDocs = {
-    mail_20250807_display: ["2025-08-07_表示不具合対応", "広報部", ["表示不具合として公開します。本文では記録保護、Not Found、社員404の語を直接並べないでください。", "問い合わせが来た場合は資料窓口へ誘導します。"], "2025.08.07 の公開文面は後で修正されています。"],
-    mail_hr_status_changes: ["人事部_状態変更一覧", "人事部運用", ["状態変更一覧にEMP-000404を追加しました。退職処理ではなく、表示区分Not Foundとして扱います。", "本人への再通知は不要判定です。"], "社員IDと状態変更の関係が残っています。"],
-    mail_audit_share: ["監査室共有依頼", "人事部長", ["外部相談窓口への接触傾向を確認しました。監査室へ共有してください。", "第七条の適用可否は室長確認後に確定します。"], "件名頭文字謎の一部です。"],
+    mail_20250807_display: ["2025-08-07_表示不具合対応", "広報部", ["文書番号: MAIL-PR-0807 / 送信: 2025.08.07 09:12", "公開文面は「一部サービスの表示不具合」で統一してください。内部用語は通知案から削除し、問い合わせが来た場合は資料窓口へ誘導します。", "修正前の通知案はTrash側に残っている可能性があります。公開語と内部語の差分を確認する場合は、用語アーカイブを併用してください。"], "2025.08.07 の公開文面は後で修正されています。文書番号の末尾4桁はSearchキャッシュ索引の確認に使用できます。"],
+    mail_hr_status_changes: ["人事部_状態変更一覧", "人事部運用", ["文書番号: HR-STATE-0807 / 送信: 2025.08.07 10:04", "状態変更一覧にEMP-000404を追加しました。退職処理ではなく、表示区分Not Foundとして扱います。", "本人通知欄は「不要」判定です。承認者欄は別紙に分離されています。", "備考: 共有先の部署名は本文ではなく、同日午後の件名群で確認してください。"], "社員IDと状態変更の関係が残っています。"],
+    mail_audit_share: ["監査室共有依頼", "人事部長", ["文書番号: MAIL-SHARE-0807-01 / 送信: 2025.08.07 10:31", "外部相談窓口への接触傾向を確認しました。共有先の確認をお願いします。", "第七条の適用可否は室長確認後に確定します。", "備考: 本文は差し替え済みですが、件名は当時のまま残っています。"], "同日三通のうち1通目です。本文より件名を優先してください。"],
     mail_auto_reply: ["自動返信_資料請求受付", "資料窓口", ["資料窓口の追加リクエストを受け付けました。Talkで追加後、Downloadsへ資料を保存します。"], ""],
-    mail_fwd_employee404: ["Fwd_社員404に関する確認", "元社員M", ["本文はほとんど削除されています。件名だけが残っていました。", "監査室共有依頼、査定保留処理について、室長確認済み。"], "このメールを開くと元社員Mから通話が入ります。"],
-    mail_policy_revision: ["内部通報管理規程改定通知", "法務・監査連絡", ["第七条を改定します。外部相談窓口への接触傾向が確認された場合、記録保護の対象にできます。"], ""],
-    mail_external_contact: ["Re_外部相談窓口への接触傾向", "監査室", ["EMP-000404について、接触傾向を確認。状態変更理由は記録保護。再通知不要。"], ""],
-    mail_assessment_hold: ["査定保留処理について", "人事評価担当", ["評価処理を保留します。監査室共有依頼と同一案件です。"], "件名頭文字謎の一部です。"],
-    mail_manager_confirm: ["室長確認済み", "監査室", ["第七条適用。状態変更を実施。本人への再通知は不要。"], "件名頭文字謎の一部です。"],
-    mail_article_seven: ["第七条_状態変更照会", "監査室自動応答", ["第七条の照会ログです。記録保護、外部相談窓口、再通知不要の三語が同時に残っています。"], ""]
+    mail_fwd_employee404: ["Fwd_社員404に関する確認", "元社員M", ["文書番号: FWD-M-404 / 転送: 2025.08.09 18:44", "本文はほとんど削除されています。残っていたのは、同じ日付で連続した三通の件名と送信時刻だけでした。", "2025.08.07 10:31 / 10:42 / 11:03 の順に並べてください。本文より件名の端を見た方が早いはずです。", "この読み方は、後で社員404の操作ログにも同じ形で出ます。"], "このメールを開くと元社員Mから通話が入ります。"],
+    mail_policy_revision: ["内部通報管理規程改定通知", "法務・監査連絡", ["文書番号: LEGAL-AUD-0412 / 送信: 2025.04.12", "第七条を改定します。外部相談窓口への接触傾向が確認された場合、表示範囲と通知区分を変更できるものとします。", "外部開示では個人の状態変更理由を記載せず、必要に応じて注記扱いにしてください。"], ""],
+    mail_external_contact: ["Re_外部相談窓口への接触傾向", "共有先部署", ["文書番号: MAIL-EXT-0807 / 送信: 2025.08.07 02:14", "EMP-000404について、外部相談窓口への接触傾向を確認しました。", "状態変更理由と通知区分は人事部_状態変更一覧の同一社員ID行と照合してください。", "承認者欄は本文から削除されています。共有先は件名群と社員ログの読み方で確認してください。"], ""],
+    mail_assessment_hold: ["査定保留処理について", "人事評価担当", ["文書番号: MAIL-SHARE-0807-02 / 送信: 2025.08.07 10:42", "評価処理を一時保留します。前便の共有依頼と同一案件として扱ってください。", "本文内の部署名は削除済みですが、件名は修正されていません。"], "同日三通のうち2通目です。"],
+    mail_manager_confirm: ["室長確認済み", "共有先部署", ["文書番号: MAIL-SHARE-0807-03 / 送信: 2025.08.07 11:03", "第七条適用可否の確認が完了しました。状態変更の実施可否は人事運用で判断してください。", "本人への再通知欄は空欄にし、別紙の通知区分を参照します。"], "同日三通のうち3通目です。"],
+    mail_article_seven: ["第七条_状態変更照会", "自動応答", ["文書番号: AUTO-ART7-0807 / 送信: 2025.08.07 11:18", "照会対象: EMP-000404。根拠条文、通知区分、共有先の三項目を確認してください。", "条文名だけでは共有先は確定しません。Mail件名、人的資本レポートの注記番号、社員404ログを並べる必要があります。"], ""]
   };
   if (fileId === "mail_fwd_employee404" && !isCallDone("former-employee-m-01")) {
     state.mailKeyRead = true;
@@ -1226,15 +1228,16 @@ function fileContent(fileId) {
   }
   if (fileId === "human_capital_report_2025") {
     return `
-      <header><div><small>YRI-HC-2025</small><h2>人的資本レポート 2025 抜粋</h2></div></header>
-      <section><table><tr><th>年度</th><th>売上</th><th>社員数</th><th>離職率</th></tr><tr><td>2024</td><td>88.8億円</td><td>404名</td><td>0.0%</td></tr><tr><td>2025</td><td>132.6億円</td><td>404名</td><td>0.0%</td></tr></table><p class="pdf-note">記録保護対象の情報は通常検索から除外されます。</p></section>
-      <section><h3>注記</h3><ol><li>集計範囲は正社員、契約社員、常勤委託を含みます。</li><li>短期契約者は部門別集計から除外します。</li><li>監視対象判定の質問群は通常集計に含めません。</li><li>一部の拠点データは翌期に再集計します。</li><li>査定保留処理の回答は人事部門のみ閲覧できます。</li><li>外部開示資料では個人を特定できる項目を省略します。</li><li>室長確認済みの案件は監査室に共有されます。</li></ol></section>
+      <header><div><small>YRI-HC-2025 / IR補足資料</small><h2>人的資本レポート 2025 抜粋</h2></div><small>作成日: 2025.12.20<br>担当: IR・開示支援部</small></header>
+      <section><p>本資料は統合報告書の人的資本パート作成用に、社内サーベイ、勤怠傾向、面談記録の集計値を抜粋したものです。社員数欄は公開値に合わせて丸め処理を行っています。</p><table><tr><th>年度</th><th>売上</th><th>社員数</th><th>離職率</th><th>注記</th></tr><tr><td>2022</td><td>34.7億円</td><td>412名</td><td>12.4%</td><td>1,2</td></tr><tr><td>2023</td><td>51.2億円</td><td>406名</td><td>3.1%</td><td>2</td></tr><tr><td>2024</td><td>88.8億円</td><td>404名</td><td>0.0%</td><td>3,5,7</td></tr><tr><td>2025</td><td>132.6億円</td><td>404名</td><td>0.0%</td><td>3,5,7</td></tr></table><p class="pdf-note">表示範囲外の情報は通常検索から除外され、公開資料では注記として扱います。</p></section>
+      <section><h3>注記</h3><ol><li>集計範囲は正社員、契約社員、常勤委託を含みます。</li><li>短期契約者は部門別集計から除外します。</li><li>監視対象判定の質問群は通常集計に含めません。</li><li>一部の拠点データは翌期に再集計します。</li><li>査定保留処理の回答は人事部門のみ閲覧できます。</li><li>外部開示資料では個人を特定できる項目を省略します。</li><li>室長確認済みの案件は別系統の閲覧権限へ移管されます。</li></ol><p class="pdf-note">注記番号3・5・7は、社員ログ側の参照番号と同じ読み方で扱える場合があります。</p></section>
     `;
   }
   if (fileId === "notice_20250807") {
     return `
-      <header><div><small>NOTICE-20250807</small><h2>一部サービスの表示不具合について</h2></div></header>
-      <section><p>2025年8月7日、一部アカウント情報が通常画面に表示されない事象を確認しました。対象範囲は社内管理画面の一部です。</p><p>該当データは欠損ではなく、記録保護状態として扱われます。</p></section>
+      <header><div><small>YRI-NOTICE-0807 / 公開文面控え</small><h2>一部サービスの表示不具合について</h2></div><small>作成日: 2025.08.07<br>担当: 広報部</small></header>
+      <section><p>2025年8月7日、一部アカウント情報が通常画面に表示されない事象を確認しました。対象範囲は社内管理画面の一部です。</p><table><tr><th>項目</th><th>公開文面</th><th>内部参照</th></tr><tr><td>発生日</td><td>2025.08.07</td><td>0807</td></tr><tr><td>対象</td><td>一部アカウント情報</td><td>通常検索外の表示区分</td></tr><tr><td>対応</td><td>順次確認中</td><td>Files内の用語定義と照合</td></tr></table><p class="pdf-note">文書番号末尾の0807は、Searchキャッシュ索引を開くための確認コードとして扱われます。</p></section>
+      <section><h3>注記</h3><p>公開文面は、技術障害として誤読されない範囲で短く調整されています。修正前の通知案に残る黒塗り語は、用語アーカイブ2025の定義語と照合してください。</p></section>
     `;
   }
   if (fileId === "call_unknown_01_transcript") return transcriptContent("unknown-01");
@@ -1245,7 +1248,7 @@ function fileContent(fileId) {
   if (fileId === "a01_evidence") return `<header><div><small>A-01</small><h2>＿拠保全手順</h2></div></header><section><p>記録媒体の保全、原本性、外部監査提出時の添付資料について定める。改変防止のため、証跡ハッシュを同時に保存する。</p></section>`;
   if (fileId === "b02_statement") return `<header><div><small>B-02</small><h2>発＿テンプレート</h2></div></header><section><p>通報者が発した内容、面談時の発言、供述の整合性を確認するための標準書式。本人への再通知は必要最小限とする。</p></section>`;
   if (fileId === "c03_subject") return `<header><div><small>C-03</small><h2>対象＿リスト</h2></div></header><section><p>該当者、対象となる従業員、記録保護対象を一覧化する。通常検索から除外する条件を含む。</p></section>`;
-  if (fileId === "employee404_partial_log") return `<header><div><small>EMP404-PARTIAL</small><h2>社員404 操作ログ抜粋</h2></div></header><section><p>3. 監視対象判定 / 5. 査定保留処理 / 7. 室長確認済</p><p class="pdf-note">先頭文字だけが部門名として残されています。</p></section>`;
+  if (fileId === "employee404_partial_log") return `<header><div><small>EMP404-PARTIAL / 復元ログ</small><h2>社員404 操作ログ抜粋</h2></div><small>作成日: 2025.08.07<br>担当: 端末保全</small></header><section><p>復元できたのは、アラート条件に対応する三行のみです。人的資本レポートとサーベイ設計ガイドの注記番号を先に確認してください。</p><table><tr><th>参照番号</th><th>処理名</th><th>状態</th></tr><tr><td>3</td><td>監視対象判定</td><td>表示範囲変更</td></tr><tr><td>5</td><td>査定保留処理</td><td>人事評価から分離</td></tr><tr><td>7</td><td>室長確認済</td><td>承認履歴あり</td></tr></table><p class="pdf-note">同じ読み方は、Mailの同日件名にも残っています。</p></section>`;
   if (fileId === "final_transfer_receipt") return `<header><div><small>final_transfer_receipt.txt / EXT-AUDIT-QUEUE</small><h2>外部監査送信キュー</h2></div></header><section><table><tr><th>状態</th><td>送信済み</td></tr><tr><th>復元文書</th><td>A-01 / B-02 / C-03</td></tr><tr><th>判定</th><td>重大な組織リスク</td></tr></table><p>画面を閉じても、記録は残ります。</p></section>`;
   const supplemental = supplementalFileContent(fileId);
   if (supplemental) return supplemental;
@@ -1324,6 +1327,10 @@ function bindSearch(win) {
       event.preventDefault();
       state.searchQuery = win.querySelector("#search-query").value;
       const shouldTriggerUnknownCall = searchTriggersCall(state.searchQuery) && !state.searched404;
+      const normalizedQuery = state.searchQuery.trim().toLowerCase();
+      if (normalizedQuery.includes("0807") || normalizedQuery.includes("2025 08 07") || normalizedQuery.includes("2025.08.07")) {
+        state.noticeCodeFound = true;
+      }
       if (shouldTriggerUnknownCall) {
         state.searched404 = true;
       }
@@ -1390,11 +1397,11 @@ function renderNotes() {
   ];
   const hints = [
     ["第1章", "企業サイトの資料請求ページ。", "Talkの資料窓口を追加してからFilesを見る。", "資料はDownloadsに保存される。", "Talkで資料窓口を追加"],
-    ["第2章", "Searchでニュース日付を追う。", "2025.08.07 と 表示不具合 を組み合わせる。", "404系検索でUnknown通話が来る。", "表示不具合"],
-    ["第3章", "FilesのMailフォルダ。", "メール件名の頭文字を読む。", "監査室共有依頼 / 査定保留処理 / 室長確認済み。", "監査室"],
-    ["第4章", "社員404ページの操作ログ。", "3、5、7番目の先頭文字。", "監視対象判定、査定保留処理、室長確認済。", "監査室"],
+    ["第2章", "Searchでニュース日付を追う。", "2025.08.07の公開文書番号を確認する。", "文書番号末尾4桁をSearchに入れると、キャッシュ索引が開く。", "表示不具合"],
+    ["第3章", "FilesのMailフォルダ。", "同じ日付で連続する三通を送信時刻順に並べる。", "本文ではなく、件名の端の文字を控える。", "監査室"],
+    ["第4章", "社員404ページの操作ログ。", "アラート条件に出ている番号を使う。", "3・5・7の処理名を、Mail件名と同じ読み方で控える。", "監査室"],
     ["第5章", "監査室の復元キー欄。", "企業理念の「疑問を減らす」に反する二文字。", "疑問を増やす行為。", "疑え"],
-    ["第6章", "RecoveredのA-01/B-02/C-03。", "文書名の欠けた文字だけを拾う。", "証拠、発言、対象者。", "証言者"]
+    ["第6章", "RecoveredのA-01/B-02/C-03。", "本文中に繰り返し残る業務語から、自然な文書名に戻す。", "戻した文書名と黒塗り位置をA/B/C順に写す。", "証言者"]
   ];
   return `
     <div class="notes-body">
