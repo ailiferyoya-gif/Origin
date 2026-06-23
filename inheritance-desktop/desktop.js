@@ -1,4 +1,4 @@
-const saveKey = "inheritanceDesktopStateV3";
+const saveKey = "inheritanceDesktopStateV4";
 const params = new URLSearchParams(location.search);
 const isDebug = params.get("debug") === "1";
 
@@ -35,7 +35,8 @@ const initialState = {
   callMuted: false,
   finalClassification: {},
   finalRole: "",
-  ending: false
+  ending: false,
+  caseIntroDismissed: false
 };
 
 const state = loadState();
@@ -140,7 +141,7 @@ const fileDefs = {
     name: "契約書_字幕業務.pdf",
     type: "PDF",
     folder: "documents",
-    image: "assets/images/desk_contract_scan.svg",
+    image: "assets/images/desk_contract_scan.webp",
     body: [
       "契約種別: 字幕編集・動画チェック業務",
       "契約相手: 架空制作管理部",
@@ -260,7 +261,7 @@ const fileDefs = {
     type: "TEXT",
     folder: "mail",
     gatedBy: "unsentListRead",
-    image: "assets/images/mail_header_preview.svg",
+    image: "assets/images/mail_header_preview.webp",
     body: [
       "From: akari",
       "To: mother",
@@ -283,7 +284,7 @@ const fileDefs = {
     type: "TEXT",
     folder: "calllogs",
     gatedBy: "callAkariPlayed",
-    image: "assets/images/call_waveform_0317.svg",
+    image: "assets/images/call_waveform_0317.webp",
     body: [
       "Talk Call Transcript / Auto Recovery",
       "音声: でも、送信はしないで。",
@@ -402,15 +403,15 @@ const talkMessages = {
 };
 
 const photos = [
-  { id: "room_0315", album: "部屋", file: "IMG_0315_room.svg", src: "assets/images/room_0315.svg", date: "2026-03-15 22:08", place: "自宅", memo: "机の上に小さな木箱がある" },
-  { id: "room_0316", album: "部屋", file: "IMG_0316_room.svg", src: "assets/images/room_0316.svg", date: "2026-03-16 23:44", place: "自宅", memo: "木箱が本棚の下段に移動" },
-  { id: "room_0317_0018", album: "部屋", file: "IMG_0317_room_0018.svg", src: "assets/images/room_0317_0018.svg", date: "2026-03-17 00:18", place: "自宅", memo: "木箱が見えない" },
-  { id: "room_0317_0219", album: "部屋", file: "IMG_0317_room_0219.svg", src: "assets/images/room_0317_0219.svg", date: "2026-03-17 02:19", place: "玄関横", memo: "傘立ての奥に木箱の角" },
-  { id: "room_0317_0317", album: "部屋", file: "IMG_0317_room_0317.svg", src: "assets/images/room_0317_0317.svg", date: "2026-03-17 03:17", place: "自宅", memo: "机の上にスマホだけ" },
-  { id: "mail_header_preview", album: "スクリーンショット", file: "mail_header_preview.svg", src: "assets/images/mail_header_preview.svg", date: "2026-03-18 09:42", place: "Mail", memo: "Source: auto_reply.js" },
-  { id: "call_waveform", album: "スクリーンショット", file: "call_waveform_0317.svg", src: "assets/images/call_waveform_0317.svg", date: "2026-03-18 09:46", place: "Call", memo: "音声と文字起こしの差分" },
-  { id: "calendar_notification", album: "スクリーンショット", file: "calendar_notification.svg", src: "assets/images/calendar_notification.svg", date: "2026-03-18 09:51", place: "Calendar", memo: "通知再生" },
-  { id: "trash_recovered", album: "スクリーンショット", file: "trash_recovered_files.svg", src: "assets/images/trash_recovered_files.svg", date: "2026-03-18 10:02", place: "Trash", memo: "削除済みファイル" }
+  { id: "room_0315", album: "部屋", file: "room_0315.webp", src: "assets/images/room_0315.webp", fallback: "assets/images/room_0315.svg", date: "2026-03-15 22:08", place: "自宅", memo: "机の上に小さな木箱がある" },
+  { id: "room_0316", album: "部屋", file: "room_0316.webp", src: "assets/images/room_0316.webp", fallback: "assets/images/room_0316.svg", date: "2026-03-16 23:44", place: "自宅", memo: "木箱が本棚の下段に移動" },
+  { id: "room_0317_0018", album: "部屋", file: "room_0317_0018.webp", src: "assets/images/room_0317_0018.webp", fallback: "assets/images/room_0317_0018.svg", date: "2026-03-17 00:18", place: "自宅", memo: "木箱が見えない" },
+  { id: "room_0317_0219", album: "部屋", file: "room_0317_0219.webp", src: "assets/images/room_0317_0219.webp", fallback: "assets/images/room_0317_0219.svg", date: "2026-03-17 02:19", place: "玄関横", memo: "傘立ての奥に木箱の角", hotspot: "box-location" },
+  { id: "room_0317_0317", album: "部屋", file: "room_0317_0317.webp", src: "assets/images/room_0317_0317.webp", fallback: "assets/images/room_0317_0317.svg", date: "2026-03-17 03:17", place: "自宅", memo: "机の上にスマホだけ" },
+  { id: "mail_header_preview", album: "スクリーンショット", file: "mail_header_preview.webp", src: "assets/images/mail_header_preview.webp", fallback: "assets/images/mail_header_preview.svg", date: "2026-03-18 09:42", place: "Mail", memo: "Source: auto_reply.js" },
+  { id: "call_waveform", album: "スクリーンショット", file: "call_waveform_0317.webp", src: "assets/images/call_waveform_0317.webp", fallback: "assets/images/call_waveform_0317.svg", date: "2026-03-18 09:46", place: "Call", memo: "音声と文字起こしの差分" },
+  { id: "calendar_notification", album: "スクリーンショット", file: "calendar_notification.webp", src: "assets/images/calendar_notification.webp", fallback: "assets/images/calendar_notification.svg", date: "2026-03-18 09:51", place: "Calendar", memo: "通知再生" },
+  { id: "trash_recovered", album: "スクリーンショット", file: "trash_recovered_files.webp", src: "assets/images/trash_recovered_files.webp", fallback: "assets/images/trash_recovered_files.svg", date: "2026-03-18 10:02", place: "Trash", memo: "削除済みファイル" }
 ];
 
 const events = [
@@ -557,6 +558,58 @@ function toast(title, body) {
   setTimeout(() => el.remove(), 4200);
 }
 
+function syncCaseIntro() {
+  document.querySelector("#case-intro")?.remove();
+  if (state.caseIntroDismissed) return;
+  const overlay = document.createElement("section");
+  overlay.id = "case-intro";
+  overlay.className = "case-intro";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-labelledby", "case-intro-title");
+  overlay.innerHTML = `
+    <article>
+      <header>
+        <small>案件番号: D-0317</small>
+        <h1 id="case-intro-title">案件説明</h1>
+      </header>
+      <section>
+        <h2>依頼内容</h2>
+        <p>故人「白瀬 灯」様のPCから、家族へ返却可能なデータを確認してください。あなたはデジタル遺品整理の作業者として、この端末内の資料を確認します。</p>
+      </section>
+      <section>
+        <h2>今回の確認対象</h2>
+        <ol>
+          <li>家族へ返却する書類</li>
+          <li>連絡先データ</li>
+          <li>未送信メールの有無</li>
+        </ol>
+      </section>
+      <section>
+        <h2>要確認事項</h2>
+        <ul>
+          <li>削除済みファイルの有無</li>
+          <li>返却保留が必要な個人データ</li>
+          <li>未送信メールを送信する必要があるかどうか</li>
+        </ul>
+      </section>
+      <p class="case-caution">この端末はオフライン環境で確認してください。作業はこのPC内のアプリのみで完結します。</p>
+      <p class="case-next">最初に Notes を確認し、その後 Files の Documents を調べてください。</p>
+      <button class="desktop-button" type="button" data-close-case>作業を開始する</button>
+    </article>
+  `;
+  document.querySelector("#desktop").appendChild(overlay);
+  overlay.querySelector("[data-close-case]").focus();
+  overlay.querySelector("[data-close-case]").addEventListener("click", () => {
+    state.caseIntroDismissed = true;
+    addUnique("unlocked", "caseIntroRead");
+    logWork("案件説明を確認しました。Documentsの基本資料を確認してください。");
+    saveState();
+    overlay.remove();
+    openApp("notes");
+  });
+}
+
 function openApp(app) {
   if (!appLabels[app]) app = "notes";
   if (!isAppUnlocked(app)) {
@@ -565,12 +618,14 @@ function openApp(app) {
     return;
   }
   state.currentApp = app;
+  if (app === "files") addUnique("unlocked", "openedFiles");
   saveState();
   layer.innerHTML = "";
   currentWindow = createWindow(app);
   layer.appendChild(currentWindow);
   updateTaskbar(app);
   setHash(app);
+  syncCaseIntro();
 }
 
 function createWindow(app) {
@@ -710,8 +765,23 @@ function renderFileGrid(files) {
   }).join("")}</div>`;
 }
 
-function imageFrame(src, alt = "", className = "image-frame") {
-  return `<figure class="${className} image-frame"><img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" onerror="this.closest('.image-frame').classList.add('is-missing');this.remove();"></figure>`;
+function fallbackForImage(src) {
+  return src.endsWith(".webp") ? src.replace(/\.webp$/, ".svg") : "";
+}
+
+function imageFrame(src, alt = "", className = "image-frame", fallback = fallbackForImage(src)) {
+  return `<figure class="${className} image-frame"><img src="${escapeHtml(src)}" data-fallback="${escapeHtml(fallback)}" alt="${escapeHtml(alt)}" onerror="handleImageFallback(this);"></figure>`;
+}
+
+function handleImageFallback(img) {
+  const fallback = img.dataset.fallback;
+  if (fallback && img.src.indexOf(fallback) === -1) {
+    img.src = fallback;
+    img.dataset.fallback = "";
+    return;
+  }
+  img.closest(".image-frame")?.classList.add("is-missing");
+  img.remove();
 }
 
 function renderFile(fileId) {
@@ -743,10 +813,13 @@ function openFile(fileId) {
 
 function handleFileEvent(event) {
   if (event === "prepUnsent") {
-    if (!isUnlocked("unsentListVisible")) {
+    const readyForUnsentList = state.readFiles.includes("work_intro") && state.readFiles.includes("return_list");
+    if (readyForUnsentList && !isUnlocked("unsentListVisible")) {
       addUnique("unlocked", "unsentListVisible");
-      logWork("返却資料を確認。未送信メール一覧の確認が必要になりました。");
-      toast("Files", "未送信メール一覧.txt が表示されました。");
+      logWork("Documentsの基本資料を確認。未送信メール一覧の確認対象が追加されました。");
+      toast("System", "Documents に新しい確認対象が追加されました。");
+    } else if (!readyForUnsentList) {
+      logWork("Documentsの基本資料を確認中です。作業メモと返却リストを確認してください。");
     }
   }
   if (event === "wakeTalk" && !state.talkOnline) {
@@ -754,7 +827,7 @@ function handleFileEvent(event) {
     state.talkOnline = true;
     ["akari-1", "akari-2", "akari-3", "akari-4", "akari-5", "akari-6"].forEach(addTalk);
     unlockApp("photos");
-    logWork("未送信メール一覧を開いた直後、白瀬灯アカウントがオンライン表示になりました。");
+    logWork("未送信メール一覧を確認した直後、Talkに想定外の通知が発生しました。");
     toast("Talk", "白瀬 灯 からメッセージが届きました。");
   } else if (event === "wakeTalk") {
     addUnique("unlocked", "unsentListRead");
@@ -885,7 +958,7 @@ function renderPhotos() {
       <section class="photo-main">
         <div class="panel-title"><div><h2>${active ? escapeHtml(active.file) : "写真を選択してください"}</h2><p>同じ部屋の写真を比較すると、物の位置の変化が分かります。</p></div></div>
         ${active ? `<div class="photo-stage image-frame">
-          <img src="${escapeHtml(active.src)}" alt="${escapeHtml(active.memo)}" onerror="this.closest('.image-frame').classList.add('is-missing');this.remove();">
+          <img src="${escapeHtml(active.src)}" data-fallback="${escapeHtml(active.fallback || fallbackForImage(active.src))}" alt="${escapeHtml(active.memo)}" onerror="handleImageFallback(this);">
           ${active.id === "room_0317_0219" ? `<button class="hotspot" type="button" data-box-hotspot aria-label="傘立ての奥を確認"></button>` : ""}
         </div>` : `<div class="empty-state"><b>写真を選択してください。</b><p>同じ部屋の写真を切り替えて、木箱の位置がどこへ移ったかを確認してください。</p></div>`}
       </section>
@@ -893,6 +966,7 @@ function renderPhotos() {
         <h2>メタデータ</h2>
         ${active ? `<table><tr><th>撮影日</th><td>${escapeHtml(active.date)}</td></tr><tr><th>場所</th><td>${escapeHtml(active.place)}</td></tr><tr><th>メモ</th><td>${escapeHtml(active.memo)}</td></tr><tr><th>ファイル名</th><td>${escapeHtml(active.file)}</td></tr></table>` : `<p class="meta-note">一覧から写真を選ぶと、撮影日・場所・メモを確認できます。</p>`}
         <p class="meta-note">ヒント: 写真を切り替えて、同じものの位置を比べる。</p>
+        ${isDebug && active ? `<div class="debug-photo"><b>debug</b><p>source: ${escapeHtml(active.src)} → ${escapeHtml(active.fallback || fallbackForImage(active.src))} fallback</p><p>hotspot: ${escapeHtml(active.hotspot || "none")}</p><p>画像生成AIで同名webpを配置すると差し替えられます。</p></div>` : ""}
       </aside>
     </div>
   `;
@@ -1109,16 +1183,16 @@ function renderNotes() {
       <aside class="notes-sidebar"><div class="sidebar-head"><b>Notes</b><small>D-0317</small></div><div class="note-nav"><button class="is-active" type="button"><b>作業メモ</b><small>進行と分類</small></button></div></aside>
       <section class="notes-main">
         <article class="note-card">
-          <header><div><small>作業メモ</small><h2>ログインしたら、返事が来た</h2></div><small>案件番号: D-0317</small></header>
-          <p>対象端末: 白瀬灯 様 使用PC</p>
-          <ul>
-            <li>写真フォルダの確認</li>
-            <li>契約書類の確認</li>
-            <li>連絡先の確認</li>
-            <li>未送信メールの有無</li>
-            <li>削除済みファイルの確認</li>
-          </ul>
-          <p class="note-small">外部ネットワークには接続しないこと。この端末内のアプリだけで作業を行うこと。</p>
+          <header><div><small>作業メモ</small><h2>案件 D-0317 / 白瀬灯様 使用PC</h2></div><small>Digital Estate Review</small></header>
+          <p>この端末では、まず Documents フォルダ内の以下を確認してください。</p>
+          <ol>
+            <li>作業メモ_はじめに.txt</li>
+            <li>返却リスト.txt</li>
+            <li>家族連絡先.txt</li>
+          </ol>
+          <p>その後、未送信メールの有無を確認してください。</p>
+          <p class="note-small">あなたはデジタル遺品整理の作業者です。故人PCから返却対象データを確認し、未送信メールがある場合は送る・送らないを本文だけで判断せず、関連する記録を必ず確認してください。</p>
+          <p class="note-next">最初に Notes を確認し、その後 Files の Documents を調べてください。</p>
         </article>
         <article class="note-card">
           <h2>進行状況チェックリスト</h2>
@@ -1154,8 +1228,10 @@ function renderNotes() {
 
 function progressItems() {
   return [
-    ["Notesで作業メモを読む", true],
-    ["未送信メール一覧.txtを開く", state.readFiles.includes("unsent_list")],
+    ["Notesの案件説明を読む", state.caseIntroDismissed || state.unlocked.includes("caseIntroRead")],
+    ["Filesを開く", state.unlocked.includes("openedFiles")],
+    ["Documentsを確認する", state.readFiles.includes("work_intro") && state.readFiles.includes("return_list")],
+    ["未送信メールの有無を確認する", state.readFiles.includes("unsent_list")],
     ["Photosで木箱の位置を見つける", state.photoHotspotFound],
     ["Calendar通知を再生する", state.calendarPlayed],
     ["call_akari_0317を再生する", state.playedCalls.includes("akari_0317")],
