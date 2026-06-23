@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="通話波形と自動文字起こし画面風画像">
+  <rect width="900" height="620" fill="#101820"/>
+  <rect x="70" y="60" width="760" height="500" rx="18" fill="#17242d" stroke="#38505f"/>
+  <text x="110" y="110" font-family="sans-serif" font-size="24" fill="#eaf6f2">call_akari_0317</text>
+  <g stroke="#88d1c7" stroke-width="5">
+    <path d="M120 250v-40M145 250v60M170 250v-88M195 250v30M220 250v-70M245 250v96M270 250v-22M295 250v54M320 250v-114M345 250v40M370 250v-82M395 250v24M420 250v-56M445 250v92M470 250v-18M495 250v72M520 250v-104M545 250v38M570 250v-64M595 250v20M620 250v-44M645 250v88M670 250v-16M695 250v58M720 250v-96"/>
+  </g>
+  <rect x="120" y="372" width="660" height="110" fill="#0f171d" stroke="#38505f"/>
+  <text x="145" y="410" font-family="sans-serif" font-size="18" fill="#eaf6f2">音声: でも、送信はしないで</text>
+  <text x="145" y="448" font-family="sans-serif" font-size="18" fill="#ffb8b0">自動文字起こし: 送信してください</text>
+</svg>

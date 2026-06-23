@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ログインしたら、返事が来た</title>
+  <meta name="description" content="仮想デスクトップ型モキュメンタリーホラー謎解き。白瀬灯のPCを調査するオフライン作品です。">
+  <link rel="stylesheet" href="desktop.css?v=20260624-prototype">
+</head>
+<body>
+  <div class="desktop" id="desktop">
+    <main class="desktop-space" aria-label="仮想デスクトップ">
+      <section class="desktop-icons" aria-label="アプリ">
+        <button class="desktop-icon" data-app="notes" type="button"><span>Nt</span><b>Notes</b></button>
+        <button class="desktop-icon" data-app="files" type="button"><span>Fl</span><b>Files</b></button>
+        <button class="desktop-icon" data-app="talk" type="button"><span>Tk</span><b>Talk</b></button>
+        <button class="desktop-icon" data-app="mail" type="button"><span>Ml</span><b>Mail</b></button>
+        <button class="desktop-icon" data-app="photos" type="button"><span>Ph</span><b>Photos</b></button>
+        <button class="desktop-icon" data-app="calendar" type="button"><span>Ca</span><b>Calendar</b></button>
+        <button class="desktop-icon" data-app="call" type="button"><span>Cl</span><b>Call</b></button>
+        <button class="desktop-icon" data-app="trash" type="button"><span>Tr</span><b>Trash</b></button>
+      </section>
+      <div class="window-layer" id="window-layer" aria-live="polite"></div>
+    </main>
+
+    <footer class="taskbar" aria-label="タスクバー">
+      <div class="taskbar-center">
+        <button class="start-button" id="home-button" type="button" aria-label="ホーム">◆</button>
+        <button class="taskbar-app" data-app="files" type="button">Files</button>
+        <button class="taskbar-app" data-app="talk" type="button">Talk</button>
+        <button class="taskbar-app" data-app="mail" type="button">Mail</button>
+        <button class="taskbar-app" data-app="photos" type="button">Photos</button>
+        <button class="taskbar-app" data-app="calendar" type="button">Calendar</button>
+        <button class="taskbar-app" data-app="call" type="button">Call</button>
+        <button class="taskbar-app" data-app="trash" type="button">Trash</button>
+        <button class="taskbar-app" data-app="notes" type="button">Notes</button>
+      </div>
+      <div class="taskbar-right">
+        <span id="system-notice" role="status">作業端末を起動しました</span>
+        <time id="clock">--:--</time>
+      </div>
+    </footer>
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+  </div>
+  <script src="desktop.js?v=20260624-prototype"></script>
+</body>
+</html>

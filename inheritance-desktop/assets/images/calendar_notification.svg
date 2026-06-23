@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="Calendar通知再生のスクリーンショット風画像">
+  <rect width="900" height="620" fill="#e9f0f5"/>
+  <rect x="80" y="60" width="740" height="500" rx="18" fill="#fff" stroke="#cfd8df"/>
+  <text x="120" y="112" font-family="sans-serif" font-size="26" fill="#24313b">3/17 通知再生</text>
+  <g font-family="sans-serif" font-size="20">
+    <rect x="130" y="160" width="620" height="58" rx="12" fill="#f4f8fa" stroke="#d5dde5"/><text x="155" y="197" fill="#26313a">00:30 送らない</text>
+    <rect x="130" y="235" width="620" height="58" rx="12" fill="#f4f8fa" stroke="#d5dde5"/><text x="155" y="272" fill="#26313a">01:00 箱を見る</text>
+    <rect x="130" y="310" width="620" height="58" rx="12" fill="#f4f8fa" stroke="#d5dde5"/><text x="155" y="347" fill="#26313a">02:00 声を聞く</text>
+    <rect x="130" y="385" width="620" height="58" rx="12" fill="#f4f8fa" stroke="#d5dde5"/><text x="155" y="422" fill="#26313a">03:17 確認される</text>
+  </g>
+</svg>

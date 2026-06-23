@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="メールヘッダ詳細画面のスクリーンショット風画像">
+  <rect width="900" height="620" fill="#eef3f6"/>
+  <rect x="90" y="70" width="720" height="470" rx="16" fill="#fff" stroke="#cfd8df"/>
+  <rect x="90" y="70" width="720" height="54" rx="16" fill="#e4ebf0"/>
+  <text x="124" y="106" font-family="sans-serif" font-size="20" fill="#23313d">母へ_未送信.eml</text>
+  <g font-family="monospace" font-size="18" fill="#27323b">
+    <text x="130" y="170">From: akari</text>
+    <text x="130" y="205">To: mother</text>
+    <text x="130" y="240">Date: 2026-03-17 03:17</text>
+    <text x="130" y="275">Saved: 2026-03-17 03:18</text>
+    <text x="130" y="310">Device: SHIRASE-PC</text>
+    <text x="130" y="345">Source: auto_reply.js</text>
+  </g>
+  <rect x="130" y="382" width="620" height="92" fill="#f7f9fb" stroke="#d5dde5"/>
+</svg>

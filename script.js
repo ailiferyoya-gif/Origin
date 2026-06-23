@@ -173,6 +173,11 @@ const pages = {
         <b>ユメミノ総合研究所 仮想業務端末</b>
         <small>仮想デスクトップ型Web謎解き / オフライン設計</small>
       </a>
+      <a class="archive-work-card compact" href="inheritance-desktop/start.html">
+        <span>Prototype</span>
+        <b>ログインしたら、返事が来た</b>
+        <small>仮想デスクトップ型モキュメンタリーホラー / デジタル遺品整理</small>
+      </a>
       <a class="text-link" href="#/works">作品一覧を見る</a>
     </section>
 
@@ -290,6 +295,19 @@ const pages = {
           </dl>
         </div>
         <a class="brand-button" href="yumemino-desktop/start.html">プレイする</a>
+      </article>
+      <article class="archive-work-card is-featured">
+        <div>
+          <p class="section-kicker">Prototype / Virtual Desktop Horror</p>
+          <h2>ログインしたら、返事が来た</h2>
+          <p>故人のPCを整理する仮想デスクトップ型モキュメンタリーホラー謎解きです。Files、Talk、Mail、Photos、Calendar、Call、Trashを調査し、母への未送信メールを返却するべきか、保留するべきかを証拠から判断します。</p>
+          <dl>
+            <div><dt>形式</dt><dd>仮想デスクトップ型Web謎解き</dd></div>
+            <div><dt>推奨</dt><dd>PCブラウザ / start.html起動</dd></div>
+            <div><dt>保存</dt><dd>localStorageで進行保存</dd></div>
+          </dl>
+        </div>
+        <a class="brand-button" href="inheritance-desktop/start.html">プレイする</a>
       </article>
     </section>
   `, "works"),
