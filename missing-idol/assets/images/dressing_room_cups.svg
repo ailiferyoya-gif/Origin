@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="楽屋写真。紙コップが7つある。1つだけ名前が隠れている。">
+  <rect width="1200" height="760" fill="#efe9df"/>
+  <rect x="92" y="66" width="1016" height="628" rx="16" fill="#f8f4ec" stroke="#c9bfaf"/>
+  <rect x="120" y="338" width="960" height="240" fill="#c7b59d"/>
+  <rect x="140" y="140" width="920" height="206" fill="#d7dde2"/>
+  <g transform="translate(174 390)">
+    <g><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-17" y="64" font-size="18" fill="#45515a">玲</text></g>
+    <g transform="translate(135 0)"><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-28" y="64" font-size="18" fill="#45515a">こは</text></g>
+    <g transform="translate(270 0)"><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-18" y="64" font-size="18" fill="#45515a">奈</text></g>
+    <g transform="translate(405 0)"><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-8" y="70" font-size="24" fill="#87919b">ミ</text><rect x="-30" y="40" width="60" height="28" fill="#d8d1c5"/></g>
+    <g transform="translate(540 0)"><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-18" y="64" font-size="18" fill="#45515a">す</text></g>
+    <g transform="translate(675 0)"><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-18" y="64" font-size="18" fill="#45515a">ゆ</text></g>
+    <g transform="translate(810 0)"><ellipse cx="0" cy="120" rx="48" ry="14" fill="#9c8873"/><path d="M-36 0h72l-10 120h-52z" fill="#fff"/><text x="-18" y="64" font-size="18" fill="#45515a">ま</text></g>
+  </g>
+  <text x="154" y="208" font-family="sans-serif" font-size="24" fill="#59646d">Backstage / catering table</text>
+</svg>

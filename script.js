@@ -178,6 +178,11 @@ const pages = {
         <b>ログインしたら、返事が来た</b>
         <small>仮想デスクトップ型モキュメンタリーホラー / デジタル遺品整理</small>
       </a>
+      <a class="archive-work-card compact" href="missing-idol/start.html">
+        <span>NEW</span>
+        <b>写っていない七人目</b>
+        <small>写真集閲覧型モキュメンタリーホラー / アーカイブ調査</small>
+      </a>
       <a class="text-link" href="#/works">作品一覧を見る</a>
     </section>
 
@@ -308,6 +313,19 @@ const pages = {
           </dl>
         </div>
         <a class="brand-button" href="inheritance-desktop/start.html">プレイする</a>
+      </article>
+      <article class="archive-work-card is-featured">
+        <div>
+          <p class="section-kicker">Prototype / Photo Archive Horror</p>
+          <h2>写っていない七人目</h2>
+          <p>古いアイドル写真集アーカイブを閲覧し、集合写真、楽屋、ステージ、鏡、削除済みキャッシュの食い違いから、いなかったことにされた7人目を復元するWeb謎解きです。</p>
+          <dl>
+            <div><dt>形式</dt><dd>写真集閲覧型モキュメンタリーホラー謎解き</dd></div>
+            <div><dt>推奨</dt><dd>PC / タブレットブラウザ</dd></div>
+            <div><dt>保存</dt><dd>localStorageで進行保存</dd></div>
+          </dl>
+        </div>
+        <a class="brand-button" href="missing-idol/start.html">プレイする</a>
       </article>
     </section>
   `, "works"),

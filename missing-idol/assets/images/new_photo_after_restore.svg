@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="復元後の集合写真。7人が写っている。">
+  <rect width="1200" height="760" fill="#ebe4d8"/>
+  <rect x="86" y="54" width="1028" height="650" rx="18" fill="#f8f5ef" stroke="#cbc2b4"/>
+  <rect x="122" y="90" width="956" height="574" fill="#d9e2eb"/>
+  <g transform="translate(164 262)">
+    <g fill="#3d4856"><circle cx="35" cy="0" r="28"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+    <g transform="translate(150 0)" fill="#72607a"><circle cx="35" cy="0" r="28"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+    <g transform="translate(300 0)" fill="#536a62"><circle cx="35" cy="0" r="28"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+    <g transform="translate(450 0)" fill="#715e86"><circle cx="35" cy="0" r="28"/><circle cx="25" cy="-6" r="4" fill="#111"/><circle cx="45" cy="-6" r="4" fill="#111"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+    <g transform="translate(600 0)" fill="#465d78"><circle cx="35" cy="0" r="28"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+    <g transform="translate(750 0)" fill="#725957"><circle cx="35" cy="0" r="28"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+    <g transform="translate(900 0)" fill="#6c704f"><circle cx="35" cy="0" r="28"/><path d="M5 44c16-36 44-36 60 0v112H5z"/></g>
+  </g>
+  <text x="146" y="626" font-family="sans-serif" font-size="20" fill="#5f6870">caption restored: 全員で撮った最初の集合写真</text>
+</svg>

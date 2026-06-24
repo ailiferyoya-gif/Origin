@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="ステージ写真。マイクスタンドが7本ある。">
+  <rect width="1200" height="760" fill="#16191e"/>
+  <rect x="80" y="72" width="1040" height="620" rx="16" fill="#20242b" stroke="#4a4f57"/>
+  <path d="M122 190h956v330H122z" fill="#29303a"/>
+  <g stroke="#d7d9df" stroke-width="8" stroke-linecap="round">
+    <path d="M190 260v260M330 260v260M470 260v260M610 260v260M750 260v260M890 260v260M1030 260v260"/>
+    <path d="M160 260h60M300 260h60M440 260h60M580 260h60M720 260h60M860 260h60M1000 260h60"/>
+  </g>
+  <g opacity=".9" transform="translate(150 430)">
+    <g fill="#6c536d"><circle cx="40" cy="0" r="24"/><path d="M14 38h52v100H14z"/></g>
+    <g transform="translate(140 0)" fill="#536b76"><circle cx="40" cy="0" r="24"/><path d="M14 38h52v100H14z"/></g>
+    <g transform="translate(280 0)" fill="#71614e"><circle cx="40" cy="0" r="24"/><path d="M14 38h52v100H14z"/></g>
+    <g transform="translate(560 0)" fill="#4e6670"><circle cx="40" cy="0" r="24"/><path d="M14 38h52v100H14z"/></g>
+    <g transform="translate(700 0)" fill="#6c5e78"><circle cx="40" cy="0" r="24"/><path d="M14 38h52v100H14z"/></g>
+    <g transform="translate(840 0)" fill="#5d6d51"><circle cx="40" cy="0" r="24"/><path d="M14 38h52v100H14z"/></g>
+  </g>
+  <text x="118" y="632" fill="#c7cbd0" font-family="sans-serif" font-size="20">stage memo: stand count 7 / visible members 6</text>
+</svg>

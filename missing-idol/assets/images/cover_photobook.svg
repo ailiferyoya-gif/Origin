@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="写真集きらめきのあとでの表紙。6人のシルエット。">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f6efe2"/><stop offset="1" stop-color="#cdd7e6"/></linearGradient>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .08"/></feComponentTransfer></filter>
+  </defs>
+  <rect width="1200" height="760" fill="#eee7da"/>
+  <rect x="118" y="54" width="964" height="652" rx="16" fill="url(#bg)" stroke="#c8bda9"/>
+  <rect x="118" y="54" width="964" height="652" rx="16" filter="url(#grain)" opacity=".35"/>
+  <text x="176" y="156" fill="#27313c" font-family="serif" font-size="72" letter-spacing="8">きらめきのあとで</text>
+  <text x="182" y="208" fill="#5e6871" font-family="sans-serif" font-size="22">夜明け前、まだ名前はない。 Photo Archive</text>
+  <g transform="translate(180 312)" opacity=".9">
+    <g fill="#364150"><circle cx="40" cy="0" r="28"/><path d="M10 44c12-34 48-34 60 0v132H10z"/></g>
+    <g fill="#59657a" transform="translate(132 8)"><circle cx="40" cy="0" r="28"/><path d="M10 44c12-34 48-34 60 0v132H10z"/></g>
+    <g fill="#414e5b" transform="translate(264 -4)"><circle cx="40" cy="0" r="28"/><path d="M10 44c12-34 48-34 60 0v132H10z"/></g>
+    <g fill="#6d5c75" transform="translate(396 12)"><circle cx="40" cy="0" r="28"/><path d="M10 44c12-34 48-34 60 0v132H10z"/></g>
+    <g fill="#415f6a" transform="translate(528 3)"><circle cx="40" cy="0" r="28"/><path d="M10 44c12-34 48-34 60 0v132H10z"/></g>
+    <g fill="#6b714f" transform="translate(660 10)"><circle cx="40" cy="0" r="28"/><path d="M10 44c12-34 48-34 60 0v132H10z"/></g>
+  </g>
+  <text x="182" y="650" fill="#2e3740" font-family="sans-serif" font-size="18">掲載プロフィール: 6 members</text>
+</svg>

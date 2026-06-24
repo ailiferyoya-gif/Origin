@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="奥付スキャン。撮影協力欄に黒塗り。">
+  <rect width="1200" height="760" fill="#eee8df"/>
+  <rect x="210" y="70" width="780" height="620" fill="#fffdf7" stroke="#b8ae9e"/>
+  <text x="260" y="140" font-size="34" fill="#23282e" font-family="serif">きらめきのあとで / 奥付</text>
+  <g font-family="sans-serif" font-size="21" fill="#343b41">
+    <text x="260" y="220">発行: 2024年8月</text>
+    <text x="260" y="270">編集: KRMK Archive Office</text>
+    <text x="260" y="320">撮影: anonymous studio</text>
+    <text x="260" y="370">衣装協力: seven-light costume</text>
+    <text x="260" y="420">撮影協力: </text><rect x="390" y="394" width="270" height="34" fill="#111"/>
+    <text x="260" y="500">掲載確認: 2024.08.18 修正済</text>
+  </g>
+</svg>
