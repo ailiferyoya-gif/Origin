@@ -34,19 +34,19 @@ const app = document.querySelector("#app");
 const navButtons = [...document.querySelectorAll("[data-route]")];
 
 const photos = [
-  { id: "cover", section: "表紙", title: "表紙", file: "cover_photobook.svg", src: "assets/images/cover_photobook.svg", note: "6人のシルエット。写真集タイトル『きらめきのあとで』。" },
-  { id: "group_chairs", section: "集合写真", title: "集合写真", file: "group_chairs.svg", src: "assets/images/group_chairs.svg", note: "写っているのは6人。椅子は7脚。" },
-  { id: "dressing_room_cups", section: "楽屋", title: "楽屋の紙コップ", file: "dressing_room_cups.svg", src: "assets/images/dressing_room_cups.svg", note: "紙コップが7つ。1つだけテープで名前が隠れている。" },
-  { id: "stage_mics", section: "ステージ", title: "ステージ", file: "stage_mics.svg", src: "assets/images/stage_mics.svg", note: "マイクスタンドが7本。立ち位置も7人分に見える。" },
-  { id: "mirror_sleeve", section: "オフショット", title: "鏡のあるオフショット", file: "mirror_sleeve.svg", src: "assets/images/mirror_sleeve.svg", note: "鏡の端にだけ、説明できない袖が見える。" },
-  { id: "formation_sheet", section: "ステージ", title: "立ち位置表", file: "formation_sheet.svg", src: "assets/images/formation_sheet.svg", note: "1〜7の番号。4番だけ黒塗り。" },
-  { id: "interview_page", section: "インタビュー", title: "インタビューページ", file: "interview_page.svg", src: "assets/images/interview_page.svg", note: "質問文には『全員で』。本文では6人だけが答えている。" },
-  { id: "colophon_scan", section: "奥付", title: "奥付スキャン", file: "colophon_scan.svg", src: "assets/images/colophon_scan.svg", note: "撮影協力欄に黒塗りが残る。" }
+  { id: "cover", section: "表紙", title: "表紙", file: "cover_photobook.svg", src: "assets/images/cover_photobook.webp", note: "6人のシルエット。写真集タイトル『きらめきのあとで』。" },
+  { id: "group_chairs", section: "集合写真", title: "集合写真", file: "group_chairs.svg", src: "assets/images/group_chairs.webp", note: "写っているのは6人。椅子は7脚。" },
+  { id: "dressing_room_cups", section: "楽屋", title: "楽屋の紙コップ", file: "dressing_room_cups.svg", src: "assets/images/dressing_room_cups.webp", note: "紙コップが7つ。1つだけテープで名前が隠れている。" },
+  { id: "stage_mics", section: "ステージ", title: "ステージ", file: "stage_mics.svg", src: "assets/images/stage_mics.webp", note: "マイクスタンドが7本。立ち位置も7人分に見える。" },
+  { id: "mirror_sleeve", section: "オフショット", title: "鏡のあるオフショット", file: "mirror_sleeve.svg", src: "assets/images/mirror_sleeve.webp", note: "鏡の端にだけ、説明できない袖が見える。" },
+  { id: "formation_sheet", section: "ステージ", title: "立ち位置表", file: "formation_sheet.svg", src: "assets/images/formation_sheet.webp", note: "1〜7の番号。4番だけ黒塗り。" },
+  { id: "interview_page", section: "インタビュー", title: "インタビューページ", file: "interview_page.svg", src: "assets/images/interview_page.webp", note: "質問文には『全員で』。本文では6人だけが答えている。" },
+  { id: "colophon_scan", section: "奥付", title: "奥付スキャン", file: "colophon_scan.svg", src: "assets/images/colophon_scan.webp", note: "撮影協力欄に黒塗りが残る。" }
 ];
 
 const endingPhotos = [
-  { id: "new_photo_after_restore", section: "復元後", title: "復元後の集合写真", file: "new_photo_after_restore.svg", src: "assets/images/new_photo_after_restore.svg", note: "椅子は7脚。メンバーも7人。端の人物だけ視線が合う。" },
-  { id: "extra_viewer_reflection", section: "復元後", title: "ビューア反射", file: "extra_viewer_reflection.svg", src: "assets/images/extra_viewer_reflection.svg", note: "写真集を見ている画面に、背後の気配が反射している。" }
+  { id: "new_photo_after_restore", section: "復元後", title: "復元後の集合写真", file: "new_photo_after_restore.svg", src: "assets/images/new_photo_after_restore.webp", note: "椅子は7脚。メンバーも7人。端の人物だけ視線が合う。" },
+  { id: "extra_viewer_reflection", section: "復元後", title: "ビューア反射", file: "extra_viewer_reflection.svg", src: "assets/images/extra_viewer_reflection.webp", note: "写真集を見ている画面に、背後の気配が反射している。" }
 ];
 
 const members = ["朝比奈 玲", "水瀬 こはる", "三澄 奈緒", "叶井 すず", "橘 ゆめ", "星野 ましろ"];
@@ -86,7 +86,7 @@ const archives = {
   mirror_crop_cache: {
     title: "mirror_crop_cache.svg",
     label: "鏡袖キャッシュ",
-    image: "assets/images/mirror_crop_cache.svg",
+    image: "assets/images/mirror_crop_cache.webp",
     body: [
       "鏡端の拡大キャッシュ。",
       "袖の衣装色は現行6名の衣装表と一致しない。",
