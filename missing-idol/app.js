@@ -34,19 +34,19 @@ const app = document.querySelector("#app");
 const navButtons = [...document.querySelectorAll("[data-route]")];
 
 const photos = [
-  { id: "cover", section: "表紙", title: "表紙", file: "cover_photobook.svg", src: "assets/images/cover_photobook.webp", note: "6人のシルエット。写真集タイトル『きらめきのあとで』。" },
-  { id: "group_chairs", section: "集合写真", title: "集合写真", file: "group_chairs.svg", src: "assets/images/group_chairs.webp", note: "写っているのは6人。椅子は7脚。" },
-  { id: "dressing_room_cups", section: "楽屋", title: "楽屋の紙コップ", file: "dressing_room_cups.svg", src: "assets/images/dressing_room_cups.webp", note: "紙コップが7つ。1つだけテープで名前が隠れている。" },
-  { id: "stage_mics", section: "ステージ", title: "ステージ", file: "stage_mics.svg", src: "assets/images/stage_mics.webp", note: "マイクスタンドが7本。立ち位置も7人分に見える。" },
-  { id: "mirror_sleeve", section: "オフショット", title: "鏡のあるオフショット", file: "mirror_sleeve.svg", src: "assets/images/mirror_sleeve.webp", note: "鏡の端にだけ、説明できない袖が見える。" },
-  { id: "formation_sheet", section: "ステージ", title: "立ち位置表", file: "formation_sheet.svg", src: "assets/images/formation_sheet.webp", note: "1〜7の番号。4番だけ黒塗り。" },
-  { id: "interview_page", section: "インタビュー", title: "インタビューページ", file: "interview_page.svg", src: "assets/images/interview_page.webp", note: "質問文には『全員で』。本文では6人だけが答えている。" },
-  { id: "colophon_scan", section: "奥付", title: "奥付スキャン", file: "colophon_scan.svg", src: "assets/images/colophon_scan.webp", note: "撮影協力欄に黒塗りが残る。" }
+  { id: "cover", section: "表紙", title: "表紙", file: "cover_photobook.svg", src: "assets/images/cover_photobook.webp", fallback: "assets/images/cover_photobook.svg", note: "写真集の表紙。" },
+  { id: "group_chairs", section: "集合写真", title: "集合写真", file: "group_chairs.svg", src: "assets/images/group_chairs.webp", fallback: "assets/images/group_chairs.svg", note: "スタジオで撮影された集合カット。" },
+  { id: "dressing_room_cups", section: "楽屋", title: "楽屋の紙コップ", file: "dressing_room_cups.svg", src: "assets/images/dressing_room_cups.webp", fallback: "assets/images/dressing_room_cups.svg", note: "撮影前の楽屋で撮られたオフショット。" },
+  { id: "stage_mics", section: "ステージ", title: "ステージ", file: "stage_mics.svg", src: "assets/images/stage_mics.webp", fallback: "assets/images/stage_mics.svg", note: "ライブ衣装でのステージカット。" },
+  { id: "mirror_sleeve", section: "オフショット", title: "鏡のあるオフショット", file: "mirror_sleeve.svg", src: "assets/images/mirror_sleeve.webp", fallback: "assets/images/mirror_sleeve.svg", note: "支度中の様子を写した一枚。" },
+  { id: "formation_sheet", section: "ステージ", title: "立ち位置表", file: "formation_sheet.svg", src: "assets/images/formation_sheet.webp", fallback: "assets/images/formation_sheet.svg", note: "撮影用資料のスキャン。" },
+  { id: "interview_page", section: "インタビュー", title: "インタビューページ", file: "interview_page.svg", src: "assets/images/interview_page.webp", fallback: "assets/images/interview_page.svg", note: "写真集掲載インタビュー。" },
+  { id: "colophon_scan", section: "奥付", title: "奥付スキャン", file: "colophon_scan.svg", src: "assets/images/colophon_scan.webp", fallback: "assets/images/colophon_scan.svg", note: "写真集の奥付ページ。" }
 ];
 
 const endingPhotos = [
-  { id: "new_photo_after_restore", section: "復元後", title: "復元後の集合写真", file: "new_photo_after_restore.svg", src: "assets/images/new_photo_after_restore.webp", note: "椅子は7脚。メンバーも7人。端の人物だけ視線が合う。" },
-  { id: "extra_viewer_reflection", section: "復元後", title: "ビューア反射", file: "extra_viewer_reflection.svg", src: "assets/images/extra_viewer_reflection.webp", note: "写真集を見ている画面に、背後の気配が反射している。" }
+  { id: "new_photo_after_restore", section: "復元後", title: "復元後の集合写真", file: "new_photo_after_restore.svg", src: "assets/images/new_photo_after_restore.webp", fallback: "assets/images/new_photo_after_restore.svg", note: "復元処理後に追加されたページ。" },
+  { id: "extra_viewer_reflection", section: "復元後", title: "ビューア反射", file: "extra_viewer_reflection.svg", src: "assets/images/extra_viewer_reflection.webp", fallback: "assets/images/extra_viewer_reflection.svg", note: "閲覧後に生成された不明な記録。" }
 ];
 
 const members = ["朝比奈 玲", "水瀬 こはる", "三澄 奈緒", "叶井 すず", "橘 ゆめ", "星野 ましろ"];
@@ -60,7 +60,7 @@ const archives = {
       "『きらめきのあとで』予約受付中。",
       "7人の今を閉じ込めた、最初で最後の写真集。",
       "現在の販売ページでは、この説明文は確認できません。",
-      "差分: 7人 → 6人"
+      "現在版の説明文と一致しない箇所があります。"
     ]
   },
   fan_blog_20240817: {
@@ -79,7 +79,7 @@ const archives = {
     body: [
       "掲載前インタビュー断片 / recovered text",
       "参加メンバー: 朝比奈玲、水瀬こはる、三澄奈緒、<redact></redact>、叶井すず、橘ゆめ、星野ましろ",
-      "記者メモ: 初瀬■■の回答のみ差し替え指示。",
+      "記者メモ: 初瀬■の回答欄のみ差し替え指示。",
       "質問: 全員で最初に撮った写真集について。"
     ]
   },
@@ -87,6 +87,7 @@ const archives = {
     title: "mirror_crop_cache.svg",
     label: "鏡袖キャッシュ",
     image: "assets/images/mirror_crop_cache.webp",
+    imageFallback: "assets/images/mirror_crop_cache.svg",
     body: [
       "鏡端の拡大キャッシュ。",
       "袖の衣装色は現行6名の衣装表と一致しない。",
@@ -100,7 +101,7 @@ const archives = {
       "LIVE 2024.08.17 / opening formation",
       "1 A.R. / 2 M.K. / 3 M.N. / 4 H.M. / 5 K.S. / 6 T.Y. / 7 H.Ms.",
       "現在版では4番のみ欠番として扱われている。",
-      "注記: H.M. は初瀬ミオの略記と推定。"
+      "注記: H.M. の詳細は現行プロフィール資料では確認できない。"
     ]
   }
 };
@@ -108,7 +109,7 @@ const archives = {
 const hintGroups = [
   ["人数の違和感", "集合写真で人物以外の数を数えてください。", "椅子、紙コップ、マイクの数を比べます。", "公式プロフィールの人数と合いません。", "7人"],
   ["名前の復元", "紙コップ、削除済み記事、ファンブログ、立ち位置表を見ます。", "『ミ』、初瀬■■、H.M. を同じ人物として扱えるか確認します。", "ファンブログの呼び名が最後の読みを補います。", "初瀬ミオ"],
-  ["復元対象", "候補写真のうち、本人の痕跡が最も直接残るものを選びます。", "人数の多さだけではなく、現在メンバーでは説明できない要素を見ます。", "鏡の端にだけ残る衣装の一部です。", "mirror_sleeve.svg"]
+  ["復元対象", "候補写真のうち、本人の痕跡が最も直接残るものを選びます。", "人数の多さだけではなく、現在メンバーでは説明できない要素を見ます。", "候補の中で、現在メンバーの資料と一致しない要素を探します。", "mirror_sleeve.svg"]
 ];
 
 function loadState() {
@@ -135,6 +136,16 @@ function has(id) {
   return state.observations.includes(id);
 }
 
+function isFinalUnlocked() {
+  return has("chairs")
+    && has("cups")
+    && has("mics")
+    && has("mirror")
+    && has("formation")
+    && state.readArchives.includes("deleted_interview_partial")
+    && state.readArchives.includes("formation_archive");
+}
+
 function toast(title, body) {
   const el = document.createElement("div");
   el.className = "toast";
@@ -156,9 +167,28 @@ function route() {
 }
 
 function setRoute(next) {
+  if (next === "final" && !isFinalUnlocked()) {
+    toast("Final", "復元確認には、写真とキャッシュの記録がまだ不足しています。");
+    next = "photobook";
+  }
   state.route = next;
   saveState();
   location.hash = `#/${next}`;
+}
+
+function imageTag(src, alt, fallback = "") {
+  return `<img src="${esc(src)}" alt="${esc(alt)}"${fallback ? ` data-fallback="${esc(fallback)}"` : ""} onerror="handleImageError(this)">`;
+}
+
+function handleImageError(img) {
+  const fallback = img.dataset.fallback;
+  if (fallback) {
+    img.dataset.fallback = "";
+    img.src = fallback;
+    return;
+  }
+  img.closest(".image-frame")?.classList.add("is-missing");
+  img.remove();
 }
 
 function unlockSearch(reason) {
@@ -217,7 +247,7 @@ function renderPhotobook() {
           <div class="thumb-list">
             ${allPhotos().map(item => `
               <button class="${item.id === photo.id ? "is-active" : ""}" data-photo="${item.id}" type="button">
-                <span class="thumb-mini"><img src="${esc(item.src)}" alt=""></span>
+                <span class="thumb-mini">${imageTag(item.src, "", item.fallback)}</span>
                 <span><b>${esc(item.title)}</b><small>${esc(item.section)} / ${esc(item.file)}</small></span>
               </button>
             `).join("")}
@@ -225,7 +255,7 @@ function renderPhotobook() {
         </aside>
         <section class="viewer">
           <figure class="photo-page image-frame">
-            <img src="${esc(photo.src)}" alt="${esc(photo.title)}" onerror="this.closest('.image-frame').classList.add('is-missing');this.remove();">
+            ${imageTag(photo.src, photo.title, photo.fallback)}
             ${photo.id === "mirror_sleeve" ? `<button class="hotspot mirror" data-mirror-hotspot type="button" aria-label="鏡の端を拡大する"></button>` : ""}
           </figure>
         </section>
@@ -246,19 +276,19 @@ function renderPhotoActions(photo) {
     return `<div class="choices"><h2>違和感を記録する</h2>${["椅子が多い", "照明が暗い", "衣装の色が違う", "背景がぼやけている"].map(choice => `<button data-chair-choice="${esc(choice)}" type="button">${esc(choice)}</button>`).join("")}</div>`;
   }
   if (photo.id === "dressing_room_cups") {
-    return `<div class="choices"><h2>拡大確認</h2><p>紙コップの数と、隠された名前の下を確認します。</p><button data-record="cups" type="button">紙コップを拡大して記録する</button></div>`;
+    return `<div class="choices"><h2>拡大確認</h2><p>楽屋テーブルの小物を拡大して確認します。</p><button data-record="cups" type="button">楽屋写真を拡大して記録する</button></div>`;
   }
   if (photo.id === "stage_mics") {
     return `<div class="choices"><h2>何が多いか</h2>${["照明", "マイクスタンド", "靴", "背景幕"].map(choice => `<button data-mic-choice="${esc(choice)}" type="button">${esc(choice)}</button>`).join("")}</div>`;
   }
   if (photo.id === "formation_sheet") {
-    return `<div class="choices"><h2>立ち位置表</h2><p>番号1〜7のうち、4番だけが黒塗りです。</p><button data-record="formation" type="button">4番欠番を記録する</button></div>`;
+    return `<div class="choices"><h2>立ち位置表</h2><p>資料内の修正箇所を確認します。</p><button data-record="formation" type="button">修正箇所を記録する</button></div>`;
   }
   if (photo.id === "interview_page") {
-    return `<div class="choices"><h2>本文確認</h2><p>質問文と回答者数が合っていません。</p><button data-record="interview" type="button">インタビューの矛盾を記録する</button></div>`;
+    return `<div class="choices"><h2>本文確認</h2><p>質問文と本文の対応を確認します。</p><button data-record="interview" type="button">本文の違和感を記録する</button></div>`;
   }
   if (photo.id === "colophon_scan") {
-    return `<div class="choices"><h2>奥付</h2><p>撮影協力欄の黒塗りを記録します。</p><button data-record="colophon" type="button">黒塗りを記録する</button></div>`;
+    return `<div class="choices"><h2>奥付</h2><p>奥付の不自然な修正箇所を確認します。</p><button data-record="colophon" type="button">修正箇所を記録する</button></div>`;
   }
   return `<p class="meta-note">写真を切り替え、写っている人数以外の数を見てください。</p>`;
 }
@@ -280,7 +310,7 @@ function availableSuggestions() {
   if (has("chairs")) base.push("よあなま 7人", "きらめきのあとで 椅子");
   if (has("cups")) base.push("よあなま 初期メンバー", "初瀬 ミ");
   if (has("formation")) base.push("よあなま 4番", "2024 8 17 ライブ");
-  if (state.readArchives.includes("deleted_interview_partial") || state.readArchives.includes("formation_archive")) base.push("初瀬 ミオ");
+  if (state.readArchives.includes("deleted_interview_partial") || state.readArchives.includes("formation_archive")) base.push("初瀬 ミ");
   return base;
 }
 
@@ -311,20 +341,20 @@ function searchResults(query) {
   const q = query.trim().toLowerCase();
   const results = [
     ["official", "公式プロフィール｜夜明け前、まだ名前はない。", "公式 / profile.yoanama.local", "現在は6人組として掲載されています。", "profile"],
-    ["sale", "写真集『きらめきのあとで』販売ページ", "store-cache.local", has("chairs") ? "現在版は6人表記。古いキャッシュでは7人表記が残っています。" : "6人の魅力を収録した写真集。", "archive:cache_product_old"]
+    ["sale", "写真集『きらめきのあとで』販売ページ", "store-cache.local", has("chairs") ? "現在版と古いキャッシュで、紹介文に差分があります。" : "現在版の写真集販売ページです。", "archive:cache_product_old"]
   ];
   if (!q) return results;
   if (q.includes("7") || q.includes("椅子")) {
-    results.push(["blog", "よあなま 7人時代について", "fan-note.local/old/817", "4番の子、最近見ない。立ち位置だけ空いていたという投稿。", "archive:fan_blog_20240817"]);
+    results.push(["blog", "古いファンブログの記録", "fan-note.local/old/817", "当時のファンによる断片的な記録。現在の公式情報と一致しない記述があります。", "archive:fan_blog_20240817"]);
   }
   if (q.includes("初瀬") || q.includes("初期") || q.includes("ミ")) {
-    results.push(["interview", "削除済みインタビュー断片", "deleted-cache.local/interview", "メンバー名一覧に『初瀬■■』が残っています。", "archive:deleted_interview_partial"]);
+    results.push(["interview", "削除済みインタビュー断片", "deleted-cache.local/interview", "掲載前インタビューの一部キャッシュ。本文の一部に欠落があります。", "archive:deleted_interview_partial"]);
   }
   if (q.includes("4") || q.includes("ライブ") || q.includes("欠番")) {
-    results.push(["formation", "2024.08.17 ライブ立ち位置表", "event-cache.local/20240817", "1〜7の立ち位置。4番にH.M.と記録。", "archive:formation_archive"]);
+    results.push(["formation", "2024.08.17 ライブ立ち位置表", "event-cache.local/20240817", "古いライブ立ち位置表。現在版では確認できない番号があります。", "archive:formation_archive"]);
   }
   if (q.includes("初瀬") && q.includes("ミオ")) {
-    results.push(["name", "初瀬ミオ 関連キャッシュ", "deep-cache.local/name", "検索結果は断片的です。公式プロフィールには表示されません。", "final"]);
+    results.push(["name", "関連キャッシュ", "deep-cache.local/name", "複数のキャッシュを照合すると、現行プロフィールにない名前の痕跡が残ります。", "final"]);
   }
   return results;
 }
@@ -336,7 +366,7 @@ function renderResult(result) {
 
 function renderAction(action, id) {
   if (action === "profile") return `<button class="ghost-button" data-route-jump="profile" type="button">開く</button>`;
-  if (action === "final") return `<button class="ghost-button" data-route-jump="final" type="button">復元確認へ</button>`;
+  if (action === "final") return isFinalUnlocked() ? `<button class="ghost-button" data-route-jump="final" type="button">復元確認へ</button>` : "";
   if (action?.startsWith("archive:")) return `<button class="ghost-button" data-unlock-archive="${esc(action.split(":")[1])}" type="button">キャッシュを開く</button>`;
   return "";
 }
@@ -361,7 +391,7 @@ function renderArchiveDoc(id, item) {
   return `
     <small>Recovered cache / ${esc(item.title)}</small>
     <h2>${esc(item.label)}</h2>
-    ${item.image ? `<figure class="image-frame"><img src="${esc(item.image)}" alt="${esc(item.label)}" onerror="this.closest('.image-frame').classList.add('is-missing');this.remove();"></figure>` : ""}
+    ${item.image ? `<figure class="image-frame">${imageTag(item.image, item.label, item.imageFallback || "")}</figure>` : ""}
     ${item.body.map(line => `<p>${line.replaceAll("<redact></redact>", `<span class="redact"></span>`)}</p>`).join("")}
   `;
 }
@@ -414,6 +444,14 @@ function renderNotes() {
 }
 
 function renderFinal() {
+  if (!isFinalUnlocked()) {
+    return renderLayout(`
+      <section class="screen">
+        <div class="screen-head"><div><p class="kicker">Final</p><h1>復元確認</h1><p>復元確認に必要な記録がまだ不足しています。PhotoBookとArchiveの記録を照合してください。</p></div></div>
+        <article class="panel pad"><button class="button" data-route-jump="photobook" type="button">PhotoBookへ戻る</button></article>
+      </section>
+    `);
+  }
   return renderLayout(`
     <section class="screen">
       <div class="screen-head"><div><p class="kicker">Final</p><h1>復元確認</h1><p>どの写真を復元対象にするか選び、消されたメンバー名を入力してください。</p></div></div>
@@ -421,7 +459,7 @@ function renderFinal() {
         <section class="panel pad">
           ${state.ending ? renderEnding() : renderFinalForm()}
         </section>
-        <aside class="panel pad"><h2>復元判断メモ</h2><p>人数の痕跡だけではなく、現在メンバーでは説明できない衣装の一部が残る写真を選びます。</p><p>入力許容: 初瀬ミオ / 初瀬 みお / はつせみお / ミオ</p></aside>
+        <aside class="panel pad"><h2>復元判断メモ</h2><p>人数の痕跡だけではなく、現在メンバーでは説明できない要素が残る写真を選びます。</p><p>名前は、紙コップ・削除記事・立ち位置表・ファンブログを照合して入力してください。</p></aside>
       </div>
     </section>
   `);
@@ -432,7 +470,7 @@ function renderFinalForm() {
     <form class="final-form" data-final-form>
       <h2>復元対象を選択</h2>
       ${["group_chairs.svg", "dressing_room_cups.svg", "stage_mics.svg", "mirror_sleeve.svg", "formation_sheet.svg"].map(name => `<label class="final-choice"><input type="radio" name="photo" value="${name}" ${state.finalPhoto === name ? "checked" : ""}><span>${name}</span></label>`).join("")}
-      <label><b>消されたメンバーの名前</b><input type="text" name="name" value="${esc(state.finalName)}" placeholder="初瀬ミオ"></label>
+      <label><b>消されたメンバーの名前</b><input type="text" name="name" value="${esc(state.finalName)}" placeholder="名前を入力"></label>
       <button class="button" type="submit">復元処理を開始</button>
     </form>
   `;
@@ -462,10 +500,15 @@ function renderEnding() {
 }
 
 function renderApp() {
-  const current = route();
+  let current = route();
+  if (current === "final" && !isFinalUnlocked()) {
+    current = "photobook";
+    if (location.hash !== "#/photobook") history.replaceState(null, "", `${location.pathname}${location.search}#/photobook`);
+  }
   state.route = current;
   navButtons.forEach(button => {
     const locked = button.dataset.route === "search" && !state.searchUnlocked;
+    if (button.dataset.route === "final") button.hidden = !isFinalUnlocked();
     button.classList.toggle("is-locked", locked);
     button.setAttribute("aria-current", button.dataset.route === current ? "page" : "false");
   });
@@ -487,6 +530,10 @@ function bindEvents() {
       toast("Search", "集合写真の違和感を記録すると利用できます。");
       return;
     }
+    if (next === "final" && !isFinalUnlocked()) {
+      toast("Final", "復元確認には、写真とキャッシュの記録がまだ不足しています。");
+      return;
+    }
     setRoute(next);
   }));
   document.querySelectorAll("[data-photo]").forEach(button => button.addEventListener("click", () => {
@@ -506,7 +553,7 @@ function bindEvents() {
   }));
   document.querySelectorAll("[data-mic-choice]").forEach(button => button.addEventListener("click", () => {
     if (button.dataset.micChoice === "マイクスタンド") {
-      recordObservation("mics", "ステージ: マイクスタンドが7本あります。");
+      recordObservation("mics", "ステージ: 人数分の設備に不自然な余りがあります。");
     } else {
       toast("違和感ではありません", "ステージで人数分用意されるものを見てください。");
     }
