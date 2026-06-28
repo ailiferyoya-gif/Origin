@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{WORK_TITLE}} | 仮想デスクトップ謎解きテンプレート</title>
+  <meta name="description" content="BOOTH ZIP販売向け、オフライン完結型の仮想デスクトップ謎解きテンプレートです。">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+  <div class="desktop" id="desktop">
+    <main class="desktop-space" aria-label="仮想デスクトップ">
+      <section class="desktop-icons" aria-label="デスクトップアプリ">
+        <button class="desktop-icon" data-open-app="browser" type="button"><span>Br</span><b>Browser</b></button>
+        <button class="desktop-icon" data-open-app="talk" type="button"><span>Tk</span><b>Talk</b></button>
+        <button class="desktop-icon" data-open-app="files" type="button"><span>Fl</span><b>Files</b></button>
+        <button class="desktop-icon" data-open-app="search" type="button"><span>Sr</span><b>Search</b></button>
+        <button class="desktop-icon" data-open-app="notes" type="button"><span>Nt</span><b>Notes</b></button>
+      </section>
+      <div class="window-layer" id="window-layer" aria-live="polite"></div>
+    </main>
+
+    <footer class="taskbar" aria-label="タスクバー">
+      <div class="taskbar-center">
+        <button class="start-button" data-open-app="notes" type="button" aria-label="スタート">◆</button>
+        <button class="taskbar-app" data-open-app="browser" type="button">Browser</button>
+        <button class="taskbar-app" data-open-app="talk" type="button">Talk</button>
+        <button class="taskbar-app" data-open-app="files" type="button">Files</button>
+        <button class="taskbar-app" data-open-app="search" type="button">Search</button>
+        <button class="taskbar-app" data-open-app="notes" type="button">Notes</button>
+      </div>
+      <div class="taskbar-right">
+        <span id="notice">テンプレート端末を起動しました</span>
+        <time id="clock">--:--</time>
+      </div>
+    </footer>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+  </div>
+  <script src="desktop.js"></script>
+</body>
+</html>
