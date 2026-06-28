@@ -1701,6 +1701,7 @@ button,
   grid-template-columns: 42px minmax(0, 1fr);
   gap: 10px;
   align-items: start;
+  justify-items: start;
   margin: 10px 0;
 }
 
@@ -1774,14 +1775,6 @@ button,
   text-align: right;
 }
 
-.lime-sticker {
-  display: block;
-  width: 126px;
-  height: 126px;
-  object-fit: contain;
-  margin: 18px 18px 0 auto;
-}
-
 .app-window[data-app="talk"] .quick-replies {
   min-height: 86px;
   display: grid;
@@ -1851,6 +1844,7 @@ button,
 /* Keep LIME incoming bubbles gray even after older chat overrides. */
 .app-window[data-app="talk"] .incoming-row .bubble {
   margin-left: 0;
+  justify-self: start;
   background: #f2f2f2;
 }
 

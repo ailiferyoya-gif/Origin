@@ -689,8 +689,7 @@ function renderTalk() {
               ${current.id === "saeki" ? `<img class="message-avatar" src="assets/lime-cat-avatar.png" alt="">` : `<span class="message-avatar">${esc(current.avatar)}</span>`}
               <p class="bubble"><b>${esc(message.from)}</b><br>${esc(message.body)}<small>午前 ${String(10 + index).padStart(2, "0")}:5${index % 2}</small></p>
             </div>
-          `).join("") || `<div class="incoming-row"><span class="message-avatar">${esc(current.avatar)}</span><p class="bubble">この相手との記録はまだありません。</p></div>`}
-          ${current.id === "saeki" ? `<img class="lime-sticker" src="assets/lime-shiba-sticker.png" alt="スタンプ">` : ""}
+          `).join("")}
         </div>
         <div class="quick-replies">
           <span class="lime-attach">⌇</span>
