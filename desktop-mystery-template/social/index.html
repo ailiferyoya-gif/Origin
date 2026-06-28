@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Social Feed | template</title>
+  <link rel="stylesheet" href="social.css">
+</head>
+<body>
+  <main class="social-shell">
+    <aside class="rail" aria-label="メニュー">
+      <div class="brand">sf</div>
+      <button class="rail-item is-active" type="button">Home</button>
+      <button class="rail-item" type="button">Search</button>
+      <button class="rail-item" type="button">Archive</button>
+      <button class="rail-item" type="button">Messages</button>
+    </aside>
+
+    <section class="feed" aria-label="投稿フィード">
+      <header class="feed-head">
+        <p class="kicker">Social Feed</p>
+        <h1>関連投稿</h1>
+        <p>作品内SNSのサンプルです。実在サービスには接続していません。</p>
+      </header>
+
+      <article class="post">
+        <div class="avatar">A</div>
+        <div>
+          <header><b>archive_watch</b><span>@archive_watch · 21:08</span></header>
+          <p>公式ページの説明、昼に見た時と少し違う気がする。スクリーンショットを残しておけばよかった。</p>
+          <footer>返信 2 · 引用 1 · 保存 8</footer>
+        </div>
+      </article>
+
+      <article class="post">
+        <div class="avatar">N</div>
+        <div>
+          <header><b>night_shift_log</b><span>@nshift · 22:41</span></header>
+          <p>削除された投稿は、検索には出ない。でもキャッシュには残ることがある。日付と用語を合わせて探す。</p>
+          <button class="link-button" data-social-clue type="button">この投稿を記録する</button>
+          <footer>返信 0 · 引用 3 · 保存 12</footer>
+        </div>
+      </article>
+
+      <article class="post is-muted">
+        <div class="avatar">?</div>
+        <div>
+          <header><b>deleted_user</b><span>@unknown · --:--</span></header>
+          <p>この投稿は削除されています。</p>
+          <footer>キャッシュのみ表示</footer>
+        </div>
+      </article>
+    </section>
+
+    <aside class="trend-panel" aria-label="トレンド">
+      <h2>検索候補</h2>
+      <a href="#cache">削除済み投稿</a>
+      <a href="#date">日付の食い違い</a>
+      <a href="#official">公式更新履歴</a>
+      <p>ここに作品ごとの噂、ファンログ、削除済み発言を追加してください。</p>
+    </aside>
+  </main>
+  <script src="social.js"></script>
+</body>
+</html>

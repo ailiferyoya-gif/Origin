@@ -1,0 +1,194 @@
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --ink: #1d2530;
+  --muted: #697585;
+  --line: #d7dee8;
+  --accent: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 14px;
+}
+
+.social-shell {
+  display: grid;
+  grid-template-columns: 160px minmax(360px, 680px) minmax(220px, 1fr);
+  gap: 16px;
+  max-width: 1180px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.rail,
+.trend-panel,
+.feed {
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid var(--line);
+}
+
+.rail {
+  position: sticky;
+  top: 18px;
+  height: calc(100vh - 36px);
+  padding: 16px;
+}
+
+.brand {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 18px;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--ink);
+  color: white;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.rail-item {
+  display: block;
+  width: 100%;
+  margin: 4px 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+}
+
+.rail-item.is-active,
+.rail-item:hover {
+  background: #e8edf5;
+}
+
+.feed {
+  min-height: calc(100vh - 36px);
+}
+
+.feed-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kicker {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 650;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.feed-head p:last-child {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.post {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.post.is-muted {
+  color: var(--muted);
+  background: #f8fafc;
+}
+
+.avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e6ecf4;
+  color: #415164;
+  font-weight: 700;
+}
+
+.post header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.post header span,
+.post footer {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.post p {
+  margin: 8px 0 12px;
+  line-height: 1.75;
+}
+
+.link-button {
+  padding: 7px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+}
+
+.trend-panel {
+  position: sticky;
+  top: 18px;
+  height: max-content;
+  padding: 18px;
+}
+
+.trend-panel a {
+  display: block;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.trend-panel p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 860px) {
+  .social-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .rail,
+  .trend-panel {
+    position: static;
+    height: auto;
+  }
+}

@@ -1,7 +1,6 @@
 const GAME = {
   title: "{{WORK_TITLE}}",
-  saveKey: "desktopMysteryTemplateStateV1",
-  browserUrl: "site/index.html",
+  saveKey: "desktopMysteryTemplateStateV2",
   startNotice: "テンプレート端末を起動しました",
   apps: {
     browser: "Browser",
@@ -10,10 +9,23 @@ const GAME = {
     search: "Search",
     notes: "Notes"
   },
+  browserTargets: {
+    corporate: {
+      label: "Template Site",
+      address: "template.local",
+      url: "site/index.html"
+    },
+    social: {
+      label: "Social Feed",
+      address: "social.local",
+      url: "social/index.html"
+    }
+  },
   events: {
     contactSubmitted: "TEMPLATE_CONTACT_REQUEST",
     stageUnlocked: "TEMPLATE_STAGE_UNLOCKED",
-    finalSubmitted: "TEMPLATE_FINAL_SUBMITTED"
+    finalSubmitted: "TEMPLATE_FINAL_SUBMITTED",
+    socialClue: "TEMPLATE_SOCIAL_CLUE"
   }
 };
 
@@ -21,11 +33,13 @@ const initialState = {
   openApps: ["notes"],
   activeApp: "notes",
   notice: GAME.startNotice,
+  browserTarget: "corporate",
   browserPath: "/",
   contactSubmitted: false,
   talkContactAdded: false,
   searchUnlocked: false,
   finalSubmitted: false,
+  socialClueRead: false,
   currentThread: "system",
   currentFolder: "downloads",
   selectedFile: "readme",
@@ -37,10 +51,36 @@ const initialState = {
 };
 
 const talkMessages = {
-  "system-boot": { thread: "system", from: "System", body: "調査端末を起動しました。必要な操作はNotesに記録されています。", time: "now" },
-  "request-1": { thread: "desk", from: "資料窓口", body: "資料窓口を追加しました。Downloadsへ調査資料を保存しました。", time: "now" },
-  "request-2": { thread: "desk", from: "資料窓口", body: "資料の注記を確認してください。Searchが利用可能になります。", time: "now" },
-  "final-1": { thread: "system", from: "System", body: "最終送信を受理しました。Filesに送信控えを保存しました。", time: "now" }
+  "system-boot": {
+    thread: "system",
+    from: "System",
+    body: "調査端末を起動しました。必要な操作はNotesに記録されています。",
+    time: "now"
+  },
+  "request-1": {
+    thread: "desk",
+    from: "資料窓口",
+    body: "資料窓口を追加しました。Downloadsへ調査資料を保存しました。",
+    time: "now"
+  },
+  "request-2": {
+    thread: "desk",
+    from: "資料窓口",
+    body: "資料の注記を確認してください。Searchが利用可能になります。",
+    time: "now"
+  },
+  "social-1": {
+    thread: "system",
+    from: "System",
+    body: "Social Feedで関連投稿を確認しました。Search結果にSNS由来の断片を追加できます。",
+    time: "now"
+  },
+  "final-1": {
+    thread: "system",
+    from: "System",
+    body: "最終イベントを受理しました。Filesに送信控えを保存しました。",
+    time: "now"
+  }
 };
 
 const threads = [
@@ -50,19 +90,80 @@ const threads = [
 
 const files = {
   downloads: [
-    { id: "readme", name: "readme_first.txt", unlock: () => true, body: "このテンプレートは、ZIPを解凍して start.html を開くだけで動く仮想デスクトップ型Web謎の土台です。\n\nまずBrowserでサンプルサイトを開き、サイト内ボタンからTalk/Files/Searchが連動する流れを確認してください。" },
-    { id: "overview", name: "overview_sample.pdf", unlock: s => s.talkContactAdded, body: "PDF風サンプル資料\n\nここに作品固有の資料本文を入れます。\n重要語は一箇所で答えにせず、複数アプリの情報を照合させる設計にしてください。" },
-    { id: "receipt", name: "final_receipt.txt", unlock: s => s.finalSubmitted, body: "送信控え\n状態: 送信済み\n\nこのファイルは最終イベント後に表示されるサンプルです。" }
+    {
+      id: "readme",
+      name: "readme_first.txt",
+      unlock: () => true,
+      body: "このテンプレートは、ZIPを解凍して start.html を開くだけで動く仮想デスクトップ型Web謎の土台です。\n\nまずBrowserでサンプルサイトを開き、サイト内ボタンからTalk / Files / Searchが連動する流れを確認してください。\n\nSocialアイコンからは、架空SNS風サイトをBrowser内で開けます。実在サービスには接続しません。"
+    },
+    {
+      id: "overview",
+      name: "overview_sample.pdf",
+      unlock: s => s.talkContactAdded,
+      body: "PDF風サンプル資料\n\nここに作品固有の資料本文を入れます。\n重要語を一箇所で答えにせず、複数アプリの情報を照合させる設計にしてください。"
+    },
+    {
+      id: "social-cache",
+      name: "social_cache_note.txt",
+      unlock: s => s.socialClueRead,
+      body: "Social Feed キャッシュ\n\nSNS風サイトで見つけた投稿や削除済み発言の断片を保存するためのサンプルです。\n実在SNS名や実在ロゴは使わず、作品内だけの架空サービスとして扱ってください。"
+    },
+    {
+      id: "receipt",
+      name: "final_receipt.txt",
+      unlock: s => s.finalSubmitted,
+      body: "送信控え\n状態: 送信済み\n\nこのファイルは最終イベント後に表示されるサンプルです。"
+    }
   ],
   recovered: [
-    { id: "recovered-note", name: "recovered_note.txt", unlock: s => s.searchUnlocked, body: "Recoveredフォルダのサンプルです。\nSearchやBrowserイベントに応じて、後半資料を追加する場所として使います。" }
+    {
+      id: "recovered-note",
+      name: "recovered_note.txt",
+      unlock: s => s.searchUnlocked,
+      body: "Recoveredフォルダのサンプルです。\nSearchやBrowserイベントに応じて、後続資料を追加する場所として使います。"
+    }
   ]
 };
 
 const searchDatabase = [
-  { id: "official", q: ["テンプレート", "公式"], title: "公式ページ", body: "Browser内のサンプルサイトを開きます。", action: "browser:/" },
-  { id: "overview", q: ["資料", "注記"], title: "Downloads / overview_sample.pdf", body: "Talkで資料窓口を追加すると読める資料です。", action: "file:downloads:overview", gated: s => s.talkContactAdded },
-  { id: "recovered", q: ["復元", "recovered"], title: "Recovered / recovered_note.txt", body: "Search解放後に表示される後半資料の例です。", action: "file:recovered:recovered-note", gated: s => s.searchUnlocked }
+  {
+    id: "official",
+    q: ["テンプレート", "公式", "サイト"],
+    title: "公式ページ",
+    body: "Browser内のサンプルサイトを開きます。",
+    action: "browser:corporate:/"
+  },
+  {
+    id: "social",
+    q: ["social", "sns", "投稿", "つぶやき"],
+    title: "Social Feed / 関連投稿",
+    body: "架空SNS風サイトをBrowser内で開きます。",
+    action: "browser:social:/"
+  },
+  {
+    id: "overview",
+    q: ["資料", "注記"],
+    title: "Downloads / overview_sample.pdf",
+    body: "Talkで資料窓口を追加すると読める資料です。",
+    action: "file:downloads:overview",
+    gated: s => s.talkContactAdded
+  },
+  {
+    id: "social-cache",
+    q: ["キャッシュ", "削除", "投稿"],
+    title: "Downloads / social_cache_note.txt",
+    body: "Social Feedで確認した断片の保存例です。",
+    action: "file:downloads:social-cache",
+    gated: s => s.socialClueRead
+  },
+  {
+    id: "recovered",
+    q: ["復元", "recovered"],
+    title: "Recovered / recovered_note.txt",
+    body: "Search解放後に表示される後続資料の例です。",
+    action: "file:recovered:recovered-note",
+    gated: s => s.searchUnlocked
+  }
 ];
 
 let state = loadState();
@@ -73,7 +174,9 @@ const clock = document.querySelector("#clock");
 function loadState() {
   const params = new URLSearchParams(location.search);
   if (params.get("reset") === "1") {
-    Object.keys(localStorage).filter(key => key.startsWith("desktopMysteryTemplateState")).forEach(key => localStorage.removeItem(key));
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("desktopMysteryTemplateState"))
+      .forEach(key => localStorage.removeItem(key));
   }
   try {
     return { ...structuredClone(initialState), ...JSON.parse(localStorage.getItem(GAME.saveKey) || "{}") };
@@ -114,6 +217,12 @@ function openApp(app) {
   render();
 }
 
+function openBrowser(target = "corporate", path = "/") {
+  state.browserTarget = GAME.browserTargets[target] ? target : "corporate";
+  state.browserPath = path || "/";
+  openApp("browser");
+}
+
 function closeApp(app) {
   state.openApps = state.openApps.filter(item => item !== app);
   if (state.activeApp === app) state.activeApp = state.openApps.at(-1) || "";
@@ -127,20 +236,24 @@ function render() {
     const app = button.dataset.openApp;
     button.classList.toggle("is-active", state.activeApp === app);
   });
+  document.querySelectorAll("[data-open-browser]").forEach(button => {
+    const target = button.dataset.openBrowser;
+    button.classList.toggle("is-active", state.activeApp === "browser" && state.browserTarget === target);
+  });
   layer.innerHTML = state.openApps.map(renderWindow).join("");
   bind();
 }
 
 function renderWindow(app) {
-  const title = GAME.apps[app] || app;
+  const title = app === "browser" ? `${GAME.apps.browser} - ${GAME.browserTargets[state.browserTarget]?.label || "Site"}` : (GAME.apps[app] || app);
   return `
     <section class="app-window ${state.activeApp === app ? "is-active" : ""}" data-app="${esc(app)}" aria-label="${esc(title)}">
       <header class="window-titlebar" data-focus-app="${esc(app)}">
         <b>${esc(title)}</b>
         <div class="window-controls">
-          <button data-action="minimize" data-app="${esc(app)}" type="button">−</button>
-          <button data-action="maximize" data-app="${esc(app)}" type="button">□</button>
-          <button data-action="close" data-app="${esc(app)}" type="button">×</button>
+          <button data-action="minimize" data-app="${esc(app)}" type="button" aria-label="最小化">−</button>
+          <button data-action="maximize" data-app="${esc(app)}" type="button" aria-label="最大化">□</button>
+          <button data-action="close" data-app="${esc(app)}" type="button" aria-label="閉じる">×</button>
         </div>
       </header>
       <div class="window-body">${renderApp(app)}</div>
@@ -154,13 +267,17 @@ function renderApp(app) {
 }
 
 function renderBrowser() {
+  const target = GAME.browserTargets[state.browserTarget] || GAME.browserTargets.corporate;
+  const hash = state.browserPath === "/" ? "" : `#${esc(state.browserPath)}`;
   return `
     <div class="browser-body">
       <div class="browser-toolbar">
         <button class="button secondary" data-browser-home type="button">Home</button>
-        <div class="browser-address">template.local${esc(state.browserPath)}</div>
+        <button class="button secondary" data-browser-target="corporate" type="button">Template Site</button>
+        <button class="button secondary" data-browser-target="social" type="button">Social Feed</button>
+        <div class="browser-address">${esc(target.address)}${esc(state.browserPath)}</div>
       </div>
-      <iframe class="browser-frame" title="作品内サイト" src="${esc(GAME.browserUrl)}${state.browserPath === "/" ? "" : `#${esc(state.browserPath)}`}"></iframe>
+      <iframe class="browser-frame" title="${esc(target.label)}" src="${esc(target.url)}${hash}"></iframe>
     </div>
   `;
 }
@@ -248,6 +365,7 @@ function renderNotes() {
     ["Browserでサンプルサイトを開く", state.contactSubmitted],
     ["Talkで資料窓口を追加する", state.talkContactAdded],
     ["Filesで資料を読む", state.readFiles.includes("overview")],
+    ["Social Feedを確認する", state.socialClueRead],
     ["Searchで追加情報を調べる", state.searchUnlocked && state.searchQuery],
     ["最終イベントを確認する", state.finalSubmitted]
   ];
@@ -255,16 +373,18 @@ function renderNotes() {
     <section class="content">
       <article class="note-card">
         <h2>制作メモ</h2>
-        <p>このテンプレートは、仮想デスクトップ内で Browser / Talk / Files / Search / Notes を連動させるための最小構成です。</p>
+        <p>このテンプレートは、仮想デスクトップ内で Browser / Talk / Files / Search / Social / Notes を連動させるための最小構成です。</p>
         <ul>
           <li>作品本文は <code>desktop.js</code> 冒頭のデータを編集します。</li>
           <li>Browser内サイトは <code>site/</code> を編集します。</li>
+          <li>SNS風サイトは <code>social/</code> を編集します。</li>
           <li>iframeから親へ <code>postMessage</code> すると、デスクトップ側の状態が変化します。</li>
+          <li>Browserウィンドウは右上の <b>×</b> で閉じられます。</li>
         </ul>
       </article>
       <article class="note-card">
         <h2>進行チェック</h2>
-        <ul class="check-list">${checks.map(([label, done]) => `<li class="${done ? "done" : ""}">${done ? "☑" : "☐"} ${esc(label)}</li>`).join("")}</ul>
+        <ul class="check-list">${checks.map(([label, done]) => `<li class="${done ? "done" : ""}">${done ? "✓" : "□"} ${esc(label)}</li>`).join("")}</ul>
       </article>
       <article class="note-card">
         <h2>段階ヒントの置き場</h2>
@@ -304,6 +424,14 @@ function addTalkContact() {
 
 function handleDesktopEvent(type) {
   if (type === GAME.events.contactSubmitted) completeContactRequest();
+  if (type === GAME.events.socialClue) {
+    state.socialClueRead = true;
+    addUnique("messageIds", "social-1");
+    addUnique("unlockedFiles", "social-cache");
+    toast("Social", "関連投稿の断片を確認しました。");
+    saveState();
+    render();
+  }
   if (type === GAME.events.stageUnlocked) {
     state.searchUnlocked = true;
     toast("Search", "検索条件が更新されました。");
@@ -321,10 +449,9 @@ function handleDesktopEvent(type) {
 }
 
 function runSearchAction(action) {
-  const [kind, a, b] = action.split(":");
+  const [kind, a, b, c] = action.split(":");
   if (kind === "browser") {
-    state.browserPath = a || "/";
-    openApp("browser");
+    openBrowser(a || "corporate", b || "/");
   }
   if (kind === "file") {
     state.currentFolder = a;
@@ -335,10 +462,12 @@ function runSearchAction(action) {
 
 function bind() {
   document.querySelectorAll("[data-open-app]").forEach(button => button.addEventListener("click", () => openApp(button.dataset.openApp)));
+  document.querySelectorAll("[data-open-browser]").forEach(button => button.addEventListener("click", () => openBrowser(button.dataset.openBrowser)));
   document.querySelectorAll("[data-focus-app]").forEach(bar => bar.addEventListener("pointerdown", () => { state.activeApp = bar.dataset.focusApp; saveState(); render(); }));
   document.querySelectorAll("[data-action='close']").forEach(button => button.addEventListener("click", () => closeApp(button.dataset.app)));
   document.querySelectorAll("[data-action='maximize']").forEach(button => button.addEventListener("click", event => event.currentTarget.closest(".app-window").classList.toggle("is-maximized")));
   document.querySelectorAll("[data-browser-home]").forEach(button => button.addEventListener("click", () => { state.browserPath = "/"; saveState(); render(); }));
+  document.querySelectorAll("[data-browser-target]").forEach(button => button.addEventListener("click", () => openBrowser(button.dataset.browserTarget, "/")));
   document.querySelectorAll("[data-thread]").forEach(button => button.addEventListener("click", () => { state.currentThread = button.dataset.thread; saveState(); render(); }));
   document.querySelector("[data-add-contact]")?.addEventListener("click", addTalkContact);
   document.querySelectorAll("[data-folder]").forEach(button => button.addEventListener("click", () => { state.currentFolder = button.dataset.folder; state.selectedFile = ""; saveState(); render(); }));
