@@ -1,0 +1,158 @@
+﻿:root {
+  --bg: #0d100c;
+  --panel: #171d15;
+  --line: #31402d;
+  --crt: #a5d77c;
+  --paper: #e2d8bd;
+  --amber: #d0a24b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--paper);
+  font-family: "Yu Gothic UI", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+.vault-hero {
+  position: relative;
+  min-height: 360px;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+
+.vault-hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.62;
+}
+
+.vault-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(13,16,12,0.92), rgba(13,16,12,0.18));
+}
+
+.vault-hero div {
+  position: relative;
+  z-index: 1;
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 34px 0;
+}
+
+.vault-hero p {
+  margin: 0 0 8px;
+  color: var(--crt);
+  font-weight: 800;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(42px, 8vw, 82px);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+main {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 48px;
+}
+
+.terminal {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #172016, #11170f);
+  padding: 20px;
+  margin: 0 0 16px;
+  box-shadow: inset 0 0 0 1px rgba(165, 215, 124, 0.05);
+}
+
+.terminal h2 {
+  margin: 0 0 10px;
+  color: var(--crt);
+}
+
+.terminal p {
+  line-height: 1.8;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+input {
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #080b07;
+  color: var(--crt);
+  font: inherit;
+  font-weight: 800;
+}
+
+button {
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(165, 215, 124, 0.5);
+  background: #23341d;
+  color: var(--crt);
+  font: inherit;
+  font-weight: 900;
+}
+
+.message {
+  min-height: 24px;
+  color: var(--amber);
+  font-weight: 800;
+}
+
+.hidden {
+  display: none;
+}
+
+.tapes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0;
+  margin: 16px 0;
+  list-style: none;
+}
+
+.tapes li {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #0d120b;
+  padding: 14px;
+}
+
+.tapes b {
+  display: block;
+  color: var(--crt);
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 720px) {
+  .tapes,
+  form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -161,8 +161,13 @@ const pages = {
       <div>
         <p class="section-kicker">Nazotoki Archive</p>
         <h2>公開中の謎解き作品</h2>
-        <p>失踪した映像制作チームの取材端末を調べる、iPhone風Web謎解きゲームを追加しました。</p>
+        <p>仮想デスクトップ、取材端末、写真アーカイブなど、ブラウザで遊べる調査型作品を公開しています。</p>
       </div>
+      <a class="archive-work-card compact" href="room-204-record/start.html?reset=1">
+        <span>NEW</span>
+        <b>未公開素材 204号室の記録</b>
+        <small>仮想デスクトップ型モキュメンタリー / 180分想定</small>
+      </a>
       <a class="archive-work-card compact" href="nazotokiarchive/">
         <span>NEW</span>
         <b>取材端末06 未編集素材</b>
@@ -277,7 +282,20 @@ const pages = {
     <section class="archive-index-page reveal-block">
       <article class="archive-work-card is-featured">
         <div>
-          <p class="section-kicker">New / Web Mystery</p>
+          <p class="section-kicker">New / Virtual Desktop Mockumentary</p>
+          <h2>未公開素材 204号室の記録</h2>
+          <p>地方ケーブル局に残された編集端末を調べ、番組アーカイブ、管理記録、素材保管庫、住民投稿、制作資料を照合して、未公開素材の本当の保管場所を突き止めます。</p>
+          <dl>
+            <div><dt>形式</dt><dd>仮想デスクトップ型Web謎解き</dd></div>
+            <div><dt>推奨</dt><dd>PC / タブレットブラウザ</dd></div>
+            <div><dt>保存</dt><dd>ブラウザ内に進行保存</dd></div>
+          </dl>
+        </div>
+        <a class="brand-button" href="room-204-record/start.html?reset=1">プレイする</a>
+      </article>
+      <article class="archive-work-card is-featured">
+        <div>
+          <p class="section-kicker">Web Mystery</p>
           <h2>取材端末06 未編集素材</h2>
           <p>失踪した映像制作チームが残したiPhone風の取材端末を調べ、未公開映像、録音、時系列の矛盾、削除ログに隠された謎を解きます。</p>
           <dl>

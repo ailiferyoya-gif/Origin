@@ -19,3 +19,4 @@ GitHub Pagesで公開する場合は、ルートの `index.html` から各作品
 ## 追加作品
 
 - `nazotokiarchive/`: iPhone風取材端末を調べるWeb謎解きゲーム「取材端末06 未編集素材」
+- `room-204-record/`: 仮想デスクトップ型モキュメンタリー謎解き「未公開素材 204号室の記録」
