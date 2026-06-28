@@ -616,3 +616,341 @@ summary {
     max-width: 70vw;
   }
 }
+
+/* Brand-like UI refresh: Windows-style desktop, Google-style search, LINE-style chat. */
+:root {
+  --paper: #f8fafc;
+  --ink: #172033;
+  --muted: #6b7280;
+  --panel: #ffffff;
+  --panel-2: #eef4ff;
+  --line: rgba(23, 32, 51, 0.12);
+  --amber: #f2b950;
+  --green: #06c755;
+  --bluegray: #2563eb;
+  --shadow: 0 22px 60px rgba(15, 23, 42, 0.28);
+}
+
+.desktop {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.82), transparent 0 17%, transparent 30%),
+    radial-gradient(circle at 74% 20%, rgba(80, 168, 255, 0.82), transparent 0 18%, transparent 31%),
+    radial-gradient(circle at 66% 82%, rgba(120, 93, 255, 0.54), transparent 0 22%, transparent 34%),
+    linear-gradient(135deg, #8ed5ff 0%, #3778d7 42%, #1b2b6f 100%);
+}
+
+.desktop-icon {
+  color: #f8fafc;
+  background: rgba(12, 20, 42, 0.28);
+  border-color: rgba(255,255,255,0.24);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.desktop-icon:hover,
+.desktop-icon:focus-visible {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.75);
+}
+
+.desktop-icon span {
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.desktop-icon.icon-line span {
+  background: #06c755;
+}
+
+.desktop-icon.icon-google span {
+  background: #ffffff;
+  color: #4285f4;
+}
+
+.desktop-icon.icon-twitter span {
+  background: #1d9bf0;
+}
+
+.app-window {
+  border-radius: 10px;
+  border-color: rgba(255,255,255,0.48);
+  background: rgba(248,250,252,0.96);
+  color: var(--ink);
+  box-shadow: 0 26px 68px rgba(15, 23, 42, 0.34);
+}
+
+.app-window.is-active {
+  border-color: rgba(59, 130, 246, 0.78);
+}
+
+.window-titlebar {
+  min-height: 38px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(226,232,240,0.9));
+  color: #0f172a;
+  border-bottom-color: rgba(15, 23, 42, 0.12);
+}
+
+.window-controls button {
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.05);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.window-controls button:hover {
+  background: rgba(29, 78, 216, 0.15);
+}
+
+.browser-toolbar {
+  background: #f8fafc;
+  border-bottom-color: rgba(15, 23, 42, 0.12);
+}
+
+.browser-address {
+  background: #ffffff;
+  color: #334155;
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.button {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.button.secondary {
+  color: #172033;
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.thread-list,
+.sidebar {
+  background: #f8fafc;
+  border-right-color: rgba(15, 23, 42, 0.1);
+}
+
+.list-button,
+.thread-list button {
+  color: #172033;
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.thread-list button.is-active,
+.list-button.is-active {
+  border-color: rgba(37, 99, 235, 0.5);
+  background: #eaf2ff;
+}
+
+.content,
+.chat-pane {
+  background: #f8fafc;
+}
+
+.file-viewer,
+.note-card,
+.search-card {
+  background: #ffffff;
+  color: #172033;
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.file-viewer pre,
+.search-card p,
+.note-card p,
+.note-card li {
+  color: #243147;
+}
+
+.app-window[data-app="talk"] .window-titlebar {
+  background: #06c755;
+  color: #ffffff;
+}
+
+.app-window[data-app="talk"] .thread-list {
+  background: #ffffff;
+}
+
+.app-window[data-app="talk"] .chat-pane {
+  background: linear-gradient(180deg, #dcebf7, #c8dfef);
+}
+
+.app-window[data-app="talk"] .chat-head {
+  margin: -18px -18px 14px;
+  padding: 14px 18px;
+  background: #06c755;
+  color: #ffffff;
+  border-bottom: 0;
+}
+
+.app-window[data-app="talk"] .chat-head .muted {
+  color: rgba(255,255,255,0.85);
+}
+
+.app-window[data-app="talk"] .talk-avatar {
+  background: #06c755;
+  color: #ffffff;
+}
+
+.app-window[data-app="talk"] .bubble {
+  color: #172033;
+  background: #ffffff;
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.app-window[data-app="talk"] .bubble.me,
+.app-window[data-app="talk"] .messages .bubble:nth-child(even) {
+  justify-self: end;
+  background: #8de055;
+}
+
+.app-window[data-app="talk"] .quick-replies {
+  background: linear-gradient(180deg, transparent, #c8dfef 28%);
+}
+
+.app-window[data-app="search"] .window-body {
+  background: #ffffff;
+}
+
+.google-search-shell {
+  min-height: 100%;
+  padding: 42px min(56px, 6vw);
+  overflow: auto;
+  background: #ffffff;
+  color: #202124;
+}
+
+.google-search-box {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  margin: 8px auto 32px;
+  max-width: 720px;
+}
+
+.google-logo {
+  font-size: clamp(48px, 9vw, 86px);
+  line-height: 1;
+  font-weight: 800;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+}
+
+.g-blue { color: #4285f4; }
+.g-red { color: #ea4335; }
+.g-yellow { color: #fbbc05; }
+.g-green { color: #34a853; }
+
+.google-input-wrap {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid #dfe1e5;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(32, 33, 36, 0.12);
+}
+
+.google-input-wrap input {
+  min-width: 0;
+  min-height: 44px;
+  border: 0;
+  outline: 0;
+  color: #202124;
+  background: transparent;
+}
+
+.google-submit,
+.result-link {
+  min-height: 38px;
+  padding: 8px 16px;
+  border: 1px solid #f8f9fa;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #3c4043;
+  font-weight: 700;
+}
+
+.google-results {
+  display: grid;
+  gap: 18px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.google-result {
+  border-bottom: 1px solid #ebedf0;
+  padding: 0 0 16px;
+}
+
+.google-result small {
+  color: #3c4043;
+}
+
+.google-result h2 {
+  margin: 4px 0 6px;
+  color: #1a0dab;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.google-result p {
+  margin: 0 0 10px;
+  color: #4d5156;
+  line-height: 1.6;
+}
+
+.google-empty,
+.google-locked p {
+  color: #4d5156;
+}
+
+.taskbar {
+  min-height: 56px;
+  margin: 0 10px 8px;
+  border: 1px solid rgba(255,255,255,0.34);
+  border-radius: 16px;
+  background: rgba(239, 246, 255, 0.76);
+  color: #0f172a;
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.start-button,
+.taskbar-app {
+  color: #172033;
+  background: rgba(255,255,255,0.76);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.taskbar-app.is-active {
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.45);
+  background: #ffffff;
+}
+
+.taskbar-right {
+  color: #334155;
+}
+
+.toast {
+  background: rgba(255,255,255,0.95);
+  color: #172033;
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+.toast p {
+  color: #334155;
+}
+
+@media (max-width: 820px) {
+  .google-search-shell {
+    padding: 28px 16px;
+  }
+}

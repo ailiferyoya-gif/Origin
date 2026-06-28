@@ -4,9 +4,9 @@
   startNotice: "復元端末を起動しました",
   apps: {
     browser: "Browser",
-    talk: "Talk",
+    talk: "LINE",
     files: "Files",
-    search: "Search",
+    search: "Google",
     notes: "Notes"
   },
   browserTargets: {
@@ -29,9 +29,9 @@
       url: "archive/index.html"
     },
     social: {
-      label: "よりどまり",
-      button: "SNS",
-      address: "yadorigi.local/feed/kasumino",
+      label: "Twitter風タイムライン",
+      button: "Twitter",
+      address: "twitter.local/kasumino",
       url: "social/index.html"
     }
   },
@@ -83,7 +83,7 @@ const talkMessages = {
   "saeki-after-start": {
     thread: "saeki",
     from: "佐伯 明",
-    body: "Searchを開けるようにしました。番組ID、日付、部屋番号、人名で引くと関連先に飛べます。\n\n取材時刻はそのまま並べると嘘になります。どの資料が何を隠しているか、時刻と方角を分けて見てください。",
+    body: "Google検索を開けるようにしました。番組ID、日付、部屋番号、人名で引くと関連先に飛べます。\n\n取材時刻はそのまま並べると嘘になります。どの資料が何を隠しているか、時刻と方角を分けて見てください。",
     time: "08:19"
   },
   "manager-log": {
@@ -144,9 +144,9 @@ const files = {
 
 確認先:
 ・Browser: 番組アーカイブ、団地管理、素材保管庫、よりどまり
-・Talk: 関係者から届く復元依頼
+・LINE: 関係者から届く復元依頼
 ・Files: 端末内に残った制作資料
-・Search: 人名、日付、部屋番号、素材番号の照会
+・Google: 人名、日付、部屋番号、素材番号の照会
 ・Notes: 照合メモ
 
 保存状態は自動で保持される。やり直す場合はNotesの初期化を使う。`
@@ -633,7 +633,16 @@ function renderFiles() {
 
 function renderSearch() {
   if (!state.searchUnlocked) {
-    return `<section class="content"><article class="search-card"><h2>Search locked</h2><p>番組アーカイブから復元依頼を受け、Talkで作業を開始すると検索できます。</p></article></section>`;
+    return `
+      <section class="google-search-shell">
+        <div class="google-logo" aria-label="Google">
+          <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+        </div>
+        <article class="search-card google-locked">
+          <h2>検索はまだ利用できません</h2>
+          <p>番組アーカイブから復元依頼を受け、LINEで作業を開始すると検索できます。</p>
+        </article>
+      </section>`;
   }
   const query = state.searchQuery.trim().toLowerCase();
   const results = searchDatabase.filter(item => {
@@ -642,26 +651,34 @@ function renderSearch() {
     return item.q.some(word => word.toLowerCase().includes(query) || query.includes(word.toLowerCase()));
   });
   return `
-    <section class="content">
-      <form class="search-box" data-search-form>
-        <input name="q" value="${esc(state.searchQuery)}" placeholder="例: 0417 / 204 / 北棟倉庫B / NWES">
-        <button class="button" type="submit">Search</button>
+    <section class="google-search-shell">
+      <form class="google-search-box" data-search-form>
+        <div class="google-logo" aria-label="Google">
+          <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+        </div>
+        <div class="google-input-wrap">
+          <span>⌕</span>
+          <input name="q" value="${esc(state.searchQuery)}" placeholder="0417 204 北棟倉庫B NWES">
+        </div>
+        <button class="google-submit" type="submit">Google 検索</button>
       </form>
-      ${results.map(item => `
-        <article class="search-card">
-          <h2>${esc(item.title)}</h2>
-          <p>${esc(item.body)}</p>
-          <div class="search-actions"><button class="button secondary" data-search-action="${esc(item.action)}" type="button">開く</button></div>
-        </article>
-      `).join("") || `<p>該当する記録はありません。</p>`}
+      <div class="google-results">
+        ${results.map(item => `
+          <article class="google-result">
+            <small>${esc(item.action.replaceAll(":", " / "))}</small>
+            <h2>${esc(item.title)}</h2>
+            <p>${esc(item.body)}</p>
+            <button class="result-link" data-search-action="${esc(item.action)}" type="button">開く</button>
+          </article>
+        `).join("") || `<p class="google-empty">一致する記録はありません。</p>`}
+      </div>
     </section>
   `;
 }
-
 function renderNotes() {
   const checks = [
     ["番組アーカイブで復元依頼を受けた", state.contactSubmitted],
-    ["Talkで復元作業を開始した", state.researchStarted],
+    ["LINEで復元作業を開始した", state.researchStarted],
     ["管理室の掲示記録を開いた", state.housingUnlocked],
     ["よりどまりの投稿群を保存した", state.socialClueRead],
     ["素材保管庫で KCT-0417-204 を開いた", state.archiveUnlocked],
@@ -681,7 +698,7 @@ function renderNotes() {
       </article>
       <article class="note-card">
         <h2>照合メモ</h2>
-        <details open><summary>序盤</summary><p>番組アーカイブに残る制作番号は、保管庫とSearchの手がかりになります。</p></details>
+        <details open><summary>序盤</summary><p>番組アーカイブに残る制作番号は、保管庫とGoogle検索の手がかりになります。</p></details>
         <details><summary>掲示記録</summary><p>管理室の照会番号は、番組が予定されていた日付に近い表記です。</p></details>
         <details><summary>素材束</summary><p>黒味前の4カットは、時刻よりもラベルの頭文字を優先してください。</p></details>
         <details><summary>終盤</summary><p>最後の場所は台本には残っていません。鍵の記録、投稿の断片、音声担当の言葉を合わせる必要があります。</p></details>
@@ -700,8 +717,8 @@ function completeContactRequest() {
   state.contactSubmitted = true;
   state.currentThread = "saeki";
   addMessage("saeki-request");
-  setNotice("Talkに復元依頼が届きました");
-  toast("Talk", "佐伯から復元依頼が届きました。");
+  setNotice("LINEに復元依頼が届きました");
+  toast("LINE", "佐伯から復元依頼が届きました。");
   saveState();
   openApp("talk");
 }
@@ -713,7 +730,7 @@ function startResearch() {
   state.selectedFile = "request";
   addMessage("saeki-after-start");
   addUnique("readFiles", "request");
-  setNotice("Searchと制作資料を開けるようになりました");
+  setNotice("Google検索と制作資料を開けるようになりました");
   toast("Files", "制作資料と検索機能を復元しました。");
   saveState();
   render();
