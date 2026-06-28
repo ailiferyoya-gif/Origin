@@ -17,8 +17,8 @@ D:\Codex\backups\room-204-record-before-20260628-163647
   - KCT番組アーカイブ
   - かすみ野団地 管理室
   - KCT素材保管庫
-  - 架空SNS よりどまり
-- Talk / Files / Search / Notes の進行連動を実装
+  - 架空SNS Tmitter
+- LIME / Files / Gogle / Notes の進行連動を実装
 - `postMessage` によるイベント連携を実装
 - localStorageによる自動保存と `?reset=1` 初期化を維持
 - 4サイトそれぞれに生成画像を配置
@@ -40,6 +40,6 @@ D:\Codex\backups\room-204-record-before-20260628-163647
 ## 追加UI方針
 
 - 仮想デスクトップはWindows風の壁紙、タスクバー、ウィンドウ外観へ調整
-- 検索アプリはGoogle風の中央検索窓と検索結果表示へ調整
-- 連絡ツールはLINE風の緑基調チャットUIへ調整
-- SNSはTwitter風のタイムラインUIへ調整
+- 検索アプリはGogle風の中央検索窓と検索結果表示へ調整
+- 連絡ツールはLIME風の緑基調チャットUIへ調整
+- SNSはTmitter風のタイムラインUIへ調整

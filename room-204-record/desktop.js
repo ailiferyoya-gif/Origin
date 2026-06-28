@@ -4,9 +4,9 @@
   startNotice: "復元端末を起動しました",
   apps: {
     browser: "Browser",
-    talk: "LINE",
+    talk: "LIME",
     files: "Files",
-    search: "Google",
+    search: "Gogle",
     notes: "Notes"
   },
   browserTargets: {
@@ -29,9 +29,9 @@
       url: "archive/index.html"
     },
     social: {
-      label: "Twitter風タイムライン",
-      button: "Twitter",
-      address: "twitter.local/kasumino",
+      label: "Tmitterタイムライン",
+      button: "Tmitter",
+      address: "tmitter.local/kasumino",
       url: "social/index.html"
     }
   },
@@ -64,7 +64,9 @@ const initialState = {
   selectedFile: "readme",
   searchQuery: "",
   readFiles: [],
-  messageIds: ["restore-boot"]
+  messageIds: ["restore-boot"],
+  minimizedApps: [],
+  maximizedApps: []
 };
 
 const talkMessages = {
@@ -83,7 +85,7 @@ const talkMessages = {
   "saeki-after-start": {
     thread: "saeki",
     from: "佐伯 明",
-    body: "Google検索を開けるようにしました。番組ID、日付、部屋番号、人名で引くと関連先に飛べます。\n\n取材時刻はそのまま並べると嘘になります。どの資料が何を隠しているか、時刻と方角を分けて見てください。",
+    body: "Gogle検索を開けるようにしました。番組ID、日付、部屋番号、人名で引くと関連先に飛べます。\n\n取材時刻はそのまま並べると嘘になります。どの資料が何を隠しているか、時刻と方角を分けて見てください。",
     time: "08:19"
   },
   "manager-log": {
@@ -95,7 +97,7 @@ const talkMessages = {
   "social-cached": {
     thread: "restore",
     from: "復元ログ",
-    body: "よりどまりの投稿群を保存しました。\n\n住民の投稿は正確ではありません。ただし、同じ時刻に別の場所から見えていたものをつなぐと、素材番号の並びが浮かびます。",
+    body: "Tmitterの投稿群を保存しました。\n\n住民の投稿は正確ではありません。ただし、同じ時刻に別の場所から見えていたものをつなぐと、素材番号の並びが浮かびます。",
     time: "08:44"
   },
   "vault-opened": {
@@ -143,10 +145,10 @@ const files = {
 未放送番組「204号室の記録」に関する素材が、複数の場所に分かれて保存されている。
 
 確認先:
-・Browser: 番組アーカイブ、団地管理、素材保管庫、よりどまり
-・LINE: 関係者から届く復元依頼
+・Browser: 番組アーカイブ、団地管理、素材保管庫、Tmitter
+・LIME: 関係者から届く復元依頼
 ・Files: 端末内に残った制作資料
-・Google: 人名、日付、部屋番号、素材番号の照会
+・Gogle: 人名、日付、部屋番号、素材番号の照会
 ・Notes: 照合メモ
 
 保存状態は自動で保持される。やり直す場合はNotesの初期化を使う。`
@@ -299,9 +301,9 @@ const files = {
   recovered: [
     {
       id: "social-cache",
-      name: "よりどまり投稿保存_0417.txt",
+      name: "Tmitter投稿保存_0417.txt",
       unlock: s => s.socialClueRead,
-      body: `よりどまり / かすみ野団地まわり
+      body: `Tmitter / かすみ野団地まわり
 保存時刻: 08:44
 
 19:14  北の廊下、また水の音。撮影の人がマイクを向けていた。
@@ -344,7 +346,7 @@ S-2240  南倉庫前 / 足音 / 水野ラベル
 
 場所を示す資料:
 ・鍵貸出控え
-・よりどまり投稿保存
+・Tmitter投稿保存
 ・スタッフ表の備考`
     },
     {
@@ -391,8 +393,8 @@ const searchDatabase = [
   },
   {
     id: "social",
-    q: ["よりどまり", "投稿", "sns", "北廊下", "西階段", "東集会室", "南倉庫"],
-    title: "よりどまり / かすみ野団地まわり",
+    q: ["Tmitter", "投稿", "sns", "北廊下", "西階段", "東集会室", "南倉庫"],
+    title: "Tmitter / かすみ野団地まわり",
     body: "架空SNS上の住民投稿。時刻と場所の断片が残っています。",
     action: "browser:social:/"
   },
@@ -422,8 +424,8 @@ const searchDatabase = [
   },
   {
     id: "social-cache",
-    q: ["返した", "22:44", "よりどまり", "bの棚", "戻ってきてない"],
-    title: "復元素材 / よりどまり投稿保存_0417.txt",
+    q: ["返した", "22:44", "Tmitter", "bの棚", "戻ってきてない"],
+    title: "復元素材 / Tmitter投稿保存_0417.txt",
     body: "削除済み投稿と保存済み投稿の断片です。",
     action: "file:recovered:social-cache",
     gated: s => s.socialClueRead
@@ -490,8 +492,13 @@ function setNotice(text) {
   notice.textContent = text;
 }
 
+function visibleOpenApps() {
+  return state.openApps.filter(app => !state.minimizedApps.includes(app));
+}
+
 function openApp(app) {
   addUnique("openApps", app);
+  state.minimizedApps = state.minimizedApps.filter(item => item !== app);
   state.activeApp = app;
   saveState();
   render();
@@ -503,9 +510,39 @@ function openBrowser(target = "kct", path = "/") {
   openApp("browser");
 }
 
+function focusApp(app) {
+  if (!state.openApps.includes(app)) return;
+  state.minimizedApps = state.minimizedApps.filter(item => item !== app);
+  state.activeApp = app;
+  saveState();
+  render();
+}
+
+function minimizeApp(app) {
+  if (!state.openApps.includes(app)) return;
+  addUnique("minimizedApps", app);
+  if (state.activeApp === app) state.activeApp = visibleOpenApps().slice(-1)[0] || "";
+  saveState();
+  render();
+}
+
 function closeApp(app) {
   state.openApps = state.openApps.filter(item => item !== app);
-  if (state.activeApp === app) state.activeApp = state.openApps[state.openApps.length - 1] || "";
+  state.minimizedApps = state.minimizedApps.filter(item => item !== app);
+  state.maximizedApps = state.maximizedApps.filter(item => item !== app);
+  if (state.activeApp === app) state.activeApp = visibleOpenApps().slice(-1)[0] || "";
+  saveState();
+  render();
+}
+
+function toggleMaximize(app) {
+  if (!state.openApps.includes(app)) return;
+  if (state.maximizedApps.includes(app)) {
+    state.maximizedApps = state.maximizedApps.filter(item => item !== app);
+  } else {
+    addUnique("maximizedApps", app);
+  }
+  state.activeApp = app;
   saveState();
   render();
 }
@@ -514,20 +551,25 @@ function render() {
   notice.textContent = state.notice;
   document.querySelectorAll("[data-open-app]").forEach(button => {
     const app = button.dataset.openApp;
-    button.classList.toggle("is-active", state.activeApp === app);
+    button.classList.toggle("is-active", state.activeApp === app && !state.minimizedApps.includes(app));
   });
   document.querySelectorAll("[data-open-browser]").forEach(button => {
     const target = button.dataset.openBrowser;
-    button.classList.toggle("is-active", state.activeApp === "browser" && state.browserTarget === target);
+    button.classList.toggle("is-active", state.activeApp === "browser" && state.browserTarget === target && !state.minimizedApps.includes("browser"));
   });
-  layer.innerHTML = state.openApps.map(renderWindow).join("");
+  layer.innerHTML = visibleOpenApps().map(renderWindow).join("");
   bind();
 }
 
 function renderWindow(app) {
   const title = app === "browser" ? `${GAME.apps.browser} - ${GAME.browserTargets[state.browserTarget]?.label || "Site"}` : (GAME.apps[app] || app);
+  const classes = [
+    "app-window",
+    state.activeApp === app ? "is-active" : "",
+    state.maximizedApps.includes(app) ? "is-maximized" : ""
+  ].filter(Boolean).join(" ");
   return `
-    <section class="app-window ${state.activeApp === app ? "is-active" : ""}" data-app="${esc(app)}" aria-label="${esc(title)}">
+    <section class="${classes}" data-app="${esc(app)}" aria-label="${esc(title)}">
       <header class="window-titlebar" data-focus-app="${esc(app)}">
         <b>${esc(title)}</b>
         <div class="window-controls">
@@ -540,7 +582,6 @@ function renderWindow(app) {
     </section>
   `;
 }
-
 function renderApp(app) {
   const map = { browser: renderBrowser, talk: renderTalk, files: renderFiles, search: renderSearch, notes: renderNotes };
   return (map[app] || renderNotes)();
@@ -632,15 +673,16 @@ function renderFiles() {
 }
 
 function renderSearch() {
+  const logo = `<div class="gogle-logo" aria-label="Gogle">
+    <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">g</span><span class="g-blue">l</span><span class="g-green">e</span>
+  </div>`;
   if (!state.searchUnlocked) {
     return `
-      <section class="google-search-shell">
-        <div class="google-logo" aria-label="Google">
-          <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
-        </div>
-        <article class="search-card google-locked">
+      <section class="gogle-search-shell">
+        ${logo}
+        <article class="search-card gogle-locked">
           <h2>検索はまだ利用できません</h2>
-          <p>番組アーカイブから復元依頼を受け、LINEで作業を開始すると検索できます。</p>
+          <p>番組アーカイブから復元依頼を受け、LIMEで作業を開始すると検索できます。</p>
         </article>
       </section>`;
   }
@@ -651,26 +693,27 @@ function renderSearch() {
     return item.q.some(word => word.toLowerCase().includes(query) || query.includes(word.toLowerCase()));
   });
   return `
-    <section class="google-search-shell">
-      <form class="google-search-box" data-search-form>
-        <div class="google-logo" aria-label="Google">
-          <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
-        </div>
-        <div class="google-input-wrap">
+    <section class="gogle-search-shell">
+      <form class="gogle-search-box" data-search-form>
+        ${logo}
+        <div class="gogle-input-wrap">
           <span>⌕</span>
           <input name="q" value="${esc(state.searchQuery)}" placeholder="0417 204 北棟倉庫B NWES">
         </div>
-        <button class="google-submit" type="submit">Google 検索</button>
+        <div class="gogle-buttons">
+          <button class="gogle-submit" type="submit">Gogle 検索</button>
+          <button class="gogle-submit" type="button" data-search-action="browser:kct:/">最初の記録</button>
+        </div>
       </form>
-      <div class="google-results">
+      <div class="gogle-results">
         ${results.map(item => `
-          <article class="google-result">
+          <article class="gogle-result">
             <small>${esc(item.action.replaceAll(":", " / "))}</small>
             <h2>${esc(item.title)}</h2>
             <p>${esc(item.body)}</p>
             <button class="result-link" data-search-action="${esc(item.action)}" type="button">開く</button>
           </article>
-        `).join("") || `<p class="google-empty">一致する記録はありません。</p>`}
+        `).join("") || `<p class="gogle-empty">一致する記録はありません。</p>`}
       </div>
     </section>
   `;
@@ -678,9 +721,9 @@ function renderSearch() {
 function renderNotes() {
   const checks = [
     ["番組アーカイブで復元依頼を受けた", state.contactSubmitted],
-    ["LINEで復元作業を開始した", state.researchStarted],
+    ["LIMEで復元作業を開始した", state.researchStarted],
     ["管理室の掲示記録を開いた", state.housingUnlocked],
-    ["よりどまりの投稿群を保存した", state.socialClueRead],
+    ["Tmitterの投稿群を保存した", state.socialClueRead],
     ["素材保管庫で KCT-0417-204 を開いた", state.archiveUnlocked],
     ["黒味前の4カットを復元した", state.cutOrderSolved],
     ["未公開素材の保管場所を提出した", state.finalSubmitted]
@@ -698,7 +741,7 @@ function renderNotes() {
       </article>
       <article class="note-card">
         <h2>照合メモ</h2>
-        <details open><summary>序盤</summary><p>番組アーカイブに残る制作番号は、保管庫とGoogle検索の手がかりになります。</p></details>
+        <details open><summary>序盤</summary><p>番組アーカイブに残る制作番号は、保管庫とGogle検索の手がかりになります。</p></details>
         <details><summary>掲示記録</summary><p>管理室の照会番号は、番組が予定されていた日付に近い表記です。</p></details>
         <details><summary>素材束</summary><p>黒味前の4カットは、時刻よりもラベルの頭文字を優先してください。</p></details>
         <details><summary>終盤</summary><p>最後の場所は台本には残っていません。鍵の記録、投稿の断片、音声担当の言葉を合わせる必要があります。</p></details>
@@ -717,8 +760,8 @@ function completeContactRequest() {
   state.contactSubmitted = true;
   state.currentThread = "saeki";
   addMessage("saeki-request");
-  setNotice("LINEに復元依頼が届きました");
-  toast("LINE", "佐伯から復元依頼が届きました。");
+  setNotice("LIMEに復元依頼が届きました");
+  toast("LIME", "佐伯から復元依頼が届きました。");
   saveState();
   openApp("talk");
 }
@@ -730,7 +773,7 @@ function startResearch() {
   state.selectedFile = "request";
   addMessage("saeki-after-start");
   addUnique("readFiles", "request");
-  setNotice("Google検索と制作資料を開けるようになりました");
+  setNotice("Gogle検索と制作資料を開けるようになりました");
   toast("Files", "制作資料と検索機能を復元しました。");
   saveState();
   render();
@@ -754,8 +797,8 @@ function unlockSocialClue() {
   state.socialClueRead = true;
   state.currentThread = "restore";
   addMessage("social-cached");
-  setNotice("よりどまり投稿群を保存しました");
-  toast("よりどまり", "投稿保存を復元素材に追加しました。");
+  setNotice("Tmitter投稿群を保存しました");
+  toast("Tmitter", "投稿保存を復元素材に追加しました。");
   saveState();
   render();
 }
@@ -820,9 +863,21 @@ function runSearchAction(action) {
 function bind() {
   document.querySelectorAll("[data-open-app]").forEach(button => button.addEventListener("click", () => openApp(button.dataset.openApp)));
   document.querySelectorAll("[data-open-browser]").forEach(button => button.addEventListener("click", () => openBrowser(button.dataset.openBrowser)));
-  document.querySelectorAll("[data-focus-app]").forEach(bar => bar.addEventListener("pointerdown", () => { state.activeApp = bar.dataset.focusApp; saveState(); render(); }));
-  document.querySelectorAll("[data-action='close'], [data-action='minimize']").forEach(button => button.addEventListener("click", () => closeApp(button.dataset.app)));
-  document.querySelectorAll("[data-action='maximize']").forEach(button => button.addEventListener("click", event => event.currentTarget.closest(".app-window").classList.toggle("is-maximized")));
+  document.querySelectorAll("[data-focus-app]").forEach(bar => bar.addEventListener("pointerdown", event => {
+    if (event.target.closest(".window-controls")) return;
+    focusApp(bar.dataset.focusApp);
+  }));
+  document.querySelectorAll(".window-controls button").forEach(button => {
+    button.addEventListener("pointerdown", event => event.stopPropagation());
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      const app = button.dataset.app;
+      const action = button.dataset.action;
+      if (action === "close") closeApp(app);
+      if (action === "minimize") minimizeApp(app);
+      if (action === "maximize") toggleMaximize(app);
+    });
+  });
   document.querySelectorAll("[data-browser-home]").forEach(button => button.addEventListener("click", () => { state.browserPath = "/"; saveState(); render(); }));
   document.querySelectorAll("[data-browser-target]").forEach(button => button.addEventListener("click", () => openBrowser(button.dataset.browserTarget, "/")));
   document.querySelectorAll("[data-thread]").forEach(button => button.addEventListener("click", () => { state.currentThread = button.dataset.thread; saveState(); render(); }));
@@ -843,7 +898,6 @@ function bind() {
     render();
   });
 }
-
 window.addEventListener("message", event => {
   if (!event.data || typeof event.data.type !== "string") return;
   handleDesktopEvent(event.data.type);

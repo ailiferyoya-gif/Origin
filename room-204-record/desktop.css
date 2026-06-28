@@ -617,7 +617,7 @@ summary {
   }
 }
 
-/* Brand-like UI refresh: Windows-style desktop, Google-style search, LINE-style chat. */
+/* Brand-like UI refresh: Windows-style desktop, Gogle-style search, LIME-style chat. */
 :root {
   --paper: #f8fafc;
   --ink: #172033;
@@ -659,16 +659,16 @@ summary {
   border-color: rgba(255,255,255,0.35);
 }
 
-.desktop-icon.icon-line span {
+.desktop-icon.icon-lime span {
   background: #06c755;
 }
 
-.desktop-icon.icon-google span {
+.desktop-icon.icon-gogle span {
   background: #ffffff;
   color: #4285f4;
 }
 
-.desktop-icon.icon-twitter span {
+.desktop-icon.icon-tmitter span {
   background: #1d9bf0;
 }
 
@@ -815,7 +815,7 @@ summary {
   background: #ffffff;
 }
 
-.google-search-shell {
+.gogle-search-shell {
   min-height: 100%;
   padding: 42px min(56px, 6vw);
   overflow: auto;
@@ -823,7 +823,7 @@ summary {
   color: #202124;
 }
 
-.google-search-box {
+.gogle-search-box {
   display: grid;
   justify-items: center;
   gap: 18px;
@@ -831,7 +831,7 @@ summary {
   max-width: 720px;
 }
 
-.google-logo {
+.gogle-logo {
   font-size: clamp(48px, 9vw, 86px);
   line-height: 1;
   font-weight: 800;
@@ -844,7 +844,7 @@ summary {
 .g-yellow { color: #fbbc05; }
 .g-green { color: #34a853; }
 
-.google-input-wrap {
+.gogle-input-wrap {
   width: 100%;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -857,7 +857,7 @@ summary {
   box-shadow: 0 2px 8px rgba(32, 33, 36, 0.12);
 }
 
-.google-input-wrap input {
+.gogle-input-wrap input {
   min-width: 0;
   min-height: 44px;
   border: 0;
@@ -866,7 +866,7 @@ summary {
   background: transparent;
 }
 
-.google-submit,
+.gogle-submit,
 .result-link {
   min-height: 38px;
   padding: 8px 16px;
@@ -877,37 +877,37 @@ summary {
   font-weight: 700;
 }
 
-.google-results {
+.gogle-results {
   display: grid;
   gap: 18px;
   max-width: 760px;
   margin: 0 auto;
 }
 
-.google-result {
+.gogle-result {
   border-bottom: 1px solid #ebedf0;
   padding: 0 0 16px;
 }
 
-.google-result small {
+.gogle-result small {
   color: #3c4043;
 }
 
-.google-result h2 {
+.gogle-result h2 {
   margin: 4px 0 6px;
   color: #1a0dab;
   font-size: 20px;
   font-weight: 500;
 }
 
-.google-result p {
+.gogle-result p {
   margin: 0 0 10px;
   color: #4d5156;
   line-height: 1.6;
 }
 
-.google-empty,
-.google-locked p {
+.gogle-empty,
+.gogle-locked p {
   color: #4d5156;
 }
 
@@ -950,7 +950,187 @@ summary {
 }
 
 @media (max-width: 820px) {
-  .google-search-shell {
+  .gogle-search-shell {
     padding: 28px 16px;
+  }
+}
+/* Window behavior polish and higher-fidelity app skins. */
+.window-layer {
+  inset: 12px 12px 70px 116px;
+}
+
+.app-window.is-maximized {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.window-titlebar {
+  min-height: 32px;
+  padding: 0 8px 0 12px;
+}
+
+.window-controls {
+  gap: 0;
+}
+
+.window-controls button {
+  width: 46px;
+  height: 30px;
+  border: 0;
+  border-radius: 0;
+  font-size: 14px;
+}
+
+.window-controls button[data-action="close"]:hover {
+  background: #c42b1c;
+  color: #ffffff;
+}
+
+.window-controls button[data-action="maximize"]:hover,
+.window-controls button[data-action="minimize"]:hover {
+  background: rgba(15, 23, 42, 0.1);
+}
+
+.desktop {
+  background:
+    radial-gradient(circle at 20% 24%, rgba(109, 213, 255, 0.92), transparent 0 17%, transparent 31%),
+    radial-gradient(circle at 84% 20%, rgba(255,255,255,0.5), transparent 0 11%, transparent 27%),
+    radial-gradient(circle at 56% 76%, rgba(118, 91, 255, 0.48), transparent 0 24%, transparent 40%),
+    linear-gradient(135deg, #65c8ff 0%, #2d75d4 46%, #173273 100%);
+}
+
+.taskbar {
+  justify-content: center;
+  min-height: 54px;
+  padding: 7px 12px;
+}
+
+.taskbar-center {
+  flex: 0 1 auto;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.38);
+}
+
+.taskbar-right {
+  position: absolute;
+  right: 18px;
+}
+
+.start-button {
+  font-size: 0;
+  position: relative;
+}
+
+.start-button::before {
+  content: "⊞";
+  font-size: 20px;
+  line-height: 1;
+}
+
+.taskbar-app {
+  min-width: 74px;
+  justify-content: center;
+}
+
+.app-window[data-app="talk"] .window-titlebar {
+  background: #06c755;
+}
+
+.app-window[data-app="talk"] .thread-list {
+  background: #f7f7f7;
+}
+
+.app-window[data-app="talk"] .thread-list button {
+  border-radius: 0;
+  margin: 0;
+  border-width: 0 0 1px;
+  min-height: 64px;
+}
+
+.app-window[data-app="talk"] .thread-list button.is-active {
+  background: #e8f7ec;
+}
+
+.app-window[data-app="talk"] .chat-pane {
+  background:
+    linear-gradient(rgba(197, 221, 240, 0.88), rgba(197, 221, 240, 0.88)),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.22) 0 2px, transparent 2px 18px);
+}
+
+.app-window[data-app="talk"] .bubble {
+  position: relative;
+  max-width: min(58ch, 78%);
+  padding: 12px 16px;
+}
+
+.app-window[data-app="talk"] .bubble::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 14px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 9px solid #ffffff;
+}
+
+.app-window[data-app="talk"] .bubble.me::before,
+.app-window[data-app="talk"] .messages .bubble:nth-child(even)::before {
+  left: auto;
+  right: -7px;
+  border-right: 0;
+  border-left: 9px solid #8de055;
+}
+
+.app-window[data-app="talk"] .quick-replies {
+  min-height: 72px;
+  padding: 12px 14px;
+  margin: 0 -18px -18px;
+  background: rgba(244, 248, 251, 0.92);
+}
+
+.app-window[data-app="search"] .window-titlebar {
+  background: #ffffff;
+}
+
+.gogle-search-shell {
+  padding-top: 72px;
+}
+
+.gogle-logo {
+  font-size: clamp(58px, 10vw, 96px);
+  font-weight: 700;
+}
+
+.gogle-input-wrap {
+  min-height: 54px;
+  border-radius: 27px;
+}
+
+.gogle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gogle-submit:hover,
+.result-link:hover {
+  border-color: #dadce0;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.gogle-result h2 {
+  font-size: 21px;
+}
+
+@media (max-width: 820px) {
+  .window-layer {
+    inset: auto;
+  }
+
+  .taskbar-right {
+    position: static;
   }
 }

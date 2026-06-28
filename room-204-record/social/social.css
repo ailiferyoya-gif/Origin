@@ -238,3 +238,42 @@ small,
     border-right: 0;
   }
 }
+/* Tmitter fidelity polish. */
+.timeline-head {
+  min-height: 64px;
+}
+
+.bird-mark {
+  font-weight: 900;
+  font-style: italic;
+}
+
+.compose-box {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  padding: 44px 16px 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  background: #ffffff;
+}
+
+.post {
+  padding-top: 14px;
+}
+
+.post:first-of-type {
+  padding-top: 14px;
+}
+
+.post p {
+  font-size: 15px;
+}
+
+.post footer span:hover {
+  color: var(--blue);
+}
+
+.timeline-head button {
+  box-shadow: 0 1px 0 rgba(15,20,25,0.08);
+}
