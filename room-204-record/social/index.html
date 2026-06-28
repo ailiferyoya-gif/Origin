@@ -9,11 +9,12 @@
 <body>
   <aside class="rail" aria-label="ナビゲーション">
     <b class="bird-mark">t</b>
-    <a class="active" href="#">ホーム</a>
-    <a href="#">話題</a>
-    <a href="#">検索</a>
-    <a href="#">通知</a>
-    <a href="#">保存</a>
+    <a class="active" href="#"><span>⌂</span>ホーム</a>
+    <a href="#"><span>#</span>話題</a>
+    <a href="#"><span>⌕</span>検索</a>
+    <a href="#"><span>●</span>通知</a>
+    <a href="#"><span>□</span>保存</a>
+    <button type="button">投稿</button>
   </aside>
 
   <main class="timeline">
@@ -30,18 +31,25 @@
       <div class="profile-dot">団</div>
     </section>
 
-    
+    <section class="profile-summary">
+      <button type="button">フォロー中</button>
+      <h2>かすみ野団地まわり</h2>
+      <p>@kasumino.watch</p>
+      <span>住民投稿・削除済み断片・深夜帯の目撃メモを端末内に保存したものです。</span>
+    </section>
+
     <section class="compose-box">
       <div class="avatar">団</div>
       <p>いまどうしてる?</p>
     </section>
-<article class="post">
+
+    <article class="post">
       <div class="avatar">み</div>
       <div>
         <header><b>みどり台の端</b><span>@midoridai_edge</span><time>04/17 19:14</time></header>
         <p>北の廊下、また水の音。撮影の人がマイクを向けてた。工事の貼り紙は出てない。</p>
         <small>#かすみ野 #北廊下</small>
-        <footer><span>返信 3</span><span>リポート 12</span><span>いいね 31</span></footer>
+        <footer><span>返信 3</span><span>リポスト 12</span><span>いいね 31</span><span>表示 1,204</span></footer>
       </div>
     </article>
 
@@ -51,7 +59,7 @@
         <header><b>西階段の人</b><span>@west_stair_204</span><time>04/17 20:07</time></header>
         <p>蛍光灯が戻ったと思ったらまた点滅。下でケーブル局の人が待ってた。部屋の中は撮ってないみたい。</p>
         <small>#西階段 #照明</small>
-        <footer><span>返信 1</span><span>リポート 7</span><span>いいね 18</span></footer>
+        <footer><span>返信 1</span><span>リポスト 7</span><span>いいね 18</span><span>表示 642</span></footer>
       </div>
     </article>
 
@@ -61,7 +69,7 @@
         <header><b>集会室予約係</b><span>@room_schedule</span><time>04/17 21:32</time></header>
         <p>今日は会議なし。なのに東の集会室で手を叩く音がした。反響を録ってるだけなら、なぜ204って言うんだろ。</p>
         <small>#東集会室</small>
-        <footer><span>返信 5</span><span>リポート 19</span><span>いいね 44</span></footer>
+        <footer><span>返信 5</span><span>リポスト 19</span><span>いいね 44</span><span>表示 2,041</span></footer>
       </div>
     </article>
 
@@ -71,7 +79,7 @@
         <header><b>南の掲示板</b><span>@south_board</span><time>04/17 22:44</time></header>
         <p>南倉庫の前で足音が止まった。女の人の声で「返した」と聞こえた。北棟のほう、まだ電気ついてる。</p>
         <small>#南倉庫 #北棟</small>
-        <footer><span>返信 9</span><span>リポート 28</span><span>いいね 72</span></footer>
+        <footer><span>返信 9</span><span>リポスト 28</span><span>いいね 72</span><span>表示 3,508</span></footer>
       </div>
     </article>
 
@@ -81,10 +89,23 @@
         <header><b>削除済み断片</b><span>@cached_fragment</span><time>取得時刻不明</time></header>
         <p>Bの棚を見に行った人、戻ってきてない。</p>
         <small>キャッシュに本文断片のみ残存</small>
-        <footer><span>返信 -</span><span>リポート -</span><span>いいね -</span></footer>
+        <footer><span>返信 -</span><span>リポスト -</span><span>いいね -</span><span>表示 -</span></footer>
       </div>
     </article>
   </main>
+
+  <aside class="rightbar" aria-label="関連情報">
+    <section>
+      <h2>検索</h2>
+      <div class="search-pill">かすみ野団地を検索</div>
+    </section>
+    <section>
+      <h2>いま話題</h2>
+      <article><span>かすみ野の話題</span><b>北廊下の水音</b><small>31件の投稿</small></article>
+      <article><span>地域</span><b>南倉庫前</b><small>72件の反応</small></article>
+      <article><span>保存済み</span><b>削除済み断片</b><small>端末内キャッシュ</small></article>
+    </section>
+  </aside>
 
   <script src="social.js"></script>
 </body>

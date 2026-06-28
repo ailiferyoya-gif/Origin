@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
@@ -7,37 +7,58 @@
   <link rel="stylesheet" href="housing.css">
 </head>
 <body>
-  <header class="top">
-    <div>
-      <p>かすみ野団地 管理室</p>
-      <h1>掲示記録・鍵貸出照会</h1>
+  <header class="portal-header">
+    <div class="utility"><span>かすみ野団地 管理室</span><span>掲示記録・鍵貸出照会</span></div>
+    <div class="brand-row">
+      <h1>かすみ野団地 管理ポータル</h1>
+      <nav><a href="#">お知らせ</a><a href="#">申請</a><a href="#">施設予約</a><a href="#">記録照会</a></nav>
     </div>
   </header>
 
-  <figure class="photo">
-    <img src="../assets/housing-office-hero.png" alt="">
-  </figure>
-
   <main>
+    <section class="hero">
+      <img src="../assets/housing-office-hero.png" alt="">
+      <div>
+        <p>RESIDENT OFFICE</p>
+        <h2>掲示記録・鍵貸出照会</h2>
+        <span>管理室控え / 2026年度</span>
+      </div>
+    </section>
+
     <section class="notice">
-      <h2>照会番号</h2>
-      <p>掲示記録は、記録日4桁で照会できます。制作班へ渡した写しと、管理室控えの内容が異なる場合があります。</p>
+      <div class="notice-copy">
+        <p class="label">Record Search</p>
+        <h2>照会番号</h2>
+        <p>掲示記録は、記録日4桁で照会できます。制作班へ渡した写しと、管理室控えの内容が異なる場合があります。</p>
+      </div>
       <form id="unlock-form">
-        <input name="code" autocomplete="off" placeholder="例: 0417">
-        <button type="submit">照会</button>
+        <label>記録日または照会番号</label>
+        <div>
+          <input name="code" autocomplete="off" placeholder="例: 0417">
+          <button type="submit">照会する</button>
+        </div>
+        <p id="form-message" class="message"></p>
       </form>
-      <p id="form-message" class="message"></p>
+    </section>
+
+    <section class="info-grid">
+      <article><b>掲示板控え</b><span>北棟・南棟・集会室</span></article>
+      <article><b>鍵貸出</b><span>共用倉庫・設備室</span></article>
+      <article><b>巡回票</b><span>管理員巡回メモ</span></article>
     </section>
 
     <section id="record" class="record hidden">
-      <h2>04/17 管理室控え</h2>
+      <div class="record-head">
+        <div><p class="label">Office Copy</p><h2>04/17 管理室控え</h2></div>
+        <span>照会済み</span>
+      </div>
       <table>
-        <thead><tr><th>時刻</th><th>場所</th><th>記録</th></tr></thead>
+        <thead><tr><th>時刻</th><th>場所</th><th>記録</th><th>区分</th></tr></thead>
         <tbody>
-          <tr><td>19:13</td><td>北廊下</td><td>配管スペース付近で水音。作業予定なし。</td></tr>
-          <tr><td>20:04</td><td>西階段</td><td>蛍光灯交換。点滅のため再確認。</td></tr>
-          <tr><td>21:31</td><td>東集会室</td><td>反響確認。KCT班へ一時貸出。</td></tr>
-          <tr><td>22:40</td><td>南倉庫前</td><td>聞き取り再録。倉庫前で足音停止。</td></tr>
+          <tr><td>19:13</td><td>北廊下</td><td>配管スペース付近で水音。作業予定なし。</td><td>巡回</td></tr>
+          <tr><td>20:04</td><td>西階段</td><td>蛍光灯交換。点滅のため再確認。</td><td>設備</td></tr>
+          <tr><td>21:31</td><td>東集会室</td><td>反響確認。KCT班へ一時貸出。</td><td>施設</td></tr>
+          <tr><td>22:40</td><td>南倉庫前</td><td>聞き取り再録。倉庫前で足音停止。</td><td>立会</td></tr>
         </tbody>
       </table>
       <aside>

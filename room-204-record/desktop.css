@@ -1134,3 +1134,261 @@ summary {
     position: static;
   }
 }
+/* 2026-06 fidelity and behavior polish. */
+button,
+.desktop-icon,
+.taskbar-app,
+.list-button,
+.result-link {
+  touch-action: manipulation;
+}
+
+.app-window {
+  transition: box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.window-titlebar {
+  user-select: none;
+}
+
+.window-controls button {
+  cursor: default;
+}
+
+.app-window[data-app="talk"] .window-body {
+  background: #edf7e7;
+}
+
+.talk-shell {
+  grid-template-columns: 285px minmax(0, 1fr);
+  background: #f7f7f7;
+}
+
+.app-window[data-app="talk"] .thread-list {
+  background: #f6f6f6;
+  border-right: 1px solid #d9d9d9;
+}
+
+.app-window[data-app="talk"] .thread-list h3 {
+  color: #111;
+  font-size: 13px;
+  padding: 0 4px;
+}
+
+.app-window[data-app="talk"] .thread-list button {
+  min-height: 64px;
+  border-radius: 0;
+  border-bottom: 1px solid #e7e7e7;
+  background: #fff;
+}
+
+.app-window[data-app="talk"] .thread-list button.is-active {
+  background: #e9f7e3;
+}
+
+.app-window[data-app="talk"] .chat-pane {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background:
+    linear-gradient(rgba(225, 241, 219, .92), rgba(225, 241, 219, .92)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,.32) 0 8px, transparent 8px 18px);
+}
+
+.app-window[data-app="talk"] .chat-head {
+  min-height: 58px;
+  padding: 10px 18px;
+  color: #111;
+  background: rgba(255,255,255,.92);
+  border-bottom: 1px solid #d5dfd2;
+}
+
+.messages {
+  padding: 18px;
+  overflow: auto;
+}
+
+.app-window[data-app="talk"] .bubble {
+  max-width: min(72%, 520px);
+  margin: 10px 0;
+  padding: 10px 13px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0,0,0,.06);
+}
+
+.app-window[data-app="talk"] .bubble.me,
+.app-window[data-app="talk"] .messages .bubble:nth-child(even) {
+  margin-left: auto;
+  background: #9de66f;
+}
+
+.app-window[data-app="talk"] .bubble small {
+  display: block;
+  margin-top: 6px;
+  color: rgba(0,0,0,.46);
+  font-size: 11px;
+}
+
+.app-window[data-app="talk"] .quick-replies {
+  padding: 10px 14px;
+  background: rgba(255,255,255,.84);
+  border-top: 1px solid #d5dfd2;
+}
+
+.app-window[data-app="search"] .window-body {
+  background: #fff;
+}
+
+.gogle-search-shell {
+  min-height: 100%;
+  padding: 58px 24px 34px;
+  color: #202124;
+  background: #fff;
+}
+
+.gogle-search-shell.has-query {
+  padding-top: 24px;
+}
+
+.gogle-search-box {
+  width: min(690px, 100%);
+  margin: 0 auto;
+  box-shadow: none;
+  border: 0;
+  background: transparent;
+}
+
+.gogle-search-shell.has-query .gogle-search-box {
+  margin-left: 0;
+}
+
+.gogle-logo {
+  margin: 0 auto 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 78px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.gogle-search-shell.has-query .gogle-logo {
+  display: inline-flex;
+  margin: 0 18px 0 0;
+  font-size: 34px;
+  vertical-align: middle;
+}
+
+.gogle-input-wrap {
+  min-height: 48px;
+  border: 1px solid #dfe1e5;
+  border-radius: 24px;
+  box-shadow: 0 1px 6px rgba(32,33,36,.18);
+  background: #fff;
+}
+
+.gogle-input-wrap input {
+  color: #202124;
+  font-size: 16px;
+}
+
+.search-glass {
+  color: #9aa0a6;
+}
+
+.search-tool {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  border-radius: 50%;
+  color: #4285f4;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.gogle-buttons {
+  justify-content: center;
+}
+
+.gogle-submit {
+  border: 1px solid #f8f9fa;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #3c4043;
+  box-shadow: none;
+}
+
+.gogle-submit.secondary {
+  color: #3c4043;
+}
+
+.gogle-result-count {
+  width: min(760px, 100%);
+  margin: 18px auto 8px;
+  color: #70757a;
+  font-size: 13px;
+}
+
+.gogle-search-shell.has-query .gogle-result-count,
+.gogle-search-shell.has-query .gogle-results {
+  margin-left: 0;
+}
+
+.gogle-results {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.gogle-result {
+  padding: 14px 0 18px;
+  border: 0;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gogle-result small {
+  color: #4d5156;
+  font-size: 12px;
+}
+
+.gogle-result h2 {
+  color: #1a0dab;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.gogle-result p {
+  color: #4d5156;
+  font-size: 14px;
+}
+
+.result-link {
+  min-height: 30px;
+  padding: 4px 12px;
+  border-radius: 15px;
+  background: #e8f0fe;
+  color: #1967d2;
+}
+
+@media (max-width: 720px) {
+  .gogle-logo {
+    font-size: 56px;
+  }
+
+  .talk-shell {
+    grid-template-columns: 1fr;
+  }
+}
+/* Search input icon alignment fix. */
+.gogle-input-wrap {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+}
+
+.gogle-input-wrap .search-tool,
+.gogle-input-wrap .search-glass {
+  align-self: center;
+  justify-self: center;
+}

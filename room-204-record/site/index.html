@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
@@ -7,65 +7,79 @@
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
-  <header class="hero">
-    <img src="../assets/kct-archive-hero.png" alt="">
-    <div class="hero-copy">
-      <p class="kicker">KCT Local Archive / 未放送番組</p>
-      <h1>204号室の記録</h1>
-      <p>かすみ野団地に残された取材素材。公開原稿と素材ラベルの不一致により、放送前日に保留。</p>
-      <button id="request-review" type="button">復元依頼を確認</button>
+  <header class="site-header">
+    <div class="utility">
+      <span>KCT Local Archive</span>
+      <span>報道制作部 / 編集室3</span>
+    </div>
+    <div class="brand-row">
+      <a class="brand" href="#">KCT ARCHIVE</a>
+      <nav>
+        <a href="#outline">番組概要</a>
+        <a href="#schedule">取材予定</a>
+        <a href="#crew">制作班</a>
+        <a href="#memo">公開保留</a>
+      </nav>
     </div>
   </header>
 
-  <nav>
-    <a href="#outline">番組概要</a>
-    <a href="#schedule">取材予定</a>
-    <a href="#crew">制作班</a>
-    <a href="#memo">公開保留理由</a>
-  </nav>
-
   <main>
-    <section id="outline" class="panel">
-      <p class="label">制作番号</p>
-      <h2>KCT-0417-204</h2>
-      <p>4月17日に撮影された、かすみ野団地2号棟204号室に関する調査番組。番組原稿は室内検証としてまとめられているが、素材台帳には共用部の録音が多く残る。</p>
+    <section class="hero">
+      <img src="../assets/kct-archive-hero.png" alt="">
+      <div class="hero-copy">
+        <p class="kicker">未放送番組 / 収蔵番号 KCT-0417-204</p>
+        <h1>204号室の記録</h1>
+        <p>かすみ野団地に残された取材素材。公開原稿と素材ラベルの不一致により、放送前日に保留。</p>
+        <button id="request-review" type="button">復元依頼を確認</button>
+      </div>
     </section>
 
-    <section id="schedule" class="grid">
-      <article>
-        <b>19:13</b>
-        <h3>北廊下</h3>
-        <p>配管スペース付近。水音の検証。</p>
-      </article>
-      <article>
-        <b>20:04</b>
-        <h3>西階段</h3>
-        <p>蛍光灯交換後の点滅確認。</p>
-      </article>
-      <article>
-        <b>21:31</b>
-        <h3>東集会室</h3>
-        <p>壁面反響の録音。</p>
-      </article>
-      <article>
-        <b>22:40</b>
-        <h3>南倉庫前</h3>
-        <p>追加証言の再録。</p>
-      </article>
+    <section class="meta-strip" aria-label="番組メタ情報">
+      <div><b>公開区分</b><span>保留</span></div>
+      <div><b>撮影日</b><span>04/17</span></div>
+      <div><b>所在地</b><span>かすみ野団地</span></div>
+      <div><b>照合状態</b><span>素材差戻し</span></div>
     </section>
 
-    <section id="crew" class="panel ruled">
-      <h2>制作班</h2>
-      <dl>
-        <div><dt>構成</dt><dd>佐伯 明</dd></div>
-        <div><dt>音声</dt><dd>水野 咲</dd></div>
-        <div><dt>カメラ</dt><dd>久世 亮</dd></div>
-        <div><dt>編集助手</dt><dd>堀内 真帆</dd></div>
-      </dl>
+    <div class="content-grid">
+      <article id="outline" class="article-card">
+        <p class="label">Program File</p>
+        <h2>KCT-0417-204</h2>
+        <p>4月17日に撮影された、かすみ野団地2号棟204号室に関する調査番組。番組原稿は室内検証としてまとめられているが、素材台帳には共用部の録音が多く残る。</p>
+        <div class="document-preview">
+          <span>資料状態</span>
+          <b>公開原稿 / MA前素材 / 取材予定表</b>
+          <p>番組版テロップと、素材束ラベルの地点名が一致していません。</p>
+        </div>
+      </article>
+
+      <aside class="side-card">
+        <h2>照合メモ</h2>
+        <dl>
+          <div><dt>制作</dt><dd>佐伯 明</dd></div>
+          <div><dt>音声</dt><dd>水野 咲</dd></div>
+          <div><dt>カメラ</dt><dd>久世 亮</dd></div>
+          <div><dt>編集助手</dt><dd>堀内 真帆</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <section id="schedule" class="schedule">
+      <div class="section-title">
+        <p class="label">Shooting Plan</p>
+        <h2>取材予定</h2>
+      </div>
+      <article><time>19:13</time><b>北廊下</b><span>配管スペース付近。水音の検証。</span></article>
+      <article><time>20:04</time><b>西階段</b><span>蛍光灯交換後の点滅確認。</span></article>
+      <article><time>21:31</time><b>東集会室</b><span>壁面反響の録音。</span></article>
+      <article><time>22:40</time><b>南倉庫前</b><span>追加証言の再録。</span></article>
     </section>
 
-    <section id="memo" class="panel notice">
-      <h2>公開保留理由</h2>
+    <section id="memo" class="hold-card">
+      <div>
+        <p class="label">Hold Reason</p>
+        <h2>公開保留理由</h2>
+      </div>
       <p>素材ラベルとテロップ案が一致しない。番組版では四つの共用部素材が「204号室」としてまとめられている。差し替え前のラベルを確認すること。</p>
     </section>
   </main>

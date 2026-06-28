@@ -53,7 +53,7 @@ const initialState = {
   browserPath: "/",
   contactSubmitted: false,
   researchStarted: false,
-  searchUnlocked: false,
+  searchUnlocked: true,
   housingUnlocked: false,
   archiveUnlocked: false,
   socialClueRead: false,
@@ -85,7 +85,7 @@ const talkMessages = {
   "saeki-after-start": {
     thread: "saeki",
     from: "佐伯 明",
-    body: "Gogle検索を開けるようにしました。番組ID、日付、部屋番号、人名で引くと関連先に飛べます。\n\n取材時刻はそのまま並べると嘘になります。どの資料が何を隠しているか、時刻と方角を分けて見てください。",
+    body: "Gogle検索は最初から使えます。番組ID、日付、部屋番号、人名で引くと関連先に飛べます。\n\n取材時刻はそのまま並べると嘘になります。どの資料が何を隠しているか、時刻と方角を分けて見てください。",
     time: "08:19"
   },
   "manager-log": {
@@ -496,6 +496,21 @@ function visibleOpenApps() {
   return state.openApps.filter(app => !state.minimizedApps.includes(app));
 }
 
+function syncActiveChrome() {
+  notice.textContent = state.notice;
+  document.querySelectorAll("[data-open-app]").forEach(button => {
+    const app = button.dataset.openApp;
+    button.classList.toggle("is-active", state.activeApp === app && !state.minimizedApps.includes(app));
+  });
+  document.querySelectorAll("[data-open-browser]").forEach(button => {
+    const target = button.dataset.openBrowser;
+    button.classList.toggle("is-active", state.activeApp === "browser" && state.browserTarget === target && !state.minimizedApps.includes("browser"));
+  });
+  document.querySelectorAll(".app-window").forEach(windowEl => {
+    windowEl.classList.toggle("is-active", state.activeApp === windowEl.dataset.app);
+  });
+}
+
 function openApp(app) {
   addUnique("openApps", app);
   state.minimizedApps = state.minimizedApps.filter(item => item !== app);
@@ -512,10 +527,17 @@ function openBrowser(target = "kct", path = "/") {
 
 function focusApp(app) {
   if (!state.openApps.includes(app)) return;
-  state.minimizedApps = state.minimizedApps.filter(item => item !== app);
+  if (state.minimizedApps.includes(app)) {
+    state.minimizedApps = state.minimizedApps.filter(item => item !== app);
+    state.activeApp = app;
+    saveState();
+    render();
+    return;
+  }
+  if (state.activeApp === app) return;
   state.activeApp = app;
   saveState();
-  render();
+  syncActiveChrome();
 }
 
 function minimizeApp(app) {
@@ -548,16 +570,8 @@ function toggleMaximize(app) {
 }
 
 function render() {
-  notice.textContent = state.notice;
-  document.querySelectorAll("[data-open-app]").forEach(button => {
-    const app = button.dataset.openApp;
-    button.classList.toggle("is-active", state.activeApp === app && !state.minimizedApps.includes(app));
-  });
-  document.querySelectorAll("[data-open-browser]").forEach(button => {
-    const target = button.dataset.openBrowser;
-    button.classList.toggle("is-active", state.activeApp === "browser" && state.browserTarget === target && !state.minimizedApps.includes("browser"));
-  });
   layer.innerHTML = visibleOpenApps().map(renderWindow).join("");
+  syncActiveChrome();
   bind();
 }
 
@@ -676,35 +690,29 @@ function renderSearch() {
   const logo = `<div class="gogle-logo" aria-label="Gogle">
     <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">g</span><span class="g-blue">l</span><span class="g-green">e</span>
   </div>`;
-  if (!state.searchUnlocked) {
-    return `
-      <section class="gogle-search-shell">
-        ${logo}
-        <article class="search-card gogle-locked">
-          <h2>検索はまだ利用できません</h2>
-          <p>番組アーカイブから復元依頼を受け、LIMEで作業を開始すると検索できます。</p>
-        </article>
-      </section>`;
-  }
   const query = state.searchQuery.trim().toLowerCase();
   const results = searchDatabase.filter(item => {
     if (item.gated && !item.gated(state)) return false;
     if (!query) return true;
     return item.q.some(word => word.toLowerCase().includes(query) || query.includes(word.toLowerCase()));
   });
+  const hasQuery = Boolean(query);
   return `
-    <section class="gogle-search-shell">
+    <section class="gogle-search-shell ${hasQuery ? "has-query" : ""}">
       <form class="gogle-search-box" data-search-form>
         ${logo}
         <div class="gogle-input-wrap">
-          <span>⌕</span>
-          <input name="q" value="${esc(state.searchQuery)}" placeholder="0417 204 北棟倉庫B NWES">
+          <span class="search-glass">⌕</span>
+          <input name="q" value="${esc(state.searchQuery)}" placeholder="検索語句を入力">
+          <span class="search-tool">音</span>
+          <span class="search-tool">画</span>
         </div>
         <div class="gogle-buttons">
           <button class="gogle-submit" type="submit">Gogle 検索</button>
-          <button class="gogle-submit" type="button" data-search-action="browser:kct:/">最初の記録</button>
+          <button class="gogle-submit secondary" type="button" data-search-action="browser:kct:/">最初の記録</button>
         </div>
       </form>
+      <div class="gogle-result-count">${hasQuery ? `${results.length}件の記録が見つかりました` : "検索はいつでも利用できます"}</div>
       <div class="gogle-results">
         ${results.map(item => `
           <article class="gogle-result">
@@ -713,7 +721,7 @@ function renderSearch() {
             <p>${esc(item.body)}</p>
             <button class="result-link" data-search-action="${esc(item.action)}" type="button">開く</button>
           </article>
-        `).join("") || `<p class="gogle-empty">一致する記録はありません。</p>`}
+        `).join("") || `<p class="gogle-empty">一致する記録はありません。別の語句を試してください。</p>`}
       </div>
     </section>
   `;
@@ -773,8 +781,8 @@ function startResearch() {
   state.selectedFile = "request";
   addMessage("saeki-after-start");
   addUnique("readFiles", "request");
-  setNotice("Gogle検索と制作資料を開けるようになりました");
-  toast("Files", "制作資料と検索機能を復元しました。");
+  setNotice("制作資料を復元しました");
+  toast("Files", "制作資料を復元しました。");
   saveState();
   render();
 }
@@ -861,42 +869,67 @@ function runSearchAction(action) {
 }
 
 function bind() {
-  document.querySelectorAll("[data-open-app]").forEach(button => button.addEventListener("click", () => openApp(button.dataset.openApp)));
-  document.querySelectorAll("[data-open-browser]").forEach(button => button.addEventListener("click", () => openBrowser(button.dataset.openBrowser)));
-  document.querySelectorAll("[data-focus-app]").forEach(bar => bar.addEventListener("pointerdown", event => {
-    if (event.target.closest(".window-controls")) return;
-    focusApp(bar.dataset.focusApp);
-  }));
+  document.querySelectorAll("[data-open-app]").forEach(button => {
+    button.onclick = () => openApp(button.dataset.openApp);
+  });
+  document.querySelectorAll("[data-open-browser]").forEach(button => {
+    button.onclick = () => openBrowser(button.dataset.openBrowser);
+  });
+  document.querySelectorAll("[data-focus-app]").forEach(bar => {
+    bar.onpointerdown = event => {
+      if (event.target.closest(".window-controls")) return;
+      focusApp(bar.dataset.focusApp);
+    };
+  });
   document.querySelectorAll(".window-controls button").forEach(button => {
-    button.addEventListener("pointerdown", event => event.stopPropagation());
-    button.addEventListener("click", event => {
+    button.onpointerdown = event => event.stopPropagation();
+    button.onclick = event => {
       event.stopPropagation();
       const app = button.dataset.app;
       const action = button.dataset.action;
       if (action === "close") closeApp(app);
       if (action === "minimize") minimizeApp(app);
       if (action === "maximize") toggleMaximize(app);
-    });
+    };
   });
-  document.querySelectorAll("[data-browser-home]").forEach(button => button.addEventListener("click", () => { state.browserPath = "/"; saveState(); render(); }));
-  document.querySelectorAll("[data-browser-target]").forEach(button => button.addEventListener("click", () => openBrowser(button.dataset.browserTarget, "/")));
-  document.querySelectorAll("[data-thread]").forEach(button => button.addEventListener("click", () => { state.currentThread = button.dataset.thread; saveState(); render(); }));
-  document.querySelector("[data-start-research]")?.addEventListener("click", startResearch);
-  document.querySelectorAll("[data-folder]").forEach(button => button.addEventListener("click", () => { state.currentFolder = button.dataset.folder; state.selectedFile = ""; saveState(); render(); }));
-  document.querySelectorAll("[data-file]").forEach(button => button.addEventListener("click", () => selectFile(state.currentFolder, button.dataset.file)));
-  document.querySelector("[data-search-form]")?.addEventListener("submit", event => {
-    event.preventDefault();
-    state.searchQuery = new FormData(event.currentTarget).get("q").toString();
-    saveState();
-    render();
+  document.querySelectorAll("[data-browser-home]").forEach(button => {
+    button.onclick = () => { state.browserPath = "/"; saveState(); render(); };
   });
-  document.querySelectorAll("[data-search-action]").forEach(button => button.addEventListener("click", () => runSearchAction(button.dataset.searchAction)));
-  document.querySelector("[data-reset]")?.addEventListener("click", () => {
-    if (!confirm("復元状態を初期化しますか。")) return;
-    Object.keys(localStorage).filter(key => key.startsWith("room204")).forEach(key => localStorage.removeItem(key));
-    state = clone(initialState);
-    render();
+  document.querySelectorAll("[data-browser-target]").forEach(button => {
+    button.onclick = () => openBrowser(button.dataset.browserTarget, "/");
   });
+  document.querySelectorAll("[data-thread]").forEach(button => {
+    button.onclick = () => { state.currentThread = button.dataset.thread; saveState(); render(); };
+  });
+  const startButton = document.querySelector("[data-start-research]");
+  if (startButton) startButton.onclick = startResearch;
+  document.querySelectorAll("[data-folder]").forEach(button => {
+    button.onclick = () => { state.currentFolder = button.dataset.folder; state.selectedFile = ""; saveState(); render(); };
+  });
+  document.querySelectorAll("[data-file]").forEach(button => {
+    button.onclick = () => selectFile(state.currentFolder, button.dataset.file);
+  });
+  const searchForm = document.querySelector("[data-search-form]");
+  if (searchForm) {
+    searchForm.onsubmit = event => {
+      event.preventDefault();
+      state.searchQuery = new FormData(event.currentTarget).get("q").toString();
+      saveState();
+      render();
+    };
+  }
+  document.querySelectorAll("[data-search-action]").forEach(button => {
+    button.onclick = () => runSearchAction(button.dataset.searchAction);
+  });
+  const resetButton = document.querySelector("[data-reset]");
+  if (resetButton) {
+    resetButton.onclick = () => {
+      if (!confirm("復元状態を初期化しますか。")) return;
+      Object.keys(localStorage).filter(key => key.startsWith("room204")).forEach(key => localStorage.removeItem(key));
+      state = clone(initialState);
+      render();
+    };
+  }
 }
 window.addEventListener("message", event => {
   if (!event.data || typeof event.data.type !== "string") return;
