@@ -623,27 +623,82 @@ function threadMessages(threadId) {
 function renderTalk() {
   const current = threads.find(thread => thread.id === state.currentThread) || threads[0];
   const messages = threadMessages(current.id);
+  const outgoingByThread = {
+    restore: state.contactSubmitted ? ["端末ログを確認します。"] : [],
+    saeki: state.contactSubmitted ? ["復元担当です。", "資料を確認します。"] : [],
+    manager: state.housingUnlocked ? ["0417で照会しました。"] : [],
+    mizuno: state.archiveUnlocked ? ["素材束を開きます。"] : []
+  };
+  const outgoing = outgoingByThread[current.id] || [];
   return `
-    <div class="talk-shell">
-      <aside class="thread-list">
-        ${threads.map(thread => {
-          const last = threadMessages(thread.id).slice(-1)[0];
-          return `
-            <button class="${thread.id === current.id ? "is-active" : ""}" data-thread="${esc(thread.id)}" type="button">
-              <span class="talk-avatar">${esc(thread.avatar)}</span>
-              <span><b>${esc(thread.name)}</b><small>${esc(last?.body || "記録なし")}</small></span>
-              <small>${threadMessages(thread.id).length || ""}</small>
+    <div class="lime-desktop">
+      <section class="lime-roster-window" aria-label="LIME連絡先">
+        <aside class="lime-nav">
+          <span class="lime-nav-icon is-active">人</span>
+          <span class="lime-nav-icon">吹</span>
+          <span class="lime-nav-icon">＋</span>
+          <span class="lime-nav-icon">▶</span>
+          <span class="lime-nav-logo">LIME</span>
+          <span class="lime-nav-spacer"></span>
+          <span class="lime-nav-icon">▣</span>
+          <span class="lime-nav-icon">…</span>
+        </aside>
+        <div class="lime-roster">
+          <div class="lime-window-buttons"><span></span><i></i><b></b></div>
+          <label class="lime-search"><span>⌕</span><input value="" placeholder="名前で検索" readonly></label>
+          <section class="lime-section">
+            <header>お気に入り 2</header>
+            <button class="lime-contact" type="button">
+              <span class="lime-contact-avatar dog">犬</span>
+              <span><b>犬猫仲良し倶楽部</b><small>制作班共有メモ</small></span>
+              <em>5</em>
             </button>
-          `;
-        }).join("")}
-      </aside>
-      <section class="chat-pane">
-        <header class="chat-head"><b>${esc(current.name)}</b><p class="muted">端末内に残った連絡記録。外部へは接続していません。</p></header>
+            ${threads.map(thread => {
+              const last = threadMessages(thread.id).slice(-1)[0];
+              return `
+                <button class="lime-contact ${thread.id === current.id ? "is-active" : ""}" data-thread="${esc(thread.id)}" type="button">
+                  ${thread.id === "saeki" ? `<img src="assets/lime-cat-avatar.png" alt="">` : `<span class="lime-contact-avatar">${esc(thread.avatar)}</span>`}
+                  <span><b>${esc(thread.name)}</b><small>${esc(last?.body || "記録なし")}</small></span>
+                  <em>${threadMessages(thread.id).length || ""}</em>
+                </button>
+              `;
+            }).join("")}
+          </section>
+          <section class="lime-section muted-list">
+            <header>オープンチャット 2</header>
+            <button class="lime-contact" type="button"><span class="lime-contact-avatar orange">団</span><span><b>朝まで大横討論会</b><small>未読なし</small></span></button>
+            <button class="lime-contact" type="button"><span class="lime-contact-avatar photo">大</span><span><b>大まみれ</b><small>記録保存済み</small></span></button>
+          </section>
+        </div>
+      </section>
+
+      <section class="lime-chat-window" aria-label="LIMEトーク">
+        <header class="chat-head">
+          <div class="lime-title">
+            ${current.id === "saeki" ? `<img src="assets/lime-cat-avatar.png" alt="">` : `<span class="lime-contact-avatar">${esc(current.avatar)}</span>`}
+            <b>${esc(current.name)}</b>
+            <span>▸</span>
+          </div>
+          <div class="lime-tools"><span>⌕</span><span>☎</span><span>▤</span><span>⋮</span></div>
+        </header>
         <div class="messages">
-          ${messages.map(message => `<p class="bubble ${message.from === "me" ? "me" : ""}"><b>${esc(message.from)}</b><br>${esc(message.body)}</p>`).join("") || `<p class="bubble">この相手との記録はまだありません。</p>`}
+          <time class="lime-date">今日</time>
+          ${outgoing.map((text, index) => `<p class="bubble me"><span class="read">既読<br>${index ? "午前 10:51" : ""}</span>${esc(text)}</p>`).join("")}
+          ${messages.map((message, index) => `
+            <div class="incoming-row">
+              ${current.id === "saeki" ? `<img class="message-avatar" src="assets/lime-cat-avatar.png" alt="">` : `<span class="message-avatar">${esc(current.avatar)}</span>`}
+              <p class="bubble"><b>${esc(message.from)}</b><br>${esc(message.body)}<small>午前 ${String(10 + index).padStart(2, "0")}:5${index % 2}</small></p>
+            </div>
+          `).join("") || `<div class="incoming-row"><span class="message-avatar">${esc(current.avatar)}</span><p class="bubble">この相手との記録はまだありません。</p></div>`}
+          ${current.id === "saeki" ? `<img class="lime-sticker" src="assets/lime-shiba-sticker.png" alt="スタンプ">` : ""}
         </div>
         <div class="quick-replies">
-          ${state.contactSubmitted && !state.researchStarted ? `<button class="button" data-start-research type="button">復元作業を開始</button>` : `<span class="muted">必要な連絡は、Browser内の照会や復元結果に応じて追加されます。</span>`}
+          <span class="lime-attach">⌇</span>
+          <span class="lime-attach">□</span>
+          <label class="lime-message-input">
+            <input placeholder="メッセージを入力" readonly>
+          </label>
+          ${state.contactSubmitted && !state.researchStarted ? `<button class="button" data-start-research type="button">復元作業を開始</button>` : `<span class="lime-face">◎</span>`}
         </div>
       </section>
     </div>

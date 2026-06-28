@@ -1392,3 +1392,482 @@ button,
   align-self: center;
   justify-self: center;
 }
+
+/* LIME desktop messenger reference polish. */
+.app-window[data-app="talk"] {
+  top: 32px;
+  left: 74px;
+  width: min(1080px, calc(100% - 96px));
+  height: min(700px, calc(100vh - 116px));
+  min-height: 560px;
+  background: #d8f8f8;
+  border-color: rgba(113, 172, 172, 0.6);
+}
+
+.app-window[data-app="talk"] .window-titlebar {
+  min-height: 32px;
+  color: #1f2933;
+  background: rgba(255,255,255,0.78);
+  border-bottom: 1px solid rgba(196, 217, 217, 0.85);
+}
+
+.app-window[data-app="talk"] .window-controls button {
+  color: #6b7280;
+  background: transparent;
+  border-color: transparent;
+}
+
+.app-window[data-app="talk"] .window-controls button:hover {
+  background: #eef4f4;
+}
+
+.app-window[data-app="talk"] .window-body {
+  background: #d8f8f8;
+}
+
+.lime-desktop {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  padding: 22px 20px 18px;
+  background: #d8f8f8;
+  overflow: hidden;
+}
+
+.lime-roster-window,
+.lime-chat-window {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #dfe5e8;
+  box-shadow: 0 8px 20px rgba(29, 54, 58, 0.22);
+}
+
+.lime-roster-window {
+  left: 22px;
+  top: 42px;
+  bottom: 34px;
+  width: min(420px, 44%);
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.lime-chat-window {
+  right: 18px;
+  top: 12px;
+  bottom: 10px;
+  width: min(560px, 58%);
+  display: grid;
+  grid-template-rows: 68px minmax(0, 1fr) 86px;
+  overflow: hidden;
+}
+
+.lime-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 0 16px;
+  background: #2d354a;
+}
+
+.lime-nav-icon,
+.lime-nav-logo {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.72);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.lime-nav-icon.is-active {
+  color: #fff;
+}
+
+.lime-nav-logo {
+  border: 1px solid rgba(255,255,255,0.34);
+  font-size: 9px;
+}
+
+.lime-nav-spacer {
+  flex: 1;
+}
+
+.lime-roster {
+  min-width: 0;
+  overflow: auto;
+  padding: 28px 16px 16px;
+  background: #fff;
+}
+
+.lime-window-buttons {
+  position: absolute;
+  right: 12px;
+  top: 9px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.lime-window-buttons span,
+.lime-window-buttons i,
+.lime-window-buttons b {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  border: 1px solid #c7cdd1;
+}
+
+.lime-search {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
+  min-height: 38px;
+  margin: 0 6px 16px 0;
+  padding: 0 12px;
+  border-radius: 4px;
+  background: #f4f4f4;
+  color: #a5adb4;
+}
+
+.lime-search input {
+  min-height: 34px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  color: #798188;
+}
+
+.lime-section {
+  margin: 0 0 20px;
+}
+
+.lime-section header {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  color: #8b949c;
+  font-size: 12px;
+}
+
+.lime-contact {
+  width: calc(100% + 32px);
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin: 0 0 0 -16px;
+  padding: 8px 14px 8px 16px;
+  color: #222;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+}
+
+.lime-contact:hover,
+.lime-contact.is-active {
+  background: #f0f0f0;
+}
+
+.lime-contact img,
+.lime-contact-avatar,
+.message-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #d9dde2;
+}
+
+.lime-contact-avatar,
+.message-avatar {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #637083;
+  font-weight: 900;
+}
+
+.lime-contact-avatar.dog { background: #d28a2d; }
+.lime-contact-avatar.orange { background: #f49a2e; }
+.lime-contact-avatar.photo { background: #83a47f; }
+
+.lime-contact b {
+  display: block;
+  color: #222;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.lime-contact small {
+  display: block;
+  max-width: 190px;
+  margin-top: 3px;
+  color: #9aa2a9;
+  font-size: 11px;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lime-contact em {
+  min-width: 26px;
+  color: #89919a;
+  font-size: 11px;
+  font-style: normal;
+  text-align: right;
+}
+
+.muted-list {
+  opacity: 0.92;
+}
+
+.app-window[data-app="talk"] .chat-head {
+  min-height: 68px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0 18px 0 16px;
+  color: #20242a;
+  background: #fff;
+  border-bottom: 1px solid #eef0f1;
+}
+
+.lime-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.lime-title img,
+.lime-title .lime-contact-avatar {
+  width: 42px;
+  height: 42px;
+}
+
+.lime-title b {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lime-title span {
+  color: #9ba3aa;
+  font-size: 13px;
+}
+
+.lime-tools {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  color: #353b42;
+  font-size: 18px;
+}
+
+.app-window[data-app="talk"] .messages {
+  display: block;
+  min-height: 0;
+  padding: 18px 18px 22px;
+  overflow: auto;
+  background: #fff;
+}
+
+.lime-date {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 14px;
+  padding: 5px 13px;
+  border-radius: 14px;
+  color: #8d969e;
+  background: #f5f6f7;
+  font-size: 12px;
+}
+
+.incoming-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  margin: 10px 0;
+}
+
+.message-avatar {
+  font-size: 13px;
+}
+
+.incoming-row .message-avatar {
+  margin-top: 2px;
+}
+
+.app-window[data-app="talk"] .bubble {
+  position: relative;
+  width: fit-content;
+  max-width: min(380px, 82%);
+  margin: 0;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 16px;
+  color: #222;
+  background: #f2f2f2;
+  box-shadow: none;
+  white-space: pre-wrap;
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+.app-window[data-app="talk"] .bubble b {
+  display: none;
+}
+
+.app-window[data-app="talk"] .bubble small {
+  display: block;
+  margin-top: 4px;
+  color: #a1a9b0;
+  font-size: 10px;
+}
+
+.app-window[data-app="talk"] .bubble::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 10px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid #f2f2f2;
+}
+
+.app-window[data-app="talk"] .bubble.me {
+  display: block;
+  margin: 7px 0 7px auto;
+  background: #b9f48b;
+  border-radius: 15px;
+}
+
+.app-window[data-app="talk"] .bubble.me::before {
+  left: auto;
+  right: -5px;
+  border-right: 0;
+  border-left: 8px solid #b9f48b;
+}
+
+.app-window[data-app="talk"] .bubble .read {
+  position: absolute;
+  right: calc(100% + 8px);
+  bottom: 2px;
+  width: 52px;
+  color: #a1a9b0;
+  font-size: 10px;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.lime-sticker {
+  display: block;
+  width: 126px;
+  height: 126px;
+  object-fit: contain;
+  margin: 18px 18px 0 auto;
+}
+
+.app-window[data-app="talk"] .quick-replies {
+  min-height: 86px;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin: 0;
+  padding: 12px 14px;
+  background: #fff;
+  border-top: 1px solid #eef0f1;
+}
+
+.lime-attach,
+.lime-face {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 28px;
+  color: #49515a;
+  font-size: 18px;
+}
+
+.lime-message-input {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.lime-message-input input {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  color: #7b858d;
+  background: transparent;
+  font: inherit;
+}
+
+.app-window[data-app="talk"] .quick-replies .button {
+  align-self: center;
+  min-height: 36px;
+  border-radius: 18px;
+  background: #06c755;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .app-window[data-app="talk"] {
+    left: 10px;
+    width: calc(100% - 20px);
+  }
+
+  .lime-desktop {
+    padding: 10px;
+  }
+
+  .lime-roster-window {
+    display: none;
+  }
+
+  .lime-chat-window {
+    inset: 10px;
+    width: auto;
+  }
+}
+
+/* Keep LIME incoming bubbles gray even after older chat overrides. */
+.app-window[data-app="talk"] .incoming-row .bubble {
+  margin-left: 0;
+  background: #f2f2f2;
+}
+
+.app-window[data-app="talk"] .incoming-row .bubble::before {
+  left: -5px;
+  right: auto;
+  border-left: 0;
+  border-right: 8px solid #f2f2f2;
+}
+
+.app-window[data-app="talk"] .messages .incoming-row:nth-child(even) .bubble,
+.app-window[data-app="talk"] .messages .incoming-row:nth-child(odd) .bubble {
+  background: #f2f2f2;
+}
+
+.app-window[data-app="talk"] .messages .incoming-row:nth-child(even) .bubble::before,
+.app-window[data-app="talk"] .messages .incoming-row:nth-child(odd) .bubble::before {
+  border-left: 0;
+  border-right: 8px solid #f2f2f2;
+}
